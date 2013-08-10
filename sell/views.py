@@ -4,7 +4,7 @@ from django.shortcuts import render
 
 #register app entry
 def register_app(request):
-    return render(request,"sell/sellcontent.html",{"test":"test"})
+    return render(request, "sell/register_content.html",{"test":"test"})
 
 
 def hello(request):
