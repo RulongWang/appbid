@@ -19,4 +19,5 @@ urlpatterns = patterns('',
     #url(r'^test/$', test, name='goodtest')
     #homepage
     url(r'^register_app/$', register_app, name="register_app")
+
 )

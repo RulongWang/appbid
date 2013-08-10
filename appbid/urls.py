@@ -5,6 +5,7 @@ from home.tests import test
 import sell.urls
 
 
+
 # Uncomment the next two lines to enable the admin:
 # from django.contrib import admin
 admin.autodiscover()

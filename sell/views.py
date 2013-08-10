@@ -9,3 +9,4 @@ def register_app(request):
 
 def hello(request):
     return HttpResponse(" This is the home page")
+
