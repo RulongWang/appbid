@@ -33,7 +33,6 @@ class App(models.Model):
     APP_STATUS = (
         (1, 'draft'),
         (2, 'published'),
-
     )
     publisher = models.ForeignKey(User)
     publish_date = models.DateTimeField(null=True, blank=True)
@@ -42,23 +41,22 @@ class App(models.Model):
     begin_price = models.FloatField(null=True, blank=True)
     one_price = models.FloatField(null=True, blank=True)
     reserve_price = models.FloatField(null=True, blank=True)
-    currency = models.ForeignKey(Currency,default='USD', null=True, blank=True)
-    begin_date = models.DateTimeField()
-    end_date = models.DateTimeField()
-    dl_amount = models.IntegerField(default=0,null=True,blank=True)
+    currency = models.ForeignKey(Currency, default=2, null=True, blank=True)
+    begin_date = models.DateTimeField(null=True)
+    end_date = models.DateTimeField(null=True)
+    dl_amount = models.IntegerField(null=True, default=0, blank=True)
     revenue = models.FloatField(null=True, blank=True)
-    monetize = models.ManyToManyField(Monetize)
-    description = models.TextField()
+    monetize = models.ManyToManyField(Monetize, null=True)
+    description = models.TextField(null=True)
+    apple_id = models.CharField(max_length=255, null=True)
     app_store_link = models.CharField(max_length=255, null=True, blank=True)
-
-    minimum_bid = models.FloatField(default=1)
+    minimum_bid = models.FloatField(null=True, default=1)
     web_site = models.URLField(max_length=255, null=True, blank=True)
     create_time = models.DateTimeField(auto_now_add=True)
     last_modify = models.DateTimeField(auto_now=True)
-    device = models.ManyToManyField(Device)
-    platform_version = models.CharField(max_length=255)
-    source_code = models.BooleanField(default=True)
-    step = models.IntegerField(default=0,null=False,blank=False)
+    device = models.ManyToManyField(Device, null=True)
+    platform_version = models.CharField(max_length=255, null=True)
+    source_code = models.NullBooleanField()
 
     class Meta:
         ordering = ['create_time']
