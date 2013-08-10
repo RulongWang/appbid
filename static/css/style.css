@@ -11,4 +11,17 @@ body{
     width:960px;
 }
 
-#
+#sell_nav{
+    width:300px;
+    float:left;
+    height:400px;
+    background: rosybrown;
+}
+
+#register_app{
+    width:600px;
+    float:right;
+    background: deepskyblue;
+    height:300px;
+}
+
