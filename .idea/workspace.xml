@@ -1,14 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="a2374d29-0488-46e8-b767-b80d8c61e5cb" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/images/sell/pic.jpg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/header.html" afterPath="$PROJECT_DIR$/templates/header.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/sell/models.py" afterPath="$PROJECT_DIR$/sell/models.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/appbid/settings.py" afterPath="$PROJECT_DIR$/appbid/settings.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/vcs.xml" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-    </list>
+    <list default="true" id="a2374d29-0488-46e8-b767-b80d8c61e5cb" name="Default" comment="" />
     <ignored path="appbid.iws" />
     <ignored path=".idea/workspace.xml" />
     <file path="/settings.py" changelist="a2374d29-0488-46e8-b767-b80d8c61e5cb" time="1376112380490" ignored="false" />
@@ -20,7 +13,7 @@
     <file path="/monetize.sql" changelist="a2374d29-0488-46e8-b767-b80d8c61e5cb" time="1375599465270" ignored="false" />
     <file path="/a.sql" changelist="a2374d29-0488-46e8-b767-b80d8c61e5cb" time="1375600019677" ignored="false" />
     <file path="/dummy.sql" changelist="a2374d29-0488-46e8-b767-b80d8c61e5cb" time="1375600012019" ignored="false" />
-    <file path="/Dummy.txt" changelist="a2374d29-0488-46e8-b767-b80d8c61e5cb" time="1376094193156" ignored="false" />
+    <file path="/Dummy.txt" changelist="a2374d29-0488-46e8-b767-b80d8c61e5cb" time="1376113874275" ignored="false" />
     <file path="/httpstatus.py" changelist="a2374d29-0488-46e8-b767-b80d8c61e5cb" time="1376105002999" ignored="false" />
     <file path="/500.html" changelist="a2374d29-0488-46e8-b767-b80d8c61e5cb" time="1376105065591" ignored="false" />
     <file path="/tests.py" changelist="a2374d29-0488-46e8-b767-b80d8c61e5cb" time="1376106328749" ignored="false" />
@@ -29,6 +22,7 @@
     <file path="/footer.html" changelist="a2374d29-0488-46e8-b767-b80d8c61e5cb" time="1376108540129" ignored="false" />
     <file path="/sell_nav.html" changelist="a2374d29-0488-46e8-b767-b80d8c61e5cb" time="1376108404046" ignored="false" />
     <file path="/sellcontent.html" changelist="a2374d29-0488-46e8-b767-b80d8c61e5cb" time="1376108984586" ignored="false" />
+    <file path="$PROJECT_DIR$/.idea/workspace.xml" changelist="a2374d29-0488-46e8-b767-b80d8c61e5cb" time="1376113984847" ignored="false" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -56,7 +50,7 @@
       <file leaf-file-name="settings.py" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/appbid/settings.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="63" column="66" selection-start="2331" selection-end="2331" vertical-scroll-proportion="0.17321016">
+            <state line="81" column="63" selection-start="3005" selection-end="3005" vertical-scroll-proportion="0.42159763">
               <folding />
             </state>
           </provider>
@@ -66,9 +60,7 @@
         <entry file="file://$PROJECT_DIR$/appbid/urls.py">
           <provider selected="true" editor-type-id="text-editor">
             <state line="24" column="1" selection-start="708" selection-end="708" vertical-scroll-proportion="0.0">
-              <folding>
-                <element signature="e#0#51#0" expanded="true" />
-              </folding>
+              <folding />
             </state>
           </provider>
         </entry>
@@ -76,7 +68,7 @@
       <file leaf-file-name="footer.html" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/templates/footer.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="5" column="7" selection-start="51" selection-end="51" vertical-scroll-proportion="-3.125">
+            <state line="5" column="7" selection-start="51" selection-end="51" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -85,7 +77,7 @@
       <file leaf-file-name="header.html" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/templates/header.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="4" column="26" selection-start="87" selection-end="87" vertical-scroll-proportion="-2.5">
+            <state line="4" column="26" selection-start="87" selection-end="87" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -94,7 +86,7 @@
       <file leaf-file-name="sell_nav.html" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/templates/sell/sell_nav.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="1" column="0" selection-start="20" selection-end="20" vertical-scroll-proportion="-0.625">
+            <state line="1" column="0" selection-start="20" selection-end="20" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -103,7 +95,7 @@
       <file leaf-file-name="index.html" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/templates/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="11" column="0" selection-start="109" selection-end="109" vertical-scroll-proportion="-6.875">
+            <state line="11" column="0" selection-start="109" selection-end="109" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -112,7 +104,7 @@
       <file leaf-file-name="sellcontent.html" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/templates/sell/sellcontent.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="5" column="14" selection-start="95" selection-end="95" vertical-scroll-proportion="-3.125">
+            <state line="5" column="14" selection-start="95" selection-end="95" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -217,6 +209,7 @@
       <sortByType />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -281,23 +274,36 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="appbid" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="appbid" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="appbid" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="Database.TableEditor.Splitter" value="0.9" />
     <property name="options.splitter.main.proportions" value="0.3" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="recentsLimit" value="5" />
     <property name="options.lastSelected" value="project.propVCSSupport.Mappings" />
+    <property name="recentsLimit" value="5" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="FullScreen" value="false" />
     <property name="DefaultHtmlFileTemplate" value="Html5" />
-    <property name="dynamic.classpath" value="false" />
-    <property name="options.splitter.details.proportions" value="0.2" />
     <property name="options.searchVisible" value="true" />
+    <property name="options.splitter.details.proportions" value="0.2" />
+    <property name="dynamic.classpath" value="false" />
   </component>
   <component name="PyConsoleOptionsProvider">
     <option name="myPythonConsoleState">
@@ -372,42 +378,6 @@
       <option name="PARAMETERS" value="" />
       <method />
     </configuration>
-    <configuration default="true" type="Python.DjangoServer" factoryName="Django server">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="" />
-      <option name="launchJavascriptDebuger" value="false" />
-      <option name="port" value="8000" />
-      <option name="host" value="" />
-      <option name="additionalOptions" value="" />
-      <option name="browserUrl" value="" />
-      <option name="runTestServer" value="false" />
-      <option name="runNoReload" value="false" />
-      <option name="useCustomRunCommand" value="false" />
-      <option name="customRunCommand" value="" />
-      <method />
-    </configuration>
-    <configuration default="true" type="PyRemoteDebugConfigurationType" factoryName="Python Remote Debug">
-      <module name="" />
-      <option name="PORT" value="0" />
-      <option name="HOST" value="null" />
-      <PathMappingSettings>
-        <option name="pathMappings">
-          <list />
-        </option>
-      </PathMappingSettings>
-      <option name="REDIRECT_OUTPUT" value="true" />
-      <option name="SUSPEND_AFTER_CONNECT" value="true" />
-      <method />
-    </configuration>
     <configuration default="true" type="tests" factoryName="Unittests">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -429,6 +399,42 @@
       <option name="PUREUNITTEST" value="true" />
       <option name="PARAMS" value="" />
       <option name="USE_PARAM" value="false" />
+      <method />
+    </configuration>
+    <configuration default="true" type="PyRemoteDebugConfigurationType" factoryName="Python Remote Debug">
+      <module name="" />
+      <option name="PORT" value="0" />
+      <option name="HOST" value="null" />
+      <PathMappingSettings>
+        <option name="pathMappings">
+          <list />
+        </option>
+      </PathMappingSettings>
+      <option name="REDIRECT_OUTPUT" value="true" />
+      <option name="SUSPEND_AFTER_CONNECT" value="true" />
+      <method />
+    </configuration>
+    <configuration default="true" type="Python.DjangoServer" factoryName="Django server">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="" />
+      <option name="launchJavascriptDebuger" value="false" />
+      <option name="port" value="8000" />
+      <option name="host" value="" />
+      <option name="additionalOptions" value="" />
+      <option name="browserUrl" value="" />
+      <option name="runTestServer" value="false" />
+      <option name="runNoReload" value="false" />
+      <option name="useCustomRunCommand" value="false" />
+      <option name="customRunCommand" value="" />
       <method />
     </configuration>
     <configuration default="true" type="tests" factoryName="Doctests">
@@ -541,22 +547,22 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="31" y="61" width="1420" height="860" extended-state="0" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32884097" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32972974" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32972974" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.13027656" sideWeight="0.6716216" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2496361" sideWeight="0.6716216" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2569141" sideWeight="0.6716216" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.26055312" sideWeight="0.6716216" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32837838" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3281046" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32972974" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32972974" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32972974" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
@@ -629,9 +635,7 @@
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/home/models.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="12" column="0" selection-start="235" selection-end="235" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
+        <state line="12" column="0" selection-start="235" selection-end="235" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/appbid/models.py">
@@ -654,16 +658,12 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/templates/status/500.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="7" column="7" selection-start="93" selection-end="93" vertical-scroll-proportion="-4.375">
-          <folding />
-        </state>
+        <state line="7" column="7" selection-start="93" selection-end="93" vertical-scroll-proportion="-4.375" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/home/views.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="4" column="34" selection-start="118" selection-end="118" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
+        <state line="4" column="34" selection-start="118" selection-end="118" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/home/tests.py">
@@ -678,36 +678,34 @@
     <entry file="file://$PROJECT_DIR$/appbid/urls.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="24" column="1" selection-start="708" selection-end="708" vertical-scroll-proportion="0.0">
-          <folding>
-            <element signature="e#0#51#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/templates/footer.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="5" column="7" selection-start="51" selection-end="51" vertical-scroll-proportion="-3.125">
+        <state line="5" column="7" selection-start="51" selection-end="51" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/templates/sell/sell_nav.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="1" column="0" selection-start="20" selection-end="20" vertical-scroll-proportion="-0.625">
+        <state line="1" column="0" selection-start="20" selection-end="20" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/templates/sell/sellcontent.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="5" column="14" selection-start="95" selection-end="95" vertical-scroll-proportion="-3.125">
+        <state line="5" column="14" selection-start="95" selection-end="95" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/templates/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="11" column="0" selection-start="109" selection-end="109" vertical-scroll-proportion="-6.875">
+        <state line="11" column="0" selection-start="109" selection-end="109" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
@@ -735,14 +733,14 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/templates/header.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="4" column="26" selection-start="87" selection-end="87" vertical-scroll-proportion="-2.5">
+        <state line="4" column="26" selection-start="87" selection-end="87" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/appbid/settings.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="63" column="66" selection-start="2331" selection-end="2331" vertical-scroll-proportion="0.17321016">
+        <state line="81" column="63" selection-start="3005" selection-end="3005" vertical-scroll-proportion="0.42159763">
           <folding />
         </state>
       </provider>
