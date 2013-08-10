@@ -1,9 +1,9 @@
 from django.conf.urls import patterns, include, url
-
+from sell.views import register_app
 
 # Uncomment the next two lines to enable the admin:
 # from django.contrib import admin
-admin.autodiscover()
+
 
 urlpatterns = patterns('',
     # Examples:
@@ -18,5 +18,5 @@ urlpatterns = patterns('',
     #url(r'^admin/', include(admin.site.urls)),
     #url(r'^test/$', test, name='goodtest')
     #homepage
-
+    url(r'^register_app/$', register_app, name="register_app")
 )
