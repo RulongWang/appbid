@@ -42,24 +42,27 @@ class App(models.Model):
     one_price = models.FloatField(null=True, blank=True)
     reserve_price = models.FloatField(null=True, blank=True)
     currency = models.ForeignKey(Currency, default=2, null=True, blank=True)
-    begin_date = models.DateTimeField(null=True)
-    end_date = models.DateTimeField(null=True)
+    begin_date = models.DateTimeField(null=True, blank=True)
+    end_date = models.DateTimeField(null=True, blank=True)
     dl_amount = models.IntegerField(null=True, default=0, blank=True)
     revenue = models.FloatField(null=True, blank=True)
-    monetize = models.ManyToManyField(Monetize, null=True)
-    description = models.TextField(null=True)
-    apple_id = models.CharField(max_length=255, null=True)
+    monetize = models.ManyToManyField(Monetize, null=True, blank=True)
+    description = models.TextField(null=True, blank=True)
+    apple_id = models.CharField(max_length=255, null=True, blank=True)
     app_store_link = models.CharField(max_length=255, null=True, blank=True)
-    minimum_bid = models.FloatField(null=True, default=1)
+    minimum_bid = models.FloatField(null=True, default=1, blank=True)
     web_site = models.URLField(max_length=255, null=True, blank=True)
     create_time = models.DateTimeField(auto_now_add=True)
     last_modify = models.DateTimeField(auto_now=True)
-    device = models.ManyToManyField(Device, null=True)
-    platform_version = models.CharField(max_length=255, null=True)
-    source_code = models.NullBooleanField()
+    device = models.ManyToManyField(Device, null=True, blank=True)
+    platform_version = models.CharField(max_length=255, null=True, blank=True)
+    source_code = models.NullBooleanField(default=True)
 
     class Meta:
         ordering = ['create_time']
+
+    def __unicode__(self):
+        return self.title
 
 
 class Attachment(models.Model):

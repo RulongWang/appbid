@@ -1,9 +1,23 @@
 <div id="register_app">
     <form action="" method="post">
-        <label for="appid">
-            input your appid
-        </label>
-        <input type="text" name="appid" id="appid"/>
+        {% csrf_token %}
+
+        {{ form.title.label_tag }}
+        {% if form.title.errors %}
+            <div>
+            {{ form.title.errors }}
+            </div>
+        {% endif %}
+        {{ form.title }}
+
+        {{ form.description.label_tag }}
+        {% if form.description.errors %}
+            <div>
+            {{ form.description.errors }}
+            </div>
+        {% endif %}
+        {{ form.description }}
+
         <input type="submit" name="next" value="next"/>
     </form>
 
