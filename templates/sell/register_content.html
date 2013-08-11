@@ -1,9 +1,6 @@
 {% extends "index.html" %}
 {% block mainContent %}
 {% load staticfiles %}
-
-
-<img src="{% static "images/sell/pic.jpg" %}" alt="My image" width="100" height="100"/>
 {% include "sell/register_nav.html" %}
 
     {% ifequal flag 1 %}

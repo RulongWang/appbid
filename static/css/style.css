@@ -108,24 +108,32 @@ body {
     margin-right:auto;
     margin-top:20px;
     padding-top: 0;
-    background: coral;
+    /*background: coral;*/
     width:960px;
+
 }
 
-#sell_nav{
+#register_nav{
     width:300px;
     float:left;
     height:400px;
-    background: rosybrown;
+    background: #CFDEFF;
 }
 
 #register_app{
     width:600px;
     float:right;
-    background: deepskyblue;
+    background: #ffffff;
     height:300px;
 }
 
+#register_new_nav{
+    margin-left:25px;
+}
+#register_new_nav li{
+    margin-top:15px;
+
+}
 
 a:link, a:visited {
 	color:#27b;
