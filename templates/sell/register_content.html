@@ -6,15 +6,15 @@
 <img src="{% static "images/sell/pic.jpg" %}" alt="My image" width="100" height="100"/>
 {% include "sell/register_nav.html" %}
 
-    {% ifequal flag 1 %}
+    {% ifequal flag "1" %}
     {% include "sell/register_app.html" %}
     {% endifequal %}
 
-     {% ifequal flag 2 %}
+    {% ifequal flag 2 %}
     {% include "sell/register_download.html" %}
     {% endifequal %}
 
-     {% ifequal flag 3 %}
+    {% ifequal flag 3 %}
     {% include "sell/register_revenue.html" %}
     {% endifequal %}
 
@@ -22,15 +22,15 @@
     {% include "sell/register_pitch.html" %}
     {% endifequal %}
 
-     {% ifequal flag 5 %}
+    {% ifequal flag 5 %}
     {% include "sell/register_sale.html" %}
     {% endifequal %}
 
-     {% ifequal flag 6 %}
+    {% ifequal flag 6 %}
     {% include "sell/register_payment.html" %}
     {% endifequal %}
 
-     {% ifequal flag 7 %}
+    {% ifequal flag 7 %}
     {% include "sell/register_launch.html" %}
     {% endifequal %}
 

@@ -5,12 +5,136 @@
     <title>{{ title }}</title>
 
 <link href="{% static "css/style.css" %}" rel="stylesheet" type="text/css" media="screen" />
+<link rel="stylesheet" href="{% static "css/menu/superfish.css" %}" media="screen">
+<script src="{% static "scripts/menu/jquery.js" %}"></script>
+<script src="{% static "scripts/menu/hoverIntent.js" %}"></script>
+<script src="{% static "scripts/menu/superfish.js" %}"></script>
+<script>
 
+		(function($){ //create closure so we can safely use $ as alias for jQuery
+
+			$(document).ready(function(){
+
+				// initialise plugin
+				var example = $('#example').superfish({
+					//add options here if required
+				});
+
+				// buttons to demonstrate Superfish's public methods
+				$('.destroy').on('click', function(){
+					example.superfish('destroy');
+				});
+
+				$('.init').on('click', function(){
+					example.superfish();
+				});
+
+				$('.open').on('click', function(){
+					example.children('li:first').superfish('show');
+				});
+
+				$('.close').on('click', function(){
+					example.children('li:first').superfish('hide');
+				});
+			});
+
+		})(jQuery);
+</script>
 </head>
 <body>
-<header class="header">
-    <div id="nav_menu">
+<div id="user_bar">
+    <div id="row">
+        <ul class="user_bar_menu">
+            <li><a href="/" class="">Home</a></li>
+            <li>
+                <form action="" id="user-bar-search" method="get" class="">
+                    <input type="search" id="q" name="q" placeholder="Search" autocomplete="off">
+                    <input type="submit" id="search" class=" " value="Search">
 
+                </form>
+            </li>
+            <li><a href="/" class="">Advance Search</a></li>
+        </ul>
+        <ul class="user_bar_menu_link">
+            <li><a href="/" class="">Account</a></li>
+            <li><a href="/" class="">Inbox</a></li>
+            <li><a href="/" class="">Watchlist</a></li>
+            <li><a href="/" class="">Logout</a></li>
+        </ul>
+    </div>
+</div>
+<header class="header">
+
+    <div id="header_top">
+        <div id="company">
+            <div id="company_logo">
+                <h1 style="font-size:30px;margin-top:10px; display:block;padding: 10,10;">Company Logo Here </h1>
+            </div>
+        </div>
+
+    </div>
+    <div id="nav_menu">
+        <div id="menu">
+        <ul class="sf-menu" id="example">
+            <li class="current">
+                <a href="/featured-listings" title="Featured listings">Featured</a>
+            </li>
+            <li class="new-listings">
+                <a href="/new-listings">New Listings</a>
+            </li>
+            <li class="most-active">
+                <a href="/active-listings" title="Listings with the most bidding activity">Most Active</a>
+            </li><li class="ending">
+                <a href="/ending-soon" title="Listings which are almost over">Ending Soon</a>
+            </li>
+            <li class="sold">
+                <a href="/just-sold" title="Listings which have just been sold">Just Sold</a>
+            </li>
+            <li class="price-range parent">
+                <a href="#">Price Range</a>
+                   <ul class="dropdown">
+                       <li class="">
+                           <a href="/buy-high-end" title="Listings which will sell for over $10,000">High End Websites</a>
+                       </li>
+                       <li class="">
+                           <a href="/buy-mid-range" title="Listings which will sell for between $1,000 and $10,000">Mid-Range Websites</a>
+                       </li>
+                       <li class="">
+                           <a href="/buy-entry-level" title="Listings which will sell for less than $1,000">Entry Level Websites</a>
+                       </li>
+                   </ul>
+            </li>
+            <li class="browse parent">
+                <a href="#">Browse</a>
+                   <ul class="dropdown">
+                       <li class="">
+                           <a href="/categories/niche">Niche</a>
+                       </li>
+                       <li class="">
+                           <a href="/categories/site-type">Site Type</a>
+                       </li>
+                       <li class="">
+                       <a href="/categories/implementation">Implementation</a>
+                       </li>
+                       <li class="separate">
+                           <a href="/categories/monetization">Monetization</a>
+                       </li>
+                       <li class="">
+                           <a href="/high-ranking-websites/top-five">Top Ranking Websites</a>
+                       </li>
+                       <li class="">
+                           <a href="/buy-domains">Domains</a>
+                       </li>
+                   </ul>
+            </li>
+            <li class="classifieds">
+                <a href="/classifieds">Classifieds</a>
+            </li>
+            <li class="sell">
+                <a href="/sell" class="special">Sell Your Website</a>
+            </li>
+        </ul>
+        </div>
     </div>
 
 </header>

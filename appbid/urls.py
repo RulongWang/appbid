@@ -13,7 +13,7 @@ admin.autodiscover()
 urlpatterns = patterns('',
     # Examples:
     #home
-    url(r'^$', 'home.views.hello', name='hello'),
+    url(r'^$', 'home.views.home', name='home'),
     # url(r'^appbid/', include('appbid.foo.urls')),
 
     # Uncomment the admin/doc line below to enable admin documentation:

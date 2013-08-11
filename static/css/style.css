@@ -1,8 +1,108 @@
-body{
-    margin:0;
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 14px;
+    font: inherit;
+    vertical-align: baseline;
+}
+body {
+	margin:0;
+	padding:0;
+	font:13px/16px "Lucida Grande", Arial, Sans-serif;
+	color:#789;
+	background-color: #ddeef6;
+	background-image: url(images/front-bg.gif);
+	background-repeat: repeat;
 }
 
 
+/* 顶部用户登陆菜单部分*/
+#user_bar{
+    margin:0;
+    height:60px;
+    width:100%;
+    height:60px;
+    background: royalblue;
+}
+#row{
+    margin:0 auto;
+    width:960px;
+    height:60px;
+}
+.user_bar_menu{
+    margin-top:20px;
+    list-style: none;
+    display: inline-block;
+    float:left;
+}
+.user_bar_menu li{
+    margin-right: 10px;
+    list-style: none;
+    display: inline-block;
+    float:left;
+}
+.user_bar_menu li a{
+    color:white;
+}
+
+.user_bar_menu_link{
+    margin-top:20px;
+    list-style: none;
+    display: inline-block;
+    float:right;
+}
+.user_bar_menu_link li{
+    margin-right: 10px;
+    list-style: none;
+    display: inline-block;
+    float:left;
+}
+.user_bar_menu_link li a{
+    color:white;
+}
+/*********End Of User Bar*******/
+/*公司logo页面部分开始****/
+.header{
+
+    /*background: coral;*/
+    clear:both;
+}
+#header_top{
+    margin:0;
+    height:85px;
+
+}
+#nav_menu{
+    margin:0;
+    /*height:60px;*/
+    background: cadetblue;
+    height:37px;
+}
+#menu{
+    margin:0 auto;
+    width:960px;
+}
+
+#header_top{
+    margin:0 auto;
+    padding: 0;
+}
+#company{
+    margin:0 auto;
+    width:960px;
+
+}
+#company_logo{
+    margin-top:25px;
+    width:300px;
+    height:40px;
+    background: white;
+}
+
+
+/*******主要内容部分***********/
+/*******manin content area starts*****/
 #mainContent{
     margin-left: auto;
     margin-right:auto;
@@ -25,3 +125,14 @@ body{
     height:300px;
 }
 
+
+a:link, a:visited {
+	color:#27b;
+	text-decoration:none;
+}
+a:hover {
+	text-decoration:underline;
+}
+a img {
+	border-width:0;
+}
