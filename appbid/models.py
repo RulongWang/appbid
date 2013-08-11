@@ -36,7 +36,7 @@ class App(models.Model):
     )
     publisher = models.ForeignKey(User)
     publish_date = models.DateTimeField(null=True, blank=True)
-    status = models.IntegerField(choices=APP_STATUS, default=1)
+    status = models.IntegerField(choices=APP_STATUS, null=True, blank=True, default=1)
     title = models.CharField(max_length=255)
     begin_price = models.FloatField(null=True, blank=True)
     one_price = models.FloatField(null=True, blank=True)
@@ -57,12 +57,14 @@ class App(models.Model):
     device = models.ManyToManyField(Device, null=True, blank=True)
     platform_version = models.CharField(max_length=255, null=True, blank=True)
     source_code = models.NullBooleanField(default=True)
+    rating = models.CharField(max_length=5, null=True, blank=True)# rating for app
 
     class Meta:
         ordering = ['create_time']
 
     def __unicode__(self):
         return self.title
+
 
 
 class Attachment(models.Model):
