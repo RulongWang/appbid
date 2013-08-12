@@ -6,7 +6,10 @@ from django.utils.decorators import method_decorator
 from django.core.urlresolvers import reverse
 from seller import forms
 from appbid import models
-
+import json
+from django.core.serializers.json import DjangoJSONEncoder
+from django.core.serializers.json import Deserializer
+import urllib
 
 @csrf_protect
 # @method_decorator(login_required)
@@ -66,5 +69,15 @@ def updateApp3(form, model):
 def hello(request):
     return HttpResponse(" This is the home page")
 
+
+def searchItunes(request):
+    search_url = 'https://itunes.apple.com/lookup?id=639384326'
+
+
+    raw = urllib.urlopen(search_url)
+    js = raw.read()
+    js_object = json.loads(js)
+
+    return render_to_response('home/test.html',{"json_objects":js_object["resultCount"]})
 
 
