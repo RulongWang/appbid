@@ -125,6 +125,7 @@ body {
 /********************promotion part***************/
 #home_promotion{
     margin:0 auto;
+    margin-bottom: 20px;
     width:960px;
 
     background:#FEFEFE;
@@ -165,8 +166,9 @@ body {
 #register_nav{
     width:300px;
     float:left;
-    height:400px;
+    height:300px;
     background: #CFDEFF;
+    margin-bottom: 25px;
 }
 
 #register_app{
@@ -178,10 +180,15 @@ body {
 
 #register_new_nav{
     margin-left:25px;
+
+
 }
 #register_new_nav li{
     margin-top:15px;
 
+}
+#register_new_nav li ul{
+    list-style: none;
 }
 /*****************footer part *********************/
 /****************底部******************************/
