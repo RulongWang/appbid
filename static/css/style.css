@@ -12,7 +12,7 @@ body {
 	font:13px/16px "Lucida Grande", Arial, Sans-serif;
 	color:#789;
 	background-color: #ddeef6;
-	background-image: url(images/front-bg.gif);
+	/*background-image: url(images/front-bg.gif);*/
 	background-repeat: repeat;
 }
 

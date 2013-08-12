@@ -20,6 +20,6 @@ class SimpleTest(TestCase):
 
 def test(request):
     testa = ['a','b',]
-    return render(request, 'sell/register_content.html',{'testa': testa})
+    return render(request, 'seller/register_content.html',{'testa': testa})
 
 

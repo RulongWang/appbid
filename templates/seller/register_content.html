@@ -1,34 +1,34 @@
 {% extends "index.html" %}
 {% block mainContent %}
 {% load staticfiles %}
-{% include "sell/register_nav.html" %}
+{% include "seller/register_nav.html" %}
 
     {% ifequal flag 1 %}
-    {% include "sell/register_app.html" %}
+    {% include "seller/register_app.html" %}
     {% endifequal %}
 
     {% ifequal flag 2 %}
-    {% include "sell/register_download.html" %}
+    {% include "seller/register_download.html" %}
     {% endifequal %}
 
     {% ifequal flag 3 %}
-    {% include "sell/register_revenue.html" %}
+    {% include "seller/register_revenue.html" %}
     {% endifequal %}
 
      {% ifequal flag 4 %}
-    {% include "sell/register_pitch.html" %}
+    {% include "seller/register_pitch.html" %}
     {% endifequal %}
 
     {% ifequal flag 5 %}
-    {% include "sell/register_sale.html" %}
+    {% include "seller/register_sale.html" %}
     {% endifequal %}
 
     {% ifequal flag 6 %}
-    {% include "sell/register_payment.html" %}
+    {% include "seller/register_payment.html" %}
     {% endifequal %}
 
     {% ifequal flag 7 %}
-    {% include "sell/register_launch.html" %}
+    {% include "seller/register_launch.html" %}
     {% endifequal %}
 
 

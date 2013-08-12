@@ -2,7 +2,7 @@ from django.conf.urls import patterns, include, url
 from django.contrib import admin
 from home.views import hello
 from home.tests import test
-import sell.urls
+import seller.urls
 
 
 
@@ -22,7 +22,7 @@ urlpatterns = patterns('',
     # Uncomment the next line to enable the admin:
     url(r'^admin/', include(admin.site.urls)),
     url(r'^test/$', test, name='goodtest'),
-    url(r'^sell/', include(sell.urls, namespace='sell')),
+    url(r'^seller/', include(seller.urls, namespace='seller')),
     #homepage
 
 )
