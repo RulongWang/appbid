@@ -6,5 +6,5 @@ from appbid import models
 class AppForm(forms.ModelForm):
     class Meta:
         model = models.App
-        exclude = {'publisher', 'status'}
+        exclude = {'publisher'}
 

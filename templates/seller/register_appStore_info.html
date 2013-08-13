@@ -1,0 +1,38 @@
+<div id="register_app">
+    <form action="" method="post">
+        {% csrf_token %}
+
+    <div>
+        {{ form.platform_version.label_tag }}
+        {% if form.platform_version.errors %}
+            <div>
+            {{ form.platform_version.errors }}
+            </div>
+        {% endif %}
+        {{ form.platform_version }}
+    </div>
+
+{#    <div>#}
+{#        {{ form.category.label_tag }}#}
+{#        {% if form.category.errors %}#}
+{#            <div>#}
+{#            {{ form.category.errors }}#}
+{#            </div>#}
+{#        {% endif %}#}
+{#        {{ form.category }}#}
+{#    </div>#}
+
+    <div>
+        {{ form.rating.label_tag }}
+        {% if form.rating.errors %}
+            <div>
+            {{ form.rating.errors }}
+            </div>
+        {% endif %}
+        {{ form.rating }}
+    </div>
+
+        <input id="next" type="submit" name="next" value="next"/>
+    </form>
+
+</div>

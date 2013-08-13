@@ -1,0 +1,38 @@
+<div id="register_app">
+    <form action="" method="post">
+        {% csrf_token %}
+
+    <div>
+        {{ form.dl_amount.label_tag }}
+        {% if form.dl_amount.errors %}
+            <div>
+            {{ form.dl_amount.errors }}
+            </div>
+        {% endif %}
+        {{ form.dl_amount }}
+    </div>
+
+    <div>
+        {{ form.revenue.label_tag }}
+        {% if form.revenue.errors %}
+            <div>
+            {{ form.revenue.errors }}
+            </div>
+        {% endif %}
+        {{ form.revenue }}
+    </div>
+
+    <div>
+        {{ form.monetize.label_tag }}
+        {% if form.monetize.errors %}
+            <div>
+            {{ form.monetize.errors }}
+            </div>
+        {% endif %}
+        {{ form.monetize }}
+    </div>
+
+        <input id="next" type="submit" name="next" value="next"/>
+    </form>
+
+</div>

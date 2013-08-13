@@ -3,24 +3,28 @@
 {% load staticfiles %}
 {% include "seller/register_nav.html" %}
 
-    {% ifequal flag 1 %}
-    {% include "seller/register_app.html" %}
+    {% ifequal flag 1.1 %}
+    {% include "seller/register_appStore_link.html" %}
+    {% endifequal %}
+
+    {% ifequal flag 1.2 %}
+    {% include "seller/register_appStore_info.html" %}
     {% endifequal %}
 
     {% ifequal flag 2 %}
-    {% include "seller/register_download.html" %}
+    {% include "seller/register_marketing.html" %}
     {% endifequal %}
 
     {% ifequal flag 3 %}
-    {% include "seller/register_revenue.html" %}
+    {% include "seller/register_additional_info.html" %}
     {% endifequal %}
 
      {% ifequal flag 4 %}
-    {% include "seller/register_pitch.html" %}
+    {% include "seller/register_sale.html" %}
     {% endifequal %}
 
     {% ifequal flag 5 %}
-    {% include "seller/register_sale.html" %}
+    {% include "seller/register_delivery.html" %}
     {% endifequal %}
 
     {% ifequal flag 6 %}
@@ -28,7 +32,7 @@
     {% endifequal %}
 
     {% ifequal flag 7 %}
-    {% include "seller/register_launch.html" %}
+    {% include "seller/register_verification.html" %}
     {% endifequal %}
 
 

@@ -2,14 +2,7 @@
     <form action="" method="post">
         {% csrf_token %}
 
-        {{ form.title.label_tag }}
-        {% if form.title.errors %}
-            <div>
-            {{ form.title.errors }}
-            </div>
-        {% endif %}
-        {{ form.title }}
-
+    <div>
         {{ form.description.label_tag }}
         {% if form.description.errors %}
             <div>
@@ -17,8 +10,13 @@
             </div>
         {% endif %}
         {{ form.description }}
+    </div>
 
-        <input type="submit" name="next" value="next"/>
+    <div>
+        <label for="attachment">Attachment</label>
+    </div>
+
+        <input id="next" type="submit" name="next" value="next"/>
     </form>
 
 </div>

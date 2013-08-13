@@ -1,10 +1,78 @@
 <div id="register_app">
     <form action="" method="post">
-        <label for="appid">
-            input your appid
-        </label>
-        <input type="text" name="appid" id="appid"/>
-        <input type="submit" name="next" value="next"/>
+        {% csrf_token %}
+
+    <div>
+        {{ form.begin_price.label_tag }}
+        {% if form.begin_price.errors %}
+            <div>
+            {{ form.begin_price.errors }}
+            </div>
+        {% endif %}
+        {{ form.begin_price }}
+    </div>
+
+    <div>
+        {{ form.one_price.label_tag }}
+        {% if form.one_price.errors %}
+            <div>
+            {{ form.one_price.errors }}
+            </div>
+        {% endif %}
+        {{ form.one_price }}
+    </div>
+
+    <div>
+        {{ form.reserve_price.label_tag }}
+        {% if form.reserve_price.errors %}
+            <div>
+            {{ form.reserve_price.errors }}
+            </div>
+        {% endif %}
+        {{ form.reserve_price }}
+    </div>
+
+    <div>
+        {{ form.currency.label_tag }}
+        {% if form.currency.errors %}
+            <div>
+            {{ form.currency.errors }}
+            </div>
+        {% endif %}
+        {{ form.currency }}
+    </div>
+
+    <div>
+        {{ form.begin_date.label_tag }}
+        {% if form.begin_date.errors %}
+            <div>
+            {{ form.begin_date.errors }}
+            </div>
+        {% endif %}
+        {{ form.begin_date }}
+    </div>
+
+    <div>
+        {{ form.end_date.label_tag }}
+        {% if form.end_date.errors %}
+            <div>
+            {{ form.end_date.errors }}
+            </div>
+        {% endif %}
+        {{ form.end_date }}
+    </div>
+
+    <div>
+        {{ form.minimum_bid.label_tag }}
+        {% if form.minimum_bid.errors %}
+            <div>
+            {{ form.minimum_bid.errors }}
+            </div>
+        {% endif %}
+        {{ form.minimum_bid }}
+    </div>
+
+        <input id="next" type="submit" name="next" value="next"/>
     </form>
 
 </div>

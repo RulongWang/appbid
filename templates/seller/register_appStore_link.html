@@ -1,0 +1,41 @@
+<div id="register_app">
+    <form action="" method="post">
+        {% csrf_token %}
+
+    <div>
+        {{ form.title.label_tag }}
+        <div id="id_title_errors">
+        {% if form.title.errors %}
+            {{ form.title.errors }}
+        {% endif %}
+        </div>
+        {{ form.title }}
+    </div>
+
+    <div>
+        {{ form.app_store_link.label_tag }}
+        <div id="app_store_link_errors">
+        {% if form.app_store_link.errors %}
+            {{ form.app_store_link.errors }}
+        {% endif %}
+        </div>
+        {{ form.app_store_link }}
+        {{ form.app_store_link.help_text }}
+    </div>
+
+        <input id="next" type="submit" name="next" value="next"/>
+    </form>
+
+<script type="text/javascript" language="javascript">
+    $("#next").click(function() {
+        if ($("#id_title").val() == "") {
+            $("#id_title_errors").html("Title is required.");//TODO:it will be set in message.properties.
+            return false;
+        }
+        if ($("#id_app_store_link").val() == "") {
+            $("#app_store_link_errors").html("App store link is required.");
+            return false;
+        }
+    });
+</script>
+</div>
