@@ -32,6 +32,16 @@
         {{ form.rating }}
     </div>
 
+    <div>
+        {{ form.device.label_tag }}
+        {% if form.device.errors %}
+            <div>
+            {{ form.device.errors }}
+            </div>
+        {% endif %}
+        {{ form.device }}
+    </div>
+
         <input id="next" type="submit" name="next" value="next"/>
     </form>
 

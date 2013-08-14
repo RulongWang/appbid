@@ -26,51 +26,56 @@ def register_app(request, *args, **kwargs):
         if form.is_valid():
             if not isExist:
                 app = createApp(form)
-                if app is None:
-                    return render_to_response(kwargs['backPage'], {'form': form, 'flag': kwargs['flag']},
-                                              context_instance=RequestContext(request))
             elif saveMethod is not None:
-                saveMethod(form, app)
-            return HttpResponseRedirect(reverse(kwargs['nextPage'], args=(app.id,)))
-        else:
-            return render_to_response(kwargs['backPage'], {'form': form, 'flag': kwargs['flag']},
-                                      context_instance=RequestContext(request))
+                app = saveMethod(form, app)
+            if app is not None:
+                return HttpResponseRedirect(reverse(kwargs['nextPage'], kwargs={'pk': app.id}))
     else:
         form = forms.AppForm()
         if isExist:
             form = forms.AppForm(instance=app)
-        return render_to_response(kwargs['backPage'], {'form': form, 'flag': kwargs['flag']},
-                                  context_instance=RequestContext(request))
+    return render_to_response(kwargs['backPage'], {'form': form, 'flag': kwargs['flag']},
+                              context_instance=RequestContext(request))
 
 
 def createApp(form):
     if form.cleaned_data['title'].strip() == "" or form.cleaned_data['app_store_link'].strip() == "":
         return None
     js = getITunes(form.cleaned_data['app_store_link'])
-    if js is None:
+    if js is None or js.get('resultCount') != 1:
         return None
+
     model = form.save(commit=False)
-    for result in js.get('results', None):
-        model.rating = result.get('trackContentRating', None)
-        model.platform_version = result.get('version', None)
-        # model.device = result.get('supportedDevices', None)
-        print result.get('supportedDevices', None)
+    result = js.get('results', None)[0]
+    model.rating = result.get('trackContentRating', None)
+    model.platform_version = result.get('version', None)
     model.publisher = models.User.objects.get(pk=1)
     model.status = 1
     model.save()
+
+    for device in models.Device.objects.all():
+        for deviceName in result.get('supportedDevices', None):
+            if deviceName.find(device.device) != -1:
+                model.device.add(device)
+                break
     return model
 
 def saveAppStoreLink(form, model):
     """Save the first register page - AppleStore Link."""
+    if form.cleaned_data['title'].strip() == "" or form.cleaned_data['app_store_link'].strip() == "":
+        return None
+
     model.title = form.cleaned_data['title']
     model.app_store_link = form.cleaned_data['app_store_link']
     model.save()
+    return model
 
 def saveAppStoreInfo(form, model):
     """Save the second register page - AppStore Info."""
     model.platform_version = form.cleaned_data['platform_version']
     model.rating = form.cleaned_data['rating']
     model.save()
+    return model
 
 def saveMarketing(form, model):
     """Save the second register page - Marketing."""
@@ -78,12 +83,14 @@ def saveMarketing(form, model):
     model.revenue = form.cleaned_data['revenue']
     model.monetize = form.cleaned_data['monetize']
     model.save()
+    return model
 
 
 def saveAdditionalInfo(form, model):
     """Save the third register page - Additional info."""
     model.description = form.cleaned_data['description']
     model.save()
+    return model
 
 
 def saveSale(form, model):
@@ -91,11 +98,12 @@ def saveSale(form, model):
     model.begin_price = form.cleaned_data['begin_price']
     model.one_price = form.cleaned_data['one_price']
     model.reserve_price = form.cleaned_data['reserve_price']
-    # model.currency = models.Device.objects.get(currency__exact=form.cleaned_data['currency'])
-    # model.begin_date = form.cleaned_data['begin_date']
-    # model.end_date = form.cleaned_data['end_date']
+    model.currency_id = form.cleaned_data['currency']
+    model.begin_date = form.cleaned_data['begin_date']
+    model.end_date = form.cleaned_data['end_date']
     model.minimum_bid = form.cleaned_data['minimum_bid']
     model.save()
+    return model
 
 
 def saveDelivery(form, model):
