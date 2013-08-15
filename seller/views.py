@@ -36,9 +36,13 @@ def register_app(request, *args, **kwargs):
                 return HttpResponseRedirect(reverse(kwargs['nextPage'], kwargs={'pk': app.id}))
     else:
         form = forms.AppForm()
+        attachmentForm = forms.AttachmentForm()
         if isExist:
             form = forms.AppForm(instance=app)
+            attachments = models.Attachment.objects.filter(app_id=app.id)
+            initParam['attachments'] = attachments
     initParam['form'] = form
+    initParam['attachmentForm'] = attachmentForm
     return render_to_response(kwargs['backPage'], initParam, context_instance=RequestContext(request))
 
 

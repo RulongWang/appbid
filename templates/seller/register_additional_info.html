@@ -16,7 +16,37 @@
         <label for="attachment">Attachment</label>
     </div>
 
+    {% if attachments != None %}
+        Uploaded Files:
+        {% for attachment in attachments %}
+        <div>
+            {{ attachment.name.label_tag }}
+            {% if attachment.name.errors %}
+                <div>
+                {{ attachment.name.errors }}
+                </div>
+            {% endif %}
+            <a style="color: blue; font-weight: bold;" href="{{ attachment.path }}">{{ attachment.name }}</a>
+            <input id="" name="{{ attachment.id }}" type="button" value="delete">
+        </div>
+        {% endfor %}
+    {% endif %}
+
+    <div id="attachment">
+        {{ attachmentForm.path.label_tag }}
+        {% if attachmentForm.path.errors %}
+            <div>
+            {{ attachmentForm.path.errors }}
+            </div>
+        {% endif %}
+        {{ attachmentForm.path }}<input id="add" type="button" value="add">
+    </div>
+
         <input id="next" type="submit" name="next" value="next"/>
     </form>
 
+<script type="text/javascript" language="javascript">
+    $("#add").click(function() {
+    });
+</script>
 </div>

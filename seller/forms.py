@@ -8,3 +8,7 @@ class AppForm(forms.ModelForm):
         model = models.App
         exclude = {'publisher'}
 
+
+class AttachmentForm(forms.ModelForm):
+    class Meta:
+        model = models.Attachment

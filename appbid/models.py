@@ -78,7 +78,7 @@ class Attachment(models.Model):
     app = models.ForeignKey(App)
     name = models.CharField(max_length=255)
     type = models.IntegerField(choices=ATTACHMENT_TYPE)
-    path = models.CharField(max_length=255)
+    path = models.FileField(upload_to=".")
 
 
 class Bidding(models.Model):
