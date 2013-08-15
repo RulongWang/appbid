@@ -1,0 +1,11 @@
+{% extends "index.html" %}
+{% block mainContent %}
+{% load staticfiles %}
+           <form action="/account/login/" method='post' class="pull-right">
+            {% csrf_token %}
+            <input name='username' class="input-small" type="text" placeholder="用户名">
+            <input name='password' class="input-small" type="password" placeholder="密码">
+            <button class="btn" type="submit">登录</button>
+          </form>
+
+{% endblock %}

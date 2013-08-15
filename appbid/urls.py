@@ -4,8 +4,8 @@ from home.views import hello
 from home.tests import test
 import seller.urls
 import seller.views
-import auth.urls
-import auth.views
+import account.urls
+import account.views
 
 
 
@@ -27,7 +27,7 @@ urlpatterns = patterns('',
     url(r'^test/$', test, name='goodtest'),
     url(r'^seller/', include(seller.urls, namespace='seller')),
     url(r'^searchItunes/$',seller.views.searchItunes),
-    url(r'^auth/',include(auth.urls,namespace='auth')),
+    url(r'^account/',include(account.urls,namespace='account')),
     #homepage
 
 )

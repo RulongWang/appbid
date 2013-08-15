@@ -59,7 +59,11 @@
             <li><a href="/" class="">Account</a></li>
             <li><a href="/" class="">Inbox</a></li>
             <li><a href="/" class="">Watchlist</a></li>
-            <li><a href="/" class="">Logout</a></li>
+            {% if request.user.is_authenticated  %}
+            <li><a href="/account/logout/" class="">Logout</a></li>
+            {% else %}
+            <li><a href="/account/home/" class="">Login{{ request.user }}</a></li>
+            {% endif %}
         </ul>
     </div>
 </div>
@@ -131,7 +135,7 @@
                 <a href="/classifieds">Classifieds</a>
             </li>
             <li class="sell">
-                <a href="/seller/appStore_link" class="special">Sell Your Website</a>
+                <a href="/seller" class="special">Sell Your Website</a>
             </li>
         </ul>
         </div>

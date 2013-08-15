@@ -5,7 +5,7 @@
       <extra-name-characters>#@</extra-name-characters>
       <identifier-quote-string>`</identifier-quote-string>
       <jdbc-driver>com.mysql.jdbc.Driver</jdbc-driver>
-      <jdbc-url>jdbc:mysql://127.0.0.1/appbid</jdbc-url>
+      <jdbc-url>jdbc:mysql://127.0.0.1:3306/appbid</jdbc-url>
       <user-name>root</user-name>
       <libraries>
         <library>

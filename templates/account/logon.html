@@ -7,10 +7,10 @@
     {% if request.user %}
         <div class="pull-right">
             <a href=#>欢迎您：{{request.user}}</a>
-            <a class="btn danger small" href="{% url auth.views.logout_view %}">注销</a>
+            <a class="btn danger small" href="{% url account.views.logout_view %}">注销</a>
         </div>
     {% else %}
-          <form action="/auth/login/" method='post' class="pull-right">
+          <form action="/account/login/" method='post' class="pull-right">
             {% csrf_token %}
             <input name='username' class="input-small" type="text" placeholder="用户名">
             <input name='password' class="input-small" type="password" placeholder="密码">
