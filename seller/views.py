@@ -11,13 +11,17 @@ from django.core.serializers.json import DjangoJSONEncoder
 from django.core.serializers.json import Deserializer
 import urllib
 
+
 @csrf_protect
 # @method_decorator(login_required)
 def register_app(request, *args, **kwargs):
     app = {}
     isExist = False
+    initParam = {'flag': kwargs['flag']}
+
     if kwargs['pk']:
         app = get_object_or_404(models.App, pk=kwargs['pk'])
+        initParam['app_id'] = app.id
         isExist = True
 
     if request.method == "POST":
@@ -34,8 +38,8 @@ def register_app(request, *args, **kwargs):
         form = forms.AppForm()
         if isExist:
             form = forms.AppForm(instance=app)
-    return render_to_response(kwargs['backPage'], {'form': form, 'flag': kwargs['flag']},
-                              context_instance=RequestContext(request))
+    initParam['form'] = form
+    return render_to_response(kwargs['backPage'], initParam, context_instance=RequestContext(request))
 
 
 def createApp(form):
@@ -60,6 +64,7 @@ def createApp(form):
                 break
     return model
 
+
 def saveAppStoreLink(form, model):
     """Save the first register page - AppleStore Link."""
     if form.cleaned_data['title'].strip() == "" or form.cleaned_data['app_store_link'].strip() == "":
@@ -70,12 +75,14 @@ def saveAppStoreLink(form, model):
     model.save()
     return model
 
+
 def saveAppStoreInfo(form, model):
     """Save the second register page - AppStore Info."""
     model.platform_version = form.cleaned_data['platform_version']
     model.rating = form.cleaned_data['rating']
     model.save()
     return model
+
 
 def saveMarketing(form, model):
     """Save the second register page - Marketing."""

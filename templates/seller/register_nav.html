@@ -1,38 +1,35 @@
 <div id="register_nav">
     <ol id="register_new_nav">
         <li>
-            <a href="sell/app#">App Info</a>
+            <a href="{% url 'seller:appStore_link' app_id %}">App Info</a>
             <ul>
                 <li>
-                    <a href="sell#">AppleStore Link</a>
+                    <a href="{% url 'seller:appStore_link' app_id %}">AppleStore Link</a>
                 </li>
                 <li>
-                    <a href="sell#">Appstore Info</a>
+                    <a href="{% url 'seller:appStore_info' app_id %}">Appstore Info</a>
                 </li>
             </ul>
         </li>
 
         <li>
-            <a href="#">Marketing</a>
+            <a href="{% url 'seller:marketing' app_id %}">Marketing</a>
         </li>
         <li>
-            <a href="#">Additional Info</a>
+            <a href="{% url 'seller:additional_info' app_id %}">Additional Info</a>
 
         </li>
         <li>
-            <a href="#">Sale</a>
+            <a href="{% url 'seller:sale' app_id %}">Sale</a>
         </li>
         <li>
-            <a href="#">Delivery</a>
+            <a href="{% url 'seller:delivery' app_id %}">Delivery</a>
         </li>
         <li>
-            <a href="#">Payment</a>
+            <a href="{% url 'seller:payment' app_id %}">Payment</a>
         </li>
         <li>
-            <a href="#">Verification</a>
+            <a href="{% url 'seller:verification' app_id %}">Verification</a>
         </li>
     </ol>
-
-
-
 </div>
