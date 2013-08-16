@@ -56,14 +56,16 @@
             <li><a href="/" class="">Advance Search</a></li>
         </ul>
         <ul class="user_bar_menu_link">
+            {% if request.user.is_authenticated  %}
             <li><a href="/" class="">Welcome: {{ request.user }}</a></li>
             <li><a href="/" class="">Account</a></li>
             <li><a href="/" class="">Inbox</a></li>
             <li><a href="/" class="">Watchlist</a></li>
-            {% if request.user.is_authenticated  %}
             <li><a href="/account/logout/" class="">Logout</a></li>
             {% else %}
             <li><a href="/account/home/?next={{ request.path }}" class="">Login</a></li>
+            <li><a href="/account/register/?next={{ request.path }}" class="">Sign Up</a></li>
+
             {% endif %}
         </ul>
     </div>

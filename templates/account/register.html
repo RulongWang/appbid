@@ -1,0 +1,43 @@
+{% extends "index.html" %}
+{% block mainContent %}
+{% load staticfiles %}
+    <div id="central_block">
+        <div class="central_section">
+           <form action="" method='post' class="pull-right">
+            {% csrf_token %}
+           <ul class="central_ul">
+            <li>
+                {{ register_form.username.label_tag }}
+                {% if register_form.username.errors %}
+                    <div>
+                        {{ register_form.username.errors }}
+                    </div>
+                {% endif %}
+                {{ register_form.username }}
+            </li>
+           <li>
+                {{ register_form.password.label_tag }}
+                {% if register_form.password.errors %}
+                    <div>
+                        {{ register_form.password.errors }}
+                    </div>
+                {% endif %}
+                {{ register_form.password }}
+            </li>
+           <li>
+                {{ register_form.email.label_tag }}
+                {% if register_form.email.errors %}
+                    <div>
+                        {{ register_form.email.errors }}
+                    </div>
+                {% endif %}
+                {{ register_form.email }}
+            </li>
+           <button class="btn" type="submit">登录</button>
+
+
+           </ul>
+          </form>
+        </div>
+    </div>
+{% endblock %}
