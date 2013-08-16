@@ -122,6 +122,30 @@ body {
     text-align: center;
 
 }
+/*********************central block****************/
+#central_block{
+    margin:0 auto;
+    margin-bottom: 20px;
+    width:960px;
+
+    background:#FEFEFE;
+    height:140px;
+}
+.central_section{
+    margin:0 auto;
+    padding-top: 20px;
+    width:400px;
+}
+.central_ul{
+    list-style: none;
+
+}
+.central_ul li{
+    margin-top:10px;
+    margin-left:20px;
+}
+
+
 /********************promotion part***************/
 #home_promotion{
     margin:0 auto;

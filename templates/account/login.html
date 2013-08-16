@@ -1,11 +1,25 @@
 {% extends "index.html" %}
 {% block mainContent %}
 {% load staticfiles %}
+    <div id="central_block">
+        <div class="central_section">
            <form action="/account/login/" method='post' class="pull-right">
             {% csrf_token %}
-            <input name='username' class="input-small" type="text" placeholder="用户名">
-            <input name='password' class="input-small" type="password" placeholder="密码">
+           <ul class="central_ul">
+            <li>
+                <label name="username_label" >Username</label>
+                <input name='username' class="input-small" type="text" placeholder="用户名">
+            </li>
+            <li>
+                <label name="password_label">Password&nbsp</label>
+                <input name='password' class="input-small" type="password" placeholder="密码">
+            </li>
+            <li>
+            <input name="next" value="{{ redirect_to }}" type="hidden">
             <button class="btn" type="submit">登录</button>
+           </li>
+           </ul>
           </form>
-
+        </div>
+    </div>
 {% endblock %}
