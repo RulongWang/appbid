@@ -66,6 +66,10 @@ class App(models.Model):
         return self.title
 
 
+def content_file_name(instance, filename):
+    """The path of saving attachment file. The pattern is publisher_id/app_id/filename"""
+    return '/'.join([str(instance.app.publisher.id), str(instance.app.id), filename])
+
 
 class Attachment(models.Model):
     """Attachment table info, type value:1 top images, 2 ICON, 3 PDF, 4 DOC"""
@@ -76,9 +80,9 @@ class Attachment(models.Model):
         (4, "doc"),
     )
     app = models.ForeignKey(App)
-    name = models.CharField(max_length=255)
-    type = models.IntegerField(choices=ATTACHMENT_TYPE)
-    path = models.FileField(upload_to=".")
+    name = models.CharField(max_length=255, blank=True)
+    type = models.IntegerField(choices=ATTACHMENT_TYPE, blank=True)
+    path = models.FileField(max_length=100, upload_to=content_file_name)
 
 
 class Bidding(models.Model):

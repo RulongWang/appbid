@@ -17,6 +17,7 @@ import urllib
 def register_app(request, *args, **kwargs):
     app = {}
     isExist = False
+    # initParam maybe save error message, when validate failed.
     initParam = {'flag': kwargs['flag']}
 
     if kwargs['pk']:
@@ -31,22 +32,26 @@ def register_app(request, *args, **kwargs):
             if not isExist:
                 app = createApp(form)
             elif saveMethod is not None:
-                app = saveMethod(form, app)
+                pathList = request.FILES.getlist('path')
+                if pathList:
+                    app = saveMethod(form, app, initParam=initParam, pathList=pathList)
+                else:
+                    app = saveMethod(form, app, initParam=initParam)
             if app is not None:
                 return HttpResponseRedirect(reverse(kwargs['nextPage'], kwargs={'pk': app.id}))
     else:
         form = forms.AppForm()
         attachmentForm = forms.AttachmentForm()
+        initParam['attachmentForm'] = attachmentForm
         if isExist:
             form = forms.AppForm(instance=app)
             attachments = models.Attachment.objects.filter(app_id=app.id)
             initParam['attachments'] = attachments
     initParam['form'] = form
-    initParam['attachmentForm'] = attachmentForm
     return render_to_response(kwargs['backPage'], initParam, context_instance=RequestContext(request))
 
 
-def createApp(form):
+def createApp(form, *args, **kwargs):
     if form.cleaned_data['title'].strip() == "" or form.cleaned_data['app_store_link'].strip() == "":
         return None
     js = getITunes(form.cleaned_data['app_store_link'])
@@ -69,7 +74,7 @@ def createApp(form):
     return model
 
 
-def saveAppStoreLink(form, model):
+def saveAppStoreLink(form, model, *args, **kwargs):
     """Save the first register page - AppleStore Link."""
     if form.cleaned_data['title'].strip() == "" or form.cleaned_data['app_store_link'].strip() == "":
         return None
@@ -80,15 +85,16 @@ def saveAppStoreLink(form, model):
     return model
 
 
-def saveAppStoreInfo(form, model):
+def saveAppStoreInfo(form, model, *args, **kwargs):
     """Save the second register page - AppStore Info."""
     model.platform_version = form.cleaned_data['platform_version']
     model.rating = form.cleaned_data['rating']
+    model.device = form.cleaned_data['device']
     model.save()
     return model
 
 
-def saveMarketing(form, model):
+def saveMarketing(form, model, *args, **kwargs):
     """Save the second register page - Marketing."""
     model.dl_amount = form.cleaned_data['dl_amount']
     model.revenue = form.cleaned_data['revenue']
@@ -97,14 +103,35 @@ def saveMarketing(form, model):
     return model
 
 
-def saveAdditionalInfo(form, model):
+def saveAdditionalInfo(form, model, *args, **kwargs):
     """Save the third register page - Additional info."""
+    initParam = kwargs.get('initParam')
     model.description = form.cleaned_data['description']
     model.save()
+
+    if kwargs.get('pathList'):
+        for path in kwargs.get('pathList'):
+            attachment = models.Attachment(path=path)
+            attachment.name = path.name
+            if path.content_type.find('image') != -1:
+                attachment.type = 1
+            elif path.content_type == 'application/pdf':
+                attachment.type = 3
+            elif path.content_type.find('application') != -1:
+                attachment.type = 4
+            else:
+                attachment.type = 4
+            #The attachment size can not be more than 50M.
+            if path.size > 50000000:
+                initParam['attachmentError'] = ''.join(['The attachment \'', path.name, '\' is too large.'])
+                # initParam['attachmentForm'] = forms.AttachmentForm(path=path)
+                return None
+            attachment.app = model
+            attachment.save()
     return model
 
 
-def saveSale(form, model):
+def saveSale(form, model, *args, **kwargs):
     """Save the third register page - Sale."""
     model.begin_price = form.cleaned_data['begin_price']
     model.one_price = form.cleaned_data['one_price']
@@ -117,21 +144,21 @@ def saveSale(form, model):
     return model
 
 
-def saveDelivery(form, model):
+def saveDelivery(form, model, *args, **kwargs):
     """Save the third register page - Delivery."""
     # model.description = form.cleaned_data['description']
     # model.save()
     return None
 
 
-def savePayment(form, model):
+def savePayment(form, model, *args, **kwargs):
     """Save the third register page - Payment."""
     # model.description = form.cleaned_data['description']
     # model.save()
     return None
 
 
-def saveVerification(form, model):
+def saveVerification(form, model, *args, **kwargs):
     """Save the third register page - Verification."""
     # model.description = form.cleaned_data['description']
     # model.save()

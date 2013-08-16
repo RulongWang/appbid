@@ -1,5 +1,5 @@
 <div id="register_app">
-    <form action="" method="post">
+    <form action="" method="post" enctype="multipart/form-data">
         {% csrf_token %}
 
     <div>
@@ -17,7 +17,6 @@
     </div>
 
     {% if attachments != None %}
-        Uploaded Files:
         {% for attachment in attachments %}
         <div>
             {{ attachment.name.label_tag }}
@@ -26,20 +25,31 @@
                 {{ attachment.name.errors }}
                 </div>
             {% endif %}
-            <a style="color: blue; font-weight: bold;" href="{{ attachment.path }}">{{ attachment.name }}</a>
+            <a style="color: blue; font-weight: bold;" href="{{ attachment.path.url }}">{{ attachment.name }}</a>
+<!--        TODO: It is better to use the image with delete meaning. -->
             <input id="" name="{{ attachment.id }}" type="button" value="delete">
         </div>
         {% endfor %}
     {% endif %}
 
     <div id="attachment">
+        {{ attachmentError }}
         {{ attachmentForm.path.label_tag }}
         {% if attachmentForm.path.errors %}
             <div>
             {{ attachmentForm.path.errors }}
             </div>
         {% endif %}
-        {{ attachmentForm.path }}<input id="add" type="button" value="add">
+        {{ attachmentForm.path }}
+
+        {{ attachmentForm.path.label_tag }}
+        {% if attachmentForm.path.errors %}
+            <div>
+            {{ attachmentForm.path.errors }}
+            </div>
+        {% endif %}
+        {{ attachmentForm.path }}
+        <input id="add" type="button" value="add">
     </div>
 
         <input id="next" type="submit" name="next" value="next"/>
