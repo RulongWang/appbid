@@ -18,6 +18,7 @@
         {% if form.app_store_link.errors %}
             {{ form.app_store_link.errors }}
         {% endif %}
+        {{ app_store_link_error }}
         </div>
         {{ form.app_store_link }}
         {{ form.app_store_link.help_text }}

@@ -3,62 +3,67 @@ from django.shortcuts import render_to_response, RequestContext, HttpResponseRed
 from django.views.decorators.csrf import csrf_protect
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
+from django.utils.translation import ugettext as _
 from django.core.urlresolvers import reverse
 from seller import forms
 from appbid import models
 import json
-from django.core.serializers.json import DjangoJSONEncoder
-from django.core.serializers.json import Deserializer
 import urllib
 
 
 @csrf_protect
 # @method_decorator(login_required)
-def register_app(request, *args, **kwargs):
-    app = {}
-    isExist = False
+def registerApp(request, *args, **kwargs):
+    """The common function for create, update app information."""
+    app = None
     # initParam maybe save error message, when validate failed.
     initParam = {'flag': kwargs['flag']}
 
     if kwargs['pk']:
         app = get_object_or_404(models.App, pk=kwargs['pk'])
         initParam['app_id'] = app.id
-        isExist = True
 
     if request.method == "POST":
         form = forms.AppForm(request.POST)
         saveMethod = kwargs.pop('saveMethod', None)
-        if form.is_valid():
-            if not isExist:
-                app = createApp(form)
-            elif saveMethod is not None:
-                pathList = request.FILES.getlist('path')
-                if pathList:
-                    app = saveMethod(form, app, initParam=initParam, pathList=pathList)
-                else:
-                    app = saveMethod(form, app, initParam=initParam)
-            if app is not None:
-                return HttpResponseRedirect(reverse(kwargs['nextPage'], kwargs={'pk': app.id}))
+        if form.is_valid() and saveMethod is not None:
+            pathList = request.FILES.getlist('path')
+            if pathList:
+                newApp = saveMethod(form, app, initParam=initParam, pathList=pathList)
+            else:
+                newApp = saveMethod(form, app, initParam=initParam)
+            if newApp is not None:
+                return HttpResponseRedirect(reverse(kwargs['nextPage'], kwargs={'pk': newApp.id}))
     else:
         form = forms.AppForm()
-        attachmentForm = forms.AttachmentForm()
-        initParam['attachmentForm'] = attachmentForm
-        if isExist:
-            form = forms.AppForm(instance=app)
-            attachments = models.Attachment.objects.filter(app_id=app.id)
-            initParam['attachments'] = attachments
+
+    if kwargs['pk']:
+        form = forms.AppForm(instance=app)
+        initParam['attachments'] = models.Attachment.objects.filter(app_id=app.id)
     initParam['form'] = form
+    initParam['attachmentForm'] = forms.AttachmentForm()
     return render_to_response(kwargs['backPage'], initParam, context_instance=RequestContext(request))
 
 
-def createApp(form, *args, **kwargs):
+def saveAppStoreLink(form, model, *args, **kwargs):
+    """Save the first register page - AppleStore Link."""
+    initParam = kwargs.get('initParam')
     if form.cleaned_data['title'].strip() == "" or form.cleaned_data['app_store_link'].strip() == "":
         return None
-    js = getITunes(form.cleaned_data['app_store_link'])
-    if js is None or js.get('resultCount') != 1:
+    try:
+        js = getITunes(form.cleaned_data['app_store_link'])
+        if js is None or js.get('resultCount') != 1:
+            raise
+    except:
+        initParam['app_store_link_error'] = _('The app store link is not correct.')
         return None
 
-    model = form.save(commit=False)
+    if model is None:
+        model = form.save(commit=False)
+    else:
+        model.title = form.cleaned_data['title']
+        model.app_store_link = form.cleaned_data['app_store_link']
+
     result = js.get('results', None)[0]
     model.rating = result.get('trackContentRating', None)
     model.platform_version = result.get('version', None)
@@ -66,22 +71,12 @@ def createApp(form, *args, **kwargs):
     model.status = 1
     model.save()
 
+    model.device.clear()
     for device in models.Device.objects.all():
         for deviceName in result.get('supportedDevices', None):
             if deviceName.find(device.device) != -1:
                 model.device.add(device)
                 break
-    return model
-
-
-def saveAppStoreLink(form, model, *args, **kwargs):
-    """Save the first register page - AppleStore Link."""
-    if form.cleaned_data['title'].strip() == "" or form.cleaned_data['app_store_link'].strip() == "":
-        return None
-
-    model.title = form.cleaned_data['title']
-    model.app_store_link = form.cleaned_data['app_store_link']
-    model.save()
     return model
 
 
@@ -107,7 +102,6 @@ def saveAdditionalInfo(form, model, *args, **kwargs):
     """Save the third register page - Additional info."""
     initParam = kwargs.get('initParam')
     model.description = form.cleaned_data['description']
-    model.save()
 
     if kwargs.get('pathList'):
         for path in kwargs.get('pathList'):
@@ -121,13 +115,12 @@ def saveAdditionalInfo(form, model, *args, **kwargs):
                 attachment.type = 4
             else:
                 attachment.type = 4
-            #The attachment size can not be more than 50M.
             if path.size > 50000000:
-                initParam['attachmentError'] = ''.join(['The attachment \'', path.name, '\' is too large.'])
-                # initParam['attachmentForm'] = forms.AttachmentForm(path=path)
+                initParam['attachmentError'] = _('The file can not be more than 50M.')
                 return None
             attachment.app = model
             attachment.save()
+    model.save()
     return model
 
 
@@ -163,6 +156,20 @@ def saveVerification(form, model, *args, **kwargs):
     # model.description = form.cleaned_data['description']
     # model.save()
     return None
+
+
+@csrf_protect
+def deleteAttachment(request, *args, **kwargs):
+    """Delete the attachment of app by id, app_id etc."""
+    data={}
+    try:
+        dict = request.POST
+    except:
+        dict = request.GET
+    attachment = models.Attachment.objects.get(id=dict.get('id'))
+    attachment.delete()
+    data['ok'] = 'true'
+    return HttpResponse(json.dumps(data), mimetype=u'application/json')
 
 
 def getITunes(search_url):

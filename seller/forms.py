@@ -13,6 +13,7 @@ class AttachmentForm(forms.ModelForm):
     path = forms.FileField(
         label='Select a file'
     )
+
     class Meta:
         model = models.Attachment
         exclude = {'app'}

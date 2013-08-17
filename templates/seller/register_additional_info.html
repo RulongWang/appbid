@@ -12,9 +12,11 @@
         {{ form.description }}
     </div>
 
+    {% if attachments != None or attachmentForm %}
     <div>
         <label for="attachment">Attachment</label>
     </div>
+    {% endif %}
 
     {% if attachments != None %}
         {% for attachment in attachments %}
@@ -27,36 +29,69 @@
             {% endif %}
             <a style="color: blue; font-weight: bold;" href="{{ attachment.path.url }}">{{ attachment.name }}</a>
 <!--        TODO: It is better to use the image with delete meaning. -->
-            <input id="" name="{{ attachment.id }}" type="button" value="delete">
+            <input id="{{ attachment.id }}" type="button" value="Remove" onclick="deleteAttachment(this)">
         </div>
         {% endfor %}
     {% endif %}
 
     <div id="attachment">
         {{ attachmentError }}
-        {{ attachmentForm.path.label_tag }}
-        {% if attachmentForm.path.errors %}
+        {% if attachmentForm %}
             <div>
-            {{ attachmentForm.path.errors }}
+                {{ attachmentForm.path.label_tag }}
+                {% if attachmentForm.path.errors %}
+                    <div>
+                    {{ attachmentForm.path.errors }}
+                    </div>
+                {% endif %}
+                {{ attachmentForm.path }}
+                <input id="add" type="button" value="Add">
             </div>
         {% endif %}
-        {{ attachmentForm.path }}
-
-        {{ attachmentForm.path.label_tag }}
-        {% if attachmentForm.path.errors %}
-            <div>
-            {{ attachmentForm.path.errors }}
-            </div>
-        {% endif %}
-        {{ attachmentForm.path }}
-        <input id="add" type="button" value="add">
     </div>
 
         <input id="next" type="submit" name="next" value="next"/>
     </form>
 
 <script type="text/javascript" language="javascript">
+    function deleteAttachment(obj) {
+        id = $(obj).attr("id");
+        $.ajax({
+            type:"POST",
+            url:"{% url 'seller:deleteAttachment' id %}",
+            data:{
+                id:id,
+                app_id: {{ app_id }},
+                csrfmiddlewaretoken: "{{ csrf_token }}"
+            },
+            success:function(data) {
+                if(data.ok === 'true')
+                    $(obj).parent().remove();
+                else
+                    alert("Delete failed, please try again.");
+            },
+            error:function(){
+                alert("Delete failed, please try again.");
+            }
+        });
+    }
+
     $("#add").click(function() {
+        $("#attachment").append(
+            '<div>'+
+                '{{ attachmentForm.path.label_tag }}'+
+                '{% if attachmentForm.path.errors %}'+
+                    '<div>'+
+                    '{{ attachmentForm.path.errors }}'+
+                    '</div>'+
+                '{% endif %}'+
+                '{{ attachmentForm.path }}'+
+                '<input type="button" value="Remove" onclick="removeNode(this)">'+
+            '</div>');
     });
+
+    function removeNode(obj) {
+        $(obj).parent().remove();
+    }
 </script>
 </div>
