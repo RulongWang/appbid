@@ -11,4 +11,5 @@ def hello(request):
 
 
 def home(request):
-    return render_to_response('home/home.html',{'parameters': 'TEST'}, context_instance=RequestContext(request))
+    rangeNum = range(0, 7)
+    return render_to_response('home/home.html',{'range': rangeNum}, context_instance=RequestContext(request))

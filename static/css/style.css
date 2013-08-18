@@ -113,6 +113,99 @@ body {
     width:960px;
 
 }
+/********************featured***********************/
+.featured_block{
+    clear:both;
+    height:150px;
+
+}
+.featured_icon{
+    float:left;
+    margin-left:19px;
+    margin-top: 20px;
+    width:118px;
+
+}
+.featured_icon span{
+    float: left;
+    text-align: center;
+    padding: 5px 3px 3px 3px;
+}
+
+
+.img_icon{
+    width:84px;
+    height:84px;
+    border-radius: 8px;
+
+}
+
+/*********************listing part*****************/
+
+.normal_list{
+    clear:both;
+    margin-top: 40px;
+
+}
+
+.list_block{
+    float:left;
+    width:400px;
+    /*height:300px;*/
+    margin-left:20px;
+    margin-right:20px;
+    margin-bottom: 20px;
+    /*background: #FFaaaa;*/
+}
+.list_right_block{
+    float:right;
+    width:400px;
+    /*height:300px;*/
+    margin-left:20px;
+    margin-right:20px;
+    margin-bottom: 20px;
+}
+.list_block_header{
+    font-size:20px;
+    padding: 4px;
+}
+.img_30x30{
+    width:40px;
+    height:40px;
+    border-radius: 5px;
+}
+
+.listing_table{
+    width:400px;
+    padding:2px;
+    text-align: center;
+    vertical-align: middle;
+    border-spacing: 0;
+    border-collapse: collapse;
+
+}
+.listing_table th{
+     padding: 2px 3px;
+     background: #B94D0A;
+     color: #fff;
+     border-width: 1px;
+     border-style: solid;
+     border-color: #CABAAB;
+}
+
+.listing_table td{
+    margin-top: 3px;
+    padding: 2px 3px;
+    border-width: 1px;
+    border-collapse: collapse;
+    vertical-align: middle;
+}
+.listing_table .fullwidth{
+    border-bottom:solid;
+    border-width: 1px;
+    text-align: left;
+    padding:10px 3px 10px 3px;
+}
 
 /********************Quick message*****************/
 #quick_msg{

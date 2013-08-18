@@ -50,6 +50,7 @@ def register(request):
             user.save()
             return HttpResponseRedirect("/")
 
+
     return render_to_response("account/register.html",{"register_form":registerForm},
                         context_instance=RequestContext(request))
 
