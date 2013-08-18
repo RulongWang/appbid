@@ -10,7 +10,7 @@ def login_view(request):
     user = authenticate(username=request.POST['username'], password=request.POST['password'])
     redirect_to = request.POST['next']
     #print redirect_to
-    if user is not None:
+    if user is not None and user.is_active:
         login(request, user)
 
        # return HttpResponseRedirect(redirect_to)

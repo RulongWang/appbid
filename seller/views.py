@@ -2,7 +2,6 @@ from django.http import HttpResponse
 from django.shortcuts import render_to_response, RequestContext, HttpResponseRedirect, get_object_or_404
 from django.views.decorators.csrf import csrf_protect
 from django.contrib.auth.decorators import login_required
-from django.utils.decorators import method_decorator
 from django.utils.translation import ugettext as _
 from django.core.urlresolvers import reverse
 from seller import forms
@@ -12,7 +11,7 @@ import urllib
 
 
 @csrf_protect
-# @method_decorator(login_required)
+@login_required(login_url='/account/home/')
 def registerApp(request, *args, **kwargs):
     """The common function for create, update app information."""
     app = None
@@ -31,7 +30,7 @@ def registerApp(request, *args, **kwargs):
             if pathList:
                 newApp = saveMethod(form, app, initParam=initParam, pathList=pathList)
             else:
-                newApp = saveMethod(form, app, initParam=initParam)
+                newApp = saveMethod(form, app, initParam=initParam, publisher_id=request.user.id)
             if newApp is not None:
                 return HttpResponseRedirect(reverse(kwargs['nextPage'], kwargs={'pk': newApp.id}))
     else:
@@ -42,6 +41,7 @@ def registerApp(request, *args, **kwargs):
         initParam['attachments'] = models.Attachment.objects.filter(app_id=app.id)
     initParam['form'] = form
     initParam['attachmentForm'] = forms.AttachmentForm()
+    initParam['apps'] = models.App.objects.filter(publisher=request.user).order_by('status')
     return render_to_response(kwargs['backPage'], initParam, context_instance=RequestContext(request))
 
 
@@ -67,7 +67,7 @@ def saveAppStoreLink(form, model, *args, **kwargs):
     result = js.get('results', None)[0]
     model.rating = result.get('trackContentRating', None)
     model.platform_version = result.get('version', None)
-    model.publisher = models.User.objects.get(pk=1)
+    model.publisher = models.User.objects.get(id=kwargs.get('publisher_id'))
     model.status = 1
     model.save()
 
