@@ -2,6 +2,26 @@
     <form action="" method="post">
         {% csrf_token %}
 
+    <div>
+        {{ form.source_code.label_tag }}
+        {% if form.source_code.errors %}
+            <div>
+            {{ form.source_code.errors }}
+            </div>
+        {% endif %}
+        {{ form.source_code }}{{ form.source_code.help_text }}
+    </div>
+
+    <div>
+        {{ form.web_site.label_tag }}
+        {% if form.web_site.errors %}
+            <div>
+            {{ form.web_site.errors }}
+            </div>
+        {% endif %}
+        {{ form.web_site }}{{ form.web_site.help_text }}
+    </div>
+
         <input id="next" type="submit" name="next" value="next"/>
     </form>
 

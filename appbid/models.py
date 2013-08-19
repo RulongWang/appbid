@@ -52,14 +52,14 @@ class App(models.Model):
     monetize = models.ManyToManyField(Monetize, null=True, blank=True)
     description = models.TextField(null=True, blank=True)
     apple_id = models.CharField(max_length=255, null=True, blank=True)
-    app_store_link = models.URLField(max_length=255, null=True, blank=True, help_text="Your app link in app store.")
+    app_store_link = models.URLField(max_length=255, null=True, blank=True)
     minimum_bid = models.FloatField(null=True, default=1, blank=True)
     web_site = models.URLField(max_length=255, null=True, blank=True)
     create_time = models.DateTimeField(auto_now_add=True)
     last_modify = models.DateTimeField(auto_now=True)
     device = models.ManyToManyField(Device, null=True, blank=True)
     platform_version = models.CharField(max_length=255, null=True, blank=True)
-    source_code = models.NullBooleanField(default=True)
+    source_code = models.BooleanField(default=True)
     rating = models.CharField(max_length=5, null=True, blank=True)# rating for app
 
     class Meta:

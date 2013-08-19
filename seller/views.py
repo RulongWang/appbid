@@ -19,8 +19,9 @@ def registerApp(request, *args, **kwargs):
     initParam = {'flag': kwargs['flag']}
 
     if kwargs['pk']:
-        app = get_object_or_404(models.App, pk=kwargs['pk'])
+        app = get_object_or_404(models.App, pk=kwargs['pk'], publisher=request.user)
         initParam['app_id'] = app.id
+        initParam['attachments'] = models.Attachment.objects.filter(app_id=app.id)
 
     if request.method == "POST":
         form = forms.AppForm(request.POST)
@@ -35,10 +36,8 @@ def registerApp(request, *args, **kwargs):
                 return HttpResponseRedirect(reverse(kwargs['nextPage'], kwargs={'pk': newApp.id}))
     else:
         form = forms.AppForm()
-
-    if kwargs['pk']:
-        form = forms.AppForm(instance=app)
-        initParam['attachments'] = models.Attachment.objects.filter(app_id=app.id)
+        if kwargs['pk']:
+            form = forms.AppForm(instance=app)
     initParam['form'] = form
     initParam['attachmentForm'] = forms.AttachmentForm()
     initParam['apps'] = models.App.objects.filter(publisher=request.user).order_by('status')
@@ -60,6 +59,8 @@ def saveAppStoreLink(form, model, *args, **kwargs):
 
     if model is None:
         model = form.save(commit=False)
+        model.publisher = models.User.objects.get(id=kwargs.get('publisher_id'))
+        model.status = 1
     else:
         model.title = form.cleaned_data['title']
         model.app_store_link = form.cleaned_data['app_store_link']
@@ -67,8 +68,6 @@ def saveAppStoreLink(form, model, *args, **kwargs):
     result = js.get('results', None)[0]
     model.rating = result.get('trackContentRating', None)
     model.platform_version = result.get('version', None)
-    model.publisher = models.User.objects.get(id=kwargs.get('publisher_id'))
-    model.status = 1
     model.save()
 
     model.device.clear()
@@ -139,9 +138,10 @@ def saveSale(form, model, *args, **kwargs):
 
 def saveDelivery(form, model, *args, **kwargs):
     """Save the third register page - Delivery."""
-    # model.description = form.cleaned_data['description']
-    # model.save()
-    return None
+    model.source_code = form.cleaned_data['source_code']
+    model.web_site = form.cleaned_data['web_site']
+    model.save()
+    return model
 
 
 def savePayment(form, model, *args, **kwargs):
