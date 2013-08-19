@@ -128,5 +128,49 @@ class Bidding(models.Model):
     status = models.IntegerField(choices=BIDDING_STATUS, default=3)
 
 
-admin.site.register(App)
-admin.site.register(Attachment)
+class PaymentItem(models.Model):
+    """PaymentItem table info, include many payment items."""
+    short_text = models.CharField(max_length=255)
+    long_text = models.TextField()
+    price = models.FloatField()
+    period = models.IntegerField(default=1)# by one month
+    start_date = models.DateTimeField()
+    end_date = models.DateTimeField()
+    app = models.ManyToManyField(App)
+
+
+class Gateway(models.Model):
+    """Gateway table info."""
+    #TODO:The fields will be discussed later.
+    name = models.CharField(max_length=255)
+    is_active = models.BooleanField(default=False)
+
+
+class PaymentDetail(models.Model):
+    """PaymentDetail table info, the record of seller's payment detail."""
+    app = models.ForeignKey(App)
+    start_date = models.DateTimeField()
+    end_date = models.DateTimeField()
+    amount = models.FloatField()
+    gateway = models.ForeignKey(Gateway, null=True, blank=True)
+    is_payed = models.BooleanField(default=False, blank=True)
+
+
+class AppInfo(models.Model):
+    """AppInfo table info, include some additional info fields from apple store or somewhere else."""
+    app = models.ForeignKey(App)
+    price = models.FloatField(null=True, blank=True)
+    icon = models.URLField(null=True, blank=True)
+    track_id = models.IntegerField(null=True, blank=True)
+
+
+class Category(models.Model):
+    """Category table info."""
+    name = models.CharField(max_length=255)
+    app = models.ManyToManyField(App)
+
+#Need to init or edit the data by admin.
+admin.site.register(Device)
+admin.site.register(Currency)
+admin.site.register(Monetize)
+admin.site.register(PaymentItem)

@@ -112,6 +112,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     # Uncomment the next line for simple clickjacking protection:
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    # 'django.middleware.transaction.TransactionMiddleware',
 )
 
 ROOT_URLCONF = 'appbid.urls'
@@ -166,3 +167,6 @@ LOGGING = {
     }
 }
 
+FILE_CHARSET = 'utf-8'
+
+DEFAULT_CHARSET = 'utf-8'

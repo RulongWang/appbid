@@ -70,6 +70,14 @@ def saveAppStoreLink(form, model, *args, **kwargs):
     model.platform_version = result.get('version', None)
     model.save()
 
+    # appInfo = models.AppInfo(app_id=model.id)
+    # if appInfo is None:
+    #     appInfo = models.AppInfo(app_id=model.id)
+    # appInfo.price = result.get('price', 0)
+    # appInfo.icon = result.get('version', None)
+    # genres = result.get('genres', None)
+    # appInfo.save()
+
     model.device.clear()
     for device in models.Device.objects.all():
         for deviceName in result.get('supportedDevices', None):
