@@ -31,6 +31,14 @@ class Monetize(models.Model):
         return self.method
 
 
+class Category(models.Model):
+    """Category table info."""
+    name = models.CharField(max_length=255)
+
+    def __unicode__(self):
+        return self.name
+
+
 class App(models.Model):
     """App table info"""
     APP_STATUS = (
@@ -41,6 +49,7 @@ class App(models.Model):
     publish_date = models.DateTimeField(null=True, blank=True)
     status = models.IntegerField(choices=APP_STATUS, null=True, blank=True, default=1)
     title = models.CharField(max_length=255, blank=True)
+    category = models.ManyToManyField(Category, null=True, blank=True)
     begin_price = models.FloatField(null=True, blank=True)
     one_price = models.FloatField(null=True, blank=True)
     reserve_price = models.FloatField(null=True, blank=True)
@@ -158,19 +167,14 @@ class PaymentDetail(models.Model):
 
 class AppInfo(models.Model):
     """AppInfo table info, include some additional info fields from apple store or somewhere else."""
-    app = models.ForeignKey(App)
+    app = models.OneToOneField(App)
     price = models.FloatField(null=True, blank=True)
     icon = models.URLField(null=True, blank=True)
     track_id = models.IntegerField(null=True, blank=True)
-
-
-class Category(models.Model):
-    """Category table info."""
-    name = models.CharField(max_length=255)
-    app = models.ManyToManyField(App)
 
 #Need to init or edit the data by admin.
 admin.site.register(Device)
 admin.site.register(Currency)
 admin.site.register(Monetize)
+admin.site.register(Category)
 admin.site.register(PaymentItem)

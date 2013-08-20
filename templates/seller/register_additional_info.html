@@ -29,7 +29,7 @@
             {% endif %}
             <a style="color: blue; font-weight: bold;" target="_new" href="{{ attachment.path.url }}">{{ attachment.name }}</a>
 <!--        TODO: It is better to use the image with delete meaning. -->
-            <input id="{{ attachment.id }}" type="button" value="Remove" onclick="deleteAttachment(this)">
+            <input id="{{ attachment.id }}" name="{{ attachment.name }}" type="button" value="Remove" onclick="deleteAttachment(this)">
         </div>
         {% endfor %}
     {% endif %}
@@ -56,18 +56,20 @@
 <script type="text/javascript" language="javascript">
     function deleteAttachment(obj) {
         id = $(obj).attr("id");
+        name = $(obj).attr("name");
         $.ajax({
             type:"POST",
             url:"{% url 'seller:deleteAttachment' id %}",
             data:{
                 id:id,
+                name:name,
                 csrfmiddlewaretoken: "{{ csrf_token }}"
             },
             success:function(data) {
                 if(data.ok === 'true')
                     $(obj).parent().remove();
                 else
-                    alert("Delete failed, please try again.");
+                    alert(data.message);
             },
             error:function(){
                 alert("Delete failed, please try again.");

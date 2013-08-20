@@ -32,6 +32,36 @@
         {{ form.rating }}
     </div>
 
+{#    <div>#}
+{#        {{ form.price.label_tag }}#}
+{#        {% if form.price.errors %}#}
+{#            <div>#}
+{#            {{ form.price.errors }}#}
+{#            </div>#}
+{#        {% endif %}#}
+{#        {{ form.price }}#}
+{#    </div>#}
+{##}
+{#    <div>#}
+{#        {{ form.icon.label_tag }}#}
+{#        {% if form.icon.errors %}#}
+{#            <div>#}
+{#            {{ form.icon.errors }}#}
+{#            </div>#}
+{#        {% endif %}#}
+{#        {{ form.icon }}#}
+{#    </div>#}
+
+    <div>
+        {{ form.category.label_tag }}
+        {% if form.category.errors %}
+            <div>
+            {{ form.category.errors }}
+            </div>
+        {% endif %}
+        {{ form.category }}
+    </div>
+
     <div>
         {{ form.device.label_tag }}
         {% if form.device.errors %}

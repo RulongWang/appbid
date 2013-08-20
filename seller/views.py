@@ -4,6 +4,7 @@ from django.views.decorators.csrf import csrf_protect
 from django.contrib.auth.decorators import login_required
 from django.utils.translation import ugettext as _
 from django.core.urlresolvers import reverse
+from django.db import transaction
 from seller import forms
 from appbid import models
 import json
@@ -70,13 +71,28 @@ def saveAppStoreLink(form, model, *args, **kwargs):
     model.platform_version = result.get('version', None)
     model.save()
 
-    # appInfo = models.AppInfo(app_id=model.id)
-    # if appInfo is None:
-    #     appInfo = models.AppInfo(app_id=model.id)
-    # appInfo.price = result.get('price', 0)
-    # appInfo.icon = result.get('version', None)
-    # genres = result.get('genres', None)
-    # appInfo.save()
+    appInfos = models.AppInfo.objects.filter(app_id=model.id)
+    if len(appInfos) == 0:
+        appInfo = models.AppInfo()
+        appInfo.app_id = model.id
+    else:
+        appInfo = appInfos[0]
+    appInfo.price = result.get('price', 0)
+    appInfo.icon = result.get('version', None)
+    appInfo.track_id = result.get('trackId', 0)
+    appInfo.save()
+
+    # model.category.clear()
+    genres = result.get('genres', None)
+    for genre in genres:
+        categorys = models.Category.objects.filter(name=genre)
+        if len(categorys) == 0:
+            category = models.Category()
+            category.name = genre
+            category.save()
+        else:
+            category = categorys[0]
+        model.category.add(category)
 
     model.device.clear()
     for device in models.Device.objects.all():
@@ -105,6 +121,7 @@ def saveMarketing(form, model, *args, **kwargs):
     return model
 
 
+# @transaction.commit_on_success
 def saveAdditionalInfo(form, model, *args, **kwargs):
     """Save the third register page - Additional info."""
     initParam = kwargs.get('initParam')
@@ -174,9 +191,13 @@ def deleteAttachment(request, *args, **kwargs):
         dict = request.POST
     except:
         dict = request.GET
-    attachment = models.Attachment.objects.get(id=dict.get('id'))
-    attachment.delete()
-    data['ok'] = 'true'
+    try:
+        attachment = models.Attachment.objects.get(id=dict.get('id'))
+        attachment.delete()
+        data['ok'] = 'true'
+    except models.Attachment.DoesNotExist:
+        data['ok'] = 'false'
+        data['message'] = ''.join(['The attachment "', dict.get('name'), '" does not exist.'])
     return HttpResponse(json.dumps(data), mimetype=u'application/json')
 
 
