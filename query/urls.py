@@ -1,5 +1,5 @@
 from django.conf.urls import patterns, include, url
-from seller.views import register_app
+from query.views import register_app
 
 # Uncomment the next two lines to enable the admin:
 # from django.contrib import admin
