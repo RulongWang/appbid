@@ -1,8 +1,49 @@
 <div id="register_app">
     <form action="" method="post">
         {% csrf_token %}
+    <label>Current price:</label><label id="currentPriceLabel"></label>
+    {% for paymentItem in paymentItems %}
+        <div>
+            {{ paymentItem.short_text }}
+        </div>
 
-        <input id="next" type="submit" name="next" value="next"/>
+        <div>
+            {{ paymentItem.long_text }}
+        </div>
+
+        <div>
+            {{ paymentItem.price }}
+            <input type="checkbox" name="paymentItem_id" value="{{ paymentItem.id }}"
+                   price="{{ paymentItem.price }}" onclick="checkPaymentItem(this)">
+        </div>
+
+    {% endfor %}
+        <label>Total:</label><label id="total">100</label>
+        <br>
+        <input id="currentPrice" type="hidden" name="currentPrice" value="0"/>
+        <input id="amount" type="hidden" name="amount" value="0"/>
+        <input id="next" type="submit" name="next" value="Checkout"/>
     </form>
 
+<script type="text/javascript" language="javascript">
+    var currentPrice = 0;
+    var total =  parseFloat(($("#total").text()).replace(",", "."));
+    function checkPaymentItem(obj) {
+        var price = $(obj).attr("price");
+
+        if ($(obj).is(':checked') == true) {
+            currentPrice += parseFloat(price.replace(",", "."));
+            total += parseFloat(price.replace(",", "."));
+        }
+        else {
+            currentPrice -= parseFloat(price.replace(",", "."));
+            total -= parseFloat(price.replace(",", "."));
+        }
+        $("#currentPrice").val(currentPrice);
+        $("#amount").val(total);
+        $("#currentPriceLabel").html(currentPrice);
+        $("#total").html(total);
+
+    }
+</script>
 </div>

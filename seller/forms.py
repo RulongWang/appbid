@@ -30,3 +30,14 @@ class AttachmentForm(forms.ModelForm):
     class Meta:
         model = models.Attachment
         exclude = {'app'}
+
+
+class AppInfoForm(forms.ModelForm):
+    class Meta:
+        model = models.AppInfo
+        exclude = {'app'}
+
+
+class PaymentItemForm(forms.ModelForm):
+    class Meta:
+        model = models.PaymentItem

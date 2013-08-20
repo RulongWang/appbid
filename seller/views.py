@@ -28,24 +28,27 @@ def registerApp(request, *args, **kwargs):
         form = forms.AppForm(request.POST)
         saveMethod = kwargs.pop('saveMethod', None)
         if form.is_valid() and saveMethod is not None:
-            pathList = request.FILES.getlist('path')
-            if pathList:
-                newApp = saveMethod(form, app, initParam=initParam, pathList=pathList)
-            else:
-                newApp = saveMethod(form, app, initParam=initParam, publisher_id=request.user.id)
+            newApp = saveMethod(request, form, app, initParam=initParam)
             if newApp is not None:
                 return HttpResponseRedirect(reverse(kwargs['nextPage'], kwargs={'pk': newApp.id}))
     else:
         form = forms.AppForm()
         if kwargs['pk']:
             form = forms.AppForm(instance=app)
+
+    #TODO:Need to change here.
+    appInfos = models.AppInfo.objects.filter(app_id=app.id)
+    if len(appInfos) > 0:
+        initParam['appInfoForm'] = forms.AppInfoForm(instance=appInfos[0])
+
     initParam['form'] = form
     initParam['attachmentForm'] = forms.AttachmentForm()
     initParam['apps'] = models.App.objects.filter(publisher=request.user).order_by('status')
+    initParam['paymentItems'] = models.PaymentItem.objects.all()
     return render_to_response(kwargs['backPage'], initParam, context_instance=RequestContext(request))
 
 
-def saveAppStoreLink(form, model, *args, **kwargs):
+def saveAppStoreLink(request, form, model, *args, **kwargs):
     """Save the first register page - AppleStore Link."""
     initParam = kwargs.get('initParam')
     if form.cleaned_data['title'].strip() == "" or form.cleaned_data['app_store_link'].strip() == "":
@@ -60,7 +63,7 @@ def saveAppStoreLink(form, model, *args, **kwargs):
 
     if model is None:
         model = form.save(commit=False)
-        model.publisher = models.User.objects.get(id=kwargs.get('publisher_id'))
+        model.publisher = models.User.objects.get(id=request.user.id)
         model.status = 1
     else:
         model.title = form.cleaned_data['title']
@@ -82,7 +85,7 @@ def saveAppStoreLink(form, model, *args, **kwargs):
     appInfo.track_id = result.get('trackId', 0)
     appInfo.save()
 
-    # model.category.clear()
+    model.category.clear()
     genres = result.get('genres', None)
     for genre in genres:
         categorys = models.Category.objects.filter(name=genre)
@@ -103,16 +106,27 @@ def saveAppStoreLink(form, model, *args, **kwargs):
     return model
 
 
-def saveAppStoreInfo(form, model, *args, **kwargs):
+def saveAppStoreInfo(request, form, model, *args, **kwargs):
     """Save the second register page - AppStore Info."""
+    # appInfoForm = forms.AppInfoForm(request.POST)
+    # appInfo = models.AppInfo.objects.get(app_id=model.id)
+    # if appInfoForm.is_valid():
+    #     appInfo.price = appInfoForm.cleaned_data['price']
+    #     appInfo.icon = appInfoForm.cleaned_data['icon']
+    #     appInfo.track_id = appInfoForm.cleaned_data['track_id']
+    #     appInfo.save()
+    # else:
+    #     return None
     model.platform_version = form.cleaned_data['platform_version']
     model.rating = form.cleaned_data['rating']
+    model.category = form.cleaned_data['category']
     model.device = form.cleaned_data['device']
     model.save()
+
     return model
 
 
-def saveMarketing(form, model, *args, **kwargs):
+def saveMarketing(request, form, model, *args, **kwargs):
     """Save the second register page - Marketing."""
     model.dl_amount = form.cleaned_data['dl_amount']
     model.revenue = form.cleaned_data['revenue']
@@ -122,13 +136,13 @@ def saveMarketing(form, model, *args, **kwargs):
 
 
 # @transaction.commit_on_success
-def saveAdditionalInfo(form, model, *args, **kwargs):
+def saveAdditionalInfo(request, form, model, *args, **kwargs):
     """Save the third register page - Additional info."""
     initParam = kwargs.get('initParam')
     model.description = form.cleaned_data['description']
 
-    if kwargs.get('pathList'):
-        for path in kwargs.get('pathList'):
+    if request.FILES.getlist('path'):
+        for path in request.FILES.getlist('path'):
             attachment = models.Attachment(path=path)
             attachment.name = path.name
             if path.content_type.find('image') != -1:
@@ -148,7 +162,7 @@ def saveAdditionalInfo(form, model, *args, **kwargs):
     return model
 
 
-def saveSale(form, model, *args, **kwargs):
+def saveSale(request, form, model, *args, **kwargs):
     """Save the third register page - Sale."""
     model.begin_price = form.cleaned_data['begin_price']
     model.one_price = form.cleaned_data['one_price']
@@ -161,7 +175,7 @@ def saveSale(form, model, *args, **kwargs):
     return model
 
 
-def saveDelivery(form, model, *args, **kwargs):
+def saveDelivery(request, form, model, *args, **kwargs):
     """Save the third register page - Delivery."""
     model.source_code = form.cleaned_data['source_code']
     model.web_site = form.cleaned_data['web_site']
@@ -169,14 +183,28 @@ def saveDelivery(form, model, *args, **kwargs):
     return model
 
 
-def savePayment(form, model, *args, **kwargs):
+def savePayment(request, form, model, *args, **kwargs):
     """Save the third register page - Payment."""
-    # model.description = form.cleaned_data['description']
-    # model.save()
-    return None
+    ids = request.POST.getlist('paymentItem_id')
+    currentPrice = request.POST.get('currentPrice')
+    amount = request.POST.get('amount')
+    price = 0
+    paymentItems = []
+    for id in ids:
+        try:
+            paymentItem = models.PaymentItem.objects.get(id=id)
+            price += paymentItem.price
+            paymentItems.append(paymentItem)
+        except models.PaymentItem.DoesNotExist:
+            return None
+    if float(price) != float(currentPrice):
+        return None
+    for paymentItem in paymentItems:
+        model.paymentItem.add(paymentItem)
+    return model
 
 
-def saveVerification(form, model, *args, **kwargs):
+def saveVerification(request, form, model, *args, **kwargs):
     """Save the third register page - Verification."""
     # model.description = form.cleaned_data['description']
     # model.save()

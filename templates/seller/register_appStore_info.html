@@ -12,16 +12,6 @@
         {{ form.platform_version }}
     </div>
 
-{#    <div>#}
-{#        {{ form.category.label_tag }}#}
-{#        {% if form.category.errors %}#}
-{#            <div>#}
-{#            {{ form.category.errors }}#}
-{#            </div>#}
-{#        {% endif %}#}
-{#        {{ form.category }}#}
-{#    </div>#}
-
     <div>
         {{ form.rating.label_tag }}
         {% if form.rating.errors %}
@@ -31,26 +21,6 @@
         {% endif %}
         {{ form.rating }}
     </div>
-
-{#    <div>#}
-{#        {{ form.price.label_tag }}#}
-{#        {% if form.price.errors %}#}
-{#            <div>#}
-{#            {{ form.price.errors }}#}
-{#            </div>#}
-{#        {% endif %}#}
-{#        {{ form.price }}#}
-{#    </div>#}
-{##}
-{#    <div>#}
-{#        {{ form.icon.label_tag }}#}
-{#        {% if form.icon.errors %}#}
-{#            <div>#}
-{#            {{ form.icon.errors }}#}
-{#            </div>#}
-{#        {% endif %}#}
-{#        {{ form.icon }}#}
-{#    </div>#}
 
     <div>
         {{ form.category.label_tag }}
@@ -72,6 +42,36 @@
         {{ form.device }}
     </div>
 
+    <div>
+        {{ appInfoForm.track_id.label_tag }}
+        {% if appInfoForm.track_id.errors %}
+            <div>
+            {{ appInfoForm.track_id.errors }}
+            </div>
+        {% endif %}
+        {{ appInfoForm.track_id }}
+    </div>
+
+    <div>
+        {{ appInfoForm.price.label_tag }}
+        {% if appInfoForm.price.errors %}
+            <div>
+            {{ appInfoForm.price.errors }}
+            </div>
+        {% endif %}
+        {{ appInfoForm.price }}
+    </div>
+
+    <div>
+        {{ appInfoForm.icon.label_tag }}
+        {% if appInfoForm.icon.errors %}
+            <div>
+            {{ appInfoForm.icon.errors }}
+            </div>
+        {% endif %}
+        {{ appInfoForm.icon }}
+    </div>
+{{ appContent }}
         <input id="next" type="submit" name="next" value="next"/>
     </form>
 

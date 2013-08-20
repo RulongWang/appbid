@@ -39,6 +39,19 @@ class Category(models.Model):
         return self.name
 
 
+class PaymentItem(models.Model):
+    """PaymentItem table info, include many payment items."""
+    short_text = models.CharField(max_length=255)
+    long_text = models.TextField()
+    price = models.FloatField()
+    period = models.IntegerField(default=1)# by one month
+    start_date = models.DateTimeField()
+    end_date = models.DateTimeField()
+
+    def __unicode__(self):
+        return self.short_text
+
+
 class App(models.Model):
     """App table info"""
     APP_STATUS = (
@@ -70,6 +83,7 @@ class App(models.Model):
     platform_version = models.CharField(max_length=255, null=True, blank=True)
     source_code = models.BooleanField(default=True)
     rating = models.CharField(max_length=5, null=True, blank=True)# rating for app
+    paymentItem = models.ManyToManyField(PaymentItem, null=True, blank=True)
 
     class Meta:
         ordering = ['create_time']
@@ -122,6 +136,14 @@ def auto_delete_file_on_change(sender, instance, **kwargs):
             os.remove(old_file.path)
 
 
+class AppInfo(models.Model):
+    """AppInfo table info, include some additional info fields from apple store or somewhere else."""
+    app = models.OneToOneField(App)
+    price = models.FloatField(null=True, blank=True)
+    icon = models.URLField(null=True, blank=True)
+    track_id = models.IntegerField(null=True, blank=True)
+
+
 class Bidding(models.Model):
     """Bidding table info, status value: 1 approved, 2 rejected, 3 inProgress"""
     BIDDING_STATUS = (
@@ -135,17 +157,6 @@ class Bidding(models.Model):
     buyer = models.ManyToManyField(User)
     bid_time = models.DateTimeField(auto_now_add=True)
     status = models.IntegerField(choices=BIDDING_STATUS, default=3)
-
-
-class PaymentItem(models.Model):
-    """PaymentItem table info, include many payment items."""
-    short_text = models.CharField(max_length=255)
-    long_text = models.TextField()
-    price = models.FloatField()
-    period = models.IntegerField(default=1)# by one month
-    start_date = models.DateTimeField()
-    end_date = models.DateTimeField()
-    app = models.ManyToManyField(App)
 
 
 class Gateway(models.Model):
@@ -163,14 +174,6 @@ class PaymentDetail(models.Model):
     amount = models.FloatField()
     gateway = models.ForeignKey(Gateway, null=True, blank=True)
     is_payed = models.BooleanField(default=False, blank=True)
-
-
-class AppInfo(models.Model):
-    """AppInfo table info, include some additional info fields from apple store or somewhere else."""
-    app = models.OneToOneField(App)
-    price = models.FloatField(null=True, blank=True)
-    icon = models.URLField(null=True, blank=True)
-    track_id = models.IntegerField(null=True, blank=True)
 
 #Need to init or edit the data by admin.
 admin.site.register(Device)
