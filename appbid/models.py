@@ -169,9 +169,9 @@ class Gateway(models.Model):
 class PaymentDetail(models.Model):
     """PaymentDetail table info, the record of seller's payment detail."""
     app = models.ForeignKey(App)
-    start_date = models.DateTimeField()
-    end_date = models.DateTimeField()
-    amount = models.FloatField()
+    start_date = models.DateTimeField(null=True, blank=True)
+    end_date = models.DateTimeField(null=True, blank=True)
+    amount = models.FloatField(null=True, blank=True)
     gateway = models.ForeignKey(Gateway, null=True, blank=True)
     is_payed = models.BooleanField(default=False, blank=True)
 

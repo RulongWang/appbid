@@ -9,7 +9,7 @@ from seller import forms
 from appbid import models
 import json
 import urllib
-
+import datetime
 
 @csrf_protect
 @login_required(login_url='/account/home/')
@@ -18,11 +18,20 @@ def registerApp(request, *args, **kwargs):
     app = None
     # initParam maybe save error message, when validate failed.
     initParam = {'flag': kwargs['flag']}
+    form = forms.AppForm()
 
     if kwargs['pk']:
         app = get_object_or_404(models.App, pk=kwargs['pk'], publisher=request.user)
+        form = forms.AppForm(instance=app)
         initParam['app_id'] = app.id
         initParam['attachments'] = models.Attachment.objects.filter(app_id=app.id)
+        initParam['selectItems'] = app.paymentItem.all()
+        appInfos = models.AppInfo.objects.filter(app_id=app.id)
+        if len(appInfos) > 0:
+            initParam['appInfoForm'] = forms.AppInfoForm(instance=appInfos[0])
+        paymentDetails = models.PaymentDetail.objects.filter(app_id=app.id)
+        if len(paymentDetails) > 0:
+            initParam['paymentDetail'] = paymentDetails[0]
 
     if request.method == "POST":
         form = forms.AppForm(request.POST)
@@ -31,15 +40,6 @@ def registerApp(request, *args, **kwargs):
             newApp = saveMethod(request, form, app, initParam=initParam)
             if newApp is not None:
                 return HttpResponseRedirect(reverse(kwargs['nextPage'], kwargs={'pk': newApp.id}))
-    else:
-        form = forms.AppForm()
-        if kwargs['pk']:
-            form = forms.AppForm(instance=app)
-
-    #TODO:Need to change here.
-    # appInfos = models.AppInfo.objects.filter(app_id=app.id)
-    # if len(appInfos) > 0:
-    #     initParam['appInfoForm'] = forms.AppInfoForm(instance=appInfos[0])
 
     initParam['form'] = form
     initParam['attachmentForm'] = forms.AttachmentForm()
@@ -88,13 +88,13 @@ def saveAppStoreLink(request, form, model, *args, **kwargs):
     model.category.clear()
     genres = result.get('genres', None)
     for genre in genres:
-        categorys = models.Category.objects.filter(name=genre)
-        if len(categorys) == 0:
+        categories = models.Category.objects.filter(name=genre)
+        if len(categories) == 0:
             category = models.Category()
             category.name = genre
             category.save()
         else:
-            category = categorys[0]
+            category = categories[0]
         model.category.add(category)
 
     model.device.clear()
@@ -108,15 +108,17 @@ def saveAppStoreLink(request, form, model, *args, **kwargs):
 
 def saveAppStoreInfo(request, form, model, *args, **kwargs):
     """Save the second register page - AppStore Info."""
-    # appInfoForm = forms.AppInfoForm(request.POST)
-    # appInfo = models.AppInfo.objects.get(app_id=model.id)
-    # if appInfoForm.is_valid():
-    #     appInfo.price = appInfoForm.cleaned_data['price']
-    #     appInfo.icon = appInfoForm.cleaned_data['icon']
-    #     appInfo.track_id = appInfoForm.cleaned_data['track_id']
-    #     appInfo.save()
-    # else:
-    #     return None
+    initParam = kwargs.get('initParam')
+    appInfoForm = forms.AppInfoForm(request.POST)
+    appInfo = models.AppInfo.objects.get(app_id=model.id)
+    if appInfoForm.is_valid():
+        appInfo.price = appInfoForm.cleaned_data['price']
+        appInfo.icon = appInfoForm.cleaned_data['icon']
+        appInfo.track_id = appInfoForm.cleaned_data['track_id']
+        appInfo.save()
+    else:
+        initParam['appInfoForm'] = appInfoForm
+        return None
     model.platform_version = form.cleaned_data['platform_version']
     model.rating = form.cleaned_data['rating']
     model.category = form.cleaned_data['category']
@@ -186,21 +188,27 @@ def saveDelivery(request, form, model, *args, **kwargs):
 def savePayment(request, form, model, *args, **kwargs):
     """Save the third register page - Payment."""
     ids = request.POST.getlist('paymentItem_id')
-    currentPrice = request.POST.get('currentPrice')
-    amount = request.POST.get('amount')
     price = 0
-    paymentItems = []
+    model.paymentItem.clear()
     for id in ids:
         try:
             paymentItem = models.PaymentItem.objects.get(id=id)
             price += paymentItem.price
-            paymentItems.append(paymentItem)
+            model.paymentItem.add(paymentItem)
         except models.PaymentItem.DoesNotExist:
             return None
-    if float(price) != float(currentPrice):
-        return None
-    for paymentItem in paymentItems:
-        model.paymentItem.add(paymentItem)
+    try:
+        paymentDetail = models.PaymentDetail.objects.get(app_id=model.id)
+    except models.PaymentDetail.DoesNotExist:
+        paymentDetail = models.PaymentDetail()
+        paymentDetail.app_id = model.id
+        paymentDetail.is_payed = False
+        #TODO:Need to change them,after user have payed.
+        # paymentDetail.start_date = datetime.datetime.now()
+        # paymentDetail.end_date = datetime.datetime.now() + datetime.timedelta(months=1)
+        # paymentDetail.gateway = 1
+    paymentDetail.amount = price
+    paymentDetail.save()
     return model
 
 
@@ -225,7 +233,7 @@ def deleteAttachment(request, *args, **kwargs):
         data['ok'] = 'true'
     except models.Attachment.DoesNotExist:
         data['ok'] = 'false'
-        data['message'] = ''.join(['The attachment "', dict.get('name'), '" does not exist.'])
+        data['message'] = _('The attachment "%(name)s" does not exist.') % {'name': dict.get('name')}
     return HttpResponse(json.dumps(data), mimetype=u'application/json')
 
 
