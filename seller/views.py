@@ -37,9 +37,9 @@ def registerApp(request, *args, **kwargs):
             form = forms.AppForm(instance=app)
 
     #TODO:Need to change here.
-    appInfos = models.AppInfo.objects.filter(app_id=app.id)
-    if len(appInfos) > 0:
-        initParam['appInfoForm'] = forms.AppInfoForm(instance=appInfos[0])
+    # appInfos = models.AppInfo.objects.filter(app_id=app.id)
+    # if len(appInfos) > 0:
+    #     initParam['appInfoForm'] = forms.AppInfoForm(instance=appInfos[0])
 
     initParam['form'] = form
     initParam['attachmentForm'] = forms.AttachmentForm()
