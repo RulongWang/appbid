@@ -84,6 +84,8 @@ class App(models.Model):
     source_code = models.BooleanField(default=True)
     rating = models.CharField(max_length=5, null=True, blank=True)# rating for app
     paymentItem = models.ManyToManyField(PaymentItem, null=True, blank=True)
+    verify_token = models.CharField(max_length=255, null=True, blank=True)
+    is_verified = models.BooleanField(default=False)
 
     class Meta:
         ordering = ['create_time']
@@ -175,9 +177,20 @@ class PaymentDetail(models.Model):
     gateway = models.ForeignKey(Gateway, null=True, blank=True)
     is_payed = models.BooleanField(default=False, blank=True)
 
+
+class SystemParam(models.Model):
+    """Config the system parameter."""
+    key = models.CharField(max_length=255)
+    value = models.TextField()
+    description = models.TextField(null=True, blank=True)
+
+    def __unicode__(self):
+        return ''.join([self.key, ':', self.value])
+
 #Need to init or edit the data by admin.
 admin.site.register(Device)
 admin.site.register(Currency)
 admin.site.register(Monetize)
 admin.site.register(Category)
 admin.site.register(PaymentItem)
+admin.site.register(SystemParam)

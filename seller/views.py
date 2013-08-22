@@ -10,6 +10,7 @@ from appbid import models
 import json
 import urllib
 import datetime
+import random,string
 
 @csrf_protect
 @login_required(login_url='/account/home/')
@@ -32,6 +33,7 @@ def registerApp(request, *args, **kwargs):
         paymentDetails = models.PaymentDetail.objects.filter(app_id=app.id)
         if len(paymentDetails) > 0:
             initParam['paymentDetail'] = paymentDetails[0]
+        initParam['verify_token'] = app.verify_token
 
     if request.method == "POST":
         form = forms.AppForm(request.POST)
@@ -65,6 +67,11 @@ def saveAppStoreLink(request, form, model, *args, **kwargs):
         model = form.save(commit=False)
         model.publisher = models.User.objects.get(id=request.user.id)
         model.status = 1
+        #TODO:currency can be set by client location (such as: zn:CNY, en:USD).
+        model.currency = models.Currency.objects.get(id=2)
+        token_len = models.SystemParam.objects.get(key='token_len')
+        model.verify_token = ''.join(random.sample(string.ascii_letters+string.digits, string.atoi(token_len.value)))
+        model.is_verified = False
     else:
         model.title = form.cleaned_data['title']
         model.app_store_link = form.cleaned_data['app_store_link']
@@ -81,7 +88,7 @@ def saveAppStoreLink(request, form, model, *args, **kwargs):
     else:
         appInfo = appInfos[0]
     appInfo.price = result.get('price', 0)
-    appInfo.icon = result.get('version', None)
+    appInfo.icon = result.get('version', None)#TODO:Discuss later.
     appInfo.track_id = result.get('trackId', 0)
     appInfo.save()
 
@@ -144,6 +151,13 @@ def saveAdditionalInfo(request, form, model, *args, **kwargs):
     model.description = form.cleaned_data['description']
 
     if request.FILES.getlist('path'):
+        max_num_attachment = models.SystemParam.objects.get(key='max_num_attachment')
+        attachments = models.Attachment.objects.filter(app_id=model.id)
+        if len(request.FILES.getlist('path')) + len(attachments) > string.atoi(max_num_attachment.value):
+            initParam['attachmentError'] = _('The attachment number can not be more than %(number)s.') % {'number': max_num_attachment.value}
+            return None
+
+        attachmentSize = models.SystemParam.objects.get(key='attachment_size')
         for path in request.FILES.getlist('path'):
             attachment = models.Attachment(path=path)
             attachment.name = path.name
@@ -155,7 +169,7 @@ def saveAdditionalInfo(request, form, model, *args, **kwargs):
                 attachment.type = 4
             else:
                 attachment.type = 4
-            if path.size > 50000000:
+            if path.size > string.atof(attachmentSize.value):
                 initParam['attachmentError'] = _('The file can not be more than 50M.')
                 return None
             attachment.app = model
@@ -214,8 +228,7 @@ def savePayment(request, form, model, *args, **kwargs):
 
 def saveVerification(request, form, model, *args, **kwargs):
     """Save the third register page - Verification."""
-    # model.description = form.cleaned_data['description']
-    # model.save()
+    #TODO:Tell us need to verify the app verify_token.
     return None
 
 
