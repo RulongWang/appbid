@@ -50,6 +50,7 @@ def registerApp(request, *args, **kwargs):
     return render_to_response(kwargs['backPage'], initParam, context_instance=RequestContext(request))
 
 
+@transaction.commit_on_success
 def saveAppStoreLink(request, form, model, *args, **kwargs):
     """Save the first register page - AppleStore Link."""
     initParam = kwargs.get('initParam')
@@ -67,8 +68,8 @@ def saveAppStoreLink(request, form, model, *args, **kwargs):
         model = form.save(commit=False)
         model.publisher = models.User.objects.get(id=request.user.id)
         model.status = 1
-        #TODO:currency can be set by client location (such as: zn:CNY, en:USD).
-        model.currency = models.Currency.objects.get(id=2)
+        #currency is CNY in chinese version, USD in other version.
+        model.currency = models.Currency.objects.get(id=1)
         token_len = models.SystemParam.objects.get(key='token_len')
         model.verify_token = ''.join(random.sample(string.ascii_letters+string.digits, string.atoi(token_len.value)))
         model.is_verified = False
@@ -88,7 +89,7 @@ def saveAppStoreLink(request, form, model, *args, **kwargs):
     else:
         appInfo = appInfos[0]
     appInfo.price = result.get('price', 0)
-    appInfo.icon = result.get('version', None)#TODO:Discuss later.
+    appInfo.icon = result.get('artworkUrl512', None)
     appInfo.track_id = result.get('trackId', 0)
     appInfo.save()
 
@@ -113,8 +114,11 @@ def saveAppStoreLink(request, form, model, *args, **kwargs):
     return model
 
 
+@transaction.commit_on_success
 def saveAppStoreInfo(request, form, model, *args, **kwargs):
     """Save the second register page - AppStore Info."""
+    if model is None:
+        return None
     initParam = kwargs.get('initParam')
     appInfoForm = forms.AppInfoForm(request.POST)
     appInfo = models.AppInfo.objects.get(app_id=model.id)
@@ -135,8 +139,11 @@ def saveAppStoreInfo(request, form, model, *args, **kwargs):
     return model
 
 
+@transaction.commit_on_success
 def saveMarketing(request, form, model, *args, **kwargs):
     """Save the second register page - Marketing."""
+    if model is None:
+        return None
     model.dl_amount = form.cleaned_data['dl_amount']
     model.revenue = form.cleaned_data['revenue']
     model.monetize = form.cleaned_data['monetize']
@@ -144,9 +151,11 @@ def saveMarketing(request, form, model, *args, **kwargs):
     return model
 
 
-# @transaction.commit_on_success
+@transaction.commit_on_success
 def saveAdditionalInfo(request, form, model, *args, **kwargs):
     """Save the third register page - Additional info."""
+    if model is None:
+        return None
     initParam = kwargs.get('initParam')
     model.description = form.cleaned_data['description']
 
@@ -178,8 +187,11 @@ def saveAdditionalInfo(request, form, model, *args, **kwargs):
     return model
 
 
+@transaction.commit_on_success
 def saveSale(request, form, model, *args, **kwargs):
     """Save the third register page - Sale."""
+    if model is None:
+        return None
     model.begin_price = form.cleaned_data['begin_price']
     model.one_price = form.cleaned_data['one_price']
     model.reserve_price = form.cleaned_data['reserve_price']
@@ -191,19 +203,25 @@ def saveSale(request, form, model, *args, **kwargs):
     return model
 
 
+@transaction.commit_on_success
 def saveDelivery(request, form, model, *args, **kwargs):
     """Save the third register page - Delivery."""
+    if model is None:
+        return None
     model.source_code = form.cleaned_data['source_code']
     model.web_site = form.cleaned_data['web_site']
     model.save()
     return model
 
 
+@transaction.commit_on_success
 def savePayment(request, form, model, *args, **kwargs):
     """Save the third register page - Payment."""
+    if model is None:
+        return None
     ids = request.POST.getlist('paymentItem_id')
     price = 0
-    model.paymentItem.clear()
+    # model.paymentItem.clear()
     for id in ids:
         try:
             paymentItem = models.PaymentItem.objects.get(id=id)
@@ -226,13 +244,22 @@ def savePayment(request, form, model, *args, **kwargs):
     return model
 
 
+@transaction.commit_on_success
 def saveVerification(request, form, model, *args, **kwargs):
     """Save the third register page - Verification."""
-    #TODO:Tell us need to verify the app verify_token.
-    return None
+    if model is None:
+        return None
+    try:
+        ownerShipScan = models.OwnerShip_Scan.objects.get(app_id=model.id)
+    except models.OwnerShip_Scan.DoesNotExist:
+        ownerShipScan = models.OwnerShip_Scan()
+        ownerShipScan.app_id = model.id
+        ownerShipScan.save()
+    return model
 
 
 @csrf_protect
+@transaction.commit_on_success
 def deleteAttachment(request, *args, **kwargs):
     """Delete the attachment of app by id, app_id etc."""
     data={}

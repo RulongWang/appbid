@@ -69,7 +69,9 @@
             {{ appInfoForm.icon.errors }}
             </div>
         {% endif %}
-        {{ appInfoForm.icon }}
+        {% if appInfoForm.icon.value %}
+        <img width="57" height="57" src="{{ appInfoForm.icon.value }}"/>
+        {% endif %}
     </div>
 {{ appContent }}
         <input id="next" type="submit" name="next" value="next"/>

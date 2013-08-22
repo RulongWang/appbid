@@ -1,4 +1,4 @@
-insert into appbid_paymentitem(`short_text`,`long_text`,`price`,`period`,`start_date`,`end_date`) values('Sina index page','Sina index page.......',15.5,1,'2013-01-01 00:00:00','9999-12-31 23:59:59');
-insert into appbid_paymentitem(`short_text`,`long_text`,`price`,`period`,`start_date`,`end_date`) values('The top one in baidu','The top one in baidu.......',10.5,1,'2013-01-01 00:00:00','9999-12-31 23:59:59');
-insert into appbid_paymentitem(`short_text`,`long_text`,`price`,`period`,`start_date`,`end_date`) values('The top one in web site','The top one in web site.......',20,1,'2013-01-01 00:00:00','9999-12-31 23:59:59');
-insert into appbid_paymentitem(`short_text`,`long_text`,`price`,`period`,`start_date`,`end_date`) values('The sample data','The sample data.......',30,1,'2013-01-01 00:00:00','9999-12-31 23:59:59');
+insert into appbid_paymentitem(`short_text`,`long_text`,`price`,`period`,`start_date`,`end_date`,`is_basic_service`) values('Sina index page','Sina index page.......',15.5,1,'2013-01-01 00:00:00','9999-12-31 23:59:59',true);
+insert into appbid_paymentitem(`short_text`,`long_text`,`price`,`period`,`start_date`,`end_date`,`is_basic_service`) values('The top one in baidu','The top one in baidu.......',10.5,1,'2013-01-01 00:00:00','9999-12-31 23:59:59',false);
+insert into appbid_paymentitem(`short_text`,`long_text`,`price`,`period`,`start_date`,`end_date`,`is_basic_service`) values('The top one in web site','The top one in web site.......',20,1,'2013-01-01 00:00:00','9999-12-31 23:59:59',false);
+insert into appbid_paymentitem(`short_text`,`long_text`,`price`,`period`,`start_date`,`end_date`,`is_basic_service`) values('The sample data','The sample data.......',30,1,'2013-01-01 00:00:00','9999-12-31 23:59:59',false);
