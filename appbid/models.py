@@ -44,7 +44,8 @@ class PaymentItem(models.Model):
     short_text = models.CharField(max_length=255)
     long_text = models.TextField()
     price = models.FloatField()
-    period = models.IntegerField(default=1)# by one month
+    #The period unit is month, default value 1 means one month.
+    period = models.IntegerField(default=1)
     start_date = models.DateTimeField()
     end_date = models.DateTimeField()
     is_basic_service = models.BooleanField(default=False)
@@ -174,6 +175,8 @@ class PaymentDetail(models.Model):
     app = models.ForeignKey(App)
     start_date = models.DateTimeField(null=True, blank=True)
     end_date = models.DateTimeField(null=True, blank=True)
+    #The actual amount means the amount after using discount_rate.
+    actual_amount = models.FloatField(null=True, blank=True)
     amount = models.FloatField(null=True, blank=True)
     gateway = models.ForeignKey(Gateway, null=True, blank=True)
     is_payed = models.BooleanField(default=False, blank=True)
@@ -208,4 +211,4 @@ admin.site.register(Monetize)
 admin.site.register(Category)
 admin.site.register(PaymentItem)
 admin.site.register(SystemParam)
-# admin.site.register(Job)
+admin.site.register(Job)

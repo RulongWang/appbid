@@ -28,11 +28,17 @@ def registerApp(request, *args, **kwargs):
         initParam['attachments'] = models.Attachment.objects.filter(app_id=app.id)
         initParam['selectItems'] = app.paymentItem.all()
         appInfos = models.AppInfo.objects.filter(app_id=app.id)
-        if len(appInfos) > 0:
+        if appInfos:
             initParam['appInfoForm'] = forms.AppInfoForm(instance=appInfos[0])
         paymentDetails = models.PaymentDetail.objects.filter(app_id=app.id)
-        if len(paymentDetails) > 0:
-            initParam['paymentDetail'] = paymentDetails[0]
+        if paymentDetails:
+            initParam['amount'] = paymentDetails[0].amount
+        else:
+            amount = 0
+            paymentItems = models.PaymentItem.objects.filter(is_basic_service=True, end_date__gte=datetime.datetime.now())
+            for paymentItem in paymentItems:
+                amount += paymentItem.price
+            initParam['amount'] = amount
         initParam['verify_token'] = app.verify_token
 
     if request.method == "POST":
@@ -46,7 +52,7 @@ def registerApp(request, *args, **kwargs):
     initParam['form'] = form
     initParam['attachmentForm'] = forms.AttachmentForm()
     initParam['apps'] = models.App.objects.filter(publisher=request.user).order_by('status')
-    initParam['paymentItems'] = models.PaymentItem.objects.all()
+    initParam['paymentItems'] = models.PaymentItem.objects.filter(end_date__gte=datetime.datetime.now())
     return render_to_response(kwargs['backPage'], initParam, context_instance=RequestContext(request))
 
 
@@ -83,11 +89,11 @@ def saveAppStoreLink(request, form, model, *args, **kwargs):
     model.save()
 
     appInfos = models.AppInfo.objects.filter(app_id=model.id)
-    if len(appInfos) == 0:
+    if appInfos:
+        appInfo = appInfos[0]
+    else:
         appInfo = models.AppInfo()
         appInfo.app_id = model.id
-    else:
-        appInfo = appInfos[0]
     appInfo.price = result.get('price', 0)
     appInfo.icon = result.get('artworkUrl512', None)
     appInfo.track_id = result.get('trackId', 0)
@@ -97,12 +103,12 @@ def saveAppStoreLink(request, form, model, *args, **kwargs):
     genres = result.get('genres', None)
     for genre in genres:
         categories = models.Category.objects.filter(name=genre)
-        if len(categories) == 0:
+        if categories:
+            category = categories[0]
+        else:
             category = models.Category()
             category.name = genre
             category.save()
-        else:
-            category = categories[0]
         model.category.add(category)
 
     model.device.clear()
@@ -159,15 +165,16 @@ def saveAdditionalInfo(request, form, model, *args, **kwargs):
     initParam = kwargs.get('initParam')
     model.description = form.cleaned_data['description']
 
-    if request.FILES.getlist('path'):
-        max_num_attachment = models.SystemParam.objects.get(key='max_num_attachment')
+    pathList = request.FILES.getlist('path')
+    if pathList:
+        maxNum = models.SystemParam.objects.filter(key='max_num_attachment')
         attachments = models.Attachment.objects.filter(app_id=model.id)
-        if len(request.FILES.getlist('path')) + len(attachments) > string.atoi(max_num_attachment.value):
-            initParam['attachmentError'] = _('The attachment number can not be more than %(number)s.') % {'number': max_num_attachment.value}
+        if maxNum and len(pathList) + len(attachments) > string.atoi(maxNum[0].value):
+            initParam['attachmentError'] = _('The attachment number can not be more than %(number)s.') % {'number': maxNum[0].value}
             return None
 
-        attachmentSize = models.SystemParam.objects.get(key='attachment_size')
-        for path in request.FILES.getlist('path'):
+        attachmentSize = models.SystemParam.objects.filter(key='attachment_size')
+        for path in pathList:
             attachment = models.Attachment(path=path)
             attachment.name = path.name
             if path.content_type.find('image') != -1:
@@ -178,7 +185,7 @@ def saveAdditionalInfo(request, form, model, *args, **kwargs):
                 attachment.type = 4
             else:
                 attachment.type = 4
-            if path.size > string.atof(attachmentSize.value):
+            if attachmentSize and path.size > string.atof(attachmentSize[0].value):
                 initParam['attachmentError'] = _('The file can not be more than 50M.')
                 return None
             attachment.app = model
@@ -219,18 +226,18 @@ def savePayment(request, form, model, *args, **kwargs):
     """Save the third register page - Payment."""
     if model is None:
         return None
+    amount = 0
     ids = request.POST.getlist('paymentItem_id')
-    price = 0
-    # model.paymentItem.clear()
+    model.paymentItem.clear()
     for id in ids:
         try:
             paymentItem = models.PaymentItem.objects.get(id=id)
-            price += paymentItem.price
+            amount += paymentItem.price
             model.paymentItem.add(paymentItem)
         except models.PaymentItem.DoesNotExist:
             return None
     try:
-        paymentDetail = models.PaymentDetail.objects.get(app_id=model.id)
+        paymentDetail = models.PaymentDetail.objects.get(app_id=model.id, end_date__gte=datetime.datetime.now())
     except models.PaymentDetail.DoesNotExist:
         paymentDetail = models.PaymentDetail()
         paymentDetail.app_id = model.id
@@ -239,7 +246,12 @@ def savePayment(request, form, model, *args, **kwargs):
         # paymentDetail.start_date = datetime.datetime.now()
         # paymentDetail.end_date = datetime.datetime.now() + datetime.timedelta(months=1)
         # paymentDetail.gateway = 1
-    paymentDetail.amount = price
+    discount_rate = models.SystemParam.objects.filter(key='discount_rate')
+    if discount_rate:
+        paymentDetail.actual_amount = string.atof(discount_rate[0].value) * amount
+    else:
+        paymentDetail.actual_amount = amount
+    paymentDetail.amount = amount
     paymentDetail.save()
     return model
 
