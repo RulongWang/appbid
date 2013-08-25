@@ -1,5 +1,5 @@
 from django.conf.urls import patterns, include, url
-from query.views import register_app,getDetail
+from query.views import register_app,getDetail, list_latest
 
 # Uncomment the next two lines to enable the admin:
 # from django.contrib import admin
@@ -20,5 +20,6 @@ urlpatterns = patterns('',
     #homepage
     #url(r'^register_app/$', register_app, name="register_app")
     url(r'^getDetail/$', getDetail),
+    url(r'^list_new/$',list_latest),
 
 )
