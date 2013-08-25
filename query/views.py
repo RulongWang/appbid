@@ -22,7 +22,7 @@ def getIcon(request):
 
 def list_latest(request):
     list_apps = []
-    render_to_response('query/listing_base.html', {"list_latest":list_apps}, context_instance=RequestContext(request))
+    return render_to_response('query/listing_base.html', {"list_latest":list_apps}, context_instance=RequestContext(request))
 
 
 def getDetail(request):
