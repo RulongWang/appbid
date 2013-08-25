@@ -1,27 +1,44 @@
 {% extends "index.html" %}
 {% block mainContent %}
 {% load staticfiles %}
-    <div id="central_block">
-      <div class="breadcrumb">
 
-      </div>
-      <div class="listing_header">
-        <div id="listing_icon">
-            <img src="{{ icon }}"/>
+        <div id="breadcrumb">
+            <span>Category: <a href="#">Category Parent</a> &gt <a href="#">Photography</a></span>
         </div>
-      </div>
+        <div class="listing_header">
+              <div class="listing_icon left">
+                <img src="{% static "images/query/noappscreenshot.png" %} "class="detail_icon"/>
+              </div>
+              <div class="listing_icon left">
+                <p class="margin10px left">Title Photography iOS App with 2,200 downloads/mo </p>
+                <span class="margin10px"><a href="#">Visit {{ appname }}APPNAME in the AppleStore</a></span>
+                <div id="auctionstatus"  title="Listed: 2013-08-21T11:37:06+10:00; Ends: 2013-09-18T11:37:06+10:00">
+                    Auction has reached the reserve price<br>Listing closes in 23 days, 18 hours
+                </div>
+              </div>
+              <div class="bidding_box right">
+                <div class="bidding_status" > </div>
+                <div class="bidding_box">
+                    $
+                    <input type="text" value="" />
+                    <input type="button" name="submit"/>
+                    <span>(Enter $2,650 or more.)</span>
+                </div>
 
-     <div class="hint_block">
+              </div>
+        </div>
 
-     </div>
+        <div class="hint_block">
 
-     <div class="listing_detail">
-         <div class="detail_left">
+        </div>
 
-         </div>
-         <div class="detail_sidebar">
+        <div class="listing_detail">
+            <div class="detail_left">
 
-         </div>
-     </div>
-    </div>
+            </div>
+            <div class="detail_sidebar">
+
+            </div>
+        </div>
+
 {% endblock %}

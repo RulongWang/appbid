@@ -121,6 +121,13 @@ a:hover,a:active{
     color:#888888;
     /*background: coral;*/
     width:960px;
+    clear:both;
+    -moz-box-shadow: 0 0 5px #888;
+    -webkit-box-shadow: 0 0 5px#888;
+    box-shadow: 0 0 5px #888;
+    border-radius:25px;
+    -moz-border-radius:25px; /* Old Firefox */
+
 
 }
 /********************featured***********************/
@@ -155,6 +162,7 @@ a:hover,a:active{
 .normal_list{
     clear:both;
     margin-top: 40px;
+    height:760px;
 
 }
 
@@ -232,7 +240,8 @@ a:hover,a:active{
     width:960px;
 
     background:#FEFEFE;
-    height:140px;
+
+
 }
 .central_section{
     margin:0 auto;
@@ -372,3 +381,72 @@ a:hover,a:active{
 /*a img {*/
 	/*border-width:0;*/
 /*}*/
+
+
+/***********************Query and detail Listing ************************/
+#breadcrumb{
+
+    margin-left:20px;
+    padding: 8px;
+    
+}
+.listing_icon{
+  
+    margin-top:10px;
+    margin-left:20px;
+    padding: 5px;
+    width:175px;
+    /*float: left;*/
+}
+
+.bidding_box{
+
+    margin-right:20px;
+    padding: 5px;
+    width:275px;
+    border: 1px solid #ddd;
+    /*float: left;*/
+}
+
+
+.listing_header{
+    /*clear:both;*/
+    margin:0 auto;
+    margin-top:10px;
+    width:960px;
+    height:200px;
+}
+.detail_icon{
+    border-radius: 25px;
+}
+.listing_detail{
+    margin-bottom: 15px;
+}
+
+
+/*************float*************/
+.left{
+    float:left;
+}
+.right{
+    float:right;
+}
+.clear{
+    clear:both;
+}
+.clear_left{
+    clear:left;
+
+}
+.clear_right{
+    clear:right;
+}
+
+/*******margin* Padding**********/
+.margin10px{
+    margin-top: 10px;
+}
+.padding5px{
+    padding: 5px;
+}
+
