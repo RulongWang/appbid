@@ -402,8 +402,7 @@ a:hover,a:active{
 .bidding_box{
 
     margin-right:20px;
-    padding: 5px;
-    width:275px;
+    width:260px;
     border: 1px solid #ddd;
     /*float: left;*/
 }
@@ -418,32 +417,92 @@ a:hover,a:active{
 }
 .detail_icon{
     border-radius: 25px;
+    width:175px;
+    height:175px;
 }
 .listing_detail{
     margin-bottom: 15px;
 }
 
 .app_feature{
-    margin:10px,0px,10px,0px;
+    margin-top:20px;
+    margin-bottom: 20px;
     clear:both;
     width:960px;
-    height:200px;
+    height:230px;
 
 }
 
 .feature_block{
-    margin:10px,0px,10px,10px;
+    margin-top:10px;
+    margin-bottom: 10px;
     margin-left:12px;
     width:300px;
-    height:200px;
-    border:1px solid red;
+    height:130px;
+    /*border:1px solid red;*/
     float:left;
 
 }
 .feature_list{
-    margin-left: 20px;
+    margin-left: 15px;
+    margin-right:15px;
     list-style: none;
+
 }
+
+.li_title{
+    font-weight:bold;
+}
+.feature_list li{
+
+    padding:5px;
+    margin-top:3px;
+    border-bottom:1px dashed #ddd;
+}
+
+
+/*start of detail part */
+.detail_left{
+    margin-left:20px;
+    width:630px;
+    float:left;
+
+}
+
+.detail_right{
+    margin-left:10px;
+    width:290px;
+    float: right;
+
+}
+
+.widget{
+    margin-top:10px;
+    width:280px;
+
+
+}
+.widget_title{
+    display:block;
+    margin-top:5px;
+    margin-bottom: 3px;
+    margin-left:10px;
+    font-weight: bold;
+    font-size: 14px;
+
+}
+.widget ul{
+    list-style: none;
+    margin-left:10px;
+    margin-right:10px;
+}
+.widget ul li{
+    margin-top:5px;
+    padding:3px;
+    border-bottom: 1px dashed #ddd;
+}
+
+
 /*************float*************/
 .left{
     float:left;
@@ -480,4 +539,13 @@ a:hover,a:active{
 
 .margin_right_30{
     margin-right:30px;
+}
+
+/******util********/
+.separator{
+    margin:0 auto;
+    margin-bottom: 20px;
+    
+    width:930px;
+    border-top:1px dashed #ddd;
 }

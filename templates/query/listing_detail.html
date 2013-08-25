@@ -7,7 +7,7 @@
         </div>
         <div class="listing_header">
               <div class="listing_icon left">
-                <img src="{% static "images/query/noappscreenshot.png" %} "class="detail_icon"/>
+                <img src="{% static "images/query/iOS7bg.png" %} "class="detail_icon"/>
               </div>
               <div class="listing_icon left">
                 <p class="margin10px left">Title Photography iOS App with 2,200 downloads/mo </p>
@@ -19,9 +19,11 @@
               <div class="bidding_box right">
                 <div class="bidding_status" > </div>
                 <div class="bidding_box">
-                    $
-                    <input type="text" value="" />
-                    <input type="button" name="submit"/>
+                    $2700{{ currentprice }} &nbsp; <a href="#">139bids</a>
+                    <form action="" method="post">
+                        <input type="text" value="" />
+                        <input type="submit" value="Bid Now"/>
+                    </form>
                     <span>(Enter $2,650 or more.)</span>
                 </div>
 
@@ -30,7 +32,7 @@
         <div class="app_feature">
             <div class="feature_block">
                 <ul class="feature_list">
-                    <li><span>Rating and Reviews (Current Version)</span></li>
+                    <li><span class="li_title">Rating and Reviews (Current Version)</span></li>
                     <li><span>Rating:</span><span class="right margin_right_20" >4+{{ Rating }}</span></li>
                     <li><span>Reviews:</span><span class="right margin_right_20" >32{{ reviews }}</span></li>
 
@@ -38,18 +40,16 @@
             </div>
             <div class="feature_block">
                 <ul class="feature_list">
-                    <li><span>Rating and Reviews (Current Version)</span></li>
-                    <li><span>Rating:</span><span class="right margin_right_20" >4+{{ Rating }}</span></li>
-                    <li><span>Reviews:</span><span class="right margin_right_20" >32{{ reviews }}</span></li>
+                    <li><span class="li_title">Price</span></li>
+                    <li><span>Price in App Store:</span><span class="right margin_right_20" >2.99${{ formattedPrice }}</span></li>
 
                 </ul>
             </div>
             <div class="feature_block">
                 <ul class="feature_list">
-                    <li><span>Rating and Reviews (Current Version)</span></li>
-                    <li><span>Rating:</span><span class="right margin_right_20" >4+{{ Rating }}</span></li>
-                    <li><span>Rating:</span><span class="right margin_right_20" >4+{{ Rating }}</span></li>
-                    <li><span>Rating:</span><span class="right margin_right_20" >4+{{ Rating }}</span></li>
+                    <li><span class="li_title">Other Stats </span></li>
+                    <li><span>Last Updated:</span><span class="right margin_right_20" >14th Aug, 2013{{ update_date }}</span></li>
+                    <li><span>App Support Link:</span><span class="right margin_right_20" ><a href="#">Support site</a>{{ Rating }}</span></li>
 
 
                 </ul>
@@ -58,14 +58,73 @@
         <div class="hint_block">
 
         </div>
-
+        <div class="separator"></div>
         <div class="listing_detail">
             <div class="detail_left">
+                {% autoescape off %}
+                {{ detail_content }}
+                {% endautoescape %}
+            </div>
+            <div class="detail_right">
+                <div class="widget">
+                   <span class="widget_title">Seller</span>
+                   <ul>
+                       <li><span></span><span>{{ author }}</span></li>
+                   </ul>
+
+                </div>
+                <div class="widget">
+                   <span class="widget_title">Claimed App Age</span>
+                   <ul>
+                       <li><span>App Established</span><span class="right">Aug, 2012{{ create_date }}</span></li>
+                   </ul>
+
+                </div>
+                <div class="widget">
+                   <span class="widget_title">Claimed Downloads</span>
+                   <ul>
+                       <li><span> Downloads	(monthly avg)</span><span class="right">3,000{{ downloads }}</span></li>
+                   </ul>
+
+                </div>
+                <div class="widget">
+                   <span class="widget_title">Claimed Financials</span>
+                   <ul>
+                       <li><span>Revenue</span><span class="right">3,000${{ revenue }}</span></li>
+                       <li><span>Profit</span><span class="right">5,00${{ profit }}</span></li>
+                   </ul>
+
+                </div>
+                <div class="widget">
+                   <span class="widget_title">Monetization Methods</span>
+                   <ul>
+                       <li><span>App Sales</span><span class="right">YES{{ appsale }}</span></li>
+                       <li><span>In-App Sales</span><span class="right">YES{{ inapp }}</span></li>
+                       <li><span>Advertising</span><span class="right">YES{{ Adv }}</span></li>
+                   </ul>
+
+                </div>
+                <div class="widget">
+                   <span class="widget_title">Attachments</span>
+                   <ul>
+                       <li><a href="#">document 1</a></li>
+                       <li><a href="#">document 1</a></li>
+                       <li><a href="#">document 1</a></li>
+                   </ul>
+
+                </div>
+                <div class="widget">
+                   <span class="widget_title">Category </span>
+                   <ul>
+                       <li><span>App Sales</span><span class="right">YES{{ appsale }}</span></li>
+                       <li><span>In-App Sales</span><span class="right">YES{{ inapp }}</span></li>
+                       <li><span>Advertising</span><span class="right">YES{{ Adv }}</span></li>
+                   </ul>
+
+                </div>
 
             </div>
-            <div class="detail_sidebar">
-
-            </div>
+            <div class="clear"></div>
         </div>
 
 {% endblock %}
