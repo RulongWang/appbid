@@ -8,5 +8,5 @@ urlpatterns = patterns('',
     (r'^logout/$', logout_view),
     (r'^register/$', register),
     (r'^home/$',auth_home),
-    (r'^getDetail/$', getDetail),
+
 )
