@@ -61,3 +61,9 @@ def _login(request, username, password):
 
 def myprofile(request):
     pass
+
+
+
+def account_settting(request):
+    return render_to_response("account/accountsetting.html",{"test":"test"},
+                        context_instance=RequestContext(request))
