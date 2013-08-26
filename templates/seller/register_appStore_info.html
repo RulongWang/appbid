@@ -3,6 +3,16 @@
         {% csrf_token %}
 
     <div>
+        {{ form.apple_id.label_tag }}
+        {% if form.apple_id.errors %}
+            <div>
+            {{ form.apple_id.errors }}
+            </div>
+        {% endif %}
+        {{ form.apple_id }}
+    </div>
+
+    <div>
         {{ form.platform_version.label_tag }}
         {% if form.platform_version.errors %}
             <div>
@@ -43,16 +53,6 @@
     </div>
 
     <div>
-        {{ appInfoForm.track_id.label_tag }}
-        {% if appInfoForm.track_id.errors %}
-            <div>
-            {{ appInfoForm.track_id.errors }}
-            </div>
-        {% endif %}
-        {{ appInfoForm.track_id }}
-    </div>
-
-    <div>
         {{ appInfoForm.price.label_tag }}
         {% if appInfoForm.price.errors %}
             <div>
@@ -70,7 +70,7 @@
             </div>
         {% endif %}
         {% if appInfoForm.icon.value %}
-        <img width="57" height="57" src="{{ appInfoForm.icon.value }}"/>
+        <img width="57" height="57" src="{{ MEDIA_URL }}{{ appInfoForm.icon.value }}"/>
         {% endif %}
     </div>
 {{ appContent }}

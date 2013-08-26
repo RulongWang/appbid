@@ -144,8 +144,7 @@ class AppInfo(models.Model):
     """AppInfo table info, include some additional info fields from apple store or somewhere else."""
     app = models.OneToOneField(App)
     price = models.FloatField(null=True, blank=True)
-    icon = models.URLField(null=True, blank=True)
-    track_id = models.IntegerField(null=True, blank=True)
+    icon = models.URLField(max_length=255, null=True, blank=True)
 
 
 class Bidding(models.Model):

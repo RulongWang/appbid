@@ -23,7 +23,7 @@
     {% endfor %}
 
     <label>Total:</label><label id="total">
-        {{ amount }}
+        {{ amount|default:0 }}
     </label>
     <br>
     <input id="next" type="submit" name="next" value="Checkout"/>

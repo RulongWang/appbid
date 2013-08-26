@@ -1,3 +1,11 @@
+import json
+import urllib
+import datetime
+import random
+import string
+import re
+import os
+
 from django.http import HttpResponse
 from django.shortcuts import render_to_response, RequestContext, HttpResponseRedirect, get_object_or_404
 from django.views.decorators.csrf import csrf_protect
@@ -5,12 +13,10 @@ from django.contrib.auth.decorators import login_required
 from django.utils.translation import ugettext as _
 from django.core.urlresolvers import reverse
 from django.db import transaction
+from django.conf import settings
+
 from seller import forms
 from appbid import models
-import json
-import urllib
-import datetime
-import random,string
 
 @csrf_protect
 @login_required(login_url='/account/home/')
@@ -63,7 +69,11 @@ def saveAppStoreLink(request, form, model, *args, **kwargs):
     if form.cleaned_data['title'].strip() == "" or form.cleaned_data['app_store_link'].strip() == "":
         return None
     try:
-        js = getITunes(form.cleaned_data['app_store_link'])
+        pattern = re.compile(r'^https://itunes.apple.com/[\w+/]+id(\d+)')
+        match = pattern.match(form.cleaned_data['app_store_link'])
+        if match is None:
+            raise
+        js = getITunes(''.join(['https://itunes.apple.com/lookup?id=', match.group(1)]))
         if js is None or js.get('resultCount') != 1:
             raise
     except:
@@ -86,6 +96,7 @@ def saveAppStoreLink(request, form, model, *args, **kwargs):
     result = js.get('results', None)[0]
     model.rating = result.get('trackContentRating', None)
     model.platform_version = result.get('version', None)
+    model.apple_id = result.get('trackId', None)
     model.save()
 
     appInfos = models.AppInfo.objects.filter(app_id=model.id)
@@ -95,8 +106,17 @@ def saveAppStoreLink(request, form, model, *args, **kwargs):
         appInfo = models.AppInfo()
         appInfo.app_id = model.id
     appInfo.price = result.get('price', 0)
-    appInfo.icon = result.get('artworkUrl512', None)
-    appInfo.track_id = result.get('trackId', 0)
+    path = '/'.join([settings.MEDIA_ROOT, str(model.publisher.id), str(model.id)])
+    if os.path.exists(path) is False:
+        os.makedirs(path)
+    path = '/'.join([path, 'Icon.jpg'])
+    if result.get('artworkUrl512', None):
+        urllib.urlretrieve(result.get('artworkUrl512', None), path)
+    elif result.get('artworkUrl100', None):
+        urllib.urlretrieve(result.get('artworkUrl100', None), path)
+    elif result.get('artworkUrl60', None):
+        urllib.urlretrieve(result.get('artworkUrl60', None), path)
+    appInfo.icon = '/'.join([str(model.publisher.id), str(model.id), 'Icon.jpg'])
     appInfo.save()
 
     model.category.clear()
@@ -130,12 +150,12 @@ def saveAppStoreInfo(request, form, model, *args, **kwargs):
     appInfo = models.AppInfo.objects.get(app_id=model.id)
     if appInfoForm.is_valid():
         appInfo.price = appInfoForm.cleaned_data['price']
-        appInfo.icon = appInfoForm.cleaned_data['icon']
-        appInfo.track_id = appInfoForm.cleaned_data['track_id']
+        # appInfo.icon = appInfoForm.cleaned_data['icon']
         appInfo.save()
     else:
         initParam['appInfoForm'] = appInfoForm
         return None
+    model.apple_id = form.cleaned_data['apple_id']
     model.platform_version = form.cleaned_data['platform_version']
     model.rating = form.cleaned_data['rating']
     model.category = form.cleaned_data['category']
