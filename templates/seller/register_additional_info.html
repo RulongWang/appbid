@@ -2,14 +2,15 @@
     <form action="" method="post" enctype="multipart/form-data">
         {% csrf_token %}
 
-    <div>
+    <div id="app_description">
         {{ form.description.label_tag }}
         {% if form.description.errors %}
             <div>
             {{ form.description.errors }}
             </div>
         {% endif %}
-        {{ form.description }}
+{#        {{ form.description }}#}
+            <textarea name="description" cols="40" rows="20" style="width: 40em; height: 20em"></textarea>
     </div>
 
     {% if attachments != None or attachmentForm %}

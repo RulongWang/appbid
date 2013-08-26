@@ -259,7 +259,13 @@ a:hover,a:active{
 #central_block a{
     color:#426da7;
 }
+/********************register app *****************/
+#app_description{
 
+}
+#mce_34{
+
+}
 
 /********************promotion part***************/
 #home_promotion{
@@ -314,7 +320,7 @@ a:hover,a:active{
     width:600px;
     float:right;
     background: #ffffff;
-    height:300px;
+
 }
 
 #register_new_nav{
