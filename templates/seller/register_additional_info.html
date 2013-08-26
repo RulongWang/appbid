@@ -10,7 +10,9 @@
             </div>
         {% endif %}
 {#        {{ form.description }}#}
-            <textarea name="description" cols="40" rows="20" style="width: 40em; height: 20em"></textarea>
+            <textarea name="description" cols="40" rows="20" style="width: 40em; height: 20em">
+                {{ form.description.value }}
+            </textarea>
     </div>
 
     {% if attachments != None or attachmentForm %}
