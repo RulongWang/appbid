@@ -1,7 +1,7 @@
 {% extends "index.html" %}
 {% block mainContent %}
 {% load staticfiles %}
-
+<div class="register_block">
 {% include "seller/register_nav.html" %}
 
     {% ifequal flag 1.1 %}
@@ -36,5 +36,5 @@
     {% include "seller/register_verification.html" %}
     {% endifequal %}
 
-
+</div>
 {% endblock %}
