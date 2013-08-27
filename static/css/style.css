@@ -123,7 +123,7 @@ a:hover,a:active{
     width:960px;
     clear:both;
     -moz-box-shadow: 0 0 6px #888;
-    -webkit-box-shadow: 0 0 6px#888;
+    -webkit-box-shadow: 0 0 6px #888;
     box-shadow: 0 0 6px #ddd;
     border-radius:25px;
     -moz-border-radius:25px; /* Old Firefox */
@@ -303,7 +303,8 @@ a:hover,a:active{
     margin:0 auto;
     margin-top:20px;
     width:940px;
-    height:400px;
+    height:580px;
+
 
 }
 #app_description{
@@ -324,6 +325,7 @@ a:hover,a:active{
 }
 
 #register_app{
+    margin:25px 0 0 0;
     width:600px;
     float:right;
     background: #ffffff;
@@ -347,6 +349,7 @@ a:hover,a:active{
 .preview_buttons{
     margin:15px 0px 0px  0px;
     padding: 5px;
+    font-size: 20px;
 }
 /*****************footer part *********************/
 /****************底部******************************/
