@@ -61,9 +61,11 @@ class App(models.Model):
         (2, 'published'),
     )
     publisher = models.ForeignKey(User)
+    seller_name = models.CharField(max_length=255, null=True, blank=True)
     publish_date = models.DateTimeField(null=True, blank=True)
     status = models.IntegerField(choices=APP_STATUS, null=True, blank=True, default=1)
     title = models.CharField(max_length=255, blank=True)
+    app_name = models.CharField(max_length=255, blank=True)
     category = models.ManyToManyField(Category, null=True, blank=True)
     begin_price = models.FloatField(null=True, blank=True)
     one_price = models.FloatField(null=True, blank=True)
@@ -79,6 +81,7 @@ class App(models.Model):
     app_store_link = models.URLField(max_length=255, null=True, blank=True)
     minimum_bid = models.FloatField(null=True, default=1, blank=True)
     web_site = models.URLField(max_length=255, null=True, blank=True)
+    reviews = models.IntegerField(null=True, default=0, blank=True)
     create_time = models.DateTimeField(auto_now_add=True)
     last_modify = models.DateTimeField(auto_now=True)
     device = models.ManyToManyField(Device, null=True, blank=True)
@@ -145,6 +148,7 @@ class AppInfo(models.Model):
     app = models.OneToOneField(App)
     price = models.FloatField(null=True, blank=True)
     icon = models.URLField(max_length=255, null=True, blank=True)
+    release_date = models.DateTimeField(null=True, blank=True)
 
 
 class Bidding(models.Model):

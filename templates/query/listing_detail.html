@@ -10,10 +10,11 @@
                 <img src="{{ MEDIA_URL }}{{ appInfo.icon }}"class="detail_icon"/>
               </div>
               <div class="listing_icon left">
-                <p class="margin10px left">Title Photography iOS App with 2,200 downloads/mo </p>
-                <span class="margin10px"><a href="#">Visit {{ appname }}APPNAME in the AppleStore</a></span>
+                <p class="margin10px left">{{ app.title }}</p>
+                <span class="margin10px"><a target="_new" href="{{ app.app_store_link }}">Visit {{ app.name }} in the AppleStore</a></span>
                 <div id="auctionstatus"  title="Listed: 2013-08-21T11:37:06+10:00; Ends: 2013-09-18T11:37:06+10:00">
-                    Auction has reached the reserve price<br>Listing closes in 23 days, 18 hours
+                    {% if app.reserve_price <= 1 %}Auction has reached the reserve price{% endif %}<br><!--TODO:To do this later. -->
+                    Listing closes in 23 days, 18 hours<!--TODO:To do this later. -->
                 </div>
               </div>
               <div class="bidding_box right">
@@ -33,23 +34,23 @@
             <div class="feature_block">
                 <ul class="feature_list">
                     <li><span class="li_title">Rating and Reviews (Current Version)</span></li>
-                    <li><span>Rating:</span><span class="right margin_right_20" >4+{{ Rating }}</span></li>
-                    <li><span>Reviews:</span><span class="right margin_right_20" >32{{ reviews }}</span></li>
+                    <li><span>Rating:</span><span class="right margin_right_20" >{{ app.rating }}</span></li>
+                    <li><span>Reviews:</span><span class="right margin_right_20" >{{ app.reviews }}</span></li>
 
                 </ul>
             </div>
             <div class="feature_block">
                 <ul class="feature_list">
                     <li><span class="li_title">Price</span></li>
-                    <li><span>Price in App Store:</span><span class="right margin_right_20" >2.99${{ formattedPrice }}</span></li>
+                    <li><span>Price in App Store:</span><span class="right margin_right_20" >{{ appInfo.price }}$</span></li>
 
                 </ul>
             </div>
             <div class="feature_block">
                 <ul class="feature_list">
                     <li><span class="li_title">Other Stats </span></li>
-                    <li><span>Last Updated:</span><span class="right margin_right_20" >14th Aug, 2013{{ update_date }}</span></li>
-                    <li><span>App Support Link:</span><span class="right margin_right_20" ><a href="#">Support site</a>{{ Rating }}</span></li>
+                    <li><span>Last Updated:</span><span class="right margin_right_20" >{{ app.last_modify|date:"jS M, Y" }}</span></li>
+                    <li><span>App Support Link:</span><span class="right margin_right_20" ><a target="_new" href="{{ app.web_site }}">Support site</a>{{ Rating }}</span></li>
 
 
                 </ul>
@@ -69,7 +70,7 @@
                 <div class="widget">
                    <span class="widget_title">Seller</span>
                    <ul>
-                       <li><span></span><span>{{ author }}</span></li>
+                       <li><span></span><span>{{ app.seller_name }}</span></li>
                    </ul>
 
                 </div>
@@ -83,24 +84,28 @@
                 <div class="widget">
                    <span class="widget_title">Claimed Downloads</span>
                    <ul>
-                       <li><span> Downloads	(monthly avg)</span><span class="right">3,000{{ downloads }}</span></li>
+                       <li><span> Downloads	(monthly avg)</span><span class="right">{{ app.dl_amount }}</span></li>
                    </ul>
 
                 </div>
                 <div class="widget">
                    <span class="widget_title">Claimed Financials</span>
                    <ul>
-                       <li><span>Revenue</span><span class="right">3,000${{ revenue }}</span></li>
-                       <li><span>Profit</span><span class="right">5,00${{ profit }}</span></li>
+                       <li><span>Revenue</span><span class="right">{{ app.revenue }}$</span></li>
+{#                       <li><span>Profit</span><span class="right">5,00${{ profit }}</span></li>#}
                    </ul>
 
                 </div>
                 <div class="widget">
                    <span class="widget_title">Monetization Methods</span>
                    <ul>
-                       <li><span>App Sales</span><span class="right">YES{{ appsale }}</span></li>
-                       <li><span>In-App Sales</span><span class="right">YES{{ inapp }}</span></li>
-                       <li><span>Advertising</span><span class="right">YES{{ Adv }}</span></li>
+                       {% for monetize in all_monetizes %}
+                       <li><span>{{ monetize.method }}</span>
+                           {% if monetize in cur_monetizes %}
+                               <span class="right">YES</span>
+                           {% endif %}
+                       </li>
+                       {% endfor %}
                    </ul>
 
                 </div>
@@ -117,9 +122,10 @@
                 <div class="widget">
                    <span class="widget_title">Category </span>
                    <ul>
-                       <li><span>App Sales</span><span class="right">YES{{ appsale }}</span></li>
-                       <li><span>In-App Sales</span><span class="right">YES{{ inapp }}</span></li>
-                       <li><span>Advertising</span><span class="right">YES{{ Adv }}</span></li>
+                       {% for category in categories %}
+                       <li><span><a target="_new" href="#">{{ category.name }}(1)</a></span></li><!--TODO:add the number of this category later. -->
+{#                       <li><span>In-App Sales</span><span class="right">YES{{ inapp }}</span></li>#}
+                       {% endfor %}
                    </ul>
 
                 </div>

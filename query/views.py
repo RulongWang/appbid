@@ -33,6 +33,9 @@ def getDetail(request, *args, **kwargs):
         initParam = {'app': app}
         initParam['appInfo'] = app.appinfo
         initParam['attachments'] = app.attachment_set.all()
+        initParam['cur_monetizes'] = app.monetize.all()
+        initParam['all_monetizes'] = models.Monetize.objects.all()
+        initParam['categories'] = app.category.all()
         return render_to_response('query/listing_detail.html', initParam, context_instance=RequestContext(request))
     raise Http404
 

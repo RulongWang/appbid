@@ -1,6 +1,6 @@
 import json
 import urllib
-import datetime
+import datetime, time
 import random
 import string
 import re
@@ -97,6 +97,13 @@ def saveAppStoreLink(request, form, model, *args, **kwargs):
     model.rating = result.get('trackContentRating', None)
     model.platform_version = result.get('version', None)
     model.apple_id = result.get('trackId', None)
+    model.app_name = result.get('trackName', None)
+    model.web_site = result.get('sellerUrl', None)
+    model.reviews = result.get('userRatingCount', None)
+    model.description = result.get('description', None)
+    model.seller_name = result.get('sellerName', None)
+
+
     model.save()
 
     appInfos = models.AppInfo.objects.filter(app_id=model.id)
@@ -106,6 +113,7 @@ def saveAppStoreLink(request, form, model, *args, **kwargs):
         appInfo = models.AppInfo()
         appInfo.app_id = model.id
     appInfo.price = result.get('price', 0)
+    # appInfo.release_date = time.strptime(result.get('releaseDate', None), "%Y-%m-%d %H:%M:%S")
     path = '/'.join([settings.MEDIA_ROOT, str(model.publisher.id), str(model.id)])
     if os.path.exists(path) is False:
         os.makedirs(path)
