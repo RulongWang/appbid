@@ -136,6 +136,7 @@ INSTALLED_APPS = (
     'home',
     'appbid',
     'seller',
+    'account',
 )
 
 # A sample logging configuration. The only tangible logging
@@ -172,3 +173,12 @@ FILE_CHARSET = 'utf-8'
 DEFAULT_CHARSET = 'utf-8'
 
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+
+#Set email config
+# EMAIL_BACKEND='django.core.mail.backends.smtp.EmailBackend'#Send the mail actually
+EMAIL_BACKEND='django.core.mail.backends.console.EmailBackend'#Show by console
+EMAIL_USE_TLS=True
+EMAIL_HOST='smtp.gmail.com'
+EMAIL_PORT='25'
+EMAIL_HOST_USER='***@gmail.com'#your email username
+EMAIL_HOST_PASSWORD='***' #your email passowrd

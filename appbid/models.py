@@ -156,7 +156,7 @@ class Bidding(models.Model):
     BIDDING_STATUS = (
         (1, "approved"),
         (2, "rejected"),
-        (3, "inProgress"),
+        (3, "pending"),
     )
     app = models.ForeignKey(App)
     price = models.FloatField()

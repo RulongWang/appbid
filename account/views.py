@@ -5,6 +5,7 @@ from django.views.decorators.csrf import csrf_protect
 from django.core.urlresolvers import reverse
 from account.RegisterForm import RegisterForm
 from django.contrib.auth.models import User
+from account import models
 
 def login_view(request):
     user = authenticate(username=request.POST['username'], password=request.POST['password'])
@@ -48,6 +49,10 @@ def register(request):
             password = rform.cleaned_data["password"]
             user = User.objects.create_user(username,email,password)
             user.save()
+            userProfile = models.UserProfile()
+            userProfile.user = user
+            userProfile.is_bid_approved = False
+            userProfile.save()
             return HttpResponseRedirect("/")
 
 
