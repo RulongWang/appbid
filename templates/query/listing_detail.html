@@ -7,7 +7,7 @@
         </div>
         <div class="listing_header">
               <div class="listing_icon left">
-                <img src="{% static "images/query/iOS7bg.png" %} "class="detail_icon"/>
+                <img src="{{ MEDIA_URL }}{{ appInfo.icon }}"class="detail_icon"/>
               </div>
               <div class="listing_icon left">
                 <p class="margin10px left">Title Photography iOS App with 2,200 downloads/mo </p>
@@ -62,7 +62,7 @@
         <div class="listing_detail">
             <div class="detail_left">
                 {% autoescape off %}
-                {{ detail_content }}
+                {{ app.description }}
                 {% endautoescape %}
             </div>
             <div class="detail_right">
@@ -104,15 +104,16 @@
                    </ul>
 
                 </div>
+                {% if attachments %}
                 <div class="widget">
                    <span class="widget_title">Attachments</span>
                    <ul>
-                       <li><a href="#">document 1</a></li>
-                       <li><a href="#">document 1</a></li>
-                       <li><a href="#">document 1</a></li>
+                       {% for attachment in attachments %}
+                       <li><a target="_new" href="{{ attachment.path.url }}">{{ attachment.name }}</a></li>
+                       {% endfor %}
                    </ul>
-
                 </div>
+                {% endif %}
                 <div class="widget">
                    <span class="widget_title">Category </span>
                    <ul>

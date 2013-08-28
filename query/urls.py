@@ -19,7 +19,7 @@ urlpatterns = patterns('',
     #url(r'^test/$', test, name='goodtest')
     #homepage
     #url(r'^register_app/$', register_app, name="register_app")
-    url(r'^getDetail/$', getDetail),
-    url(r'^list_new/$',list_latest),
+    url(r'^app-detail/(?P<pk>\d*)$', getDetail, name='app_detail'),
+    url(r'^app-list/$', list_latest, name='app_list'),
 
 )

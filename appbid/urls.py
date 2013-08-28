@@ -29,11 +29,9 @@ urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
     url(r'^test/$', test, name='goodtest'),
     url(r'^seller/', include(seller.urls, namespace='seller')),
-    url(r'^searchItunes/$',seller.views.searchItunes),
-    url(r'^account/',include(account.urls,namespace='account')),
-    url(r'^query/',include(query.urls,namespace='query')),
-
-    #homepage
+    url(r'^searchItunes/$', seller.views.searchItunes),
+    url(r'^account/', include(account.urls, namespace='account')),
+    url(r'^query/', include(query.urls, namespace='query')),
 )
 
 if settings.DEBUG:

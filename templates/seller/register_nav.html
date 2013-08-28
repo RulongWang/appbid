@@ -32,5 +32,7 @@
             <a href="{% url 'seller:verification' app_id %}">Verification</a>
         </li>
     </ol>
-    <div class="preview_buttons"><a href="/query/getDetail/?={{ app_id }}">Preview your App</a></div>
+    {% if app_id %}
+    <div class="preview_buttons"><a href="{% url 'query:app_detail' app_id %}">Preview your App</a></div>
+    {% endif %}
 </div>
