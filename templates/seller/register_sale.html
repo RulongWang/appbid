@@ -1,8 +1,12 @@
 <div id="register_app">
+     <div class="errors_block">
+    </div>
     <form action="" method="post">
         {% csrf_token %}
+    <fieldset>
+      <legend>Sale Information</legend>
 
-    <div>
+    <div class="field_block_sale">
         {{ form.begin_price.label_tag }}
         {% if form.begin_price.errors %}
             <div>
@@ -12,7 +16,7 @@
         {{ form.begin_price }}
     </div>
 
-    <div>
+    <div class="field_block_sale">
         {{ form.one_price.label_tag }}
         {% if form.one_price.errors %}
             <div>
@@ -22,7 +26,7 @@
         {{ form.one_price }}
     </div>
 
-    <div>
+    <div class="field_block_sale">
         {{ form.reserve_price.label_tag }}
         {% if form.reserve_price.errors %}
             <div>
@@ -32,7 +36,7 @@
         {{ form.reserve_price }}
     </div>
 
-    <div>
+    <div class="field_block_sale">
         {{ form.currency.label_tag }}
         {% if form.currency.errors %}
             <div>
@@ -42,7 +46,7 @@
         {{ form.currency }}
     </div>
 
-    <div>
+    <div class="field_block_sale">
         {{ form.begin_date.label_tag }}
         {% if form.begin_date.errors %}
             <div>
@@ -52,7 +56,7 @@
         {{ form.begin_date }}
     </div>
 
-    <div>
+    <div class="field_block_sale">
         {{ form.end_date.label_tag }}
         {% if form.end_date.errors %}
             <div>
@@ -62,7 +66,7 @@
         {{ form.end_date }}
     </div>
 
-    <div>
+    <div class="field_block_sale">
         {{ form.minimum_bid.label_tag }}
         {% if form.minimum_bid.errors %}
             <div>
@@ -72,7 +76,12 @@
         {{ form.minimum_bid }}
     </div>
 
-        <input id="next" type="submit" name="next" value="next"/>
+    <div class="button_block">
+            <input id="next" class="nextbutton" type="submit" name="next" value="Next"/>
+            <input id="next" class="nextbutton" type="submit" name="save" value="Save"/>
+    </div>
+    </fieldset>
+
     </form>
 
 </div>

@@ -1,6 +1,9 @@
 <div id="register_app">
     <form action="" method="post">
         {% csrf_token %}
+    <fieldset>
+      <legend>Marketing</legend>
+
 
     <div>
         {{ form.source_code.label_tag }}
@@ -22,7 +25,11 @@
         {{ form.web_site }}{{ form.web_site.help_text }}
     </div>
 
-        <input id="next" type="submit" name="next" value="next"/>
+        <div class="button_block">
+            <input id="next" class="nextbutton" type="submit" name="next" value="Next"/>
+            <input id="next" class="nextbutton" type="submit" name="save" value="Save"/>
+        </div>
+    </fieldset>
     </form>
 
 </div>

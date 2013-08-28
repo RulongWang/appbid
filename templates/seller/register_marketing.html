@@ -1,8 +1,12 @@
 <div id="register_app">
-    <form action="" method="post">
+    <div class="errors_block">
+    </div>
+ <form action="" method="post">
         {% csrf_token %}
+    <fieldset>
+      <legend>Marketing</legend>
 
-    <div>
+    <div  class="field_block">
         {{ form.dl_amount.label_tag }}
         {% if form.dl_amount.errors %}
             <div>
@@ -12,7 +16,7 @@
         {{ form.dl_amount }}
     </div>
 
-    <div>
+    <div  class="field_block">
         {{ form.revenue.label_tag }}
         {% if form.revenue.errors %}
             <div>
@@ -22,7 +26,7 @@
         {{ form.revenue }}
     </div>
 
-    <div>
+    <div  class="field_block_selected">
         {{ form.monetize.label_tag }}
         {% if form.monetize.errors %}
             <div>
@@ -32,7 +36,11 @@
         {{ form.monetize }}
     </div>
 
-        <input id="next" type="submit" name="next" value="next"/>
-    </form>
+        <div class="button_block">
+            <input id="next" class="nextbutton" type="submit" name="next" value="Next"/>
+            <input id="next" class="nextbutton" type="submit" name="save" value="Save"/>
+        </div>
+ </fieldset>
+ </form>
 
 </div>

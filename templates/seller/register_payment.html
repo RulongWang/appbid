@@ -1,11 +1,14 @@
 <div id="register_app">
+
     <form action="" method="post">
         {% csrf_token %}
-
+    <ul>
     {% for paymentItem in paymentItems %}
-    <div>
-        {{ paymentItem.short_text }}
-    </div>
+        <li>
+            {{ paymentItem.short_text }}
+        </li>
+
+
     <div>
         {{ paymentItem.long_text }}
     </div>
@@ -21,7 +24,7 @@
         {% endifequal %}
     </div>
     {% endfor %}
-
+    </ul>
     <label>Total:</label><label id="total">
         {{ amount|default:0 }}
     </label>

@@ -1,80 +1,93 @@
-<div id="register_app">
-    <form action="" method="post">
+<div id="register_app" xmlns="http://www.w3.org/1999/html">
+
+    <div class="errors_block">
+    </div>
+ <form action="" method="post">
         {% csrf_token %}
-
-    <div>
-        {{ form.apple_id.label_tag }}
-        {% if form.apple_id.errors %}
-            <div>
-            {{ form.apple_id.errors }}
+    <fieldset>
+      <legend>Appstore Info</legend>
+        <div class="register_icon">
+            {{ appInfoForm.icon.label_tag }}
+            {% if appInfoForm.icon.errors %}
+                <div>
+                {{ appInfoForm.icon.errors }}
+                </div>
+            {% endif %}
+            {% if appInfoForm.icon.value %}
+            <div class="icon_wrapper">
+            <img width="57" height="57" src="{{ MEDIA_URL }}{{ appInfoForm.icon.value }}"/>
             </div>
-        {% endif %}
-        {{ form.apple_id }}
-    </div>
+            {% endif %}
+        </div>
+        <div class="field_block">
+            {{ form.apple_id.label_tag }}
+            {% if form.apple_id.errors %}
+                <div>
+                {{ form.apple_id.errors }}
+                </div>
+            {% endif %}
+            {{ form.apple_id }}
+        </div>
 
-    <div>
-        {{ form.platform_version.label_tag }}
-        {% if form.platform_version.errors %}
-            <div>
-            {{ form.platform_version.errors }}
-            </div>
-        {% endif %}
-        {{ form.platform_version }}
-    </div>
+        <div class="field_block">
+            {{ form.platform_version.label_tag }}
+            {% if form.platform_version.errors %}
+                <div>
+                {{ form.platform_version.errors }}
+                </div>
+            {% endif %}
+            {{ form.platform_version }}
+        </div>
 
-    <div>
-        {{ form.rating.label_tag }}
-        {% if form.rating.errors %}
-            <div>
-            {{ form.rating.errors }}
-            </div>
-        {% endif %}
-        {{ form.rating }}
-    </div>
+        <div class="field_block">
+            {{ form.rating.label_tag }}
+            {% if form.rating.errors %}
+                <div>
+                {{ form.rating.errors }}
+                </div>
+            {% endif %}
+            {{ form.rating }}
+        </div>
 
-    <div>
-        {{ form.category.label_tag }}
-        {% if form.category.errors %}
-            <div>
-            {{ form.category.errors }}
-            </div>
-        {% endif %}
-        {{ form.category }}
-    </div>
+        <div class="field_block_selected">
+            {{ form.category.label_tag }}
+            {% if form.category.errors %}
+                <div>
+                {{ form.category.errors }}
+                </div>
+            {% endif %}
+            {{ form.category }}
+        </div>
 
-    <div>
-        {{ form.device.label_tag }}
-        {% if form.device.errors %}
-            <div>
-            {{ form.device.errors }}
-            </div>
-        {% endif %}
-        {{ form.device }}
-    </div>
+        <div class="field_block_selected">
+            {{ form.device.label_tag }}
+            {% if form.device.errors %}
+                <div>
+                {{ form.device.errors }}
+                </div>
+            {% endif %}
+            {{ form.device }}
+        </div>
 
-    <div>
-        {{ appInfoForm.price.label_tag }}
-        {% if appInfoForm.price.errors %}
-            <div>
-            {{ appInfoForm.price.errors }}
-            </div>
-        {% endif %}
-        {{ appInfoForm.price }}
-    </div>
+        <div class="field_block">
+            {{ appInfoForm.price.label_tag }}
+            {% if appInfoForm.price.errors %}
+                <div>
+                {{ appInfoForm.price.errors }}
+                </div>
+            {% endif %}
+            {{ appInfoForm.price }}
+        </div>
 
-    <div>
-        {{ appInfoForm.icon.label_tag }}
-        {% if appInfoForm.icon.errors %}
-            <div>
-            {{ appInfoForm.icon.errors }}
-            </div>
-        {% endif %}
-        {% if appInfoForm.icon.value %}
-        <img width="57" height="57" src="{{ MEDIA_URL }}{{ appInfoForm.icon.value }}"/>
-        {% endif %}
-    </div>
-{{ appContent }}
-        <input id="next" type="submit" name="next" value="next"/>
-    </form>
+
+    {{ appContent }}
+        <div class="clear"></div>
+        <div class="button_block">
+            <input id="next" class="nextbutton" type="submit" name="next" value="Next"/>
+            <input id="next" class="nextbutton" type="submit" name="save" value="Save"/>
+        </div>
+
+    </fieldset>
+   </form>
 
 </div>
