@@ -11,7 +11,7 @@
               </div>
               <div class="listing_icon left">
                 <p class="margin10px left">{{ app.title }}</p>
-                <span class="margin10px"><a target="_new" href="{{ app.app_store_link }}">Visit {{ app.name }} in the AppleStore</a></span>
+                <span class="margin10px">Visit <a target="_new" href="{{ app.app_store_link }}">{{ app.app_name }}</a> in the AppleStore</span>
                 <div id="auctionstatus"  title="Listed: 2013-08-21T11:37:06+10:00; Ends: 2013-09-18T11:37:06+10:00">
                     {% if app.reserve_price <= 1 %}Auction has reached the reserve price{% endif %}<br><!--TODO:To do this later. -->
                     Listing closes in 23 days, 18 hours<!--TODO:To do this later. -->
@@ -50,7 +50,7 @@
                 <ul class="feature_list">
                     <li><span class="li_title">Other Stats </span></li>
                     <li><span>Last Updated:</span><span class="right margin_right_20" >{{ app.last_modify|date:"jS M, Y" }}</span></li>
-                    <li><span>App Support Link:</span><span class="right margin_right_20" ><a target="_new" href="{{ app.web_site }}">Support site</a>{{ Rating }}</span></li>
+                    <li><span>App Support Link:</span><span class="right margin_right_20" ><a target="_new" href="{{ app.web_site }}">Support site</a></span></li>
 
 
                 </ul>
@@ -70,21 +70,21 @@
                 <div class="widget">
                    <span class="widget_title">Seller</span>
                    <ul>
-                       <li><span></span><span>{{ app.seller_name }}</span></li>
+                       <li><span>{{ app.seller_name }}</span></li>
                    </ul>
 
                 </div>
                 <div class="widget">
                    <span class="widget_title">Claimed App Age</span>
                    <ul>
-                       <li><span>App Established</span><span class="right">Aug, 2012{{ create_date }}</span></li>
+                       <li><span>App Established</span><span class="right">{{ appInfo.release_date|date:"jS M, Y" }}</span></li>
                    </ul>
 
                 </div>
                 <div class="widget">
                    <span class="widget_title">Claimed Downloads</span>
                    <ul>
-                       <li><span> Downloads	(monthly avg)</span><span class="right">{{ app.dl_amount }}</span></li>
+                       <li><span> Downloads(monthly avg)</span><span class="right">{{ app.dl_amount }}</span></li>
                    </ul>
 
                 </div>
