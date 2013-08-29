@@ -40,19 +40,23 @@
         </div>
         </form>
 
-        <div>
-            <br><br>
+
+   </fieldset>
+        <div class="step_block" >
+
             {% if apps %}
-            Your existing app list:
+            <span><h2>Your existing app list:</h2></span>
+                <ol>
                 {% for app in apps %}
-                <div><!--TODO:Green color, if published; Red color, if draft. -->
-                {{ forloop.counter }}.<a style="color: blue; font-weight: bold;" href="{% url 'seller:appStore_link' app.id %}">{{ app.title }}</a>
+                <li>
+                <!--TODO:Green color, if published; Red color, if draft. -->
+                <a style="color: blue; font-weight: bold;" href="{% url 'seller:appStore_link' app.id %}">{{ app.title }}</a>
                 (last modified {{ app.last_modify|date:"jS F" }}{% ifequal app.status 2 %}, published {{ app.publish_date|date:"jS F" }}{% endifequal %})
-                </div>
+                </li>
                 {% endfor %}
+                </ol>
             {% endif %}
         </div>
-   </fieldset>
     <script type="text/javascript" language="javascript">
         $("#next").click(function() {
             if ($("#id_title").val() == "") {

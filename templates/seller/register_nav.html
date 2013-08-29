@@ -11,7 +11,7 @@
                 </li>
             </ul>
         </li>
-
+        {% if app_id %}
         <li>
             <a href="{% url 'seller:marketing' app_id %}">Marketing</a>
         </li>
@@ -31,6 +31,7 @@
         <li>
             <a href="{% url 'seller:verification' app_id %}">Verification</a>
         </li>
+        {% endif %}
     </ol>
     {% if app_id %}
     <div class="preview_buttons"><a href="{% url 'query:app_detail' app_id %}">Preview your App</a></div>
