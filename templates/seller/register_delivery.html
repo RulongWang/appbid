@@ -1,28 +1,48 @@
 <div id="register_app">
-    <form action="" method="post">
-        {% csrf_token %}
-    <fieldset>
-      <legend>Marketing</legend>
 
-
-    <div>
-        {{ form.source_code.label_tag }}
-        {% if form.source_code.errors %}
+    <div class="errors_block">
+            {% if form.source_code.errors %}
             <div>
             {{ form.source_code.errors }}
             </div>
-        {% endif %}
-        {{ form.source_code }}{{ form.source_code.help_text }}
-    </div>
-
-    <div>
-        {{ form.web_site.label_tag }}
-        {% if form.web_site.errors %}
+             {% endif %}
+            {% if form.web_site.errors %}
             <div>
             {{ form.web_site.errors }}
             </div>
-        {% endif %}
-        {{ form.web_site }}{{ form.web_site.help_text }}
+            {% endif %}
+
+   </div>
+
+
+    <form action="" method="post">
+        {% csrf_token %}
+    <fieldset>
+      <legend>Delivery </legend>
+
+
+    <div class="field_block_deliery">
+        <div class="left" style="width:300px;">
+            <div style="width:300px:height:20px;">{{ form.source_code.label_tag }}</div>
+            <div style="width:300px:height:40px;">{{ form.source_code.help_text }}</div>
+        </div>
+        <div class="right" style="width:50px">
+             {{ form.source_code }}
+        </div>
+    </div>
+    <div class="clear"></div>
+    <div class="field_block_deliery">
+        <div class="left" style="width:300px;">
+            <div style="width:300px:height:30px;">{{ form.web_site.label_tag }}</div>
+            <div style="margin-top:10px;width:300px:height:40px;"> {{ form.web_site.help_text }}</div>
+        </div>
+        <div class="right" style="width:50px">
+             {{ form.web_site }}
+        </div>
+
+
+
+
     </div>
 
         <div class="button_block">

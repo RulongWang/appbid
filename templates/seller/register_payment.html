@@ -1,36 +1,43 @@
 <div id="register_app">
-
+ <fieldset>
+      <legend>Marketing</legend>
     <form action="" method="post">
         {% csrf_token %}
-    <ul>
+
     {% for paymentItem in paymentItems %}
-        <li>
-            {{ paymentItem.short_text }}
-        </li>
+        <div class="field_block_payment">
 
-
-    <div>
-        {{ paymentItem.long_text }}
-    </div>
-    <div>
-        {{ paymentItem.price }}
-        <input type="checkbox" name="paymentItem_id" value="{{ paymentItem.id }}"
-               price="{{ paymentItem.price }}" onclick="checkPaymentItem(this)"
-               {% ifequal paymentItem.is_basic_service True %}checked="checked" disabled
-               {% else %}{% if paymentItem in selectItems %}checked="checked"{% endif %}
-               {% endifequal %}>
-        {% ifequal paymentItem.is_basic_service True %}
-        <input type="hidden" name="paymentItem_id" value="{{ paymentItem.id }}">
-        {% endifequal %}
-    </div>
+            <div class="left" style="width:300px;">
+            <div style="width:300px:height:20px; font-weight: bold;"> {{ paymentItem.short_text }}</div>
+            <div style="width:300px:height:40px;">{{ paymentItem.long_text }}</div>
+             </div>
+             <div class="right" style="width:50px">
+             {{ paymentItem.price }}
+                 <input type="checkbox" name="paymentItem_id" value="{{ paymentItem.id }}"
+                       price="{{ paymentItem.price }}" onclick="checkPaymentItem(this)"
+                       {% ifequal paymentItem.is_basic_service True %}checked="checked" disabled
+                       {% else %}{% if paymentItem in selectItems %}checked="checked"{% endif %}
+                       {% endifequal %}>
+                {% ifequal paymentItem.is_basic_service True %}
+                <input type="hidden" name="paymentItem_id" value="{{ paymentItem.id }}">
+                {% endifequal %}
+             </div>
+        </div>
+         <div class="clear"></div>
     {% endfor %}
-    </ul>
-    <label>Total:</label><label id="total">
+
+    <div class="field_block_payment">
+        <div class="right" style="width:100px;">
+        <label>Total:</label><label id="total">
         {{ amount|default:0 }}
-    </label>
-    <br>
-    <input id="next" type="submit" name="next" value="Checkout"/>
+        </label>
+        </div>
+    </div>
+    <div class="right" style="width:250px;">
+        <input id="next" class="nextbutton" type="submit" name="next" value="Checkout"/>
+    </div>
     </form>
+ </fieldset>
 
 <script type="text/javascript" language="javascript">
     var total =  parseFloat(($("#total").text()).replace(",", "."));

@@ -381,6 +381,8 @@ legend {
 }
 fieldset {
 	border:1px solid #dedede; /* Default fieldset borders vary cross browser, so make them the same */
+    padding-bottom: 10px;
+    border-radius: 10px;
 }
 
 .errors_block{
@@ -404,6 +406,7 @@ fieldset {
     border:0;
     width:100px;
     height:30px;
+    border-radius: 3px;
     float: left;
 
 }
@@ -460,7 +463,9 @@ fieldset {
 .field_block_selected label{
     margin-top:20px;
 }
-.field_block input{
+
+
+.field_block input[type=text]{
     -webkit-box-shadow: inset 0 1px 0.25em #d9d9d9;
     -moz-box-shadow: inset 0 1px 0.25em #d9d9d9;
     box-shadow: inset 0 1px 0.25em #d9d9d9;
@@ -469,6 +474,10 @@ fieldset {
     float:right;
     padding: 3px;
      width:190px;
+}
+
+.field_block input[type=checkbox]{
+    float:right;
 }
 .field_block_selected select{
     -webkit-box-shadow: inset 0 1px 0.25em #d9d9d9;
@@ -514,6 +523,79 @@ fieldset {
     float: right;
     width:200px;
 }
+
+.field_block_deliery{
+
+    margin-top:30px;
+    margin-left: 20px;
+    padding-left:10px;
+    width:500px;
+    height:60px;
+    border-bottom: 1px dashed #ddd;
+}
+.field_block_deliery label{
+    padding: 3px;
+}
+.field_block_deliery input[type=text]{
+    -webkit-box-shadow: inset 0 1px 0.25em #d9d9d9;
+    -moz-box-shadow: inset 0 1px 0.25em #d9d9d9;
+    box-shadow: inset 0 1px 0.25em #d9d9d9;
+    border: 1px solid #858585;
+    border-radius:3px;
+    float:right;
+    padding: 3px;
+     width:190px;
+}
+.field_block_deliery input[type=checkbox]{
+      float:right;
+}
+.field_block_payment{
+
+    margin-top:30px;
+    margin-left: 20px;
+    padding-left:10px;
+    width:500px;
+    height:60px;
+    border-bottom: 1px dashed #ddd;
+}
+.field_block_payment label{
+    padding: 3px;
+}
+.field_block_payment input[type=text]{
+    -webkit-box-shadow: inset 0 1px 0.25em #d9d9d9;
+    -moz-box-shadow: inset 0 1px 0.25em #d9d9d9;
+    box-shadow: inset 0 1px 0.25em #d9d9d9;
+    border: 1px solid #858585;
+    border-radius:3px;
+    float:right;
+    padding: 3px;
+     width:190px;
+}
+.field_block_payment input[type=checkbox]{
+      float:right;
+}
+
+.step_block{
+    margin-top:10px;
+    padding:10px;
+}
+.step_block h2 {
+    display: block;
+    margin:3px;
+
+    font-size: 20px;
+    font-family:  13px "Gill Sans", "Source Sans Pro", "Helvetica Neue", Helvetica, sans-serif;
+}
+.step_block p{
+    line-height: 1.5em;
+}
+
+.verification_block{
+    margin-top:10px;
+    padding-left: 10px;
+    width:400px;
+}
+
 
 /*****************footer part *********************/
 /****************底部******************************/
