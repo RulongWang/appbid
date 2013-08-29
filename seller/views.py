@@ -17,6 +17,7 @@ from django.conf import settings
 
 from seller import forms
 from appbid import models
+from utilities import common
 
 @csrf_protect
 @login_required(login_url='/account/home/')
@@ -73,8 +74,8 @@ def saveAppStoreLink(request, form, model, *args, **kwargs):
         match = pattern.match(form.cleaned_data['app_store_link'])
         if match is None:
             raise
-        js = getITunes(''.join(['https://itunes.apple.com/lookup?id=', match.group(1)]))
-        if js is None or js.get('resultCount') != 1:
+        result = common.getITunes(match.group(1))
+        if result is None:
             raise
     except:
         initParam['app_store_link_error'] = _('The app store link is not correct.')
@@ -92,8 +93,6 @@ def saveAppStoreLink(request, form, model, *args, **kwargs):
     else:
         model.title = form.cleaned_data['title']
         model.app_store_link = form.cleaned_data['app_store_link']
-
-    result = js.get('results', None)[0]
     model.rating = result.get('trackContentRating', None)
     model.platform_version = result.get('version', None)
     model.apple_id = result.get('trackId', None)
@@ -102,8 +101,6 @@ def saveAppStoreLink(request, form, model, *args, **kwargs):
     model.reviews = result.get('userRatingCount', None)
     model.description = result.get('description', None)
     model.seller_name = result.get('sellerName', None)
-
-
     model.save()
 
     appInfos = models.AppInfo.objects.filter(app_id=model.id)
@@ -289,13 +286,15 @@ def saveVerification(request, form, model, *args, **kwargs):
     """Save the third register page - Verification."""
     if model is None:
         return None
+    initParam = kwargs.get('initParam')
     try:
         ownerShipScan = models.OwnerShip_Scan.objects.get(app_id=model.id)
     except models.OwnerShip_Scan.DoesNotExist:
         ownerShipScan = models.OwnerShip_Scan()
         ownerShipScan.app_id = model.id
         ownerShipScan.save()
-    return model
+    initParam['verify_msg'] = _('The verification will be done later. Send the email to you after verified.')
+    return None
 
 
 @csrf_protect
@@ -315,16 +314,6 @@ def deleteAttachment(request, *args, **kwargs):
         data['ok'] = 'false'
         data['message'] = _('The attachment "%(name)s" does not exist.') % {'name': dict.get('name')}
     return HttpResponse(json.dumps(data), mimetype=u'application/json')
-
-
-def getITunes(search_url):
-    """Get the app information in apple store by iTunes api, such as:https://itunes.apple.com/lookup?id=639384326"""
-    if search_url.strip() == "":
-        return None
-    raw = urllib.urlopen(search_url)
-    js = raw.read()
-    js_object = json.loads(js)
-    return js_object
 
 
 def hello(request):
