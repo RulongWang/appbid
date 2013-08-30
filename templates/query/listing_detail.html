@@ -20,12 +20,14 @@
               <div class="bidding_box right">
                 <div class="bidding_status" > </div>
                 <div class="bidding_box">
-                    $2700{{ currentprice }} &nbsp; <a href="#">139bids</a>
+                    $<div id="current_price">{{ current_price|floatformat|default:0 }}</div> &nbsp;
+                    <a href="#"><div id="bid_num">{{ bid_num|floatformat|default:0 }}bid{{ bid_num|floatformat|pluralize }}</div></a>
                     <form action="" method="post">
-                        <input type="text" value="" />
-                        <input type="submit" value="Bid Now"/>
+                        <input id="price" name="price" type="text" />
+                        <input id="bid_now" type="submit" value="Bid Now"/>
                     </form>
-                    <span>(Enter $2,650 or more.)</span>
+                    <span>(Enter $<div id="bid_price">{{ bid_price|floatformat|default:0 }}</div> or more.)</span>
+                    <div id="price_msg"></div>
                 </div>
 
               </div>
@@ -35,14 +37,14 @@
                 <ul class="feature_list">
                     <li><span class="li_title">Rating and Reviews (Current Version)</span></li>
                     <li><span>Rating:</span><span class="right margin_right_20" >{{ app.rating }}</span></li>
-                    <li><span>Reviews:</span><span class="right margin_right_20" >{{ app.reviews }}</span></li>
+                    <li><span>Reviews:</span><span class="right margin_right_20" >{{ app.reviews|default:0 }}</span></li>
 
                 </ul>
             </div>
             <div class="feature_block">
                 <ul class="feature_list">
                     <li><span class="li_title">Price</span></li>
-                    <li><span>Price in App Store:</span><span class="right margin_right_20" >{{ appInfo.price }}$</span></li>
+                    <li><span>Price in App Store:</span><span class="right margin_right_20" >{{ appInfo.price|default:0 }}$</span></li>
 
                 </ul>
             </div>
@@ -84,14 +86,14 @@
                 <div class="widget">
                    <span class="widget_title">Claimed Downloads</span>
                    <ul>
-                       <li><span> Downloads(monthly avg)</span><span class="right">{{ app.dl_amount }}</span></li>
+                       <li><span> Downloads(monthly avg)</span><span class="right">{{ app.dl_amount|default:0 }}</span></li>
                    </ul>
 
                 </div>
                 <div class="widget">
                    <span class="widget_title">Claimed Financials</span>
                    <ul>
-                       <li><span>Revenue</span><span class="right">{{ app.revenue }}$</span></li>
+                       <li><span>Revenue</span><span class="right">{{ app.revenue|default:0 }}$</span></li>
 {#                       <li><span>Profit</span><span class="right">5,00${{ profit }}</span></li>#}
                    </ul>
 
@@ -131,5 +133,36 @@
             </div>
             <div class="clear"></div>
         </div>
-
+<script type="text/javascript" language="javascript">
+    $("#price").click(function() {
+        if ($("#price").val() ==="") {
+            id = '{{ app.id }}';
+            $.ajax({
+                type:"POST",
+                url:"{% url 'query:bid_info' id %}",
+                data:{
+                    id:id,
+                    csrfmiddlewaretoken: "{{ csrf_token }}"
+                },
+                success:function(data) {
+                    if(data.ok === 'true' && data.bid_price != null && data.current_price != null && data.bid_num != 0) {
+                        $("#bid_price").text(data.bid_price);
+                        $("#current_price").text(data.current_price);
+                        $("#bid_num").text(data.bid_num+"bids");
+                    }
+                }
+            });
+        }
+    });
+    $("#bid_now").click(function() {
+        if ($("#price").val() =="") {
+            $("#price_msg").text("The price can not be blank");
+            return false;
+        }
+        if (parseFloat($("#price").val()) < parseFloat($("#bid_price").text())) {
+            $("#price_msg").text("The price must bid at least the minimum bid");
+            return false;
+        }
+    });
+</script>
 {% endblock %}
