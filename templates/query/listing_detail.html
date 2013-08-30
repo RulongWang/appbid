@@ -122,12 +122,10 @@
                 <div class="widget">
                    <span class="widget_title">Category </span>
                    <ul>
-                       {% for category in categories %}
-                       <li><span><a target="_new" href="#">{{ category.name }}(1)</a></span></li><!--TODO:add the number of this category later. -->
-{#                       <li><span>In-App Sales</span><span class="right">YES{{ inapp }}</span></li>#}
+                       {% for category, num in category_nums.items %}
+                       <li><span><a target="_new" href="#">{{ category.name }}({{ num }})</a></span></li>
                        {% endfor %}
                    </ul>
-
                 </div>
 
             </div>
