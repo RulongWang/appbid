@@ -22,11 +22,12 @@
         <form action="" method="post">
             {% csrf_token %}
 
-        <div>
+        <div class="appinfo" >
             <div class="margin_left_10">{{ form.title.label_tag }} {{ form.title }}</div>
         </div>
 
-        <div>
+
+        <div class="appinfo" >
             <div class="margin_left_10" style="vertical-align: middle;">
                 {{ form.app_store_link.label_tag }}
                 {{ form.app_store_link }}

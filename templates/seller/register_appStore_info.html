@@ -15,9 +15,10 @@
             {% endif %}
             {% if appInfoForm.icon.value %}
             <div class="icon_wrapper">
-            <img width="57" height="57" src="{{ MEDIA_URL }}{{ appInfoForm.icon.value }}"/>
+            <img width="57px" height="57px" src="{{ MEDIA_URL }}{{ appInfoForm.icon.value }}"/>
             </div>
             {% endif %}
+
         </div>
         <div class="field_block">
             {{ form.apple_id.label_tag }}

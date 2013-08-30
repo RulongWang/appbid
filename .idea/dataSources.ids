@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <component name="dataSourceStorage">
-  <data-source source="LOCAL" name="Django default" product="MySQL" version="5.6.12" jdbc-version="4.0" driver-name="MySQL-AB JDBC Driver" driver-version="mysql-connector-java-5.1.18 ( Revision: tonci.grgin@oracle.com-20110930151701-jfj14ddfq48ifkfq )" uuid="27619ec8-47b6-4c82-aba8-1df8c6484229">
+  <data-source source="LOCAL" name="Django default" product="MySQL" version="5.6.12" jdbc-version="4.0" driver-name="MySQL-AB JDBC Driver" driver-version="mysql-connector-java-5.1.18 ( Revision: tonci.grgin@oracle.com-20110930151701-jfj14ddfq48ifkfq )" uuid="1320d042-78dd-47ba-968b-9663426584c8">
     <extra-name-characters>#@</extra-name-characters>
     <identifier-quote-string>`</identifier-quote-string>
     <jdbc-driver>com.mysql.jdbc.Driver</jdbc-driver>
-    <jdbc-url>jdbc:mysql://127.0.0.1/appbid1</jdbc-url>
+    <jdbc-url>jdbc:mysql://127.0.0.1:3306/appbid</jdbc-url>
     <user-name>root</user-name>
     <libraries>
       <library>
@@ -23,34 +23,57 @@
     <table name="appbid_app" schema="" catalog="appbid" type="TABLE">
       <column name="id" sqlType="INT" length="10" precision="0" nullable="false" jdbcType="4" autoIncrement="true"/>
       <column name="publisher_id" sqlType="INT" length="10" precision="0" nullable="false" jdbcType="4"/>
-      <column name="publish_date" sqlType="DATETIME" length="19" precision="0" nullable="false" jdbcType="93"/>
-      <column name="status" sqlType="INT" length="10" precision="0" nullable="false" jdbcType="4"/>
+      <column name="seller_name" sqlType="VARCHAR" length="255" precision="0" nullable="true" jdbcType="12"/>
+      <column name="publish_date" sqlType="DATETIME" length="19" precision="0" nullable="true" jdbcType="93"/>
+      <column name="status" sqlType="INT" length="10" precision="0" nullable="true" jdbcType="4"/>
       <column name="title" sqlType="VARCHAR" length="255" precision="0" nullable="false" jdbcType="12"/>
+      <column name="app_name" sqlType="VARCHAR" length="255" precision="0" nullable="false" jdbcType="12"/>
       <column name="begin_price" sqlType="DOUBLE" length="22" precision="0" nullable="true" jdbcType="8"/>
       <column name="one_price" sqlType="DOUBLE" length="22" precision="0" nullable="true" jdbcType="8"/>
       <column name="reserve_price" sqlType="DOUBLE" length="22" precision="0" nullable="true" jdbcType="8"/>
-      <column name="currency_id" sqlType="INT" length="10" precision="0" nullable="false" jdbcType="4"/>
-      <column name="begin_date" sqlType="DATETIME" length="19" precision="0" nullable="false" jdbcType="93"/>
-      <column name="end_date" sqlType="DATETIME" length="19" precision="0" nullable="false" jdbcType="93"/>
+      <column name="currency_id" sqlType="INT" length="10" precision="0" nullable="true" jdbcType="4"/>
+      <column name="begin_date" sqlType="DATETIME" length="19" precision="0" nullable="true" jdbcType="93"/>
+      <column name="end_date" sqlType="DATETIME" length="19" precision="0" nullable="true" jdbcType="93"/>
       <column name="dl_amount" sqlType="INT" length="10" precision="0" nullable="true" jdbcType="4"/>
       <column name="revenue" sqlType="DOUBLE" length="22" precision="0" nullable="true" jdbcType="8"/>
-      <column name="description" sqlType="LONGTEXT" length="2147483647" precision="0" nullable="false" jdbcType="-1"/>
+      <column name="description" sqlType="LONGTEXT" length="2147483647" precision="0" nullable="true" jdbcType="-1"/>
+      <column name="apple_id" sqlType="VARCHAR" length="255" precision="0" nullable="true" jdbcType="12"/>
       <column name="app_store_link" sqlType="VARCHAR" length="255" precision="0" nullable="true" jdbcType="12"/>
-      <column name="minimum_bid" sqlType="DOUBLE" length="22" precision="0" nullable="false" jdbcType="8"/>
+      <column name="minimum_bid" sqlType="DOUBLE" length="22" precision="0" nullable="true" jdbcType="8"/>
       <column name="web_site" sqlType="VARCHAR" length="255" precision="0" nullable="true" jdbcType="12"/>
+      <column name="reviews" sqlType="INT" length="10" precision="0" nullable="true" jdbcType="4"/>
       <column name="create_time" sqlType="DATETIME" length="19" precision="0" nullable="false" jdbcType="93"/>
       <column name="last_modify" sqlType="DATETIME" length="19" precision="0" nullable="false" jdbcType="93"/>
-      <column name="platform_version" sqlType="VARCHAR" length="255" precision="0" nullable="false" jdbcType="12"/>
+      <column name="platform_version" sqlType="VARCHAR" length="255" precision="0" nullable="true" jdbcType="12"/>
       <column name="source_code" sqlType="BIT" length="0" precision="0" nullable="false" jdbcType="-7"/>
+      <column name="rating" sqlType="VARCHAR" length="5" precision="0" nullable="true" jdbcType="12"/>
+      <column name="verify_token" sqlType="VARCHAR" length="255" precision="0" nullable="true" jdbcType="12"/>
+      <column name="is_verified" sqlType="BIT" length="0" precision="0" nullable="false" jdbcType="-7"/>
       <primary-key name="PRIMARY" columns="id"/>
-      <foreign-key name="publisher_id_refs_id_7d7f08a5" columns="publisher_id" ref-table="auth_user" ref-schema="" ref-catalog="appbid" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
       <foreign-key name="currency_id_refs_id_d31d7296" columns="currency_id" ref-table="appbid_currency" ref-schema="" ref-catalog="appbid" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="publisher_id_refs_id_7d7f08a5" columns="publisher_id" ref-table="auth_user" ref-schema="" ref-catalog="appbid" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <exported-key name="app_id_refs_id_999b5691" table="appbid_app_category" schema="" catalog="appbid" columns="app_id"/>
       <exported-key name="app_id_refs_id_34e48d3b" table="appbid_app_device" schema="" catalog="appbid" columns="app_id"/>
       <exported-key name="app_id_refs_id_7a71da66" table="appbid_app_monetize" schema="" catalog="appbid" columns="app_id"/>
+      <exported-key name="app_id_refs_id_44368406" table="appbid_app_paymentItem" schema="" catalog="appbid" columns="app_id"/>
+      <exported-key name="app_id_refs_id_5fb8ce0c" table="appbid_appinfo" schema="" catalog="appbid" columns="app_id"/>
       <exported-key name="app_id_refs_id_f265a8b6" table="appbid_attachment" schema="" catalog="appbid" columns="app_id"/>
       <exported-key name="app_id_refs_id_5c05b150" table="appbid_bidding" schema="" catalog="appbid" columns="app_id"/>
+      <exported-key name="app_id_refs_id_29176068" table="appbid_ownership_scan" schema="" catalog="appbid" columns="app_id"/>
+      <exported-key name="app_id_refs_id_f51eca49" table="appbid_paymentdetail" schema="" catalog="appbid" columns="app_id"/>
       <index name="appbid_app_81b79144" unique="false" columns="publisher_id"/>
       <index name="appbid_app_b2321453" unique="false" columns="currency_id"/>
+    </table>
+    <table name="appbid_app_category" schema="" catalog="appbid" type="TABLE">
+      <column name="id" sqlType="INT" length="10" precision="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="app_id" sqlType="INT" length="10" precision="0" nullable="false" jdbcType="4"/>
+      <column name="category_id" sqlType="INT" length="10" precision="0" nullable="false" jdbcType="4"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="app_id_refs_id_999b5691" columns="app_id" ref-table="appbid_app" ref-schema="" ref-catalog="appbid" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="category_id_refs_id_0fbb08d9" columns="category_id" ref-table="appbid_category" ref-schema="" ref-catalog="appbid" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <index name="app_id" unique="true" columns="category_id"/>
+      <index name="appbid_app_category_60fc113e" unique="false" columns="app_id"/>
+      <index name="appbid_app_category_6f33f001" unique="false" columns="category_id"/>
     </table>
     <table name="appbid_app_device" schema="" catalog="appbid" type="TABLE">
       <column name="id" sqlType="INT" length="10" precision="0" nullable="false" jdbcType="4" autoIncrement="true"/>
@@ -74,12 +97,32 @@
       <index name="appbid_app_monetize_60fc113e" unique="false" columns="app_id"/>
       <index name="appbid_app_monetize_402186bd" unique="false" columns="monetize_id"/>
     </table>
+    <table name="appbid_app_paymentItem" schema="" catalog="appbid" type="TABLE">
+      <column name="id" sqlType="INT" length="10" precision="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="app_id" sqlType="INT" length="10" precision="0" nullable="false" jdbcType="4"/>
+      <column name="paymentitem_id" sqlType="INT" length="10" precision="0" nullable="false" jdbcType="4"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="app_id_refs_id_44368406" columns="app_id" ref-table="appbid_app" ref-schema="" ref-catalog="appbid" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="paymentitem_id_refs_id_656b2125" columns="paymentitem_id" ref-table="appbid_paymentitem" ref-schema="" ref-catalog="appbid" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <index name="app_id" unique="true" columns="paymentitem_id"/>
+      <index name="appbid_app_paymentItem_60fc113e" unique="false" columns="app_id"/>
+      <index name="appbid_app_paymentItem_393d70b4" unique="false" columns="paymentitem_id"/>
+    </table>
+    <table name="appbid_appinfo" schema="" catalog="appbid" type="TABLE">
+      <column name="id" sqlType="INT" length="10" precision="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="app_id" sqlType="INT" length="10" precision="0" nullable="false" jdbcType="4"/>
+      <column name="price" sqlType="DOUBLE" length="22" precision="0" nullable="true" jdbcType="8"/>
+      <column name="icon" sqlType="VARCHAR" length="255" precision="0" nullable="true" jdbcType="12"/>
+      <column name="release_date" sqlType="DATETIME" length="19" precision="0" nullable="true" jdbcType="93"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="app_id_refs_id_5fb8ce0c" columns="app_id" ref-table="appbid_app" ref-schema="" ref-catalog="appbid" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+    </table>
     <table name="appbid_attachment" schema="" catalog="appbid" type="TABLE">
       <column name="id" sqlType="INT" length="10" precision="0" nullable="false" jdbcType="4" autoIncrement="true"/>
       <column name="app_id" sqlType="INT" length="10" precision="0" nullable="false" jdbcType="4"/>
       <column name="name" sqlType="VARCHAR" length="255" precision="0" nullable="false" jdbcType="12"/>
       <column name="type" sqlType="INT" length="10" precision="0" nullable="false" jdbcType="4"/>
-      <column name="path" sqlType="VARCHAR" length="255" precision="0" nullable="false" jdbcType="12"/>
+      <column name="path" sqlType="VARCHAR" length="100" precision="0" nullable="false" jdbcType="12"/>
       <primary-key name="PRIMARY" columns="id"/>
       <foreign-key name="app_id_refs_id_f265a8b6" columns="app_id" ref-table="appbid_app" ref-schema="" ref-catalog="appbid" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
       <index name="appbid_attachment_60fc113e" unique="false" columns="app_id"/>
@@ -107,6 +150,12 @@
       <index name="appbid_bidding_buyer_2c13dbac" unique="false" columns="bidding_id"/>
       <index name="appbid_bidding_buyer_6340c63c" unique="false" columns="user_id"/>
     </table>
+    <table name="appbid_category" schema="" catalog="appbid" type="TABLE">
+      <column name="id" sqlType="INT" length="10" precision="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="name" sqlType="VARCHAR" length="255" precision="0" nullable="false" jdbcType="12"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <exported-key name="category_id_refs_id_0fbb08d9" table="appbid_app_category" schema="" catalog="appbid" columns="category_id"/>
+    </table>
     <table name="appbid_currency" schema="" catalog="appbid" type="TABLE">
       <column name="id" sqlType="INT" length="10" precision="0" nullable="false" jdbcType="4" autoIncrement="true"/>
       <column name="currency" sqlType="VARCHAR" length="20" precision="0" nullable="false" jdbcType="12"/>
@@ -119,11 +168,66 @@
       <primary-key name="PRIMARY" columns="id"/>
       <exported-key name="device_id_refs_id_0f16f89b" table="appbid_app_device" schema="" catalog="appbid" columns="device_id"/>
     </table>
+    <table name="appbid_gateway" schema="" catalog="appbid" type="TABLE">
+      <column name="id" sqlType="INT" length="10" precision="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="name" sqlType="VARCHAR" length="255" precision="0" nullable="false" jdbcType="12"/>
+      <column name="is_active" sqlType="BIT" length="0" precision="0" nullable="false" jdbcType="-7"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <exported-key name="gateway_id_refs_id_87dfe52d" table="appbid_paymentdetail" schema="" catalog="appbid" columns="gateway_id"/>
+    </table>
+    <table name="appbid_job" schema="" catalog="appbid" type="TABLE">
+      <column name="id" sqlType="INT" length="10" precision="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="job_name" sqlType="VARCHAR" length="255" precision="0" nullable="false" jdbcType="12"/>
+      <column name="begin_time" sqlType="DATETIME" length="19" precision="0" nullable="false" jdbcType="93"/>
+      <column name="end_time" sqlType="DATETIME" length="19" precision="0" nullable="false" jdbcType="93"/>
+      <column name="description" sqlType="LONGTEXT" length="2147483647" precision="0" nullable="true" jdbcType="-1"/>
+      <primary-key name="PRIMARY" columns="id"/>
+    </table>
     <table name="appbid_monetize" schema="" catalog="appbid" type="TABLE">
       <column name="id" sqlType="INT" length="10" precision="0" nullable="false" jdbcType="4" autoIncrement="true"/>
       <column name="method" sqlType="VARCHAR" length="255" precision="0" nullable="false" jdbcType="12"/>
       <primary-key name="PRIMARY" columns="id"/>
       <exported-key name="monetize_id_refs_id_9093cb12" table="appbid_app_monetize" schema="" catalog="appbid" columns="monetize_id"/>
+    </table>
+    <table name="appbid_ownership_scan" schema="" catalog="appbid" type="TABLE">
+      <column name="id" sqlType="INT" length="10" precision="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="app_id" sqlType="INT" length="10" precision="0" nullable="false" jdbcType="4"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="app_id_refs_id_29176068" columns="app_id" ref-table="appbid_app" ref-schema="" ref-catalog="appbid" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+    </table>
+    <table name="appbid_paymentdetail" schema="" catalog="appbid" type="TABLE">
+      <column name="id" sqlType="INT" length="10" precision="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="app_id" sqlType="INT" length="10" precision="0" nullable="false" jdbcType="4"/>
+      <column name="start_date" sqlType="DATETIME" length="19" precision="0" nullable="true" jdbcType="93"/>
+      <column name="end_date" sqlType="DATETIME" length="19" precision="0" nullable="true" jdbcType="93"/>
+      <column name="actual_amount" sqlType="DOUBLE" length="22" precision="0" nullable="true" jdbcType="8"/>
+      <column name="amount" sqlType="DOUBLE" length="22" precision="0" nullable="true" jdbcType="8"/>
+      <column name="gateway_id" sqlType="INT" length="10" precision="0" nullable="true" jdbcType="4"/>
+      <column name="is_payed" sqlType="BIT" length="0" precision="0" nullable="false" jdbcType="-7"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="app_id_refs_id_f51eca49" columns="app_id" ref-table="appbid_app" ref-schema="" ref-catalog="appbid" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="gateway_id_refs_id_87dfe52d" columns="gateway_id" ref-table="appbid_gateway" ref-schema="" ref-catalog="appbid" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <index name="appbid_paymentdetail_60fc113e" unique="false" columns="app_id"/>
+      <index name="appbid_paymentdetail_ff526a91" unique="false" columns="gateway_id"/>
+    </table>
+    <table name="appbid_paymentitem" schema="" catalog="appbid" type="TABLE">
+      <column name="id" sqlType="INT" length="10" precision="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="short_text" sqlType="VARCHAR" length="255" precision="0" nullable="false" jdbcType="12"/>
+      <column name="long_text" sqlType="LONGTEXT" length="2147483647" precision="0" nullable="false" jdbcType="-1"/>
+      <column name="price" sqlType="DOUBLE" length="22" precision="0" nullable="false" jdbcType="8"/>
+      <column name="period" sqlType="INT" length="10" precision="0" nullable="false" jdbcType="4"/>
+      <column name="start_date" sqlType="DATETIME" length="19" precision="0" nullable="false" jdbcType="93"/>
+      <column name="end_date" sqlType="DATETIME" length="19" precision="0" nullable="false" jdbcType="93"/>
+      <column name="is_basic_service" sqlType="BIT" length="0" precision="0" nullable="false" jdbcType="-7"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <exported-key name="paymentitem_id_refs_id_656b2125" table="appbid_app_paymentItem" schema="" catalog="appbid" columns="paymentitem_id"/>
+    </table>
+    <table name="appbid_systemparam" schema="" catalog="appbid" type="TABLE">
+      <column name="id" sqlType="INT" length="10" precision="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="key" sqlType="VARCHAR" length="255" precision="0" nullable="false" jdbcType="12"/>
+      <column name="value" sqlType="LONGTEXT" length="2147483647" precision="0" nullable="false" jdbcType="-1"/>
+      <column name="description" sqlType="LONGTEXT" length="2147483647" precision="0" nullable="true" jdbcType="-1"/>
+      <primary-key name="PRIMARY" columns="id"/>
     </table>
     <table name="auth_group" schema="" catalog="appbid" type="TABLE">
       <column name="id" sqlType="INT" length="10" precision="0" nullable="false" jdbcType="4" autoIncrement="true"/>
@@ -181,8 +285,8 @@
       <column name="user_id" sqlType="INT" length="10" precision="0" nullable="false" jdbcType="4"/>
       <column name="group_id" sqlType="INT" length="10" precision="0" nullable="false" jdbcType="4"/>
       <primary-key name="PRIMARY" columns="id"/>
-      <foreign-key name="user_id_refs_id_40c41112" columns="user_id" ref-table="auth_user" ref-schema="" ref-catalog="appbid" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
       <foreign-key name="group_id_refs_id_274b862c" columns="group_id" ref-table="auth_group" ref-schema="" ref-catalog="appbid" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="user_id_refs_id_40c41112" columns="user_id" ref-table="auth_user" ref-schema="" ref-catalog="appbid" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
       <index name="user_id" unique="true" columns="group_id"/>
       <index name="auth_user_groups_6340c63c" unique="false" columns="user_id"/>
       <index name="auth_user_groups_5f412f9a" unique="false" columns="group_id"/>
@@ -192,8 +296,8 @@
       <column name="user_id" sqlType="INT" length="10" precision="0" nullable="false" jdbcType="4"/>
       <column name="permission_id" sqlType="INT" length="10" precision="0" nullable="false" jdbcType="4"/>
       <primary-key name="PRIMARY" columns="id"/>
-      <foreign-key name="user_id_refs_id_4dc23c39" columns="user_id" ref-table="auth_user" ref-schema="" ref-catalog="appbid" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
       <foreign-key name="permission_id_refs_id_35d9ac25" columns="permission_id" ref-table="auth_permission" ref-schema="" ref-catalog="appbid" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="user_id_refs_id_4dc23c39" columns="user_id" ref-table="auth_user" ref-schema="" ref-catalog="appbid" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
       <index name="user_id" unique="true" columns="permission_id"/>
       <index name="auth_user_user_permissions_6340c63c" unique="false" columns="user_id"/>
       <index name="auth_user_user_permissions_83d7f98b" unique="false" columns="permission_id"/>

@@ -16,9 +16,7 @@
     </div>
 
     {% if attachments != None or attachmentForm %}
-    <div>
-        <label for="attachment">Attachment</label>
-    </div>
+
     {% endif %}
 
     {% if attachments != None %}
@@ -38,22 +36,27 @@
     {% endif %}
 
     <div id="attachment">
+         <div>
+            <label for="attachment">Attachment</label>
+        </div>
         {{ attachmentError }}
         {% if attachmentForm %}
             <div>
-                {{ attachmentForm.path.label_tag }}
+
                 {% if attachmentForm.path.errors %}
                     <div>
                     {{ attachmentForm.path.errors }}
                     </div>
                 {% endif %}
+                {{ attachmentForm.path.label_tag }}
                 {{ attachmentForm.path }}
                 <input id="add" type="button" value="Add">
             </div>
         {% endif %}
     </div>
 
-        <input id="next" type="submit" name="next" value="next"/>
+
+        <input id="next" class="nextbutton" type="submit" name="next" value="next"/>
     </form>
 
 <script type="text/javascript" language="javascript">
