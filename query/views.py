@@ -24,7 +24,7 @@ def list_latest(request):
     list_apps = []
     list_apps = models.App.objects.all()
 
-    return render_to_response('query/listing_base.html', {"list_latest":list_apps}, context_instance=RequestContext(request))
+    return render_to_response('query/listing_base.html', {"list_latest": list_apps}, context_instance=RequestContext(request))
 
 
 def getDetail(request, *args, **kwargs):
