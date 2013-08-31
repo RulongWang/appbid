@@ -48,6 +48,8 @@ body {
 	/*background-color: #ddeef6;*/
 	/*background-image: url(images/front-bg.gif);*/
 	background-repeat: repeat;
+    line-height: 18px;
+    background:#eee;
 }
 a:link,a:visited{
     color:#0070ff;
@@ -152,7 +154,8 @@ a:hover,a:active{
     margin-top:20px;
     padding-top: 0;
     font:13px/16px  Georgia,"HelveticaNeueLT Pro 53 Ex",Arial, Sans-serif;
-    color:#888888;
+    background: white;
+    /*color:#888888;*/
     /*background: coral;*/
     width:960px;
     clear:both;
@@ -160,7 +163,7 @@ a:hover,a:active{
     -webkit-box-shadow: 0 0 6px #888;
     box-shadow: 0 0 6px #ddd;
     border-radius:25px;
-    -moz-border-radius:25px; /* Old Firefox */
+    -moz-border-radius:25px;
 
 
 }
@@ -171,14 +174,15 @@ a:hover,a:active{
 }
 .showcase_row{
     margin:10px 0 10px 0;
-    height:280px;
+    height:560px;
     /*background-color: red;*/
 }
 .showcase_box{
     padding:10px;
+    margin-top:15px;
     margin-left: 14px;
     border: 1px solid #ddd;
-    /*border-radius: 25px;*/
+    border-radius: 5px;
     height:230px;
     width:200px;
     float:left;
@@ -189,17 +193,62 @@ a:hover,a:active{
     width:200px;
     height:200px;
 }
+.box_content_mask{
+    witdh:200px;
+    height:200px;
+    position: relative;
+    top:-200px;
+    left:0;
+    background-image: url("../images/design_hero_screen.jpg");
+    background-repeat: no-repeat;
+     -webkit-filter: blur(5px);
+    -moz-filter: blur(5px);
+    -o-filter: blur(5px);
+    -ms-filter: blur(5px);
+    filter: blur(5px);
+    opacity: 0.95;
+    float: left;
+
+}
 .box_desc{
     /*padding: 5px;*/
+    font-weight:bold;
+    font-size: 18px;
+    color:#53d76a;
     height:30px;
     width:200px;
-    background-color: #ddd;
+    background-color: white;
+    float: left;
+}
+.current_price{
+    float:left;
+    padding-top:10px;
+    padding-left:20px;
 }
 
+.bid_times{
+    float:right;
+    padding-top:10px;
+    padding-right:20px;
+}
 .showcase_img_icon{
     /*border-radius: 5px;*/
     width:200px;
     height:200px;
+
+}
+
+.showcase_img_icon:hover {
+	/*-webkit-filter: blur(10px);*/
+	/*filter: blur(10px);*/
+    /*background-image:url("../images/design_hero_screen.jpg");*/
+    /*display:block;*/
+    -webkit-filter: blur(5px);
+    -moz-filter: blur(5px);
+    -o-filter: blur(5px);
+    -ms-filter: blur(5px);
+    filter: blur(5px);
+    opacity: 0.95;
 }
 
 
