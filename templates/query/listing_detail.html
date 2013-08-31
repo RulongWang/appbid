@@ -13,7 +13,7 @@
                 <p class="margin10px left">{{ app.title }}</p>
                 <span class="margin10px">Visit <a target="_new" href="{{ app.app_store_link }}">{{ app.app_name }}</a> in the AppleStore</span>
                 <div id="auctionstatus"  title="Listed: 2013-08-21T11:37:06+10:00; Ends: 2013-09-18T11:37:06+10:00">
-                    {% if app.reserve_price <= 1 %}Auction has reached the reserve price{% endif %}<br><!--TODO:To do this later. -->
+                    {% if app.reserve_price <= current_price %}Auction has reached the reserve price{% endif %}<br>
                     Listing closes in 23 days, 18 hours<!--TODO:To do this later. -->
                 </div>
               </div>
@@ -21,13 +21,16 @@
                 <div class="bidding_status" > </div>
                 <div class="bidding_box">
                     $<div id="current_price">{{ current_price|floatformat|default:0 }}</div> &nbsp;
+                {% ifequal app.status published %}
                     <a href="#"><div id="bid_num">{{ bid_num|floatformat|default:0 }}bid{{ bid_num|floatformat|pluralize }}</div></a>
-                    <form action="" method="post">
+                    <form action="{% url 'bid:bid_create' app.id %}" method="post">
+                        {% csrf_token %}
                         <input id="price" name="price" type="text" />
                         <input id="bid_now" type="submit" value="Bid Now"/>
                     </form>
                     <span>(Enter $<div id="bid_price">{{ bid_price|floatformat|default:0 }}</div> or more.)</span>
                     <div id="price_msg"></div>
+                {% endifequal %}
                 </div>
 
               </div>
@@ -44,7 +47,7 @@
             <div class="feature_block">
                 <ul class="feature_list">
                     <li><span class="li_title">Price</span></li>
-                    <li><span>Price in App Store:</span><span class="right margin_right_20" >{{ appInfo.price|default:0 }}$</span></li>
+                    <li><span>Price in App Store:</span><span class="right margin_right_20" >{{ appInfo.price|floatformat|default:0 }}$</span></li>
 
                 </ul>
             </div>
@@ -93,7 +96,7 @@
                 <div class="widget">
                    <span class="widget_title">Claimed Financials</span>
                    <ul>
-                       <li><span>Revenue</span><span class="right">{{ app.revenue|default:0 }}$</span></li>
+                       <li><span>Revenue</span><span class="right">{{ app.revenue|floatformat|default:0 }}$</span></li>
 {#                       <li><span>Profit</span><span class="right">5,00${{ profit }}</span></li>#}
                    </ul>
 
@@ -157,6 +160,10 @@
     $("#bid_now").click(function() {
         if ($("#price").val() =="") {
             $("#price_msg").text("The price can not be blank");
+            return false;
+        }
+        if (isNaN($("#price").val())) {
+            $("#price_msg").text("The price should be number.");
             return false;
         }
         if (parseFloat($("#price").val()) < parseFloat($("#bid_price").text())) {

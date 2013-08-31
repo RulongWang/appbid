@@ -41,21 +41,26 @@ def getDetail(request, *args, **kwargs):
         for category in app.category.all():
             category_nums[category] = len(category.app_set.filter(category=category))
         initParam['category_nums'] = category_nums
-
-        #The part of Bid info
-        bids = app.bidding_set.all()
-        initParam['bid_num'] = len(bids)
-        if bids:
-            max_price = app.bidding_set.filter(status=1).aggregate(Max('price'))
-            initParam['current_price'] = max_price.get('price__max')
-        else:
-            initParam['current_price'] = app.begin_price
-        if initParam['current_price']:
-            initParam['bid_price'] = initParam['current_price'] + app.minimum_bid
-        else:
-            initParam['bid_price'] = app.minimum_bid
+        initBidInfo(app=app, initParam=initParam)
         return render_to_response('query/listing_detail.html', initParam, context_instance=RequestContext(request))
     raise Http404
+
+
+def initBidInfo(*args, **kwargs):
+    """Init bid info, include bid num, current price, bid min price."""
+    initParam = kwargs.get('initParam')
+    app = kwargs.get('app')
+    bids = app.bidding_set.all()
+    initParam['bid_num'] = len(bids)
+    if bids:
+        max_price = app.bidding_set.filter(status=1).aggregate(Max('price'))
+        initParam['current_price'] = max_price.get('price__max')
+    else:
+        initParam['current_price'] = app.begin_price
+    if initParam['current_price']:
+        initParam['bid_price'] = initParam['current_price'] + app.minimum_bid
+    else:
+        initParam['bid_price'] = app.minimum_bid
 
 
 def getBidInfo(request, *args, **kwargs):
@@ -67,17 +72,7 @@ def getBidInfo(request, *args, **kwargs):
         dict = request.GET
     try:
         app = models.App.objects.get(id=dict.get('id'))
-        bids = app.bidding_set.all()
-        data['bid_num'] = len(bids)
-        if bids:
-            max_price = app.bidding_set.filter(status=1).aggregate(Max('price'))
-            data['current_price'] = max_price.get('price__max')
-        else:
-            data['current_price'] = app.begin_price
-        if data['current_price']:
-            data['bid_price'] = data['current_price'] + app.minimum_bid
-        else:
-            data['bid_price'] = app.minimum_bid
+        initBidInfo(app=app, initParam=data)
         data['ok'] = 'true'
     except models.App.DoesNotExist:
         data['ok'] = 'false'
