@@ -87,9 +87,10 @@ class App(models.Model):
     device = models.ManyToManyField(Device, null=True, blank=True)
     platform_version = models.CharField(max_length=255, null=True, blank=True)
     source_code = models.BooleanField(default=True)
-    rating = models.CharField(max_length=5, null=True, blank=True)# rating for app
+    rating = models.CharField(max_length=5, null=True, blank=True)
     paymentItem = models.ManyToManyField(PaymentItem, null=True, blank=True)
     verify_token = models.CharField(max_length=255, null=True, blank=True)
+    #Whether the bid need be verified by app publisher.
     is_verified = models.BooleanField(default=False)
 
     class Meta:
@@ -160,10 +161,10 @@ class Bidding(models.Model):
     )
     app = models.ForeignKey(App)
     price = models.FloatField()
-    comment = models.CharField(max_length=255)
+    comment = models.TextField(null=True, blank=True)
     buyer = models.ManyToManyField(User)
     bid_time = models.DateTimeField(auto_now_add=True)
-    status = models.IntegerField(choices=BIDDING_STATUS, default=3)
+    status = models.IntegerField(choices=BIDDING_STATUS, null=True, blank=True, default=3)
 
 
 class Gateway(models.Model):

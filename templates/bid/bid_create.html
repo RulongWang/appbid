@@ -1,0 +1,60 @@
+{% extends "index.html" %}
+{% block mainContent %}
+{% load staticfiles %}
+    <form action="" method="post">
+        {% csrf_token %}
+        <div>
+            Current price:{{ current_price|floatformat|default:0 }}
+        </div>
+        <div>
+            <a href="#"><div id="bid_num">{{ bid_num|floatformat|default:0 }}bid{{ bid_num|floatformat|pluralize }}</div></a>
+        </div>
+        {{ biddingForm.price.label_tag }} {{ biddingForm.price }}<div id="price_msg"></div>
+        <div>(Enter $<div id="bid_price">{{ bid_price|floatformat|default:0 }}</div> or more.)</div>
+        <div>
+        <input id="agreement" name="agreement" type="checkbox">I have read the Bidding Terms and Conditions and I agree to them
+        </div>
+        {{ biddingForm.comment.label_tag }} {{ biddingForm.comment }}
+        <input type="hidden" id="bid_create" name="bid_create" value="yes"/>
+        <input id="save" class="nextbutton" type="submit" name="save" value="Save"/>
+    </form>
+<script type="text/javascript" language="javascript">
+    $("#id_price").click(function() {
+        if ($("#id_price").val() ==="") {
+            id = '{{ app_id }}';
+            $.ajax({
+                type:"POST",
+                url:"{% url 'query:bid_info' id %}",
+                data:{
+                    id:id,
+                    csrfmiddlewaretoken: "{{ csrf_token }}"
+                },
+                success:function(data) {
+                    if(data.ok === 'true' && data.bid_price != null && data.current_price != null && data.bid_num != 0) {
+                        $("#bid_price").text(data.bid_price);
+                        $("#current_price").text(data.current_price);
+                        $("#bid_num").text(data.bid_num+"bids");
+                    }
+                }
+            });
+        }
+    });
+    $("#save").click(function() {
+        if ($("#id_price").val() =="") {
+            $("#price_msg").text("The price can not be blank");
+            return false;
+        }
+        if (isNaN($("#id_price").val())) {
+            $("#price_msg").text("The price should be number.");
+            return false;
+        }
+        if (parseFloat($("#id_price").val()) < parseFloat($("#bid_price").text())) {
+            $("#price_msg").text("The price must bid at least the minimum bid");
+            return false;
+        }
+        if ($("#agreement").is(':checked') == false) {
+            return false;
+        }
+    });
+</script>
+{% endblock %}

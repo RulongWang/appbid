@@ -5,11 +5,9 @@ from django.conf.urls.static import static
 from home.views import hello
 from home.tests import test
 import seller.urls
-import seller.views
 import account.urls
-import account.views
-import query.views
 import query.urls
+import bid.urls
 
 
 # Uncomment the next two lines to enable the admin:
@@ -32,6 +30,7 @@ urlpatterns = patterns('',
     url(r'^searchItunes/$', seller.views.searchItunes),
     url(r'^account/', include(account.urls, namespace='account')),
     url(r'^query/', include(query.urls, namespace='query')),
+    url(r'^bid/', include(bid.urls, namespace='bid')),
 )
 
 if settings.DEBUG:
