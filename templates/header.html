@@ -6,10 +6,11 @@
     <title>{{ title }}</title>
 
 <link href="{% static "css/style.css" %}" rel="stylesheet" type="text/css" media="screen" />
-<link rel="stylesheet" href="{% static "css/menu/superfish.css" %}" media="screen">
+<link href="{% static "css/menu.css" %}" rel="stylesheet" type="text/css" media="screen" />
+{#<link rel="stylesheet" href="{% static "css/menu/superfish.css" %}" media="screen">#}
 <script src="{% static "scripts/menu/jquery.js" %}"></script>
-<script src="{% static "scripts/menu/hoverIntent.js" %}"></script>
-<script src="{% static "scripts/menu/superfish.js" %}"></script>
+{#<script src="{% static "scripts/menu/hoverIntent.js" %}"></script>#}
+{#<script src="{% static "scripts/menu/superfish.js" %}"></script>#}
 <script src="{% static "scripts/js/tinymce/tinymce.min.js" %}"></script>
 <script type="text/javascript">
 tinymce.init({
@@ -74,7 +75,7 @@ tinymce.init({
 {#    </div>#}
     <div id="nav_menu">
         <div id="menu">
-        <ul class="sf-menu" id="example">
+        <ul class="sf-menu">
             <li class="current">
                 <a href="/featured-listings" title="Featured listings">Featured</a>
             </li>
@@ -89,30 +90,9 @@ tinymce.init({
             <li class="sold">
                 <a href="/just-sold" title="Listings which have just been sold">Just Sold</a>
             </li>
-            <li class="price-range parent">
-                <a href="#">Price Range</a>
-                   <ul class="dropdown">
-                       <li class="">
-                           <a href="/buy-high-end" title="Listings which will sell for over $10,000">High End Websites</a>
-                       </li>
-                       <li class="">
-                           <a href="/buy-mid-range" title="Listings which will sell for between $1,000 and $10,000">Mid-Range Websites</a>
-                       </li>
-                       <li class="">
-                           <a href="/buy-entry-level" title="Listings which will sell for less than $1,000">Entry Level Websites</a>
-                       </li>
-                   </ul>
-            </li>
             <li class="browse parent">
-                <a href="#">Browse</a>
-                   <ul class="dropdown">
+                <a href="#">Monetization</a>
 
-                       <li class="separate">
-                           <a href="/categories/monetization">Monetization</a>
-                       </li>
-
-
-                   </ul>
             </li>
             <li class="classifieds">
                 <a href="/classifieds">Classifieds</a>
@@ -123,5 +103,56 @@ tinymce.init({
         </ul>
         </div>
     </div>
+{#    <div id="nav_menu">#}
+{#        <div id="menu">#}
+{#        <ul class="sf-menu" id="example">#}
+{#            <li class="current">#}
+{#                <a href="/featured-listings" title="Featured listings">Featured</a>#}
+{#            </li>#}
+{#            <li class="new-listings">#}
+{#                <a href="/query/app-list/">New Listings</a>#}
+{#            </li>#}
+{#            <li class="most-active">#}
+{#                <a href="/active-listings" title="Listings with the most bidding activity">Most Active</a>#}
+{#            </li><li class="ending">#}
+{#                <a href="/ending-soon" title="Listings which are almost over">Ending Soon</a>#}
+{#            </li>#}
+{#            <li class="sold">#}
+{#                <a href="/just-sold" title="Listings which have just been sold">Just Sold</a>#}
+{#            </li>#}
+{#            <li class="price-range parent">#}
+{#                <a href="#">Price Range</a>#}
+{#                   <ul class="dropdown">#}
+{#                       <li class="">#}
+{#                           <a href="/buy-high-end" title="Listings which will sell for over $10,000">High End Websites</a>#}
+{#                       </li>#}
+{#                       <li class="">#}
+{#                           <a href="/buy-mid-range" title="Listings which will sell for between $1,000 and $10,000">Mid-Range Websites</a>#}
+{#                       </li>#}
+{#                       <li class="">#}
+{#                           <a href="/buy-entry-level" title="Listings which will sell for less than $1,000">Entry Level Websites</a>#}
+{#                       </li>#}
+{#                   </ul>#}
+{#            </li>#}
+{#            <li class="browse parent">#}
+{#                <a href="#">Browse</a>#}
+{#                   <ul class="dropdown">#}
+{##}
+{#                       <li class="separate">#}
+{#                           <a href="/categories/monetization">Monetization</a>#}
+{#                       </li>#}
+{##}
+{##}
+{#                   </ul>#}
+{#            </li>#}
+{#            <li class="classifieds">#}
+{#                <a href="/classifieds">Classifieds</a>#}
+{#            </li>#}
+{#            <li class="sell">#}
+{#                <a href="/seller/app-store-link" class="special">Sell Your Website</a>#}
+{#            </li>#}
+{#        </ul>#}
+{#        </div>#}
+{#    </div>#}
 
 </header>
