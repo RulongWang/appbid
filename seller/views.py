@@ -87,6 +87,7 @@ def saveAppStoreLink(request, form, model, *args, **kwargs):
         model.status = 1
         #currency is CNY in chinese version, USD in other version.
         model.currency = models.Currency.objects.get(id=1)
+        model.minimum_bid = 10#default value is 10.
         token_len = models.SystemParam.objects.get(key='token_len')
         model.verify_token = ''.join(random.sample(string.ascii_letters+string.digits, string.atoi(token_len.value)))
         model.is_verified = False
