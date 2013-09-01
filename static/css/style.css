@@ -296,6 +296,28 @@ h1{
     border-right:1px dashed #ddd;
 
 }
+.search_criteria{
+    padding:3px 20px;
+    margin:10px 5px;
+    border-bottom: 1px dashed #ddd;
+}
+
+.search_criteria ul li{
+    padding:3px 10px;
+
+    margin:5px 0px 0px 5px;
+
+
+
+}
+.search_criteria ul li:hover{
+    padding:3px 10px;
+
+    margin:5px 0px 0px 5px;
+    background: #DDD;
+
+
+}
 
 .listing_block{
     width:700px;
@@ -315,9 +337,14 @@ h1{
 
 .app_attribute{
     padding:10px;
+    width:480px;
+    float: right;
 
 }
-
+.info_detail{
+    float:left;
+    width:350px;
+}
 .app_img{
     padding:5px;
     height:140px;
@@ -325,6 +352,12 @@ h1{
     float:left;
     border-radius: 25px;
     border:1px solid #ddd;
+}
+
+.bidding_info{
+    margin-top:20px;
+    width:40px;
+    float:right;
 }
 .img_140x140{
     width:140px;
