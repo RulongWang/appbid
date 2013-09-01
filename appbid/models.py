@@ -162,7 +162,7 @@ class Bidding(models.Model):
     app = models.ForeignKey(App)
     price = models.FloatField()
     comment = models.TextField(null=True, blank=True)
-    buyer = models.ManyToManyField(User)
+    buyer = models.ForeignKey(User)
     bid_time = models.DateTimeField(auto_now_add=True)
     status = models.IntegerField(choices=BIDDING_STATUS, null=True, blank=True, default=3)
 

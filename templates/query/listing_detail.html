@@ -21,8 +21,8 @@
                 <div class="bidding_status" > </div>
                 <div class="bidding_box">
                     $<div id="current_price">{{ current_price|floatformat|default:0 }}</div> &nbsp;
-                {% ifequal app.status published %}
-                    <a href="#"><div id="bid_num">{{ bid_num|floatformat|default:0 }}bid{{ bid_num|floatformat|pluralize }}</div></a>
+                {% ifequal app.status 2 %}
+                    <a href="{% url 'bid:bid_list' app.id %}"><div id="bid_num">{{ bid_num|floatformat|default:0 }}bid{{ bid_num|floatformat|pluralize }}</div></a>
                     <form action="{% url 'bid:bid_create' app.id %}" method="post">
                         {% csrf_token %}
                         <input id="price" name="price" type="text" />

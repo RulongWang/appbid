@@ -7,7 +7,7 @@
             Current price:{{ current_price|floatformat|default:0 }}
         </div>
         <div>
-            <a href="#"><div id="bid_num">{{ bid_num|floatformat|default:0 }}bid{{ bid_num|floatformat|pluralize }}</div></a>
+            <a href="{% url 'bid:bid_list' app_id %}"><div id="bid_num">{{ bid_num|floatformat|default:0 }}bid{{ bid_num|floatformat|pluralize }}</div></a>
         </div>
         {{ biddingForm.price.label_tag }} {{ biddingForm.price }}<div id="price_msg"></div>
         <div>(Enter $<div id="bid_price">{{ bid_price|floatformat|default:0 }}</div> or more.)</div>

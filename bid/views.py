@@ -3,6 +3,7 @@ from django.http import Http404
 from django.shortcuts import render_to_response, RequestContext, HttpResponseRedirect, get_object_or_404
 from django.views.decorators.csrf import csrf_protect
 from django.contrib.auth.decorators import login_required
+from django.db.models import Q
 from django.core.urlresolvers import reverse
 from appbid import models
 from bid import forms
@@ -22,11 +23,11 @@ def createBid(request, *args, **kwargs):
                 if request.POST.get('comment'):#From bid_create.html
                     bid = biddingForm.save(commit=False)
                     bid.app = app
+                    bid.buyer = request.user
                     bid.status = 1
                     if app.is_verified:#Need be verified by app publisher.
                         bid.status = 3
                     bid.save()
-                    bid.buyer.add(request.user)
                     return HttpResponseRedirect(reverse('query:app_detail', kwargs={'pk': app.id}))
                 else:#From list_detail.html
                     initParam['biddingForm'] = biddingForm
@@ -36,4 +37,12 @@ def createBid(request, *args, **kwargs):
 
 
 def getBids(request, *args, **kwargs):
-    print 'bid list'
+    if kwargs['pk']:
+        initParam = {}
+        app = get_object_or_404(models.App, pk=kwargs['pk'])
+        initParam['app'] = app
+        initParam['appInfo'] = app.appinfo
+        initParam['bids'] = app.bidding_set.filter(Q(status=1) | Q(buyer=request.user)).order_by('-price', '-bid_time')
+        initBidInfo(app=app, initParam=initParam)
+        return render_to_response('bid/bid_list.html', initParam, context_instance=RequestContext(request))
+    raise Http404

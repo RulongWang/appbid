@@ -1,1 +1,95 @@
 {% extends "index.html" %}
+{% block mainContent %}
+    {% load staticfiles %}
+
+        <div class="listing_header">
+          <div class="listing_icon left">
+            <img src="{{ MEDIA_URL }}{{ appInfo.icon }}"class="detail_icon"/>
+            <a href="{% url 'query:app_detail' app.id %}">View app detail</a>
+          </div>
+          <div class="listing_icon left">
+            <p class="margin10px left">{{ app.title }}</p>
+            <span class="margin10px">Visit <a target="_new" href="{{ app.app_store_link }}">{{ app.app_name }}</a> in the AppleStore</span>
+            <div id="auctionstatus"  title="Listed: 2013-08-21T11:37:06+10:00; Ends: 2013-09-18T11:37:06+10:00">
+                {% if app.reserve_price <= current_price %}Auction has reached the reserve price{% endif %}<br>
+                Listing closes in 23 days, 18 hours<!--TODO:To do this later. -->
+            </div>
+          </div>
+          <div class="bidding_box right">
+            <div class="bidding_status" > </div>
+            <div class="bidding_box">
+                $<div id="current_price">{{ current_price|floatformat|default:0 }}</div> &nbsp;
+                {% ifequal app.status 2 %}
+                <a href="{% url 'bid:bid_list' app.id %}"><div id="bid_num">{{ bid_num|floatformat|default:0 }}bid{{ bid_num|floatformat|pluralize }}</div></a>
+                <form action="{% url 'bid:bid_create' app.id %}" method="post">
+                    {% csrf_token %}
+                    <input id="price" name="price" type="text" />
+                    <input id="bid_now" type="submit" value="Bid Now"/>
+                </form>
+                <span>(Enter $<div id="bid_price">{{ bid_price|floatformat|default:0 }}</div> or more.)</span>
+                <div id="price_msg"></div>
+                {% endifequal %}
+            </div>
+
+          </div>
+    </div>
+    <table width="80%">
+    <tr>
+        <td width="50%">Bidder</td><td>Bid Price</td><td>Date</td>
+    </tr>
+    {% for bid in bids %}
+        <tr>
+        <td>Bidder{{ forloop.counter }}
+            {% ifequal bid.buyer.id request.user.id %}
+                - {{ bid.buyer.username }}
+            {% endifequal %}
+            <div>has bid on 5 listings from 5 sellers</div>
+        </td>
+        <td>
+            {{ bid.price|floatformat }}
+            {% ifequal bid.status 2 %} - rejected{% endifequal %}
+            {% ifequal bid.status 3 %} - pending{% endifequal %}
+        </td>
+        <td>
+            {{ bid.bid_time }}
+        </td>
+        </tr>
+    {% endfor %}
+    </table>
+<script type="text/javascript" language="javascript">
+    $("#price").click(function() {
+        if ($("#price").val() ==="") {
+            id = '{{ app.id }}';
+            $.ajax({
+                type:"POST",
+                url:"{% url 'query:bid_info' id %}",
+                data:{
+                    id:id,
+                    csrfmiddlewaretoken: "{{ csrf_token }}"
+                },
+                success:function(data) {
+                    if(data.ok === 'true' && data.bid_price != null && data.current_price != null && data.bid_num != 0) {
+                        $("#bid_price").text(data.bid_price);
+                        $("#current_price").text(data.current_price);
+                        $("#bid_num").text(data.bid_num+"bids");
+                    }
+                }
+            });
+        }
+    });
+    $("#bid_now").click(function() {
+        if ($("#price").val() =="") {
+            $("#price_msg").text("The price can not be blank");
+            return false;
+        }
+        if (isNaN($("#price").val())) {
+            $("#price_msg").text("The price should be number.");
+            return false;
+        }
+        if (parseFloat($("#price").val()) < parseFloat($("#bid_price").text())) {
+            $("#price_msg").text("The price must bid at least the minimum bid");
+            return false;
+        }
+    });
+</script>
+{% endblock %}
