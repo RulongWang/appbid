@@ -13,7 +13,7 @@
                 <p class="margin10px left">{{ app.title }}</p>
                 <span class="margin10px">Visit <a target="_new" href="{{ app.app_store_link }}">{{ app.app_name }}</a> in the AppleStore</span>
                 <div id="auctionstatus"  title="Listed: 2013-08-21T11:37:06+10:00; Ends: 2013-09-18T11:37:06+10:00">
-                    {% if app.reserve_price <= current_price %}Auction has reached the reserve price{% endif %}<br>
+                    {% if app.reserve_price and app.reserve_price <= current_price %}Auction has reached the reserve price{% endif %}<br>
                     Listing closes in 23 days, 18 hours<!--TODO:To do this later. -->
                 </div>
               </div>

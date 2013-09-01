@@ -7,7 +7,7 @@
       <legend>Sale Information</legend>
 
     <div class="field_block_sale">
-        {{ form.begin_price.label_tag }}
+        *{{ form.begin_price.label_tag }}
         {% if form.begin_price.errors %}
             <div>
             {{ form.begin_price.errors }}
@@ -17,7 +17,7 @@
     </div>
 
     <div class="field_block_sale">
-        {{ form.one_price.label_tag }}
+        &nbsp;&nbsp;{{ form.one_price.label_tag }}
         {% if form.one_price.errors %}
             <div>
             {{ form.one_price.errors }}
@@ -27,7 +27,7 @@
     </div>
 
     <div class="field_block_sale">
-        {{ form.reserve_price.label_tag }}
+        &nbsp;&nbsp;{{ form.reserve_price.label_tag }}
         {% if form.reserve_price.errors %}
             <div>
             {{ form.reserve_price.errors }}
@@ -37,7 +37,7 @@
     </div>
 
     <div class="field_block_sale">
-        {{ form.currency.label_tag }}
+        *{{ form.currency.label_tag }}
         {% if form.currency.errors %}
             <div>
             {{ form.currency.errors }}
@@ -47,7 +47,7 @@
     </div>
 
     <div class="field_block_sale">
-        {{ form.begin_date.label_tag }}
+        *{{ form.begin_date.label_tag }}
         {% if form.begin_date.errors %}
             <div>
             {{ form.begin_date.errors }}
@@ -57,7 +57,7 @@
     </div>
 
     <div class="field_block_sale">
-        {{ form.end_date.label_tag }}
+        *{{ form.end_date.label_tag }}
         {% if form.end_date.errors %}
             <div>
             {{ form.end_date.errors }}
@@ -67,7 +67,7 @@
     </div>
 
     <div class="field_block_sale">
-        {{ form.minimum_bid.label_tag }}
+        *{{ form.minimum_bid.label_tag }}
         {% if form.minimum_bid.errors %}
             <div>
             {{ form.minimum_bid.errors }}
@@ -78,10 +78,53 @@
 
     <div class="button_block">
             <input id="next" class="nextbutton" type="submit" name="next" value="Next"/>
-            <input id="next" class="nextbutton" type="submit" name="save" value="Save"/>
     </div>
     </fieldset>
 
     </form>
-
+<script type="text/javascript" language="javascript">
+    $("#next").click(function() {
+        if ($("#id_begin_price").val() == "") {
+            $(".errors_block").html("<ul><li>Begin price is required.</li></ul>");//TODO:it will be set in message.properties.
+            return false;
+        }
+        if (isNaN($("#id_begin_price").val())) {
+            $(".errors_block").html("<ul><li>Begin price should be number.</li></ul>");//TODO:it will be set in message.properties.
+            return false;
+        }
+        if ($("#id_currency").val() == "") {
+            $(".errors_block").html("<ul><li>Currency is required.</li></ul>");//TODO:it will be set in message.properties.
+            return false;
+        }
+        if ($("#id_begin_date").val() == "") {
+            $(".errors_block").html("<ul><li>Begin date is required.</li></ul>");//TODO:it will be set in message.properties.
+            return false;
+        }
+        var reg = /^((((1[6-9]|[2-9]\d)\d{2})-(0?[13578]|1[02])-(0?[1-9]|[12]\d|3[01]))|(((1[6-9]|[2-9]\d)\d{2})-(0?[13456789]|1[012])-(0?[1-9]|[12]\d|30))|(((1[6-9]|[2-9]\d)\d{2})-0?2-(0?[1-9]|1\d|2[0-8]))|(((1[6-9]|[2-9]\d)(0[48]|[2468][048]|[13579][26])|((16|[2468][048]|[3579][26])00))-0?2-29-))(\s(([01]\d{1})|(2[0123])):([0-5]\d):([0-5]\d))?$/;
+        if (!reg.test($("#id_begin_date").val())) {
+            $(".errors_block").html("<ul><li>Begin date is not correct.</li></ul>");//TODO:it will be set in message.properties.
+            return false;
+        }
+        if ($("#id_end_date").val() == "") {
+            $(".errors_block").html("<ul><li>End date is required.</li></ul>");//TODO:it will be set in message.properties.
+            return false;
+        }
+        if (!reg.test($("#id_end_date").val())) {
+            $(".errors_block").html("<ul><li>End date is not correct.</li></ul>");//TODO:it will be set in message.properties.
+            return false;
+        }
+        if (new Date($("#id_end_date").val().replace(/\-/g, "\/")) <= new Date($("#id_begin_date").val().replace(/\-/g, "\/"))) {
+            $(".errors_block").html("<ul><li>End date should be later than begin date.</li></ul>");//TODO:it will be set in message.properties.
+            return false;
+        }
+        if ($("#id_minimum_bid").val() == "") {
+            $(".errors_block").html("<ul><li>Minimum bid is required.</li></ul>");//TODO:it will be set in message.properties.
+            return false;
+        }
+        if (isNaN($("#id_minimum_bid").val())) {
+            $(".errors_block").html("<ul><li>Minimum bid should be number.</li></ul>");//TODO:it will be set in message.properties.
+            return false;
+        }
+    });
+</script>
 </div>

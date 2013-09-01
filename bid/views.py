@@ -20,7 +20,7 @@ def createBid(request, *args, **kwargs):
         if request.method == "POST":
             biddingForm = forms.BiddingForm(request.POST)
             if biddingForm.is_valid():
-                if request.POST.get('comment'):#From bid_create.html
+                if 'yes' == request.POST.get('bid_create'):#From bid_create.html
                     bid = biddingForm.save(commit=False)
                     bid.app = app
                     bid.buyer = request.user

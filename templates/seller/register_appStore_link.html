@@ -23,13 +23,13 @@
             {% csrf_token %}
 
         <div class="appinfo" >
-            <div class="margin_left_10">{{ form.title.label_tag }} {{ form.title }}</div>
+            <div class="margin_left_10">*{{ form.title.label_tag }} {{ form.title }}</div>
         </div>
 
 
         <div class="appinfo" >
             <div class="margin_left_10" style="vertical-align: middle;">
-                {{ form.app_store_link.label_tag }}
+                *{{ form.app_store_link.label_tag }}
                 {{ form.app_store_link }}
                 <img src="{% static "images/help_icon.png" %}"  title="{{ form.app_store_link.help_text }}"/>
             </div>
@@ -37,7 +37,6 @@
         </div>
         <div class="button_block">
             <input id="next" class="nextbutton" type="submit" name="next" value="Next"/>
-            <input id="next" class="nextbutton" type="submit" name="save" value="Save"/>
         </div>
         </form>
 
@@ -58,16 +57,16 @@
                 </ol>
             {% endif %}
         </div>
-    <script type="text/javascript" language="javascript">
-        $("#next").click(function() {
-            if ($("#id_title").val() == "") {
-                $(".errors_block").html("<ul><li>Please input title.</li></ul>");//TODO:it will be set in message.properties.
-                return false;
-            }
-            if ($("#id_app_store_link").val() == "") {
-                $(".errors_block").html("<ul><li>App store link is required.</li></ul>");
-                return false;
-            }
-        });
+<script type="text/javascript" language="javascript">
+    $("#next").click(function() {
+        if ($("#id_title").val() == "") {
+            $(".errors_block").html("<ul><li>Title is required.</li></ul>");//TODO:it will be set in message.properties.
+            return false;
+        }
+        if ($("#id_app_store_link").val() == "") {
+            $(".errors_block").html("<ul><li>App store link is required.</li></ul>");//TODO:it will be set in message.properties.
+            return false;
+        }
+    });
 </script>
 </div>
