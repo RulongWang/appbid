@@ -19,13 +19,38 @@ def getIcon(request):
     pass
 
 
-
 def list_latest(request):
     list_apps = []
     list_apps = models.App.objects.all()
 
     return render_to_response('query/listing_base.html', {"list_latest": list_apps}, context_instance=RequestContext(request))
 
+
+def most_active(request):
+    list_apps = []
+    list_apps = models.App.objects.all()
+
+    return render_to_response('query/listing_base.html', {"list_latest": list_apps}, context_instance=RequestContext(request))
+
+
+def list_ending_soon(request):
+    list_apps = []
+    list_apps = models.App.objects.all()
+
+    return render_to_response('query/listing_base.html', {"list_latest": list_apps}, context_instance=RequestContext(request))
+
+
+def list_just_sold(request):
+    list_apps = []
+    list_apps = models.App.objects.all()
+
+    return render_to_response('query/listing_base.html', {"list_latest": list_apps}, context_instance=RequestContext(request))
+
+def list_featured(request):
+    list_apps = []
+    list_apps = models.App.objects.all()
+
+    return render_to_response('query/listing_base.html', {"list_latest": list_apps}, context_instance=RequestContext(request))
 
 def getDetail(request, *args, **kwargs):
     """Get app detail info."""

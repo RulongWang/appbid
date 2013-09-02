@@ -1,6 +1,6 @@
 __author__ = 'Jarvis'
 import json
-import urllib2
+import urllib
 
 
 def getITunes(apple_id):
@@ -9,7 +9,7 @@ def getITunes(apple_id):
         return None
     try:
         search_url = ''.join(['https://itunes.apple.com/lookup?id=', apple_id])
-        raw = urllib2.urlopen(search_url)
+        raw = urllib.urlopen(search_url)
         js = raw.read()
         js_object = json.loads(js)
         if js_object is None or js_object.get('resultCount') != 1:
