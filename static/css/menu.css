@@ -2,20 +2,22 @@
     margin:0 auto;
     height: 38px;
     color:white;
+    font-weight: bold;
 }
 
 .sf-menu li{
+
     float:left;
     height:30px;
-    padding: 10px  4px 0px 4px;
+    padding: 10px  4px 0px 10px;
 }
 
-.sf-menu li:hover{
-    float:left;
-    height:30px;
-    padding: 10px  4px 0px 4px;
-    background-color: white;
-}
+/*.sf-menu li:hover{*/
+    /*float:left;*/
+    /*height:30px;*/
+    /*padding: 10px  4px 0px 4px;*/
+    /*background-color: white;*/
+/*}*/
 .sf-menu a:link{
     color:white;
     padding: 4px;
@@ -29,14 +31,17 @@
 }
 
 .sf-menu a:hover{
-    color:#0070ff;
+    /*color:#0070ff;*/
     padding: 4px;
     height: 30px;
+    text-decoration: underline;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.25);
 }
 .sf-menu a:active{
-    color: #0070ff;
+    /*color: #0070ff;*/
     padding: 4px;
     height:30px;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.25);
 
 }
 
