@@ -3,7 +3,7 @@ from django.http import Http404
 from django.shortcuts import render_to_response, RequestContext, HttpResponseRedirect, get_object_or_404
 from django.views.decorators.csrf import csrf_protect
 from django.contrib.auth.decorators import login_required
-from django.db.models import Q
+from django.db.models import Q, Count
 from django.core.urlresolvers import reverse
 from appbid import models
 from bid import forms
@@ -42,7 +42,20 @@ def getBids(request, *args, **kwargs):
         app = get_object_or_404(models.App, pk=kwargs['pk'])
         initParam['app'] = app
         initParam['appInfo'] = app.appinfo
-        initParam['bids'] = app.bidding_set.filter(Q(status=1) | Q(buyer=request.user)).order_by('-price', '-bid_time')
         initBidInfo(app=app, initParam=initParam)
+        bids = app.bidding_set.filter(Q(status=1) | Q(buyer=request.user)).order_by('-price', '-bid_time')
+        buyer_map = {}
+        bid_info_list = []
+        for bid in bids:
+            buyer = bid.buyer
+            if buyer_map.get(buyer.id, None) is None:
+                info_list = []
+                info_list.append(bid)
+                info_list.append(len(buyer_map) + 1)
+                info_list.append(len(buyer.bidding_set.all()))
+                info_list.append(len(buyer.bidding_set.values('app').annotate(Count('app'))))
+                buyer_map[buyer.id] = info_list
+            bid_info_list.append(buyer_map.get(buyer.id))
+        initParam['bid_info_list'] = bid_info_list
         return render_to_response('bid/bid_list.html', initParam, context_instance=RequestContext(request))
     raise Http404

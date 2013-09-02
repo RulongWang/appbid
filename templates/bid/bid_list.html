@@ -37,21 +37,21 @@
     <tr>
         <td width="50%">Bidder</td><td>Bid Price</td><td>Date</td>
     </tr>
-    {% for bid in bids %}
+    {% for bid_info in bid_info_list %}
         <tr>
-        <td>Bidder{{ forloop.counter }}
-            {% ifequal bid.buyer.id request.user.id %}
-                - {{ bid.buyer.username }}
+        <td>Bidder{{ bid_info.1 }}
+            {% ifequal bid_info.0.buyer.id request.user.id %}
+                - {{ bid_info.0.buyer.username }}
             {% endifequal %}
-            <div>has bid on 5 listings from 5 sellers</div>
+            <div>has bid on {{ bid_info.2 }} listings from {{ bid_info.3 }} sellers</div>
         </td>
         <td>
-            {{ bid.price|floatformat }}
-            {% ifequal bid.status 2 %} - rejected{% endifequal %}
-            {% ifequal bid.status 3 %} - pending{% endifequal %}
+            {{ bid_info.0.price|floatformat }}
+            {% ifequal bid_info.0.status 2 %} - rejected{% endifequal %}
+            {% ifequal bid_info.0.status 3 %} - pending{% endifequal %}
         </td>
         <td>
-            {{ bid.bid_time }}
+            {{ bid_info.0.bid_time }}
         </td>
         </tr>
     {% endfor %}

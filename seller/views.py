@@ -70,7 +70,7 @@ def saveAppStoreLink(request, form, model, *args, **kwargs):
     if form.cleaned_data['title'].strip() == "" or form.cleaned_data['app_store_link'].strip() == "":
         return None
     try:
-        pattern = re.compile(r'^https://itunes.apple.com/[\w+/]+id(\d+)')
+        pattern = re.compile(r'^https://itunes.apple.com/[\S+/]+id(\d+)')
         match = pattern.match(form.cleaned_data['app_store_link'])
         if match is None:
             raise
@@ -116,6 +116,8 @@ def saveAppStoreLink(request, form, model, *args, **kwargs):
     if os.path.exists(path) is False:
         os.makedirs(path)
     path = '/'.join([path, 'Icon.jpg'])
+    if os.path.exists(path):
+        os.remove(path)
     if result.get('artworkUrl512', None):
         urllib.urlretrieve(result.get('artworkUrl512', None), path)
     elif result.get('artworkUrl100', None):
