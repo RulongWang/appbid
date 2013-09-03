@@ -9,29 +9,36 @@
               <div class="listing_icon left">
                 <img src="{{ MEDIA_URL }}{{ appInfo.icon }}"class="detail_icon"/>
               </div>
-              <div class="listing_icon left">
-                <p class="margin10px left">{{ app.title }}</p>
-                <span class="margin10px">Visit <a target="_new" href="{{ app.app_store_link }}">{{ app.app_name }}</a> in the AppleStore</span>
+              <div class="app_bid_info">
+                <h1>{{ app.title }}</h1>
+                <span class="margin10px">Visit <a target="_blank" href="{{ app.app_store_link }}">{{ app.app_name }}</a> in the AppleStore</span>
                 <div id="auctionstatus"  title="Listed: 2013-08-21T11:37:06+10:00; Ends: 2013-09-18T11:37:06+10:00">
                     {% if app.reserve_price and app.reserve_price <= current_price %}Auction has reached the reserve price{% endif %}<br>
                     Listing closes in 23 days, 18 hours<!--TODO:To do this later. -->
                 </div>
               </div>
               <div class="bidding_box right">
-                <div class="bidding_status" > </div>
-                <div class="bidding_box">
-                    $<div id="current_price">{{ current_price|floatformat|default:0 }}</div> &nbsp;
-                {% ifequal app.status 2 %}
-                    <a href="{% url 'bid:bid_list' app.id %}"><div id="bid_num">{{ bid_num|floatformat|default:0 }}bid{{ bid_num|floatformat|pluralize }}</div></a>
-                    <form action="{% url 'bid:bid_create' app.id %}" method="post">
-                        {% csrf_token %}
-                        <input id="price" name="price" type="text" />
-                        <input id="bid_now" type="submit" value="Bid Now"/>
-                    </form>
-                    <span>(Enter $<div id="bid_price">{{ bid_price|floatformat|default:0 }}</div> or more.)</span>
-                    <div id="price_msg"></div>
-                {% endifequal %}
+                <div class="bidding_status" >
+                     <div id="current_price">
+                         ${{ current_price|floatformat|default:0 }}
+                     </div>
+                    {% ifequal app.status 2 %}
+                        <div id="bid_num"><a href="{% url 'bid:bid_list' app.id %}">{{ bid_num|floatformat|default:0 }}bid{{ bid_num|floatformat|pluralize }}</a></div>
+                        <div class="bid_form">
+                            <form action="{% url 'bid:bid_create' app.id %}" method="post">
+                            {% csrf_token %}
+                            <input id="price" name="price" type="text" />
+                            <input id="bid_now" type="submit" value="Bid Now"/>
+                        </form>
+                        </div>
+
+                        <div id="bid_price">(Enter ${{ bid_price|floatformat|default:0 }} or more.)</div>
+                        <div id="price_msg"></div>
+                    {% endifequal %}
+
                 </div>
+
+
 
               </div>
         </div>
@@ -55,7 +62,7 @@
                 <ul class="feature_list">
                     <li><span class="li_title">Other Stats </span></li>
                     <li><span>Last Updated:</span><span class="right margin_right_20" >{{ app.last_modify|date:"jS M, Y" }}</span></li>
-                    <li><span>App Support Link:</span><span class="right margin_right_20" ><a target="_new" href="{{ app.web_site }}">Support site</a></span></li>
+                    <li><span>App Support Link:</span><span class="right margin_right_20" ><a target="_blank" href="{{ app.web_site }}">Support site</a></span></li>
 
 
                 </ul>
@@ -119,7 +126,7 @@
                    <span class="widget_title">Attachments</span>
                    <ul>
                        {% for attachment in attachments %}
-                       <li><a target="_new" href="{{ attachment.path.url }}">{{ attachment.name }}</a></li>
+                       <li class="document_icon"><a target="_blank" href="{{ attachment.path.url }}">{{ attachment.name }}</a></li>
                        {% endfor %}
                    </ul>
                 </div>
@@ -128,7 +135,7 @@
                    <span class="widget_title">Category </span>
                    <ul>
                        {% for category, num in category_nums.items %}
-                       <li><span><a target="_new" href="#">{{ category.name }}({{ num }})</a></span></li>
+                       <li><span><a target="_blank" href="#">{{ category.name }}({{ num }})</a></span></li>
                        {% endfor %}
                    </ul>
                 </div>
@@ -159,15 +166,15 @@
     });
     $("#bid_now").click(function() {
         if ($("#price").val() =="") {
-            $("#price_msg").text("The price can not be blank");
+            $("#price_msg").text("*The price can not be blank");
             return false;
         }
         if (isNaN($("#price").val())) {
-            $("#price_msg").text("The price should be number.");
+            $("#price_msg").text("*The price should be number.");
             return false;
         }
         if (parseFloat($("#price").val()) < parseFloat($("#bid_price").text())) {
-            $("#price_msg").text("The price must bid at least the minimum bid");
+            $("#price_msg").text("*The price must bid at least the minimum bid");
             return false;
         }
     });

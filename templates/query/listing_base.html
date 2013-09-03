@@ -49,12 +49,12 @@
                             <li>
                                 <div class="app_wrapper">
                                        <div class="app_img">
-                                           <img class="img_140x140" src="{{ MEDIA_URL }}{{ app.appinfo.icon }}"/>
+                                           <a href="{% url 'query:app_detail' app.id %}"><img class="img_140x140" src="{{ MEDIA_URL }}{{ app.appinfo.icon }}"/></a>
                                        </div>
 
                                        <div class="app_attribute">
                                            <div class="info_detail">
-                                            <span><h1>{{ app.app_name }}</h1></span> <span>{{ app.create_time }} </span>
+                                            <span><h1><a href="{% url 'query:app_detail' app.id %}"> {{ app.app_name }}</a></h1></span> <span>{{ app.create_time }} </span>
                                             <p>{{ app.title }}</p>
                                             <span>Downloads:{{ app.dl_amount }}</span>
                                            </div>
