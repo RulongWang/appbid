@@ -112,6 +112,7 @@
                             {{ form.comment }}
                             <tr>
                                 <td>
+                                    <div class='errors_block'></div>
                                     <input type="hidden" name="next" value="{% url 'query:app_detail' app.id %}" />
                                     <input class="nextbutton" type="submit" id="id_submit" name="submit" value="Add comment">
                                 </td>
@@ -226,6 +227,12 @@
         }
         if (parseFloat($("#price").val()) < parseFloat($("#bid_price").text())) {
             $("#price_msg").text("*The price must bid at least the minimum bid");
+            return false;
+        }
+    });
+    $("#id_submit").click(function() {
+        if ($("#id_comment").val() == "") {
+            $(".errors_block").html("<ul><li>Comment can not be blank.</li></ul>");//TODO:it will be set in message.properties.
             return false;
         }
     });
