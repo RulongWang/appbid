@@ -22,19 +22,33 @@
         <form action="" method="post">
             {% csrf_token %}
 
-        <div class="appinfo" >
-            <div class="margin_left_10">*{{ form.title.label_tag }} {{ form.title }}</div>
+      <div class="field_block_addi">
+        <div class="left" style="width:120px;margin-top:10px;">
+            <div style="width:100px:height:30px;">*{{ form.title.label_tag }}</div>
+
+        </div>
+        <div class="right" style="width:420px;">
+             {{ form.title }}
         </div>
 
 
-        <div class="appinfo" >
-            <div class="margin_left_10" style="vertical-align: middle;">
-                *{{ form.app_store_link.label_tag }}
-                {{ form.app_store_link }}
-                <img src="{% static "images/help_icon.png" %}"  title="{{ form.app_store_link.help_text }}"/>
-            </div>
+
+
+      </div>
+      <div class="field_block_addi">
+        <div class="left" style="width:120px;margin-top:10px;">
+            <div style="width:100px:height:30px;">*{{ form.app_store_link.label_tag }}</div>
 
         </div>
+       <div id="progressor">
+              <img src="{% static "images/loading.gif" %}" style="width:30px;height: 30px;"/>
+        </div>
+        <div class="right" style="width:420px;">
+             {{ form.app_store_link }}
+        </div>
+
+      </div>
+
         <div class="button_block">
             <input id="next" class="nextbutton" type="submit" name="next" value="Next"/>
         </div>
@@ -61,12 +75,14 @@
     $("#next").click(function() {
         if ($("#id_title").val() == "") {
             $(".errors_block").html("<ul><li>Title is required.</li></ul>");//TODO:it will be set in message.properties.
+
             return false;
         }
         if ($("#id_app_store_link").val() == "") {
             $(".errors_block").html("<ul><li>App store link is required.</li></ul>");//TODO:it will be set in message.properties.
             return false;
         }
+        $("#progressor").show("fast")
     });
 </script>
 </div>

@@ -2,7 +2,7 @@
 {% block mainContent %}
     {% load staticfiles %}
 
-        <div class="listing_header">
+    <div class="listing_header">
           <div class="listing_icon left">
             <img src="{{ MEDIA_URL }}{{ appInfo.icon }}"class="detail_icon"/>
             <a href="{% url 'query:app_detail' app.id %}">View app detail</a>
@@ -16,24 +16,27 @@
             </div>
           </div>
           <div class="bidding_box right">
-            <div class="bidding_status" > </div>
-            <div class="bidding_box">
-                $<div id="current_price">{{ current_price|floatformat|default:0 }}</div> &nbsp;
-                {% ifequal app.status 2 %}
-                <a href="{% url 'bid:bid_list' app.id %}"><div id="bid_num">{{ bid_num|floatformat|default:0 }}bid{{ bid_num|floatformat|pluralize }}</div></a>
-                <form action="{% url 'bid:bid_create' app.id %}" method="post">
-                    {% csrf_token %}
-                    <input id="price" name="price" type="text" />
-                    <input id="bid_now" type="submit" value="Bid Now"/>
-                </form>
-                <span>(Enter $<div id="bid_price">{{ bid_price|floatformat|default:0 }}</div> or more.)</span>
-                <div id="price_msg"></div>
+            <div class="bidding_status" >
+                <div id="current_price"> ${{ current_price|floatformat|default:0 }}</div>
+                 {% ifequal app.status 2 %}
+                    <div id="bid_num"><a href="{% url 'bid:bid_list' app.id %}">{{ bid_num|floatformat|default:0 }}bid{{ bid_num|floatformat|pluralize }}</a></div>
+                    <div class="bid_form">
+                            <form action="{% url 'bid:bid_create' app.id %}" method="post">
+                            {% csrf_token %}
+                            <input id="price" name="price" type="text" />
+                            <input id="bid_now" type="submit" value="Bid Now"/>
+                        </form>
+                        </div>
+                   <div id="bid_price">(Enter ${{ bid_price|floatformat|default:0 }} or more.)</div>
+                   <div id="price_msg"></div>
                 {% endifequal %}
-            </div>
 
+            </div>
           </div>
     </div>
-    <table width="80%">
+    <div class="clear"></div>
+    <div class="bidding_list">
+         <table width="80%">
     <tr>
         <td width="50%">Bidder</td><td>Bid Price</td><td>Date</td>
     </tr>
@@ -56,6 +59,9 @@
         </tr>
     {% endfor %}
     </table>
+
+    </div>
+
 <script type="text/javascript" language="javascript">
     $("#price").click(function() {
         if ($("#price").val() ==="") {
