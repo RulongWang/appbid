@@ -54,12 +54,24 @@
 
                                        <div class="app_attribute">
                                            <div class="info_detail">
-                                            <span><h1><a href="{% url 'query:app_detail' app.id %}"> {{ app.app_name }}</a></h1></span> <span>{{ app.create_time }} </span>
-                                            <p>{{ app.title }}</p>
-                                            <span>Downloads:{{ app.dl_amount }}</span>
+                                            <span><h1><a href="{% url 'query:app_detail' app.id %}"> {{ app.app_name }}</a></h1></span>
+                                            {% if app.publish_date %}
+                                               <div>{{ app.publish_date }} </div>
+                                            {% endif %}
+                                            <div class="margin10px fontcolor_light_grey">
+                                               <p style="font-size: 14px;">{{ app.title }}</p>
+                                            </div>
+                                            <span class="fontcolor_light_grey">Monthly Downloads:{{ app.dl_amount }}</span>
+                                            {% if app.revenue %}
+                                               <div class="fontcolor_light_grey">Revenue:{{ app.revenue }} </div>
+                                            {% endif %}
+                                               <div class="fontcolor_light_grey">Rating:{{ app.rating }} </div>
+                                               <div class="fontcolor_light_grey">AppleStore Price:{{ app.appinfo.price }} </div>
+
                                            </div>
                                            <div class="bidding_info">
-                                               5$
+                                               <div>5$</div>
+                                               <div>200Bids</div>
                                            </div>
                                        </div>
                                 </div>
