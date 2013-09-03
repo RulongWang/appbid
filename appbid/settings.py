@@ -133,6 +133,8 @@ INSTALLED_APPS = (
      'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
     'django.contrib.admindocs',
+    'django.contrib.comments',
+    # 'django_crontab',
     'home',
     'appbid',
     'seller',
@@ -182,3 +184,7 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = '25'
 EMAIL_HOST_USER = '***@gmail.com'#your email username
 EMAIL_HOST_PASSWORD = '******' #your email passowrd
+
+# CRONJOBS = [
+#     ('*/1 * * * *', 'utilities.job.jobTest')
+# ]

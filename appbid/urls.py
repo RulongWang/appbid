@@ -1,5 +1,5 @@
 from django.conf.urls import patterns, include, url
-from django.contrib import admin
+from django.contrib import admin, comments
 from django.conf import settings
 from django.conf.urls.static import static
 from home.views import hello
@@ -25,6 +25,7 @@ urlpatterns = patterns('',
 
     # Uncomment the next line to enable the admin:
     url(r'^admin/', include(admin.site.urls)),
+    url(r'^comments/', include('django.contrib.comments.urls')),
     url(r'^test/$', test, name='goodtest'),
     url(r'^seller/', include(seller.urls, namespace='seller')),
     url(r'^searchItunes/$', seller.views.searchItunes),

@@ -1,7 +1,7 @@
 {% extends "index.html" %}
 {% block mainContent %}
 {% load staticfiles %}
-
+{% load comments %}
         <div id="breadcrumb">
             <span>Category: <a href="#">Category Parent</a> &gt <a href="#">Photography</a></span>
         </div>
@@ -70,6 +70,20 @@
                 {% autoescape off %}
                 {{ app.description }}
                 {% endautoescape %}
+                <div>
+                    <hr>
+                    <div>
+                        {% get_comment_list for app as comment_list %}
+                        {% for comment in comment_list %}
+                            <p>on {{ comment.submit_date|date:"jS M, Y" }}, {{ comment.user_name }} said: {{ comment.comment|safe }}</p>
+                        {%endfor%}
+                    </div>
+                    <hr>
+                    <div>
+                        <h2>Comments</h2>
+                        {% render_comment_form for app %}
+                    </div>
+                </div>
             </div>
             <div class="detail_right">
                 <div class="widget">
