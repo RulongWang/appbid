@@ -119,6 +119,8 @@ def saveAppStoreLink(request, form, model, *args, **kwargs):
     if os.path.exists(path):
         os.remove(path)
     if result.get('artworkUrl512', None):
+        if os.path.exists(path):
+            os.remove(path)
         urllib.urlretrieve(result.get('artworkUrl512', None), path)
     elif result.get('artworkUrl100', None):
         urllib.urlretrieve(result.get('artworkUrl100', None), path)
