@@ -23,7 +23,9 @@
                          ${{ current_price|floatformat|default:0 }}
                      </div>
                     {% ifequal app.status 2 %}
-                        <div id="bid_num"><a href="{% url 'bid:bid_list' app.id %}">{{ bid_num|floatformat|default:0 }}bid{{ bid_num|floatformat|pluralize }}</a></div>
+                        <div>
+                            <a href="{% url 'bid:bid_list' app.id %}"><div id="bid_num">{{ bid_num|floatformat|default:0 }}bid{{ bid_num|floatformat|pluralize }}</div></a>
+                        </div>
                         <div class="bid_form">
                             <form action="{% url 'bid:bid_create' app.id %}" method="post">
                             {% csrf_token %}
@@ -78,24 +80,45 @@
                 {{ app.description }}
                 {% endautoescape %}
 
+                <div class="comments_wrapper">
+                    {% get_comment_list for app as comment_list %}
+                    {% for comment in comment_list %}
+                        {% ifequal comment.user_name request.user.username %}
+                        <div class="comments_red">
+                        {% else %}
+                         <div class="comments">
+                        {% endifequal %}
+                        <p> on {{ comment.submit_date|date:"jS M, Y" }}, {{ comment.user_name }} said: {{ comment.comment|safe }}</p>
+                        </div>
+                    {%endfor%}
+                </div>
 
-                    <div class="comments_wrapper">
-                        {% get_comment_list for app as comment_list %}
-                        {% for comment in comment_list %}
-                            {% ifequal comment.user_name request.user.username %}
-                            <div class="comments_red">
-                            {% else %}
-                             <div class="comments">
-                            {% endifequal %}
-                            <p> on {{ comment.submit_date|date:"jS M, Y" }}, {{ comment.user_name }} said: {{ comment.comment|safe }}</p>
-                            </div>
-                        {%endfor%}
-                    </div>
-                    <div class="comments_form">
-                        <h1>Leave a Comment</h1>
-                        {% render_comment_form for app %}
-                    </div>
-
+                <div class="comments_form">
+                    <h1>Leave a Comment</h1>
+                    {% if user.is_authenticated %}
+                    {% get_comment_form for app as form %}
+                    <table>
+                        <form action="{% comment_form_target %}" method="post">
+                            {% csrf_token %}
+                            <input id="id_honeypot" name="honeypot" hidden="hidden" type="text" />
+{#                            {{ form.honeypot }}#}
+                            {{ form.content_type }}
+                            {{ form.object_pk }}
+                            {{ form.timestamp }}
+                            {{ form.security_hash }}
+                            {{ form.comment }}
+                            <tr>
+                                <td>
+                                    <input type="hidden" name="next" value="{% url 'query:app_detail' app.id %}" />
+                                    <input class="nextbutton" type="submit" id="id_submit" name="submit" value="Add comment">
+                                </td>
+                            </tr>
+                        </form>
+                    </table>
+                    {% else %}
+                        <p>Please <a href="/account/home/?next={{ request.path }}">log in</a> to leave a comment.</p>
+                    {% endif %}
+                </div>
              </div>
             <div class="detail_right">
                 <div class="widget">
@@ -162,6 +185,7 @@
             </div>
             <div class="clear"></div>
         </div>
+
 <script type="text/javascript" language="javascript">
     $("#price").click(function() {
         if ($("#price").val() ==="") {
@@ -175,9 +199,14 @@
                 },
                 success:function(data) {
                     if(data.ok === 'true' && data.bid_price != null && data.current_price != null && data.bid_num != 0) {
-                        $("#bid_price").text(data.bid_price);
-                        $("#current_price").text(data.current_price);
-                        $("#bid_num").text(data.bid_num+"bids");
+                        $("#bid_price").text("(Enter $"+data.bid_price+" or more.)");
+                        $("#current_price").text("$"+data.current_price);
+                        if (data.bid_num == 1) {
+                            $("#bid_num").text(data.bid_num+"bid");
+                        }
+                        else {
+                            $("#bid_num").text(data.bid_num+"bids");
+                        }
                     }
                 }
             });

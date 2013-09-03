@@ -21,7 +21,7 @@
             Current price:{{ current_price|floatformat|default:0 }}
         </div>
         <div>
-            <a href="{% url 'bid:bid_list' app_id %}"><div id="bid_num">{{ bid_num|floatformat|default:0 }}bid{{ bid_num|floatformat|pluralize }}</div></a>
+            <a href="{% url 'bid:bid_list' app.id %}"><div id="bid_num">{{ bid_num|floatformat|default:0 }}bid{{ bid_num|floatformat|pluralize }}</div></a>
         </div>
         {{ biddingForm.price.label_tag }} {{ biddingForm.price }}<div id="price_msg"></div>
         <div>(Enter $<div id="bid_price">{{ bid_price|floatformat|default:0 }}</div> or more.)</div>
@@ -35,7 +35,7 @@
 <script type="text/javascript" language="javascript">
     $("#id_price").click(function() {
         if ($("#id_price").val() ==="") {
-            id = '{{ app_id }}';
+            id = '{{ app.id }}';
             $.ajax({
                 type:"POST",
                 url:"{% url 'query:bid_info' id %}",
@@ -45,9 +45,14 @@
                 },
                 success:function(data) {
                     if(data.ok === 'true' && data.bid_price != null && data.current_price != null && data.bid_num != 0) {
-                        $("#bid_price").text(data.bid_price);
-                        $("#current_price").text(data.current_price);
-                        $("#bid_num").text(data.bid_num+"bids");
+                        $("#bid_price").text("(Enter $" + data.bid_price + " or more.)");
+                        $("#current_price").text("$" + data.current_price);
+                        if (data.bid_num == 1) {
+                            $("#bid_num").text(data.bid_num + "bid");
+                        }
+                        else {
+                            $("#bid_num").text(data.bid_num + "bids");
+                        }
                     }
                 }
             });
