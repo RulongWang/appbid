@@ -14,24 +14,28 @@
                 </div>
               </div>
         </div>
+    <div class="bidding_create">
+        <form action="" method="post">
+            {% csrf_token %}
+            <div>
+                <h1>Current price:&nbsp;{{ current_price|floatformat|default:0 }}{{ app.currency.currency }}</h1>
+            </div>
+            <div id="bid_num" style="display: none">{{ bid_num|floatformat|default:0 }}bid{{ bid_num|floatformat|pluralize }}</div>
 
-    <form action="" method="post">
-        {% csrf_token %}
-        <div>
-            Current price:{{ current_price|floatformat|default:0 }}
-        </div>
-        <div>
-            <a href="{% url 'bid:bid_list' app.id %}"><div id="bid_num">{{ bid_num|floatformat|default:0 }}bid{{ bid_num|floatformat|pluralize }}</div></a>
-        </div>
-        {{ biddingForm.price.label_tag }} {{ biddingForm.price }}<div id="price_msg"></div>
-        <div>(Enter $<div id="bid_price">{{ bid_price|floatformat|default:0 }}</div> or more.)</div>
-        <div>
-        <input id="agreement" name="agreement" type="checkbox">I have read the Bidding Terms and Conditions and I agree to them
-        </div>
-        {{ biddingForm.comment.label_tag }} {{ biddingForm.comment }}
-        <input type="hidden" id="bid_create" name="bid_create" value="yes"/>
-        <input id="save" class="nextbutton" type="submit" name="save" value="Save"/>
-    </form>
+            {{ biddingForm.price.label_tag }} {{ biddingForm.price }}
+            <div id="price_msg"></div>
+            <div id="bid_price">(Enter ${{ bid_price|floatformat|default:0 }}or more.)</div>
+            <div>
+            <input id="agreement" name="agreement" type="checkbox">I have read the Bidding Terms and Conditions and I agree to them
+            </div>
+            <div>
+            {{ biddingForm.comment.label_tag }} {{ biddingForm.comment }}
+            <input type="hidden" id="bid_create" name="bid_create" value="yes"/>
+
+            <input id="save" class="nextbutton" type="submit" name="save" value="Save"/>
+            </div>
+        </form>
+    </div>
 <script type="text/javascript" language="javascript">
     $("#id_price").click(function() {
         if ($("#id_price").val() ==="") {

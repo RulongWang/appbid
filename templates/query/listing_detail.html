@@ -81,6 +81,7 @@
                 {% endautoescape %}
 
                 <div class="comments_wrapper">
+                    <div style="margin-bottom: 10px;"><h1>Comments and Questions:</h1></div>
                     {% get_comment_list for app as comment_list %}
                     {% for comment in comment_list %}
                         {% ifequal comment.user_name request.user.username %}
@@ -88,7 +89,8 @@
                         {% else %}
                          <div class="comments">
                         {% endifequal %}
-                        <p> on {{ comment.submit_date|date:"jS M, Y" }}, {{ comment.user_name }} said: {{ comment.comment|safe }}</p>
+                        <p> on {{ comment.submit_date|date:"jS M, Y" }}, {{ comment.user_name }} said: </p>
+                        <p>{{ comment.comment|safe }}</p>
                         </div>
                     {%endfor%}
                 </div>
@@ -106,6 +108,7 @@
                             {{ form.object_pk }}
                             {{ form.timestamp }}
                             {{ form.security_hash }}
+                            <input id="id_email" name="email" type="text" hidden="hidden" value="{{ user.email }}" />
                             {{ form.comment }}
                             <tr>
                                 <td>

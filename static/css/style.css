@@ -575,6 +575,9 @@ h1{
     padding: 20px;
     background-color: #efefef;
 }
+.comments_red p{
+
+}
 
 .comments_form{
     padding:10px;
@@ -1038,7 +1041,13 @@ fieldset {
     border-radius: 20px;
 }
 
+.bidding_create{
+    margin:0 auto;
+    /*margin-top:20px;*/
+    padding-left: 100px;
+    width:600px;
 
+}
 
 .listing_header{
     /*clear:both;*/
@@ -1061,7 +1070,7 @@ fieldset {
     margin-bottom: 20px;
     clear:both;
     width:960px;
-    height:230px;
+    height:180px;
 
 }
 
