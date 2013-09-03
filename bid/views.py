@@ -16,7 +16,7 @@ def createBid(request, *args, **kwargs):
     if kwargs['pk']:
         initParam = {}
         app = get_object_or_404(models.App, pk=kwargs['pk'])
-        initParam['app_id'] = app.id
+        initParam['app'] = app
         if request.method == "POST":
             biddingForm = forms.BiddingForm(request.POST)
             if biddingForm.is_valid():

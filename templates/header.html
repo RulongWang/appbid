@@ -14,7 +14,10 @@
 <script src="{% static "scripts/js/tinymce/tinymce.min.js" %}"></script>
 <script type="text/javascript">
 tinymce.init({
-    selector: "textarea",
+{#    selector: "",#}
+    mode : "specific_textareas",
+
+    editor_selector : "mceEditor",
     theme: "modern",
     plugins: [
         "advlist autolink lists link image charmap print preview hr anchor pagebreak",
