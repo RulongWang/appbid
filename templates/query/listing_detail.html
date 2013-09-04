@@ -89,7 +89,7 @@
                         {% else %}
                          <div class="comments">
                         {% endifequal %}
-                        <p> on {{ comment.submit_date|date:"jS M, Y" }}, {{ comment.user_name }} said: </p>
+                        <p> on {{ comment.submit_date|date:" M j, Y" }} at {{ comment.submit_date|time:"g:iA"|lower }}, {{ comment.user_name }} said: </p>
                         <p>{{ comment.comment|safe }}</p>
                         </div>
                     {%endfor%}
