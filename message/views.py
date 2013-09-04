@@ -12,12 +12,8 @@ def sendMessage(request, *args, **kwargs):
     else:#Save message data
         if request.method == "POST":
             messageForm = forms.MessageForm(request.POST)
-            print messageForm
-            print messageForm.errors
             if messageForm.is_valid():
-                print '1'
                 message = messageForm.save(commit=False)
-                # message.sender = request.user
                 message.type = 1
                 message.save()
 

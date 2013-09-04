@@ -25,8 +25,8 @@
             <div class="yourprice">
                  <div class="price_box">
                      <div class="label_price"><h1>Your Price:</h1></div>
-                     <div id="bid_price">{{ biddingForm.price }}{{ app.currency.currency }}<div class="right" style="width:200px;">(Enter ${{ bid_price|floatformat|default:0 }} or more.)</div></div>
-
+                     <div>{{ biddingForm.price }}{{ app.currency.currency }}</div>
+                     <div>(Enter <div  id="bid_price">{{ bid_price|floatformat|default:0 }}</div>{{ app.currency.currency }} or more.)</div>
                  </div>
             </div>
             <div id="price_msg">
@@ -63,8 +63,8 @@
                 },
                 success:function(data) {
                     if(data.ok === 'true' && data.bid_price != null && data.current_price != null && data.bid_num != 0) {
-                        $("#bid_price").text("(Enter $" + data.bid_price + " or more.)");
-                        $("#current_price").text("$" + data.current_price);
+                        $("#bid_price").text(data.bid_price);
+                        $("#current_price").text(data.current_price + "{{ app.currency.currency }}");
                         if (data.bid_num == 1) {
                             $("#bid_num").text(data.bid_num + "bid");
                         }

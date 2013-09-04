@@ -30,7 +30,7 @@ def createBid(request, *args, **kwargs):
                         bid.status = 3
                     bid.save()
                     views.sendMessage(request)
-                    return HttpResponseRedirect(reverse('query:app_detail', kwargs={'pk': app.id}))
+                    return HttpResponseRedirect(reverse('bid:bid_list', kwargs={'pk': app.id}))
                 else:#From list_detail.html
                     initParam['biddingForm'] = biddingForm
         initBidInfo(app=app, initParam=initParam)
