@@ -269,6 +269,10 @@ h1{
 .bidding_list{
     padding:30px;
 }
+.bidding_list table{
+    border: 1px solid #ddd;
+    padding: 5px;
+}
 #bid_num{
     width: 100px;
     height:30px;
@@ -570,6 +574,7 @@ h1{
 .comments{
     border-left: 5px solid green;
     border-bottom: 1px dashed #FFF;
+    border-radius: 25px;
     margin-top:5px;
     padding: 20px;
     background-color: #efefef;
@@ -577,9 +582,11 @@ h1{
 .comments_red{
     border-left: 5px solid #FFaaaa;
     border-bottom: 1px dashed #FFF;
-    margin-top:50px;
+    border-radius: 25px;
+    margin-top:5px;
     padding: 20px;
     background-color: #efefef;
+
 }
 .comments_red p{
 
@@ -588,7 +595,7 @@ h1{
 .comments_form{
     padding:10px;
     margin:30px 20px;
-
+   border-radius: 25px;
 }
 
 .bid_comments_form{
@@ -596,17 +603,22 @@ h1{
 }
 
 .comments_form textarea{
+    padding:25px;
     margin-top: 10px;
     background:url("../images/form.jpg") repeat-x top;
-    width:570px;
+    width:515px;
     border: 1px dashed #666;
+    border-radius: 25px;
 }
 
 .bid_comments_form textarea{
+    padding:25px;
     margin-top: 10px;
     background:url("../images/form.jpg") repeat-x top;
-    width:570px;
+    width:515px;
     border: 1px dashed #666;
+    border-radius: 25px;
+
 }
 .yourprice{
     margin-top:10px;

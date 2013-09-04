@@ -23,12 +23,12 @@
                         <a href="{% url 'bid:bid_list' app.id %}"><div id="bid_num">{{ bid_num|floatformat|default:0 }}bid{{ bid_num|floatformat|pluralize }}</div></a>
                     </div>
                     <div class="bid_form">
-                            <form action="{% url 'bid:bid_create' app.id %}" method="post">
+                        <form action="{% url 'bid:bid_create' app.id %}" method="post">
                             {% csrf_token %}
                             <input id="price" name="price" type="text" />
                             <input id="bid_now" type="submit" value="Bid Now"/>
                         </form>
-                        </div>
+                    </div>
                    <div id="bid_price">(Enter ${{ bid_price|floatformat|default:0 }} or more.)</div>
                    <div id="price_msg"></div>
                 {% endifequal %}
@@ -38,7 +38,7 @@
     </div>
     <div class="clear"></div>
     <div class="bidding_list">
-         <table width="80%">
+         <table width="80%" >
     <tr>
         <td width="50%">Bidder</td><td>Bid Price</td><td>Date</td>
     </tr>
