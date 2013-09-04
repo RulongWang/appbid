@@ -20,7 +20,7 @@
               <div class="bidding_box right">
                 <div class="bidding_status" >
                      <div id="current_price">
-                         ${{ current_price|floatformat|default:0 }}
+                        {{ app.currency.currency }}{{ current_price|floatformat|default:0 }}
                      </div>
                     {% ifequal app.status 2 %}
                         <div>
@@ -34,7 +34,7 @@
                         </form>
                         </div>
 
-                        <div id="bid_price">(Enter ${{ bid_price|floatformat|default:0 }} or more.)</div>
+                        <div id="bid_price">(Enter {{ app.currency.currency }}{{ bid_price|floatformat|default:0 }} or more.)</div>
                         <div id="price_msg"></div>
                     {% endifequal %}
 

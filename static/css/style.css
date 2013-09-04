@@ -282,7 +282,13 @@ h1{
     height:30px;
 }
 
+.label_price{
+    width:200px;
+    height:30px;
+}
+
 #price_msg{
+    padding:5px;
     color:red;
     width:200px;
     height:30px;
@@ -564,14 +570,14 @@ h1{
 .comments{
     border-left: 5px solid green;
     border-bottom: 1px dashed #FFF;
-    /*margin-top:20px;*/
+    margin-top:5px;
     padding: 20px;
     background-color: #efefef;
 }
 .comments_red{
     border-left: 5px solid #FFaaaa;
     border-bottom: 1px dashed #FFF;
-    /*margin-top:20px;*/
+    margin-top:50px;
     padding: 20px;
     background-color: #efefef;
 }
@@ -582,7 +588,50 @@ h1{
 .comments_form{
     padding:10px;
     margin:30px 20px;
+
 }
+
+.bid_comments_form{
+
+}
+
+.comments_form textarea{
+    margin-top: 10px;
+    background:url("../images/form.jpg") repeat-x top;
+    width:570px;
+    border: 1px dashed #666;
+}
+
+.bid_comments_form textarea{
+    margin-top: 10px;
+    background:url("../images/form.jpg") repeat-x top;
+    width:570px;
+    border: 1px dashed #666;
+}
+.yourprice{
+    margin-top:10px;
+}
+#price{
+     -webkit-box-shadow: inset 0 1px 0.25em #d9d9d9;
+    -moz-box-shadow: inset 0 1px 0.25em #d9d9d9;
+    padding:4px;
+    box-shadow: inset 0 1px 0.25em #d9d9d9;
+    border: 1px solid #858585;
+    border-radius:3px;
+}
+.yourprice input[type=text]{
+    -webkit-box-shadow: inset 0 1px 0.25em #d9d9d9;
+    -moz-box-shadow: inset 0 1px 0.25em #d9d9d9;
+    padding:4px;
+    box-shadow: inset 0 1px 0.25em #d9d9d9;
+    border: 1px solid #858585;
+    border-radius:3px;
+}
+
+#bid_form{
+    display:none;
+}
+
 /********************register app *****************/
 .register_block{
     margin:0 auto;
@@ -696,6 +745,26 @@ fieldset {
     border-radius: 3px;
     float: left;
 
+}
+.newbutton{
+    margin-top:10px;
+    margin-left:30px;
+    background-color: #08c;
+    color:white;
+    border:0;
+    width:100px;
+    height:30px;
+    border-radius: 3px;
+
+}
+
+#bid_now{
+    background-color: #08c;
+    color:white;
+    border:0;
+    width:80px;
+    height:30px;
+    border-radius: 3px;
 }
 .button_block{
     margin: 10px 0px 20px 169px;
@@ -1020,6 +1089,7 @@ fieldset {
     margin-left:20px;
     padding: 5px;
     width:175px;
+    text-align: center;
     /*float: left;*/
 }
 .app_bid_info{
@@ -1222,7 +1292,42 @@ fieldset {
 }
 
 /*********input iOS7 tag*******/
-input[type=checkbox], input[type=radio] {
+/*input[type=checkbox], input[type=radio] {*/
+	/*appearance: none;*/
+  /*-webkit-appearance: none;*/
+	/*box-shadow: inset 0px 0px 0px 1px #e6e6e6;*/
+	/*border-radius: 15px;*/
+	/*background-color: #fff;*/
+	/*padding: 1px;*/
+	/*display: inline-block;*/
+	/*width: 52px;*/
+	/*height: 31px;*/
+	/*position: relative;*/
+	/*cursor: pointer;*/
+	/*transition: all .3s ease-out;*/
+	/*margin: 0px;*/
+  /*transform: scale(1);*/
+  /*-webkit-transform: scale(1); *//* Adjust size here */
+/*}*/
+/*input[type=checkbox]:checked, input[type=radio]:checked {*/
+	/*box-shadow: inset 0px 0px 0px 20px #53d76a;*/
+/*}*/
+/*input[type=checkbox]:after, input[type=radio]:after {*/
+	/*content: '';*/
+	/*position: absolute;*/
+	/*width: 29px;*/
+	/*height: 29px;*/
+	/*border-radius: 15px;*/
+	/*box-shadow: 0px 2px 2px 1px rgba(0,0,0,.2);*/
+	/*cursor: pointer;*/
+	/*background-color: #fff;*/
+	/*transition: all 0.1s ease-in .1s;*/
+/*}*/
+/*input[type="checkbox"]:checked:after,input[type="radio"]:checked:after {*/
+	/*left: 22px;*/
+/*}*/
+
+ input[type=radio] {
 	appearance: none;
   -webkit-appearance: none;
 	box-shadow: inset 0px 0px 0px 1px #e6e6e6;
@@ -1237,12 +1342,12 @@ input[type=checkbox], input[type=radio] {
 	transition: all .3s ease-out;
 	margin: 0px;
   transform: scale(1);
-  -webkit-transform: scale(1); /* Adjust size here */
+  -webkit-transform: scale(1);  /**Adjust size here**/
 }
-input[type=checkbox]:checked, input[type=radio]:checked {
+ input[type=radio]:checked {
 	box-shadow: inset 0px 0px 0px 20px #53d76a;
 }
-input[type=checkbox]:after, input[type=radio]:after {
+input[type=radio]:after {
 	content: '';
 	position: absolute;
 	width: 29px;
@@ -1253,6 +1358,6 @@ input[type=checkbox]:after, input[type=radio]:after {
 	background-color: #fff;
 	transition: all 0.1s ease-in .1s;
 }
-input[type="checkbox"]:checked:after,input[type="radio"]:checked:after {
+input[type="radio"]:checked:after {
 	left: 22px;
 }

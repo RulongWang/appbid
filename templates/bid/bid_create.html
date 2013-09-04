@@ -22,17 +22,29 @@
             </div>
             <div id="bid_num" style="display: none">{{ bid_num|floatformat|default:0 }}bid{{ bid_num|floatformat|pluralize }}</div>
 
-            {{ biddingForm.price.label_tag }} {{ biddingForm.price }}
-            <div id="price_msg"></div>
-            <div id="bid_price">(Enter ${{ bid_price|floatformat|default:0 }}or more.)</div>
-            <div>
-            <input id="agreement" name="agreement" type="checkbox">I have read the Bidding Terms and Conditions and I agree to them
+            <div class="yourprice">
+                 <div class="price_box">
+                     <div class="label_price"><h1>Your Price:</h1></div>
+                     <div id="bid_price">{{ biddingForm.price }}{{ app.currency.currency }}<div class="right" style="width:200px;">(Enter ${{ bid_price|floatformat|default:0 }} or more.)</div></div>
+
+                 </div>
             </div>
-            <div>
+            <div id="price_msg">
+
+            </div>
+
+            <div id="bid_agreement">
+            <input id="agreement" name="agreement" type="checkbox"/>I have read the Bidding Terms and Conditions and I agree to them
+
+            </div>
+            <input id="insert_comment" name="Add Comment" value="Add Comment"  type="button" class="newbutton"/>
+            <input id="save" class="newbutton" type="submit" name="save" value="Save"/>
+            <div id="bid_form">
+            <div class="bid_comments_form">
             {{ biddingForm.comment.label_tag }} {{ biddingForm.comment }}
             <input type="hidden" id="bid_create" name="bid_create" value="yes"/>
 
-            <input id="save" class="nextbutton" type="submit" name="save" value="Save"/>
+            </div>
             </div>
         </form>
     </div>
@@ -73,11 +85,16 @@
         }
         if (parseFloat($("#id_price").val()) < parseFloat($("#bid_price").text())) {
             $("#price_msg").text("The price must bid at least the minimum bid");
+
             return false;
         }
         if ($("#agreement").is(':checked') == false) {
+             $("#price_msg").text("亲，貌似你没有同意竞标协议哦！");
             return false;
         }
+    });
+    $("#insert_comment").click(function() {
+            $("#bid_form").show("fast");
     });
 </script>
 {% endblock %}
