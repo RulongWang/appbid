@@ -11,7 +11,7 @@
               </div>
               <div class="app_bid_info">
                 <h1>{{ app.title }}</h1>
-                <div class="margin10px">Visit <a target="_blank" href="{{ app.app_store_link }}">{{ app.app_name }}</a> in the AppleStore</div>
+                <div class="margin10px"> <a target="_blank" href="{{ app.app_store_link }}" title="{{ app.app_name }}"><img src="{% static "images/appstore.png" %}"/></a> </div>
                 <div id="auctionstatus"  title="Listed: 2013-08-21T11:37:06+10:00; Ends: 2013-09-18T11:37:06+10:00">
                     {% if app.reserve_price and app.reserve_price <= current_price %}Auction has reached the reserve price{% endif %}<br>
                     Listing closes in 23 days, 18 hours<!--TODO:To do this later. -->
@@ -33,7 +33,7 @@
                             <input id="bid_now" type="submit" value="Bid Now"/>
                         </form>
                         </div>
-                        <div>(Enter <div id="bid_price">{{ bid_price|floatformat|default:0 }}</div>{{ app.currency.currency }} or more.)</div>
+                        <div>(Enter <span id="bid_price">{{ bid_price|floatformat|default:0 }}</span>{{ app.currency.currency }} or more.)</div>
                         <div id="price_msg"></div>
                     {% endifequal %}
 
@@ -88,14 +88,17 @@
                         {% else %}
                          <div class="comments">
                         {% endifequal %}
-                        <p> on {{ comment.submit_date|date:" M j, Y" }} at {{ comment.submit_date|time:"g:iA"|lower }}, {{ comment.user_name }} said: </p>
+                        <div class="comment_header"> <span><img src=""/></span>on {{ comment.submit_date|date:" M j, Y" }} at {{ comment.submit_date|time:"g:iA"|lower }}, {{ comment.user_name }} said: </div>
                         <p>{{ comment.comment|safe }}</p>
+
                         </div>
+
                     {%endfor%}
                 </div>
 
                 <div class="comments_form">
                     <h1>Leave a Comment</h1>
+                    <p class="form-allowed-tags">You may use these <abbr title="HyperText Markup Language">HTML</abbr> tags and attributes:  <code>&lt;a href="" title=""&gt; &lt;abbr title=""&gt; &lt;acronym title=""&gt; &lt;b&gt; &lt;blockquote cite=""&gt; &lt;cite&gt; &lt;code&gt; &lt;del datetime=""&gt; &lt;em&gt; &lt;i&gt; &lt;q cite=""&gt; &lt;strike&gt; &lt;strong&gt; </code></p>
                     {% if user.is_authenticated %}
                     {% get_comment_form for app as form %}
                     <table>
