@@ -682,7 +682,7 @@ h1{
     margin:0 auto;
     margin-top:20px;
     width:940px;
-    height:580px;
+    height:620px;
 
 
 }
@@ -1222,6 +1222,7 @@ fieldset {
     margin-left:20px;
     width:630px;
     float:left;
+    overflow: hidden;
 
 }
 .detail_left p{
@@ -1271,6 +1272,9 @@ fieldset {
 .document_icon a{
     padding-left: 25px;
 }
+
+/************special fields********/
+
 
 
 
