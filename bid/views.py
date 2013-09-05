@@ -8,6 +8,7 @@ from django.core.urlresolvers import reverse
 from appbid import models
 from bid import forms
 from query.views import initBidInfo
+from message import views
 
 
 @csrf_protect
@@ -28,10 +29,12 @@ def createBid(request, *args, **kwargs):
                     if app.is_verified:#Need be verified by app publisher.
                         bid.status = 3
                     bid.save()
-                    return HttpResponseRedirect(reverse('query:app_detail', kwargs={'pk': app.id}))
+                    views.sendMessage(request)
+                    return HttpResponseRedirect(reverse('bid:bid_list', kwargs={'pk': app.id}))
                 else:#From list_detail.html
                     initParam['biddingForm'] = biddingForm
         initBidInfo(app=app, initParam=initParam)
+        views.sendMessage(request, initParam=initParam)
         return render_to_response('bid/bid_create.html', initParam, context_instance=RequestContext(request))
     raise Http404
 
@@ -50,10 +53,10 @@ def getBids(request, *args, **kwargs):
             buyer = bid.buyer
             if buyer_map.get(buyer.id, None) is None:
                 info_list = []
-                info_list.append(bid)
-                info_list.append(len(buyer_map) + 1)
-                info_list.append(len(buyer.bidding_set.all()))
-                info_list.append(len(buyer.bidding_set.values('app').annotate(Count('app'))))
+                info_list.append(bid)#The bid info
+                info_list.append(len(buyer_map) + 1)#The index of buyer in all bid buyers
+                info_list.append(len(buyer.bidding_set.all()))#The bid amount of the buyer
+                info_list.append(len(buyer.bidding_set.values('app').annotate(Count('app'))))#The app amount of the buyer
                 buyer_map[buyer.id] = info_list
             bid_info_list.append(buyer_map.get(buyer.id))
         initParam['bid_info_list'] = bid_info_list
