@@ -50,15 +50,16 @@ def getBids(request, *args, **kwargs):
         buyer_map = {}
         bid_info_list = []
         for bid in bids:
+            info_list = [bid]#The bid info
             buyer = bid.buyer
             if buyer_map.get(buyer.id, None) is None:
-                info_list = []
-                info_list.append(bid)#The bid info
-                info_list.append(len(buyer_map) + 1)#The index of buyer in all bid buyers
-                info_list.append(len(buyer.bidding_set.all()))#The bid amount of the buyer
-                info_list.append(len(buyer.bidding_set.values('app').annotate(Count('app'))))#The app amount of the buyer
-                buyer_map[buyer.id] = info_list
-            bid_info_list.append(buyer_map.get(buyer.id))
+                temp_info_list = []
+                temp_info_list.append(len(buyer_map) + 1)#The index of buyer in all bid buyers
+                temp_info_list.append(len(buyer.bidding_set.all()))#The bid amount of the buyer
+                temp_info_list.append(len(buyer.bidding_set.values('app').annotate(Count('app'))))#The app amount of the buyer
+                buyer_map[buyer.id] = temp_info_list
+            info_list.extend(buyer_map.get(buyer.id))
+            bid_info_list.append(info_list)
         initParam['bid_info_list'] = bid_info_list
         return render_to_response('bid/bid_list.html', initParam, context_instance=RequestContext(request))
     raise Http404

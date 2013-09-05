@@ -29,7 +29,7 @@
                             <input id="bid_now" type="submit" value="Bid Now"/>
                         </form>
                     </div>
-                   <div>(Enter <div id="bid_price">{{ bid_price|floatformat|default:0 }}</div>{{ app.currency.currency }} or more.)</div>
+                   <div>(Enter <span id="bid_price">{{ bid_price|floatformat|default:0 }}</span>{{ app.currency.currency }} or more.)</div>
                    <div id="price_msg"></div>
                 {% endifequal %}
 
