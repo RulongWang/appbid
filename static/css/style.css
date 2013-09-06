@@ -1179,6 +1179,10 @@ fieldset {
 .listing_detail{
     margin-bottom: 15px;
 }
+.detail_title{
+    margin-bottom: 10px;
+}
+
 
 .app_feature{
     margin-top:20px;
