@@ -90,13 +90,15 @@
                         {% endifequal %}
                         <div class="comment_header"> <span><img src=""/></span>on {{ comment.submit_date|date:" M j, Y" }} at {{ comment.submit_date|time:"g:iA"|lower }}, {{ comment.user_name }} said: </div>
                         <p>{{ comment.comment|safe }}</p>
-
+                        {% if comment.user_name != request.user.username %}
+                        <span style="float: right"><a id="reply" href="#new_comment" onclick="reply('{{ comment.user_name }}')">Reply</a></span>
+                        {% endif %}
                         </div>
 
                     {%endfor%}
                 </div>
 
-                <div class="comments_form">
+                <div id="new_comment" class="comments_form">
                     <h1>Leave a Comment</h1>
                     <p class="form-allowed-tags">You may use these <abbr title="HyperText Markup Language">HTML</abbr> tags and attributes:  <code>&lt;a href="" title=""&gt; &lt;abbr title=""&gt; &lt;acronym title=""&gt; &lt;b&gt; &lt;blockquote cite=""&gt; &lt;cite&gt; &lt;code&gt; &lt;del datetime=""&gt; &lt;em&gt; &lt;i&gt; &lt;q cite=""&gt; &lt;strike&gt; &lt;strong&gt; </code></p>
                     {% if user.is_authenticated %}
@@ -238,5 +240,8 @@
             return false;
         }
     });
+    function reply(username) {
+        $("#id_comment").text("@"+username+" ");
+    }
 </script>
 {% endblock %}
