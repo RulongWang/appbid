@@ -21,6 +21,16 @@ class AppForm(forms.ModelForm):
         model = models.App
         exclude = {'publisher'}
 
+    def __init__(self, *args, **kwargs):
+        super(AppForm, self).__init__(*args, **kwargs)
+        instance = getattr(self, 'instance', None)
+        if instance and instance.pk:
+            self.fields['apple_id'].widget.attrs['readonly'] = True
+            self.fields['platform_version'].widget.attrs['readonly'] = True
+            self.fields['rating'].widget.attrs['readonly'] = True
+            self.fields['category'].widget.attrs['disabled'] = True
+            self.fields['device'].widget.attrs['disabled'] = True
+
 
 class AttachmentForm(forms.ModelForm):
     path = forms.FileField(
@@ -37,6 +47,11 @@ class AppInfoForm(forms.ModelForm):
         model = models.AppInfo
         exclude = {'app'}
 
+    def __init__(self, *args, **kwargs):
+        super(AppInfoForm, self).__init__(*args, **kwargs)
+        instance = getattr(self, 'instance', None)
+        if instance and instance.pk:
+            self.fields['price'].widget.attrs['readonly'] = True
 
 class PaymentItemForm(forms.ModelForm):
     class Meta:

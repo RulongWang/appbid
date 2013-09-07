@@ -155,22 +155,23 @@ def saveAppStoreInfo(request, form, model, *args, **kwargs):
     """Save the second register page - AppStore Info."""
     if model is None:
         return None
-    initParam = kwargs.get('initParam')
-    appInfoForm = forms.AppInfoForm(request.POST)
-    appInfo = models.AppInfo.objects.get(app_id=model.id)
-    if appInfoForm.is_valid():
-        appInfo.price = appInfoForm.cleaned_data['price']
-        # appInfo.icon = appInfoForm.cleaned_data['icon']
-        appInfo.save()
-    else:
-        initParam['appInfoForm'] = appInfoForm
-        return None
-    model.apple_id = form.cleaned_data['apple_id']
-    model.platform_version = form.cleaned_data['platform_version']
-    model.rating = form.cleaned_data['rating']
-    model.category = form.cleaned_data['category']
-    model.device = form.cleaned_data['device']
-    model.save()
+    #App Store info need not save,because of these values from apple store
+    # initParam = kwargs.get('initParam')
+    # appInfoForm = forms.AppInfoForm(request.POST)
+    # appInfo = models.AppInfo.objects.get(app_id=model.id)
+    # if appInfoForm.is_valid():
+    #     appInfo.price = appInfoForm.cleaned_data['price']
+    #     # appInfo.icon = appInfoForm.cleaned_data['icon']
+    #     appInfo.save()
+    # else:
+    #     initParam['appInfoForm'] = appInfoForm
+    #     return None
+    # model.apple_id = form.cleaned_data['apple_id']
+    # model.platform_version = form.cleaned_data['platform_version']
+    # model.rating = form.cleaned_data['rating']
+    # model.category = form.cleaned_data['category']
+    # model.device = form.cleaned_data['device']
+    # model.save()
 
     return model
 
