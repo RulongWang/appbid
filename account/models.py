@@ -1,6 +1,7 @@
 __author__ = 'rulongwang'
 from django.db import models
 from django.contrib.auth.models import User
+from django.contrib import admin
 
 
 class UserProfile(models.Model):
@@ -15,7 +16,7 @@ class UserDetails(models.Model):
     thumbnail = models.FilePathField(blank=True)
     birthday = models.DateTimeField(blank=True)
     gender = models.BooleanField(blank=True)
-    homepage = models.CharField(blank=True)
+    homepage = models.CharField(max_length=200,blank=True)
     real_name = models.CharField(blank=True,max_length=100)
     street_address = models.CharField(blank=True,max_length=300)
     city = models.CharField(blank=True,max_length=100)
@@ -41,16 +42,17 @@ class email_items(models.Model):
 
 
 class email_setting(models.Model):
-    user = models.ManyToManyField(User)
+    user = models.ForeignKey(User)
     setting_item = models.ForeignKey(email_items)
     value = models.BooleanField()
 
 
 
-
-
-
-
+admin.site.register(UserProfile)
+admin.site.register(UserDetails)
+admin.site.register(email_items)
+admin.site.register(email_setting)
+admin.site.register(account)
 
 
 
