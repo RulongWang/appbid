@@ -3,7 +3,7 @@ from django.contrib.auth import authenticate,login,logout
 from django.shortcuts import render_to_response,HttpResponse,  RequestContext, HttpResponseRedirect, get_object_or_404
 from django.views.decorators.csrf import csrf_protect
 from django.core.urlresolvers import reverse
-from account_form import RegisterForm,UserDetails, PublicProfile
+from account_form import RegisterForm,UserDetails, PublicProfile,EmailItems
 from django.contrib.auth.models import User
 from account import models
 
@@ -89,7 +89,8 @@ def user_public_profile(request):
 
 
 def email_notification(request):
-    return render_to_response("account/account_email_setting.html",{"test":"test"},
+    email_items = models.email_setting.objects.all()
+    return render_to_response("account/account_email_setting.html",{"email_items":email_items},
                         context_instance=RequestContext(request))
 
 

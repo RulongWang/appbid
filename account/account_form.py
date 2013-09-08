@@ -31,3 +31,7 @@ class UserDetails(forms.ModelForm):
 class PublicProfile(forms.ModelForm):
     class Meta:
         model = models.UserPublicProfile
+
+class EmailItems(forms.ModelForm):
+    class Meta:
+        model = models.email_items

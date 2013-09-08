@@ -22,6 +22,11 @@ class UserDetails(models.Model):
     country = models.CharField(blank=True,max_length=100)
     email = models.EmailField(blank=True)
 
+    def __unicode__(self):
+        return ' '.join(self.user).join(' detail')
+
+class UserDetailsAdmin(admin.ModelAdmin):
+    list_display = ('user','real_name','city','country','email')
 
 class UserPublicProfile(models.Model):
     GENDER_TYPES = (
@@ -37,7 +42,12 @@ class UserPublicProfile(models.Model):
     facebook_account = models.CharField(max_length=30,blank=True,null=True)
     weibo_account = models.CharField(max_length=30,blank=True,null=True)
     weixin_account = models.CharField(max_length=30, blank=True,null=True)
+    def __unicode__(self):
+        return ' '.join(self.user).join(' detail')
 
+
+class UserPublicProfileAdmin(admin.ModelAdmin):
+    list_display = ('user','gender','homepage','weibo_account')
 
 class account(models.Model):
     #account,paypal or alipay
@@ -48,11 +58,21 @@ class account(models.Model):
     user = models.OneToOneField(User)
     type = models.IntegerField(account_type)
     value = models.EmailField()
+    def __unicode__(self):
+        return ' '.join(self.user).join(self.type)
 
+class accountAdmin(admin.ModelAdmin):
+    list_display = ('user','type','value')
 
 class email_items(models.Model):
     # email notification
     item = models.CharField(max_length=200)
+
+    def __unicode__(self):
+        return self.item
+
+class email_items_Admin(admin.ModelAdmin):
+    list_display = ('id','item')
 
 
 class email_setting(models.Model):
@@ -60,14 +80,19 @@ class email_setting(models.Model):
     setting_item = models.ForeignKey(email_items)
     value = models.BooleanField()
 
+    def __unicode__(self):
+        return ''.join(self.user).join(self.setting_item)
+
+class email_setting_admin(admin.ModelAdmin):
+    list_display = ('user','setting_item','value')
 
 
 admin.site.register(UserProfile)
 admin.site.register(UserDetails)
-admin.site.register(email_items)
-admin.site.register(email_setting)
-admin.site.register(account)
-admin.site.register(UserPublicProfile)
+admin.site.register(email_items,email_items_Admin)
+admin.site.register(email_setting,email_setting_admin)
+admin.site.register(account,accountAdmin)
+admin.site.register(UserPublicProfile,UserPublicProfileAdmin)
 
 
 

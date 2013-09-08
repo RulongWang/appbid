@@ -1,5 +1,13 @@
 {% extends "account/accountsetting.html" %}
 {% block account_detail %}
-
+    <form action="" method="post">
+        <ul>
+        {% for item in email_items %}
+           <li>
+            <input type="checkbox" value="{{ item.value }}"/>{{ item.setting_item.item}}
+           </li>
+        {% endfor %}
+        </ul>
+    </form>
 
 {% endblock %}
