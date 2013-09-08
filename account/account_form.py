@@ -2,7 +2,7 @@ __author__ = 'rulongwang'
 from django import forms
 from django.contrib.admin import ModelAdmin
 from django.contrib.auth.models import User
-
+import models
 
 class RegisterForm(forms.Form):
     email=forms.EmailField(label="email",max_length=30,widget=forms.TextInput(attrs={'size': 30,}))
@@ -20,3 +20,14 @@ class RegisterForm(forms.Form):
         if not emails:
             return self.cleaned_data["email"]
         raise forms.ValidationError("email used")
+
+
+class UserDetails(forms.ModelForm):
+
+    class Meta:
+        model = models.UserDetails
+
+
+class PublicProfile(forms.ModelForm):
+    class Meta:
+        model = models.UserPublicProfile

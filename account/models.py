@@ -13,10 +13,7 @@ class UserProfile(models.Model):
 class UserDetails(models.Model):
 
     user = models.OneToOneField(User)
-    thumbnail = models.FilePathField(blank=True)
     birthday = models.DateTimeField(blank=True)
-    gender = models.BooleanField(blank=True)
-    homepage = models.CharField(max_length=200,blank=True)
     real_name = models.CharField(blank=True,max_length=100)
     street_address = models.CharField(blank=True,max_length=300)
     city = models.CharField(blank=True,max_length=100)
@@ -24,6 +21,23 @@ class UserDetails(models.Model):
     post_code = models.CharField(blank=True, max_length=10)
     country = models.CharField(blank=True,max_length=100)
     email = models.EmailField(blank=True)
+
+
+class UserPublicProfile(models.Model):
+    GENDER_TYPES = (
+        (1,'Male'),
+        (2,'Female'),
+        (3,'Secret'),
+    )
+    user = models.OneToOneField(User)
+    thumbnail = models.FilePathField(blank=True)
+    gender = models.BooleanField(GENDER_TYPES, blank=True,default=3)
+    homepage = models.CharField(max_length=200,blank=True)
+    twitter_account = models.CharField(max_length=30,blank=True,null=True)
+    facebook_account = models.CharField(max_length=30,blank=True,null=True)
+    weibo_account = models.CharField(max_length=30,blank=True,null=True)
+    weixin_account = models.CharField(max_length=30, blank=True,null=True)
+
 
 class account(models.Model):
     #account,paypal or alipay
@@ -53,6 +67,7 @@ admin.site.register(UserDetails)
 admin.site.register(email_items)
 admin.site.register(email_setting)
 admin.site.register(account)
+admin.site.register(UserPublicProfile)
 
 
 

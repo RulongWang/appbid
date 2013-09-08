@@ -1122,9 +1122,15 @@ fieldset {
 
 
 /****************************account setting **************************/
+#account_wrapper{
+    margin: 0 auto;
+    height:500px;
+    clear:both;
+}
 .pannel_nav{
-    padding: 20px;
-    width:250px;
+    padding: 20px 10px;
+    float:left;
+    width:230px;
 
 }
 .pannel_nav ul li{
@@ -1133,8 +1139,9 @@ fieldset {
 }
 
 .account_details{
-    width:630px;
-    padding: 20px;
+    width:620px;
+    float:right;
+    padding: 10px;
 }
 
 

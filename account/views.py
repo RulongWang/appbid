@@ -3,9 +3,10 @@ from django.contrib.auth import authenticate,login,logout
 from django.shortcuts import render_to_response,HttpResponse,  RequestContext, HttpResponseRedirect, get_object_or_404
 from django.views.decorators.csrf import csrf_protect
 from django.core.urlresolvers import reverse
-from account.RegisterForm import RegisterForm
+from account_form import RegisterForm,UserDetails, PublicProfile
 from django.contrib.auth.models import User
 from account import models
+
 
 def login_view(request):
     user = authenticate(username=request.POST['username'], password=request.POST['password'])
@@ -70,5 +71,35 @@ def myprofile(request):
 
 
 def account_settting(request):
+    detail_form = UserDetails()
+    return render_to_response("account/accountsetting.html",{"form":detail_form},
+                        context_instance=RequestContext(request))
+
+
+
+
+def user_detail(request):
     return render_to_response("account/accountsetting.html",{"test":"test"},
                         context_instance=RequestContext(request))
+
+
+def user_public_profile(request):
+    form = PublicProfile()
+    return render_to_response("account/account_profile.html",{'form':form},context_instance=RequestContext(request))
+
+
+def email_notification(request):
+    return render_to_response("account/account_email_setting.html",{"test":"test"},
+                        context_instance=RequestContext(request))
+
+
+def change_password(request):
+    return render_to_response("account/account_password.html",{"test":"test"},
+                        context_instance=RequestContext(request))
+
+
+def social_connection(request):
+    return render_to_response("account/social_connection.html",{"test":"test"},
+                        context_instance=RequestContext(request))
+
+
