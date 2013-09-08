@@ -80,8 +80,8 @@ class email_setting(models.Model):
     setting_item = models.ForeignKey(email_items)
     value = models.BooleanField()
 
-    def __unicode__(self):
-        return ''.join(self.user).join(self.setting_item)
+    # def __unicode__(self):
+    #     return ''.join(self.user)
 
 class email_setting_admin(admin.ModelAdmin):
     list_display = ('user','setting_item','value')
