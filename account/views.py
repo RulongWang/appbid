@@ -15,14 +15,22 @@ from account_form import RegisterForm,UserDetails, PublicProfile,EmailItems
 def login_view(request):
     initParam = {}
     user = authenticate(username=request.POST.get('username'), password=request.POST.get('password'))
-    redirect_to = request.POST.get('next', '/')
-    if user is not None and user.is_active:
-        login(request, user)
-        return HttpResponseRedirect(redirect_to)
+    redirect_to = request.POST.get('next', None)
+    redirect_urls = (None, '', '/account/logout/', '/account/register/')
+    for url in redirect_urls:
+        if redirect_to == url:
+            redirect_to = '/'
+            break
+    if user is not None:
+        if user.is_active:
+            login(request, user)
+            return HttpResponseRedirect(redirect_to)
+        else:
+            initParam['login_error'] = _('%(name)s is not active. Please active it by %(email)s.') % {'name': user.username, 'email': user.email}
     else:
-        initParam['user_name'] = request.POST.get('username')
         initParam['login_error'] = _('username or password is not correct.')
-        return render_to_response("account/login.html", initParam, context_instance=RequestContext(request))
+    initParam['user_name'] = request.POST.get('username')
+    return render_to_response("account/login.html", initParam, context_instance=RequestContext(request))
 
 
 def logout_view(request):
@@ -51,6 +59,7 @@ def register(request):
             else:
                 user = User.objects.create_user(username, email, password)
                 if user is not None:
+                    user.is_active = False
                     user.save()
                     userProfile = models.UserProfile()
                     userProfile.user = user

@@ -30,7 +30,7 @@
             </li>
            <li>
                 {{ register_form.password.label_tag }}
-                {{ register_form.password }}
+                {{ register_form.password }}<img src="{% static 'images/help_icon.png' %}">{{ register_form.password.help_text }}
             </li>
            <li>
                 {{ register_form.email.label_tag }}
@@ -113,6 +113,10 @@
         }
         if ($("#id_password").val().trim() == "") {
             $(".errors_block").html("<ul><li>Password is required.</li></ul>");//TODO:it will be set in message.properties.
+            return false;
+        }
+        if ($("#id_password").val().trim().length < 6) {
+            $(".errors_block").html("<ul><li>{{ register_form.password.help_text }}</li></ul>");//TODO:it will be set in message.properties.
             return false;
         }
         if ($("#id_email").val().trim() == "") {
