@@ -1,6 +1,15 @@
 {% extends "index.html" %}
 {% block mainContent %}
 {% load staticfiles %}
+    <div class="errors_block">
+        {% if login_error %}
+            <ul>
+                <li>
+                    {{ login_error }}
+                </li>
+            </ul>
+        {% endif %}
+    </div>
     <div id="central_block">
         <div class="central_section">
            <form action="/account/login/" method='post' class="pull-right">
@@ -8,20 +17,34 @@
            <ul class="central_ul">
             <li>
                 <label name="username_label" >Username</label>
-                <input name='username' class="input-small" type="text" placeholder="用户名">
+                <input id='username' name='username' class="input-small" type="text" placeholder="用户名" value="{{ user_name }}">
             </li>
             <li>
                 <label name="password_label">Password&nbsp</label>
-                <input name='password' class="input-small" type="password" placeholder="密码">
+                <input id='password' name='password' class="input-small" type="password" placeholder="密码">
             </li>
             <li>
-            <input name="next" value="{{ redirect_to }}" type="hidden">
-            <a href="#">Not register？Sign Up</a>
+                <input name="next" value="{{ redirect_to }}" type="hidden">
+                <button id="submit" class="btn" type="submit">登录</button>
+            </li>
+            <li>
+            <a href="{% url 'account:register-view' %}">Not register？Sign Up</a>&nbsp;&nbsp;
             <a href="#">Forget Password</a>
-            <button class="btn" type="submit">登录</button>
            </li>
            </ul>
           </form>
         </div>
     </div>
+<script type="text/javascript" language="javascript">
+    $("#submit").click(function() {
+        if ($("#username").val().trim() == "") {
+            $(".errors_block").html("<ul><li>Username is required.</li></ul>");//TODO:it will be set in message.properties.
+            return false;
+        }
+        if ($("#password").val().trim() == "") {
+            $(".errors_block").html("<ul><li>Password is required.</li></ul>");//TODO:it will be set in message.properties.
+            return false;
+        }
+    });
+</script>
 {% endblock %}

@@ -1,18 +1,20 @@
 __author__ = 'rulongwang'
 from django.conf.urls import patterns, include, url
-from views import auth_home, register
+from views import auth_home, register, ajaxUserVerified
 from views import login_view,logout_view, register,account_settting,email_notification,social_connection,change_password,user_public_profile
 from query.views import getDetail
 urlpatterns = patterns('',
-    (r'^login/$', login_view),
-    (r'^logout/$', logout_view),
-    (r'^register/$', register),
-    (r'^home/$',auth_home),
-    (r'^setting/$',account_settting),
-    (r'^public_profile/$',user_public_profile),
-    (r'^email_setting/$',email_notification),
-    (r'^change_password/$',change_password),
-    (r'^social_setting/$',social_connection),
+    url(r'^login/$', login_view, name='login-view'),
+    url(r'^logout/$', logout_view),
+    url(r'^register/$', register, name='register-view'),
+    url(r'^username_verified/(?P<username>\w*)$', ajaxUserVerified, name='username-verified'),
+    url(r'^email_verified/(?P<email>\w*)$', ajaxUserVerified, name='email-verified'),
+    url(r'^home/$', auth_home),
+    url(r'^setting/$', account_settting),
+    url(r'^public_profile/$', user_public_profile),
+    url(r'^email_setting/$', email_notification),
+    url(r'^change_password/$', change_password),
+    url(r'^social_setting/$', social_connection),
 
 
 )

@@ -73,16 +73,15 @@
         </div>
 <script type="text/javascript" language="javascript">
     $("#next").click(function() {
-        if ($("#id_title").val() == "") {
+        if ($("#id_title").val().trim() == "") {
             $(".errors_block").html("<ul><li>Title is required.</li></ul>");//TODO:it will be set in message.properties.
-
             return false;
         }
-        if ($("#id_app_store_link").val() == "") {
+        if ($("#id_app_store_link").val().trim() == "") {
             $(".errors_block").html("<ul><li>App store link is required.</li></ul>");//TODO:it will be set in message.properties.
             return false;
         }
-        $("#progressor").show("fast")
+        $("#progressor").show("fast");
     });
 </script>
 </div>

@@ -1,6 +1,24 @@
 {% extends "index.html" %}
 {% block mainContent %}
 {% load staticfiles %}
+    <div class="errors_block">
+        {% if register_form.username.errors %}
+            {{ register_form.username.errors }}
+        {% endif %}
+        {% if register_form.password.errors %}
+            {{ register_form.password.errors }}
+        {% endif %}
+        {% if register_form.email.errors %}
+            {{ register_form.email.errors }}
+        {% endif %}
+        {% if register_error %}
+            <ul>
+                <li>
+                    {{ register_error }}
+                </li>
+            </ul>
+        {% endif %}
+    </div>
     <div id="central_block">
         <div class="central_section">
            <form action="" method='post' class="pull-right">
@@ -8,36 +26,104 @@
            <ul class="central_ul">
             <li>
                 {{ register_form.username.label_tag }}
-                {% if register_form.username.errors %}
-                    <div>
-                        {{ register_form.username.errors }}
-                    </div>
-                {% endif %}
-                {{ register_form.username }}
+                {{ register_form.username }}<img id="valid_username_img" hidden="hidden" src=""/><span id="username_msg"/>
             </li>
            <li>
                 {{ register_form.password.label_tag }}
-                {% if register_form.password.errors %}
-                    <div>
-                        {{ register_form.password.errors }}
-                    </div>
-                {% endif %}
                 {{ register_form.password }}
             </li>
            <li>
                 {{ register_form.email.label_tag }}
-                {% if register_form.email.errors %}
-                    <div>
-                        {{ register_form.email.errors }}
-                    </div>
-                {% endif %}
-                {{ register_form.email }}
+                {{ register_form.email }}<img id="valid_email_img" hidden="hidden" src=""/><span id="email_msg"/>
             </li>
-           <button class="btn" type="submit">submit</button>
-
-
+           <button id="submit" class="btn" type="submit">submit</button>
            </ul>
           </form>
         </div>
     </div>
+<script type="text/javascript" language="javascript">
+    usernameflag = true;
+    emailflag = true;
+    $("#id_username").focusout(function() {
+        name = $("#id_username").val().trim();
+        if (name != "") {
+            $.ajax({
+                type:"POST",
+                url:"{% url 'account:username-verified' name %}",
+                data:{
+                    username:name,
+                    csrfmiddlewaretoken: "{{ csrf_token }}"
+                },
+                success:function(data) {
+                    if(data.ok === 'true') {
+                        $("#valid_username_img").attr('src', '#');//TODO:add the correct image.
+                        usernameflag = true;
+                    }
+                    else {
+                        $("#valid_username_img").attr('src', '#');//TODO:add the wrong image.
+                        usernameflag = false;
+                    }
+                    $("#valid_username_img").show();
+                    $("#username_msg").html(data.message);
+                    $(".errors_block").html('');
+                }
+            });
+        }
+        else {
+            $("#valid_username_img").hide();
+            $("#username_msg").html('');
+            $(".errors_block").html('');
+            usernameflag = false;
+        }
+    });
+    $("#id_email").focusout(function() {
+        email = $("#id_email").val().trim();
+        if (email != "" && valid_email(email)) {
+            $.ajax({
+                type:"POST",
+                url:"{% url 'account:email-verified' email %}",
+                data:{
+                    email:email,
+                    csrfmiddlewaretoken: "{{ csrf_token }}"
+                },
+                success:function(data) {
+                    if(data.ok === 'true') {
+                        emailflag = true;
+                    }
+                    else {
+                        $("#valid_email_img").attr('src', '#');//TODO:add the wrong image.
+                        $("#valid_email_img").show();
+                        $("#email_msg").html(data.message);
+                        emailflag = false;
+                    }
+                    $(".errors_block").html('');
+                }
+            });
+        }
+        else {
+            $("#valid_email_img").hide();
+            $("#email_msg").html('');
+            emailflag = false;
+        }
+    });
+    $("#submit").click(function() {
+        if ($("#id_username").val().trim() == "") {
+            $(".errors_block").html("<ul><li>Username is required.</li></ul>");//TODO:it will be set in message.properties.
+            return false;
+        }
+        if ($("#id_password").val().trim() == "") {
+            $(".errors_block").html("<ul><li>Password is required.</li></ul>");//TODO:it will be set in message.properties.
+            return false;
+        }
+        if ($("#id_email").val().trim() == "") {
+            $(".errors_block").html("<ul><li>Email is required.</li></ul>");//TODO:it will be set in message.properties.
+            return false;
+        }
+        if (!valid_email($("#id_email").val().trim())) {
+            $(".errors_block").html("<ul><li>Email is not correct.</li></ul>");//TODO:it will be set in message.properties.
+            return false;
+        }
+        if (!usernameflag || !emailflag) return false;
+    });
+</script>
 {% endblock %}

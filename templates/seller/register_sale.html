@@ -84,7 +84,7 @@
     </form>
 <script type="text/javascript" language="javascript">
     $("#next").click(function() {
-        if ($("#id_begin_price").val() == "") {
+        if ($("#id_begin_price").val().trim() == "") {
             $(".errors_block").html("<ul><li>Begin price is required.</li></ul>");//TODO:it will be set in message.properties.
             return false;
         }
@@ -92,11 +92,11 @@
             $(".errors_block").html("<ul><li>Begin price should be number.</li></ul>");//TODO:it will be set in message.properties.
             return false;
         }
-        if ($("#id_currency").val() == "") {
+        if ($("#id_currency").val().trim() == "") {
             $(".errors_block").html("<ul><li>Currency is required.</li></ul>");//TODO:it will be set in message.properties.
             return false;
         }
-        if ($("#id_begin_date").val() == "") {
+        if ($("#id_begin_date").val().trim() == "") {
             $(".errors_block").html("<ul><li>Begin date is required.</li></ul>");//TODO:it will be set in message.properties.
             return false;
         }
@@ -105,7 +105,7 @@
             $(".errors_block").html("<ul><li>Begin date is not correct.</li></ul>");//TODO:it will be set in message.properties.
             return false;
         }
-        if ($("#id_end_date").val() == "") {
+        if ($("#id_end_date").val().trim() == "") {
             $(".errors_block").html("<ul><li>End date is required.</li></ul>");//TODO:it will be set in message.properties.
             return false;
         }
@@ -117,7 +117,7 @@
             $(".errors_block").html("<ul><li>End date should be later than begin date.</li></ul>");//TODO:it will be set in message.properties.
             return false;
         }
-        if ($("#id_minimum_bid").val() == "") {
+        if ($("#id_minimum_bid").val().trim() == "") {
             $(".errors_block").html("<ul><li>Minimum bid is required.</li></ul>");//TODO:it will be set in message.properties.
             return false;
         }

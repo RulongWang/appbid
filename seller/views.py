@@ -92,8 +92,8 @@ def saveAppStoreLink(request, form, model, *args, **kwargs):
         model.verify_token = ''.join(random.sample(string.ascii_letters+string.digits, string.atoi(token_len.value)))
         model.is_verified = False
     else:
-        model.title = form.cleaned_data['title']
-        model.app_store_link = form.cleaned_data['app_store_link']
+        model.title = form.cleaned_data['title'].strip()
+        model.app_store_link = form.cleaned_data['app_store_link'].strip()
     model.rating = result.get('trackContentRating', None)
     model.platform_version = result.get('version', None)
     model.apple_id = result.get('trackId', None)
@@ -307,7 +307,7 @@ def saveVerification(request, form, model, *args, **kwargs):
 @transaction.commit_on_success
 def deleteAttachment(request, *args, **kwargs):
     """Delete the attachment of app by id, app_id etc."""
-    data={}
+    data = {}
     try:
         dict = request.POST
     except:
