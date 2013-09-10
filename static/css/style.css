@@ -1144,16 +1144,20 @@ fieldset {
 }
 
 .account_details{
+    margin-top: 10px;
     margin-right:10px;
-    width:620px;
+    width:670px;
     float:right;
     padding: 10px;
 }
 .account_details fieldset{
+    border: none;
+    margin-top: 10px;
    /*padding:0 10px;*/
 }
 .account_detail_items li{
     margin-top:20px;
+    /*border-bottom: 1px dashed #ddd;*/
 
 
 }

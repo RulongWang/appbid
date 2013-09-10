@@ -1,14 +1,16 @@
 {% extends "account/accountsetting.html" %}
 {% block account_detail %}
     <form action="" method="post">
+        {% csrf_token %}
         <div><h1>Email notification settting</h1></div>
         <ul class="account_detail_items">
         {% for item in email_items %}
            <li>
-            <input type="checkbox"  checked=""/>&nbsp;{{ item.item}}
+            <input type="checkbox" name="{{ item.id }}" />&nbsp;{{ item.item}}
            </li>
         {% endfor %}
         </ul>
+    <input type="submit" value="Save" class="newbutton"/>
     </form>
 
 {% endblock %}

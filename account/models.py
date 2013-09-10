@@ -35,7 +35,7 @@ class UserPublicProfile(models.Model):
     )
     user = models.OneToOneField(User)
     thumbnail = models.FilePathField(blank=True)
-    gender = models.BooleanField(GENDER_TYPES, blank=True,default=3)
+    gender = models.CharField(max_length=30, blank=True,default=3,choices=GENDER_TYPES)
     homepage = models.CharField(max_length=200,blank=True)
     twitter_account = models.CharField(max_length=30,blank=True,null=True)
     facebook_account = models.CharField(max_length=30,blank=True,null=True)
@@ -55,7 +55,7 @@ class account(models.Model):
         (2,'alipay'),
     )
     user = models.ForeignKey(User)
-    type = models.IntegerField(account_type)
+    type = models.IntegerField(choices=account_type)
     value = models.EmailField()
     def __unicode__(self):
         return ' '.join(self.user).join(self.type)
@@ -81,6 +81,7 @@ class email_setting(models.Model):
 
     # def __unicode__(self):
     #     return ''.join(self.user)
+
 
 class email_setting_admin(admin.ModelAdmin):
     list_display = ('user','setting_item','value')

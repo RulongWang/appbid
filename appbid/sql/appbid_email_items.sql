@@ -1,4 +1,3 @@
-/*!40000 ALTER TABLE `account_email_items` DISABLE KEYS */;
 INSERT INTO `account_email_items` (`id`,`item`) VALUES
  (1,'Notify me about changes to XXX itself'),
  (2,'Subscribe me to the XXX newsletter'),
@@ -9,6 +8,5 @@ INSERT INTO `account_email_items` (`id`,`item`) VALUES
  (7,'Notify me when a comment is placed on a listing I\'m watching'),
  (8,'Notify me when a bid is placed above one of my bids'),
  (9,'NoNotify me when new auctions appear for my watched categories'),
- (10,'Notify me when a seller I\'m watching creates new listings'),
+ (10,'Notify me when a seller I\'m watching creates new listings')
 
-/*!40000 ALTER TABLE `account_email_items` ENABLE KEYS */;
