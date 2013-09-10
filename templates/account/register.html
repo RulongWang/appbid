@@ -88,6 +88,8 @@
                 },
                 success:function(data) {
                     if(data.ok === 'true') {
+                        $("#valid_email_img").hide();
+                        $("#email_msg").html('');
                         emailflag = true;
                     }
                     else {

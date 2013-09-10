@@ -25,7 +25,7 @@ def createBid(request, *args, **kwargs):
                     bid = biddingForm.save(commit=False)
                     bid.app = app
                     bid.buyer = request.user
-                    bid.status = 1
+                    bid.status = 1#TODO:need do it later.
                     if app.is_verified:#Need be verified by app publisher.
                         bid.status = 3
                     bid.save()

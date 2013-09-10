@@ -36,16 +36,16 @@ class RegisterForm(forms.Form):
         raise forms.ValidationError(error_msg)
 
 
-class UserDetails(forms.ModelForm):
-
+class UserDetailForm(forms.ModelForm):
     class Meta:
-        model = models.UserDetails
+        model = models.UserDetail
 
 
-class PublicProfile(forms.ModelForm):
+class UserPublicProfileForm(forms.ModelForm):
     class Meta:
         model = models.UserPublicProfile
 
-class EmailItems(forms.ModelForm):
+
+class EmailItemForm(forms.ModelForm):
     class Meta:
-        model = models.email_items
+        model = models.EmailItem

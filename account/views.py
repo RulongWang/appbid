@@ -9,7 +9,7 @@ from django.utils.translation import ugettext as _
 from django.db.models import Q
 from django.contrib.auth.models import User
 from account import models
-from account_form import RegisterForm,UserDetails, PublicProfile,EmailItems
+from account_form import RegisterForm, UserDetailForm, UserPublicProfileForm, EmailItemForm
 
 
 def login_view(request):
@@ -61,11 +61,12 @@ def register(request):
                 if user is not None:
                     user.is_active = False
                     user.save()
-                    userProfile = models.UserProfile()
-                    userProfile.user = user
-                    userProfile.is_bid_approved = False
-                    userProfile.save()
-                    return HttpResponseRedirect("/account/home/")
+                    #TODO:need do it later.
+                    # userProfile = models.UserProfile()
+                    # userProfile.user = user
+                    # userProfile.is_bid_approved = False
+                    # userProfile.save()
+                    return HttpResponseRedirect("/account/register_active/")
                 else:
                     initParam['register_error'] = _('Register failed, please try again.')
     initParam['register_form'] = registerForm
@@ -98,6 +99,11 @@ def ajaxUserVerified(request, *args, **kwargs):
     return HttpResponse(json.dumps(data), mimetype=u'application/json')
 
 
+def register_active(request, *args, **kwargs):
+    initParam = {}
+    return render_to_response("account/register_active.html", initParam, context_instance=RequestContext(request))
+
+
 def _login(request, username, password):
     pass
 
@@ -106,29 +112,26 @@ def myprofile(request):
     pass
 
 
-
 def user_detail(request):
-    detail_form = UserDetails()
+    detail_form = UserDetailForm()
     return render_to_response("account/accountsetting.html",{"form":detail_form},
                         context_instance=RequestContext(request))
 
 
-
-
 def payment_account(request):
-    payment_accounts = models.account.objects.all()
+    payment_accounts = models.Account.objects.all()
     return render_to_response("account/payment_account.html",{"payment_accounts":payment_accounts},
                         context_instance=RequestContext(request))
 
 
 def user_public_profile(request):
-    form = PublicProfile()
+    form = UserPublicProfileForm()
 
     return render_to_response("account/account_profile.html",{'form':form},context_instance=RequestContext(request))
 
 
 def email_notification(request):
-    email_items = models.email_items.objects.all()
+    email_items = models.EmailItem.objects.all()
 
     return render_to_response("account/account_email_setting.html",{"email_items":email_items},
                         context_instance=RequestContext(request))
