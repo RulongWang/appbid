@@ -1124,7 +1124,7 @@ fieldset {
 /****************************account setting **************************/
 #account_wrapper{
     margin: 0 auto;
-    height:500px;
+    height:530px;
     clear:both;
 }
 .pannel_nav{
@@ -1138,12 +1138,104 @@ fieldset {
 
 }
 
+.pannel_nav a:hover{
+    color:#ff3b30;
+    /*font-weight:bold;*/
+}
+
 .account_details{
+    margin-right:10px;
     width:620px;
     float:right;
     padding: 10px;
 }
+.account_details fieldset{
+   /*padding:0 10px;*/
+}
+.account_detail_items li{
+    margin-top:20px;
 
+
+}
+.payement_wrapper{
+    margin-top:20px;
+    height:80px;
+    padding-left:20px;
+    border-bottom: 1px dashed #ddd;
+
+}
+.paybutton{
+    width:50px;
+    height:30px;
+    background: #0070ff;
+    color: #ffffff;
+    border: none;
+    border-radius: 3px;
+}
+
+.paybutton_delete{
+    width:50px;
+    height:30px;
+    background: #FF3B30;
+    color: #ffffff;
+    border: none;
+    border-radius: 3px;
+}
+
+.button_group{
+    width:70px;
+    float: right;
+}
+.field_wrapper{
+    margin-top:25px;
+    width:200px;
+    float:left;
+}
+.addnew{
+
+    width:80px;
+    height:30px;
+    background: #33ba0d;
+    color: #ffffff;
+    font-weight: bold;
+    float: right;
+    border: none;
+    border-radius: 3px;
+}
+
+.fieldWrapper{
+    height:30px;
+    padding-left:20px;
+    border-bottom: 1px dashed #ddd;
+}
+
+.fieldWrapper input,.field_wrapper input{
+    -webkit-box-shadow: inset 0 1px 0.25em #d9d9d9;
+    -moz-box-shadow: inset 0 1px 0.25em #d9d9d9;
+    box-shadow: inset 0 1px 0.25em #d9d9d9;
+    border: 1px solid #858585;
+    border-radius:3px;
+    padding: 3px;
+    width:190px;
+}
+.fieldWrapper select{
+    -webkit-box-shadow: inset 0 1px 0.25em #d9d9d9;
+    -moz-box-shadow: inset 0 1px 0.25em #d9d9d9;
+    box-shadow: inset 0 1px 0.25em #d9d9d9;
+    border: 1px solid #858585;
+    border-radius:3px;;
+    width:190px;
+}
+.field_label{
+    margin-left: 5px;
+    width:200px;
+    float:left;
+}
+.field_value{
+    margin-left: 5px;
+    width:300px;
+    float:right;
+}
 
 /***********************Query and detail Listing ************************/
 #breadcrumb{

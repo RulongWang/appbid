@@ -1,8 +1,63 @@
 {% extends "account/accountsetting.html" %}
 {% block account_detail %}
-    <form action="" >
-                {{ form }}
-    </form>
+    <fieldset>
+        <legend>Public Profile</legend>
+    <form action=""  method="post">
+    {% csrf_token %}
+            <ul class="account_detail_items">
+                    <li>
+                    <div class="fieldWrapper">
+                        {{ form.user.errors }}
+                        <div class="field_label" >{{ form.user.label_tag }}</div><div class="field_value" > {{ form.user }}</div>
+                    </div>
+                    </li>
+                    <li>
+                    <div class="fieldWrapper">
+                        {{ form.thumbnail.errors }}
+                        <div class="field_label" >{{ form.thumbnail.label_tag }}</div><div class="field_value" > {{ form.thumbnail }}</div>
+                    </div>
+                    </li>
+                    <li>
+                    <div class="fieldWrapper">
+                        {{ form.gender.errors }}
+                        <div class="field_label" >{{ form.gender.label_tag }}</div><div class="field_value" > {{ form.gender }}</div>
+                    </div>
+                    </li>
+                    <li>
+                    <div class="fieldWrapper">
+                        {{ form.homepage.errors }}
+                        <div class="field_label" >{{ form.homepage.label_tag }}</div><div class="field_value" > {{ form.homepage }}</div>
+                    </div>
+                    </li>
+                    <li>
+                    <div class="fieldWrapper">
+                        {{ form.twitter_account.errors }}
+                        <div class="field_label" >{{ form.twitter_account.label_tag }}</div><div class="field_value" > {{ form.twitter_account }}</div>
+                    </div>
+                    </li>
+                    <li>
+                    <div class="fieldWrapper">
+                        {{ form.facebook_account.errors }}
+                        <div class="field_label" >{{ form.facebook_account.label_tag }}</div><div class="field_value" > {{ form.facebook_account }}</div>
+                    </div>
+                    </li>
+                    <li>
+                    <div class="fieldWrapper">
+                        {{ form.weibo_account.errors }}
+                        <div class="field_label" >{{ form.weibo_account.label_tag }}</div><div class="field_value" > {{ form.weibo_account }}</div>
+                    </div>
+                    </li>
+                    <li>
+                    <div class="fieldWrapper">
+                        {{ form.weixin_account.errors }}
+                        <div class="field_label" >{{ form.weixin_account.label_tag }}</div><div class="field_value" > {{ form.weixin_account }}</div>
+                    </div>
+                    </li>
+                    <li>
 
+                </ul>
+                 <div><input type="submit" value="Submit"  class="newbutton"/></div>
+    </form>
+</fieldset>
 
 {% endblock %}

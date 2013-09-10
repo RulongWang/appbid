@@ -20,7 +20,6 @@ class UserDetails(models.Model):
     state_provience = models.CharField(blank=True, max_length=100)
     post_code = models.CharField(blank=True, max_length=10)
     country = models.CharField(blank=True,max_length=100)
-    email = models.EmailField(blank=True)
 
     def __unicode__(self):
         return ' '.join(self.user).join(' detail')
@@ -55,7 +54,7 @@ class account(models.Model):
         (1,'paypal'),
         (2,'alipay'),
     )
-    user = models.OneToOneField(User)
+    user = models.ForeignKey(User)
     type = models.IntegerField(account_type)
     value = models.EmailField()
     def __unicode__(self):

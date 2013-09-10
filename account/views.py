@@ -107,7 +107,7 @@ def myprofile(request):
 
 
 
-def account_settting(request):
+def user_detail(request):
     detail_form = UserDetails()
     return render_to_response("account/accountsetting.html",{"form":detail_form},
                         context_instance=RequestContext(request))
@@ -115,18 +115,21 @@ def account_settting(request):
 
 
 
-def user_detail(request):
-    return render_to_response("account/accountsetting.html",{"test":"test"},
+def payment_account(request):
+    payment_accounts = models.account.objects.all()
+    return render_to_response("account/payment_account.html",{"payment_accounts":payment_accounts},
                         context_instance=RequestContext(request))
 
 
 def user_public_profile(request):
     form = PublicProfile()
+
     return render_to_response("account/account_profile.html",{'form':form},context_instance=RequestContext(request))
 
 
 def email_notification(request):
-    email_items = models.email_setting.objects.all()
+    email_items = models.email_items.objects.all()
+
     return render_to_response("account/account_email_setting.html",{"email_items":email_items},
                         context_instance=RequestContext(request))
 
