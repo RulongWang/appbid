@@ -86,7 +86,9 @@
                 {% endautoescape %}
 
                 <div class="comments_wrapper">
+                    {% if comment_list %}
                     <div style="margin-bottom: 10px;"><h1>Comments and Questions:</h1></div>
+                    {% endif %}
                     {% get_comment_list for app as comment_list %}
                     {% for comment in comment_list %}
                         {% ifequal comment.user_name request.user.username %}
@@ -106,8 +108,9 @@
 
                 <div id="new_comment" class="comments_form">
                     <h1>Leave a Comment</h1>
+                     {% if user.is_authenticated %}
                     <p class="form-allowed-tags">You may use these <abbr title="HyperText Markup Language">HTML</abbr> tags and attributes:  <code>&lt;a href="" title=""&gt; &lt;abbr title=""&gt; &lt;acronym title=""&gt; &lt;b&gt; &lt;blockquote cite=""&gt; &lt;cite&gt; &lt;code&gt; &lt;del datetime=""&gt; &lt;em&gt; &lt;i&gt; &lt;q cite=""&gt; &lt;strike&gt; &lt;strong&gt; </code></p>
-                    {% if user.is_authenticated %}
+
                     {% get_comment_form for app as form %}
                     <table>
                         <form action="{% comment_form_target %}" method="post">
