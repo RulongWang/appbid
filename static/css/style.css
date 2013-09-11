@@ -79,7 +79,6 @@ h1{
     margin:0;
     height:40px;
     width:100%;
-    height:60px;
     background: #F7F7F7;
     /*background: #eee;*/
     /*background: -webkit-linear-gradient(top,#f7f7f7,#eaeaea);*/
@@ -94,7 +93,7 @@ h1{
     height:60px;
 }
 .user_bar_menu{
-    margin-top:20px;
+    margin-top:10px;
     list-style: none;
     display: inline-block;
     float:left;
@@ -105,12 +104,24 @@ h1{
     display: inline-block;
     float:left;
 }
-/*.user_bar_menu li a{*/
-    /*color:white;*/
-/*}*/
+.user_bar_menu  a,.user_bar_menu  a:link,.user_bar_menu  a:visited{
+    color:#999;
+}
+.user_bar_menu  a:hover,.user_bar_menu  a:active{
+    color:#0070ff;
+    text-decoration: none;
+}
+
+.user_bar_menu_link  a,.user_bar_menu_link  a:link,.user_bar_menu_link  a:visited{
+    color:#999;
+}
+.user_bar_menu_link  a:hover,.user_bar_menu_link  a:active{
+    color:#0070ff;
+    text-decoration: none;
+}
 
 .user_bar_menu_link{
-    margin-top:20px;
+    margin-top:10px;
     list-style: none;
     display: inline-block;
     float:right;
@@ -120,6 +131,21 @@ h1{
     list-style: none;
     display: inline-block;
     float:left;
+}
+
+.adv_search{
+    width:60px;
+    height:25px;
+    padding: 5px;
+    background: white;
+    border: 1px solid #0070ff;
+    color:#0070ff;
+    border-radius: 3px;
+}
+
+.adv_search_field{
+    padding:5px;
+    height: 25px;
 }
 /*.user_bar_menu_link li a{*/
     /*color:white;*/
@@ -1151,13 +1177,12 @@ fieldset {
     padding: 10px;
 }
 .account_details fieldset{
-    border: none;
+    /*border: none;*/
     margin-top: 10px;
    /*padding:0 10px;*/
 }
 .account_detail_items li{
     margin-top:20px;
-    /*border-bottom: 1px dashed #ddd;*/
 
 
 }
