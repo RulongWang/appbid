@@ -12,8 +12,9 @@
                     {% if app.reserve_price and app.reserve_price <= current_price %}Auction has reached the reserve price{% endif %}<br>
                     Listing closes in 23 days, 18 hours<!--TODO:To do this later. -->
                 </div>
+               {% include "bid/remaintime.html" %}
               </div>
-        </div>
+             </div>
     <div class="bidding_create">
         <form action="" method="post">
             {% csrf_token %}

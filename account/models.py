@@ -36,7 +36,7 @@ class UserDetail(models.Model):
 
 class UserDetailAdmin(admin.ModelAdmin):
     """The set of UserDetail table displaying in admin page."""
-    list_display = ('user', 'real_name', 'city', 'country', 'email')
+    list_display = ('user', 'real_name', 'city', 'country')
 
 
 class UserPublicProfile(models.Model):
