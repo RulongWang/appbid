@@ -26,105 +26,20 @@
 {#</div>#}
 <div id="showcase">
     <div class="showcase_row">
-        <div class="showcase_box">
+        {% for app in apps %}
+
+            <div class="showcase_box">
             <div class="box_content">
 
-                <a href="#{{ url }}"><img class="showcase_img_icon" src="http://a53.phobos.apple.com/us/r1000/020/Purple/v4/d8/07/f4/d807f4b6-12ed-278c-bdc3-e0deb5a7d066/mzl.llovdatu.jpg"/></a>
+                <a href="{% url 'query:app_detail' app.id %}"><img class="showcase_img_icon" src="{{ MEDIA_URL }}{{ app.appinfo.icon }}"/></a>
             </div>
             <div class="clear"></div>
-            <div class="box_content_mask">
-
-                <p >test testtesttesttestte</p>
-            </div>
             <div class="box_desc">
-                <span class="current_price">300${{ current_price }}</span> <span class="bid_times">{{ bid_times }}32bids</span>
-            </div>
-        </div>
-        <div class="showcase_box">
-            <div class="box_content">
-
-                <a href="#{{ url }}"><img class="showcase_img_icon" src="http://a53.phobos.apple.com/us/r1000/020/Purple/v4/d8/07/f4/d807f4b6-12ed-278c-bdc3-e0deb5a7d066/mzl.llovdatu.jpg"/></a>
-            </div>
-            <div class="box_content_mask">
-
-                </div>
-            <div class="box_desc">
-                <span class="current_price">300${{ current_price }}</span> <span class="bid_times">{{ bid_times }}32bids</span>
-            </div>
-        </div>
-        <div class="showcase_box">
-            <div class="box_content">
-
-                <a href="#{{ url }}"><img class="showcase_img_icon" src="http://a53.phobos.apple.com/us/r1000/020/Purple/v4/d8/07/f4/d807f4b6-12ed-278c-bdc3-e0deb5a7d066/mzl.llovdatu.jpg"/></a>
-            </div>
-            <div class="box_content_mask">
-
-                </div>
-            <div class="box_desc">
-                <span class="current_price">300${{ current_price }}</span> <span class="bid_times">{{ bid_times }}32bids</span>
-            </div>
-        </div>
-        <div class="showcase_box">
-            <div class="box_content">
-
-                <a href="#{{ url }}"><img class="showcase_img_icon" src="http://a53.phobos.apple.com/us/r1000/020/Purple/v4/d8/07/f4/d807f4b6-12ed-278c-bdc3-e0deb5a7d066/mzl.llovdatu.jpg"/></a>
-            </div>
-            <div class="box_content_mask">
-
-                </div>
-            <div class="box_desc">
-                <span class="current_price">300${{ current_price }}</span> <span class="bid_times">{{ bid_times }}32bids</span>
-            </div>
-        </div>
-        <div class="showcase_box">
-            <div class="box_content">
-
-                <a href="#{{ url }}"><img class="showcase_img_icon" src="http://a53.phobos.apple.com/us/r1000/020/Purple/v4/d8/07/f4/d807f4b6-12ed-278c-bdc3-e0deb5a7d066/mzl.llovdatu.jpg"/></a>
-            </div>
-            <div class="box_content_mask">
-
-                </div>
-            <div class="box_desc">
-                <span class="current_price">300${{ current_price }}</span> <span class="bid_times">{{ bid_times }}32bids</span>
-            </div>
-        </div>
-        <div class="showcase_box">
-            <div class="box_content">
-
-                <a href="#{{ url }}"><img class="showcase_img_icon" src="http://a53.phobos.apple.com/us/r1000/020/Purple/v4/d8/07/f4/d807f4b6-12ed-278c-bdc3-e0deb5a7d066/mzl.llovdatu.jpg"/></a>
-            </div>
-            <div class="box_content_mask">
-
-                </div>
-            <div class="box_desc">
-                <span class="current_price">300${{ current_price }}</span> <span class="bid_times">{{ bid_times }}32bids</span>
-            </div>
-        </div>
-        <div class="showcase_box">
-            <div class="box_content">
-
-                <a href="#{{ url }}"><img class="showcase_img_icon" src="http://a53.phobos.apple.com/us/r1000/020/Purple/v4/d8/07/f4/d807f4b6-12ed-278c-bdc3-e0deb5a7d066/mzl.llovdatu.jpg"/></a>
-            </div>
-            <div class="box_content_mask">
-
-                </div>
-            <div class="box_desc">
-                <span class="current_price">300${{ current_price }}</span> <span class="bid_times">{{ bid_times }}32bids</span>
-            </div>
-        </div>
-        <div class="showcase_box">
-            <div class="box_content">
-
-                <a href="#{{ url }}"><img class="showcase_img_icon" src="http://a53.phobos.apple.com/us/r1000/020/Purple/v4/d8/07/f4/d807f4b6-12ed-278c-bdc3-e0deb5a7d066/mzl.llovdatu.jpg"/></a>
-            </div>
-            <div class="box_content_mask">
-
-                </div>
-            <div class="box_desc">
-                <span class="current_price">300${{ current_price }}</span> <span class="bid_times">{{ bid_times }}32bids</span>
+                <span class="current_price">{{ app.begin_price }}{{ app.currency.currency }}</span> <span class="bid_times">{{ bid_times }}32bids</span>
             </div>
         </div>
 
+        {% endfor %}
     </div>
 
 
