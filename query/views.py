@@ -1,4 +1,6 @@
 import json
+import time
+import datetime
 
 from django.http import HttpResponse, Http404
 from django.shortcuts import render_to_response, render, RequestContext, get_object_or_404
@@ -86,6 +88,10 @@ def initBidInfo(*args, **kwargs):
         initParam['bid_price'] = initParam['current_price'] + app.minimum_bid
     else:
         initParam['bid_price'] = app.minimum_bid
+    initParam['begin_bid'] = False
+    if datetime.datetime.now() >= app.begin_date:
+        initParam['begin_bid'] = True
+    initParam['time_remaining'] = time.mktime(time.strptime(str(app.end_date), '%Y-%m-%d %H:%M:%S'))
 
 
 def getBidInfo(request, *args, **kwargs):

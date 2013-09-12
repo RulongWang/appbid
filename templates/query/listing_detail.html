@@ -12,13 +12,16 @@
               <div class="app_bid_info">
                 <h1>{{ app.title }}</h1>
                 <div class="margin10px"> <a target="_blank" href="{{ app.app_store_link }}" title="{{ app.app_name }}"><img src="{% static "images/appstore.png" %}"/></a> </div>
-                <div id="auctionstatus"  title="Listed: 2013-08-21T11:37:06+10:00; Ends: 2013-09-18T11:37:06+10:00">
-                    {% if app.reserve_price and app.reserve_price <= current_price %}Auction has reached the reserve price{% endif %}<br>
-                    Listing closes in: <!--TODO:To do this later. -->
-
-                </div>
-                 {% include "bid/remaintime.html" %}
-
+                {% if app.reserve_price and app.reserve_price <= current_price %}
+                  <div>
+                    Auction has reached the reserve price
+                  </div>
+                {% endif %}
+                {% ifequal begin_bid True %}
+                  <div>
+                    Listing closes in:{% include "bid/remaintime.html" %}
+                  </div>
+                {% endifequal %}
               </div>
               <div class="bidding_box right">
                 <div class="bidding_status" >
