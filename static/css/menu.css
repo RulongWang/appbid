@@ -9,18 +9,18 @@
 
     float:left;
     height:30px;
-    padding: 10px  4px 0px 10px;
+    padding: 8px  4px 0px 10px;
 }
 
-/*.sf-menu li:hover{*/
-    /*float:left;*/
-    /*height:30px;*/
-    /*padding: 10px  4px 0px 4px;*/
-    /*background-color: white;*/
-/*}*/
+.sf-menu li:hover{
+    float:left;
+    height:30px;
+    padding: 8px  4px 0px 10px;
+    background-color:#009aff;;
+}
 .sf-menu a,.sf-menu a:link, .sf-menu a:visited{
     color:white;
-    font-size: 15px;
+    text-transform: uppercase;
     padding: 4px;
     height: 30px;
     /*text-shadow: 0 1px 2px rgba(0,0,0,0.25);*/
@@ -31,18 +31,25 @@
 
 
 .sf-menu a:hover,.sf-menu a:active{
-    /*color:#0070ff;*/
+    color:#ffffff;
+    text-transform: uppercase;
+    text-decoration: none;
     padding: 4px;
     height: 30px;
-    font-size: 15px;
     font-weight: bold;
-    text-decoration:underline;
+    /*text-decoration:underline;*/
     text-shadow: 2px 3px 3px rgba(1,0,0,0.25);
-    /*-moz-filter: blur(4px);*/
-    /*-o-filter: blur(4px);*/
-    /*-ms-filter: blur(4px);*/
-    /*filter: blur(4px);*/
+    background:#009aff;
+
+    -moz-filter: blur(4px);
+    -o-filter: blur(4px);
+    -ms-filter: blur(4px);
+    filter: blur(4px);
 
 
 }
 
+
+.special{
+    background:#009aff; ;
+}

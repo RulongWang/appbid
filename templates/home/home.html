@@ -1,20 +1,12 @@
 {% extends "index.html" %}
 {% block mainContent %}
 {% load staticfiles %}
+{% include "home/promotion.html" %}
 
 
 
-{#<div id="home_promotion">#}
-{#    <div class="promote">#}
-{#     <h2>The #1 Marketplace for Buying and Selling iOS Apps</h2>#}
-{#    <div>#}
-{#    <a class="btn primary" href="/buy">Buy Apps</a>#}
-{#    <a class="btn primary" href="/seller">Sell Apps</a>#}
-{#     </div>#}
-{#    </div>#}
-{##}
-{#</div>#}
-{##}
+
+
 {#<div class="featured_block">#}
 {#    {% for i in range %}#}
 {#       <div class="featured_icon">#}
@@ -24,75 +16,47 @@
 {##}
 {#    {% endfor %}#}
 {#</div>#}
-<div id="showcase">
-    <div class="showcase_row">
-        {% for app in apps %}
 
-            <div class="showcase_box">
-            <div class="box_content">
+                 <div class="listing_block_home">
+                     <div class="home_listing_title">
+                        <h1>首页推荐</h1>
+                     </div>
+                     <div class="listing_content">
+                        <ul >
+                            {% for app in apps %}
+                            <li>
+                                <div class="app_wrapper">
+                                       <div class="app_img">
+                                           <a href="{% url 'query:app_detail' app.id %}"><img class="img_140x140" src="{{ MEDIA_URL }}{{ app.appinfo.icon }}"/></a>
+                                       </div>
 
-                <a href="{% url 'query:app_detail' app.id %}"><img class="showcase_img_icon" src="{{ MEDIA_URL }}{{ app.appinfo.icon }}"/></a>
-            </div>
-            <div class="clear"></div>
-            <div class="box_desc">
-                <span class="current_price">{{ app.begin_price }}{{ app.currency.currency }}</span> <span class="bid_times">{{ bid_times }}32bids</span>
-            </div>
-        </div>
+                                       <div class="app_attribute">
+                                           <div class="info_detail">
+                                            <span><h1><a href="{% url 'query:app_detail' app.id %}"> {{ app.app_name }}</a></h1></span>
+                                            {% if app.publish_date %}
+                                               <div>{{ app.publish_date }} </div>
+                                            {% endif %}
+                                            <div class="margin10px fontcolor_light_grey">
+                                               <p style="font-size: 14px;">{{ app.title }}</p>
+                                            </div>
+                                            <span class="fontcolor_light_grey">Monthly Downloads:{{ app.dl_amount }}</span>
+                                            {% if app.revenue %}
+                                               <div class="fontcolor_light_grey">Revenue:{{ app.revenue }} </div>
+                                            {% endif %}
+                                               <div class="fontcolor_light_grey">Rating:{{ app.rating }} </div>
+                                               <div class="fontcolor_light_grey">AppleStore Price:{{ app.appinfo.price }} </div>
 
-        {% endfor %}
-    </div>
-
-
-
-
-</div>
-{#<div class="normal_list">#}
-{##}
-{#    <div class="list_block">#}
-{#        <header class="list_block_header">Hottest Posting</header>#}
-{#        <table class="listing_table" cellspacing="0">#}
-{#            <thead>#}
-{#                <tr>#}
-{#                <th>Logo</th><th>App name</th><th>Price</th><th>Bids</th><th>Ending</th>#}
-{#                </tr>#}
-{#            </thead>#}
-{#            <tbody>#}
-{#                {% for i in range %}#}
-{#                <tr>#}
-{#                    <td><img class="img_30x30" src="http://a1357.phobos.apple.com/us/r1000/118/Purple2/v4/fc/b7/25/fcb72553-1585-d848-d262-23bf56aa02a5/mzl.hojifrfm.jpg"/></td><td>SAP Job is good app</td><td>1000$</td><td>23</td><td>19Days</td>#}
-{#                </tr>#}
-{#                <tr>#}
-{#                    <td colspan="5" class="fullwidth">SAP Job is an app for SAP internal job listing.SAP Job is an app for SAP internal job listing.</td>#}
-{#                </tr>#}
-{#                {% endfor %}#}
-{#            </tbody>#}
-{#        </table>#}
-{#    </div>#}
-{##}
-{#    <div class="list_right_block">#}
-{#        <header class="list_block_header">Latest Posting</header>#}
-{#        <table class="listing_table" cellspacing="0">#}
-{#            <thead>#}
-{#                <tr>#}
-{#                <th>Logo</th><th>App name</th><th>Price</th><th>Bids</th><th>Ending</th>#}
-{#                </tr>#}
-{#            </thead>#}
-{#            <tbody>#}
-{#                {% for i in range %}#}
-{#                <tr>#}
-{#                    <td><img class="img_30x30" src="http://a1357.phobos.apple.com/us/r1000/118/Purple2/v4/fc/b7/25/fcb72553-1585-d848-d262-23bf56aa02a5/mzl.hojifrfm.jpg"/></td><td>SAP Job is good app</td><td>1000$</td><td>23</td><td>19Days</td>#}
-{#                </tr>#}
-{#                <tr>#}
-{#                    <td colspan="5" class="fullwidth">SAP Job is an app for SAP internal job listing.SAP Job is an app for SAP internal job listing.</td>#}
-{#                </tr>#}
-{#                {% endfor %}#}
-{#            </tbody>#}
-{#        </table>#}
-{#    </div>#}
-{##}
-{#</div>#}
-
-
-
+                                           </div>
+                                           <div class="bidding_info">
+                                               <div>5$</div>
+                                               <div>200Bids</div>
+                                           </div>
+                                       </div>
+                                </div>
+                            </li>
+                             {% endfor %}
+                        </ul>
+                     </div>
+                </div>
 
 {% endblock %}

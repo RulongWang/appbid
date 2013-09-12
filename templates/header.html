@@ -23,14 +23,14 @@
     <div id="row">
         <ul class="user_bar_menu">
             <li><a href="/" class=""><img src="{% static "images/home.gif" %}" /></a></li>
-            <li>
-                <form action="" id="user-bar-search" method="get" class="">
-                    <input type="search" id="q" name="q" placeholder="Search"  class="adv_search_field" autocomplete="off">
-                    <input type="submit" id="search" class="adv_search" value="Search">
-
-                </form>
-            </li>
-            <li><a href="/" class="">Advance Search</a></li>
+{#            <li>#}
+{#                <form action="" id="user-bar-search" method="get" class="">#}
+{#                    <input type="search" id="q" name="q" placeholder="Search"  class="adv_search_field" autocomplete="off">#}
+{#                    <input type="submit" id="search" class="adv_search" value="Search">#}
+{##}
+{#                </form>#}
+{#            </li>#}
+            <li><p class="" style="font-size: 12px;color: #999; vertical-align: bottom;">Best Professional Apps dealing site in the world</p></li>
         </ul>
         <ul class="user_bar_menu_link">
             {% if request.user.is_authenticated  %}
@@ -62,6 +62,9 @@
         <div id="menu">
         <ul class="sf-menu">
             <li class="current">
+                <a href="/" title="Home">Home</a>
+            </li>
+            <li class="">
                 <a href="/query/featured/" title="Featured listings">Featured</a>
             </li>
             <li >
@@ -75,15 +78,12 @@
             <li >
                 <a href="/query/just_sold/" title="Listings which have just been sold">Just Sold</a>
             </li>
-            <li >
-                <a href="#">Monetization</a>
 
-            </li>
             <li >
                 <a href="/classifieds">Classifieds</a>
             </li>
             <li >
-                <a href="/seller/app-store-link" class="special">Sell Your Website</a>
+                <a href="/seller/app-store-link" class="special">Sell Your Apps!</a>
             </li>
         </ul>
         </div>
@@ -144,3 +144,4 @@
 <div id="quick_msg">
     Welcome to our iOS app market, you get 50% listing fee discount.
 </div>
+
