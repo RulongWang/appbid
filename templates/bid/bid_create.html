@@ -18,17 +18,21 @@
                   <div>
                     Listing closes in:{% include "bid/remaintime.html" %}
                   </div>
+                {% else %}
+                  <div>
+                    Beginning bid in:<br><b>{{ app.begin_date }}</b>
+                  </div>
                 {% endifequal %}
               </div>
              </div>
     <div class="bidding_create">
+    {% if app.status == 2 and begin_bid == True %}
         <form action="" method="post">
             {% csrf_token %}
             <div>
                 <h1>Current price:&nbsp;{{ current_price|floatformat|default:0 }}{{ app.currency.currency }}</h1>
             </div>
             <div id="bid_num" style="display: none">{{ bid_num|floatformat|default:0 }}bid{{ bid_num|floatformat|pluralize }}</div>
-
             <div class="yourprice">
                  <div class="price_box">
                      <div class="label_price"><h1>Your Price:</h1></div>
@@ -56,6 +60,7 @@
             </div>
             </div>
         </form>
+    {% endif %}
     </div>
 <script type="text/javascript" language="javascript">
     $("#id_price").click(function() {

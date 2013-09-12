@@ -19,12 +19,16 @@
               <div>
                 Listing closes in:{% include "bid/remaintime.html" %}
               </div>
+            {% else %}
+              <div>
+                Beginning bid in:<br><b>{{ app.begin_date }}</b>
+              </div>
             {% endifequal %}
           </div>
           <div class="bidding_box right">
             <div class="bidding_status" >
                 <div id="current_price"> {{ current_price|floatformat|default:0 }}{{ app.currency.currency }}</div>
-                 {% ifequal app.status 2 %}
+                 {% if app.status == 2 and begin_bid == True %}
                     <div>
                         <a href="{% url 'bid:bid_list' app.id %}"><div id="bid_num">{{ bid_num|floatformat|default:0 }}bid{{ bid_num|floatformat|pluralize }}</div></a>
                     </div>
@@ -37,7 +41,7 @@
                     </div>
                    <div>(Enter <span id="bid_price">{{ bid_price|floatformat|default:0 }}</span>{{ app.currency.currency }} or more.)</div>
                    <div id="price_msg"></div>
-                {% endifequal %}
+                {% endif %}
 
             </div>
           </div>
