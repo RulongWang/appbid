@@ -89,9 +89,10 @@ def initBidInfo(*args, **kwargs):
     else:
         initParam['bid_price'] = app.minimum_bid
     initParam['begin_bid'] = False
-    if datetime.datetime.now() >= app.begin_date:
+    if app.begin_date and datetime.datetime.now() >= app.begin_date:
         initParam['begin_bid'] = True
-    initParam['time_remaining'] = time.mktime(time.strptime(str(app.end_date), '%Y-%m-%d %H:%M:%S'))
+    if app.end_date:
+        initParam['time_remaining'] = time.mktime(time.strptime(str(app.end_date), '%Y-%m-%d %H:%M:%S'))
 
 
 def getBidInfo(request, *args, **kwargs):

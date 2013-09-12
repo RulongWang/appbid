@@ -19,9 +19,11 @@
                     Listing closes in:{% include "bid/remaintime.html" %}
                   </div>
                 {% else %}
-                  <div>
-                    Beginning bid in:<br><b>{{ app.begin_date }}</b>
-                  </div>
+                  {% if app.begin_date %}
+                      <div>
+                        Beginning bid in:<br><b>{{ app.begin_date }}</b>
+                      </div>
+                  {% endif %}
                 {% endifequal %}
               </div>
              </div>
