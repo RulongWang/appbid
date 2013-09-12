@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.db.models import Q, Count
 from django.core.urlresolvers import reverse
 from appbid import models
+from account import models as account_mode
 from bid import forms
 from query.views import initBidInfo
 from message import views
@@ -25,8 +26,11 @@ def createBid(request, *args, **kwargs):
                     bid = biddingForm.save(commit=False)
                     bid.app = app
                     bid.buyer = request.user
-                    bid.status = 1#TODO:need do it later.
-                    if app.is_verified:#Need be verified by app publisher.
+                    bid.status = 1
+                    userPrivateItem = account_mode.UserPrivateItem.objects.filter(key='is_bid_approved')
+                    is_bid_approved = account_mode.UserPrivateSetting.objects.filter(user_id=app.publisher.id, user_private_item_id=userPrivateItem[0])
+                    #Need be verified by app publisher.
+                    if is_bid_approved and is_bid_approved[0].value == 'True':
                         bid.status = 3
                     bid.save()
                     views.sendMessage(request)

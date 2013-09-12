@@ -105,6 +105,10 @@
         }
     });
     $("#bid_now").click(function() {
+        if ({{ app.publisher.id }} == {{ request.user.id }}) {
+            $("#price_msg").text("You can not bid your own app.");
+            return false;
+        }
         if ($("#price").val() =="") {
             $("#price_msg").text("The price can not be blank");
             return false;

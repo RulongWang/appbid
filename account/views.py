@@ -4,7 +4,6 @@ import json
 from django.contrib.auth import authenticate,login,logout
 from django.shortcuts import render_to_response,HttpResponse,  RequestContext, HttpResponseRedirect, get_object_or_404
 from django.views.decorators.csrf import csrf_protect
-from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext as _
 from django.db.models import Q
 from django.contrib.auth.models import User
@@ -12,6 +11,7 @@ from account import models
 from account_form import RegisterForm, UserDetailForm, UserPublicProfileForm, EmailItemForm
 
 
+@csrf_protect
 def login_view(request):
     initParam = {}
     user = authenticate(username=request.POST.get('username'), password=request.POST.get('password'))
@@ -33,17 +33,20 @@ def login_view(request):
     return render_to_response("account/login.html", initParam, context_instance=RequestContext(request))
 
 
+@csrf_protect
 def logout_view(request):
     logout(request)
     redirect_to = '/'
     return render_to_response('account/login.html', {"redirect_to": redirect_to}, context_instance=RequestContext(request))
 
 
+@csrf_protect
 def auth_home(request):
     redirect_to = request.GET.get('next', '/')
     return render_to_response("account/login.html", {'redirect_to': redirect_to}, context_instance=RequestContext(request))
 
 
+@csrf_protect
 def register(request):
     """user register method"""
     initParam = {}
@@ -61,12 +64,14 @@ def register(request):
                 if user is not None:
                     user.is_active = False
                     user.save()
-                    #TODO:need do it later.
-                    # userProfile = models.UserProfile()
-                    # userProfile.user = user
-                    # userProfile.is_bid_approved = False
-                    # userProfile.save()
-                    return HttpResponseRedirect("/account/register_active/")
+                    #Init some setting for the user
+                    privateSet = models.UserPrivateSetting()
+                    privateSet.user = user
+                    userPrivateItem = models.UserPrivateItem.objects.filter(key='is_bid_approved')
+                    privateSet.user_private_item = userPrivateItem[0]
+                    privateSet.value = False
+                    privateSet.save()
+                    return HttpResponseRedirect("".join(["/account/register_active/", user.username, '/', str(user.id)]))
                 else:
                     initParam['register_error'] = _('Register failed, please try again.')
     initParam['register_form'] = registerForm
@@ -99,10 +104,20 @@ def ajaxUserVerified(request, *args, **kwargs):
     return HttpResponse(json.dumps(data), mimetype=u'application/json')
 
 
+@csrf_protect
 def register_active(request, *args, **kwargs):
     initParam = {}
+    if kwargs['username'] and kwargs['pk']:
+        user = get_object_or_404(models.User, pk=kwargs['pk'], username=kwargs['username'])
+        initParam['email'] = user.email
+        #Send the active email.
+        #TODO:do it later.
     return render_to_response("account/register_active.html", initParam, context_instance=RequestContext(request))
 
+
+def account_active_by_email(request, *args, **kwargs):
+    """Active the account by user clicking the active link."""
+    return None
 
 def _login(request, username, password):
     pass
