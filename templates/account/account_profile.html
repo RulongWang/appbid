@@ -1,20 +1,35 @@
 {% extends "account/account_setting.html" %}
 {% block account_detail %}
+    <div id="account_msg" style="color: green">
+        {{ account_msg }}
+    </div>
     <fieldset>
         <legend>Public Profile</legend>
-    <form action=""  method="post">
+    <form action=""  method="post" enctype="multipart/form-data">
     {% csrf_token %}
             <ul class="account_detail_items">
                     <li>
                     <div class="fieldWrapper">
                         {{ form.user.errors }}
-                        <div class="field_label" >{{ form.user.label_tag }}</div><div class="field_value" > {{ form.user }}</div>
+                        <div class="field_label" >{{ form.user.label_tag }}</div>
+                        <div class="field_value" >
+                            {{ form.user }}
+                            <input id="username" name="username" value="{{ request.user.username }}" readonly="true"/>
+                        </div>
                     </div>
                     </li>
                     <li>
                     <div class="fieldWrapper">
                         {{ form.thumbnail.errors }}
-                        <div class="field_label" >{{ form.thumbnail.label_tag }}</div><div class="field_value" > {{ form.thumbnail }}</div>
+                        <div class="field_label" >{{ form.thumbnail.label_tag }}</div>
+                        <div class="field_value" >
+                            {% if form.thumbnail.value %}
+                                <img style="width: 40px;height: 40px" src="{{ form.thumbnail.value.url }}" />
+                                <input id="id_thumbnail" name="thumbnail" type="file" />
+                            {% else %}
+                                {{ form.thumbnail }}
+                            {% endif %}
+                        </div>
                     </div>
                     </li>
                     <li>

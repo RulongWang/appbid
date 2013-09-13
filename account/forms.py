@@ -51,6 +51,12 @@ class UserPublicProfileForm(forms.ModelForm):
     class Meta:
         model = models.UserPublicProfile
 
+    def __init__(self, *args, **kwargs):
+        super(UserPublicProfileForm, self).__init__(*args, **kwargs)
+        instance = getattr(self, 'instance', None)
+        if instance and instance.pk:
+            self.fields['user'].widget.attrs['hidden'] = True
+
 
 class EmailItemForm(forms.ModelForm):
     class Meta:

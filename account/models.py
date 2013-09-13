@@ -41,7 +41,7 @@ class UserDetailAdmin(admin.ModelAdmin):
 
 
 def content_file_name(instance, filename):
-    """The path of saving attachment file. The pattern is publisher_id/app_id/filename"""
+    """The path of saving attachment file. The pattern is user_id/filename"""
     return '/'.join([str(instance.user.id), filename])
 
 
@@ -53,7 +53,7 @@ class UserPublicProfile(models.Model):
         (3, 'Secret'),
     )
     user = models.OneToOneField(User)
-    thumbnail = models.FileField(max_length=255, upload_to=content_file_name, null=True)
+    thumbnail = models.FileField(max_length=255, upload_to=content_file_name, null=True, blank=True)
     gender = models.IntegerField(choices=GENDER_TYPES, blank=True, default=3, null=True)
     homepage = models.CharField(max_length=255, blank=True, null=True)
     twitter_account = models.CharField(max_length=255, blank=True, null=True)

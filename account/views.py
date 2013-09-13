@@ -1,5 +1,6 @@
 __author__ = 'rulongwang'
 import json
+import os
 
 from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.decorators import login_required
@@ -7,6 +8,7 @@ from django.shortcuts import render_to_response,HttpResponse,  RequestContext, H
 from django.views.decorators.csrf import csrf_protect
 from django.utils.translation import ugettext as _
 from django.db.models import Q
+from django.conf import settings
 from django.contrib.auth.models import User
 from account import models
 from account import forms
@@ -147,7 +149,7 @@ def userDetail(request, *args, **kwargs):
         detailForm = forms.UserDetailForm(request.POST, instance=userDetail)
         if detailForm.is_valid():
             detailForm.save()
-            initParam['user_detail_msg'] = _('The account detail has been updated.')
+            initParam['account_msg'] = _('The account detail has been updated.')
     initParam['form'] = detailForm
     return render_to_response("account/account_setting.html", initParam, context_instance=RequestContext(request))
 
@@ -159,9 +161,36 @@ def paymentAccount(request):
 
 
 def userPublicProfile(request):
-    form = forms.UserPublicProfileForm()
-
-    return render_to_response("account/account_profile.html",{'form':form},context_instance=RequestContext(request))
+    initParam = {}
+    user = get_object_or_404(models.User, pk=request.user.id, username=request.user.username)
+    userPublicProfiles = models.UserPublicProfile.objects.filter(user_id=user.id)
+    if userPublicProfiles:
+        userPublicProfile = userPublicProfiles[0]
+    else:
+        userPublicProfile = models.UserPublicProfile()
+        userPublicProfile.user = user
+        userPublicProfile.gender = 3
+        userPublicProfile.save()
+    userPublicProfileForm = forms.UserPublicProfileForm(instance=userPublicProfile)
+    if request.method == "POST":
+        userPublicProfileForm = forms.UserPublicProfileForm(request.POST, instance=userPublicProfile)
+        if userPublicProfileForm.is_valid():
+            userPublicProfile = userPublicProfileForm.save(commit=False)
+            thumbnail = request.FILES['thumbnail']
+            if thumbnail:
+                path = '/'.join([settings.MEDIA_ROOT, str(user.id)])
+                if os.path.exists(path) is False:
+                    os.makedirs(path)
+                if userPublicProfile.thumbnail:
+                    path = '/'.join([settings.MEDIA_ROOT, str(userPublicProfile.thumbnail)])
+                    if os.path.exists(path):
+                        os.remove(path)
+                userPublicProfile.thumbnail = thumbnail
+                userPublicProfileForm = forms.UserPublicProfileForm(instance=userPublicProfile)
+            userPublicProfile.save()
+            initParam['account_msg'] = _('The public profile has been updated.')
+    initParam['form'] = userPublicProfileForm
+    return render_to_response("account/account_profile.html", initParam, context_instance=RequestContext(request))
 
 
 def emailNotification(request):
