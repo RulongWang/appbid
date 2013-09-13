@@ -2,13 +2,14 @@ __author__ = 'rulongwang'
 import json
 
 from django.contrib.auth import authenticate,login,logout
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render_to_response,HttpResponse,  RequestContext, HttpResponseRedirect, get_object_or_404
 from django.views.decorators.csrf import csrf_protect
 from django.utils.translation import ugettext as _
 from django.db.models import Q
 from django.contrib.auth.models import User
 from account import models
-from account_form import RegisterForm, UserDetailForm, UserPublicProfileForm, EmailItemForm
+from account import forms
 
 
 @csrf_protect
@@ -50,9 +51,9 @@ def auth_home(request):
 def register(request):
     """user register method"""
     initParam = {}
-    registerForm = RegisterForm()
+    registerForm = forms.RegisterForm()
     if request.method == "POST":
-        registerForm = RegisterForm(request.POST)
+        registerForm = forms.RegisterForm(request.POST)
         if registerForm.is_valid():
             username = (registerForm.cleaned_data["username"]).strip()
             email = (registerForm.cleaned_data["email"]).strip()
@@ -128,10 +129,24 @@ def myprofile(request):
     pass
 
 
-def user_detail(request):
-    detail_form = UserDetailForm()
-    return render_to_response("account/accountsetting.html",{"form":detail_form},
-                        context_instance=RequestContext(request))
+@csrf_protect
+@login_required(login_url='/account/home/')
+def userDetail(request, *args, **kwargs):
+    """Save user detail info."""
+    user = get_object_or_404(models.User, pk=request.user.id, username=request.user.username)
+    if user:
+        userDetails = models.UserDetail.objects.filter(user_id=user.id)
+        if userDetails:
+            userDetail = userDetails[0]
+        else:
+            userDetail = models.UserDetail()
+            userDetail.user = user
+            userDetail.save()
+    detailForm = forms.UserDetailForm(instance=userDetail)
+    # if request.method == "POST":
+    #     detailForm = forms.UserDetailForm(request.POST)
+    # print detailForm
+    return render_to_response("account/account_setting.html", {"form": detailForm}, context_instance=RequestContext(request))
 
 
 def payment_account(request):
@@ -141,7 +156,7 @@ def payment_account(request):
 
 
 def user_public_profile(request):
-    form = UserPublicProfileForm()
+    form = forms.UserPublicProfileForm()
 
     return render_to_response("account/account_profile.html",{'form':form},context_instance=RequestContext(request))
 

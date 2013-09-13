@@ -11,7 +11,7 @@ urlpatterns = patterns('',
     #https://github.com/users/jarvisjia/emails/5800727/confirm_verification/2cd4ea255dd3e1deae130868d75cfa28fc423034
     url(r'^(?P<username>\S+)/emails/(?P<pk>\d+)/confirm_verification/\w{30}$', views.account_active_by_email, name='account-active-by-email'),
     url(r'^home/$', views.auth_home),
-    url(r'^setting/$', views.user_detail),
+    url(r'^setting/$', views.userDetail),
     url(r'^public_profile/$', views.user_public_profile),
     url(r'^email_setting/$', views.email_notification),
     url(r'^change_password/$', views.change_password),

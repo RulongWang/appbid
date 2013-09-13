@@ -26,7 +26,11 @@
                                     <li>
                                     <div class="fieldWrapper">
                                         {{ form.user.errors }}
-                                        <div class="field_label" >{{ form.user.label_tag }}</div><div class="field_value" > {{ form.user }}</div>
+                                        <div class="field_label" >{{ form.user.label_tag }}</div>
+                                        <div class="field_value" >
+                                            <input id="id_user" name="id_user" value="{{ form.user.value }}" hidden="hidden"/>
+                                            <input id="username" name="username" value="{{ request.user.username }}" readonly="true"/>
+                                        </div>
                                     </div>
                                     </li>
                                     <li>
