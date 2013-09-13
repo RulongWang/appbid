@@ -41,6 +41,11 @@
                         </div>
                         <div>(Enter <span id="bid_price">{{ bid_price|floatformat|default:0 }}</span>{{ app.currency.currency }} or more.)</div>
                         <div id="price_msg"></div>
+                        <div style="text-align: center;">
+                        {% if app.one_price %}
+                            <input id="buyitnow" type="button" value="Buy It Now with {{ app.one_price }}{{ app.currency.currency }}" class="buyitnow"/>
+                        {% endif %}
+                        </div>
                     {% endif %}
 
                 </div>
