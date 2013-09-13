@@ -1,0 +1,48 @@
+       {% load staticfiles %}
+        <div class="listing_header">
+              <div class="listing_icon left">
+                <img src="{{ MEDIA_URL }}{{ appInfo.icon }}"class="detail_icon"/>
+              </div>
+              <div class="app_bid_info">
+                <h1>{{ app.title }}</h1>
+                <div class="margin10px"> <a target="_blank" href="{{ app.app_store_link }}" title="{{ app.app_name }}"><img src="{% static "images/appstore.png" %}"/></a> </div>
+                {% if app.reserve_price and app.reserve_price <= current_price %}
+                  <div>
+                    Auction has reached the reserve price
+                  </div>
+                {% endif %}
+                {% ifequal begin_bid True %}
+                  <div>
+                    Listing closes in:{% include "bid/remaintime.html" %}
+                  </div>
+                {% else %}
+                    {% if app.begin_date %}
+                        <div>
+                          Beginning bid in:<br><b>{{ app.begin_date }}</b>
+                        </div>
+                    {% endif %}
+                {% endifequal %}
+              </div>
+              <div class="bidding_box right">
+                <div class="bidding_status" >
+                     <div id="current_price">
+                        {{ current_price|floatformat|default:0 }}{{ app.currency.currency }}
+                     </div>
+                    {% if app.status == 2 and begin_bid == True %}
+                        <div>
+                            <a href="{% url 'bid:bid_list' app.id %}"><div id="bid_num">{{ bid_num|floatformat|default:0 }}bid{{ bid_num|floatformat|pluralize }}</div></a>
+                        </div>
+                        <div class="bid_form">
+                            <form action="{% url 'bid:bid_create' app.id %}" method="post">
+                            {% csrf_token %}
+                            <input id="price" name="price" type="text" />
+                            <input id="bid_now" type="submit" value="Bid Now"/>
+                        </form>
+                        </div>
+                        <div>(Enter <span id="bid_price">{{ bid_price|floatformat|default:0 }}</span>{{ app.currency.currency }} or more.)</div>
+                        <div id="price_msg"></div>
+                    {% endif %}
+
+                </div>
+              </div>
+        </div>

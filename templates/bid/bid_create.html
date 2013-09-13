@@ -1,32 +1,7 @@
 {% extends "index.html" %}
 {% block mainContent %}
 {% load staticfiles %}
-            <div class="listing_header">
-              <div class="listing_icon left">
-                <img src="{{ MEDIA_URL }}{{ app.appinfo.icon }}"class="detail_icon"/>
-                <a href="{% url 'query:app_detail' app.id %}">View app detail</a>
-              </div>
-              <div class="app_bid_info">
-                <h1>{{ app.title }}</h1>
-                <div class="margin10px"> <a target="_blank" href="{{ app.app_store_link }}" title="{{ app.app_name }}"><img src="{% static "images/appstore.png" %}"/></a> </div>
-                {% if app.reserve_price and app.reserve_price <= current_price %}
-                  <div>
-                    Auction has reached the reserve price
-                  </div>
-                {% endif %}
-                {% ifequal begin_bid True %}
-                  <div>
-                    Listing closes in:{% include "bid/remaintime.html" %}
-                  </div>
-                {% else %}
-                  {% if app.begin_date %}
-                      <div>
-                        Beginning bid in:<br><b>{{ app.begin_date }}</b>
-                      </div>
-                  {% endif %}
-                {% endifequal %}
-              </div>
-             </div>
+    {% include "query/listing_header.html" %}
     <div class="bidding_create">
     {% if app.status == 2 and begin_bid == True %}
         <form action="" method="post">

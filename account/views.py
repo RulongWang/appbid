@@ -68,9 +68,10 @@ def register(request):
                     privateSet = models.UserPrivateSetting()
                     privateSet.user = user
                     userPrivateItem = models.UserPrivateItem.objects.filter(key='is_bid_approved')
-                    privateSet.user_private_item = userPrivateItem[0]
-                    privateSet.value = False
-                    privateSet.save()
+                    if userPrivateItem:
+                        privateSet.user_private_item = userPrivateItem[0]
+                        privateSet.value = False
+                        privateSet.save()
                     return HttpResponseRedirect("".join(["/account/register_active/", user.username, '/', str(user.id)]))
                 else:
                     initParam['register_error'] = _('Register failed, please try again.')
