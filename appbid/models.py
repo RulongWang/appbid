@@ -116,7 +116,7 @@ class Attachment(models.Model):
     app = models.ForeignKey(App)
     name = models.CharField(max_length=255, blank=True)
     type = models.IntegerField(choices=ATTACHMENT_TYPE, blank=True)
-    path = models.FileField(max_length=100, upload_to=content_file_name)
+    path = models.FileField(max_length=255, upload_to=content_file_name)
 
 
 @receiver(post_delete, sender=Attachment)

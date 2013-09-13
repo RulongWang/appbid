@@ -25,8 +25,9 @@ class UserPrivateSetting(models.Model):
 class UserDetail(models.Model):
     """UserDetail table info."""
     user = models.OneToOneField(User)
-    birthday = models.DateTimeField(blank=True, null=True)
+    birthday = models.DateField(blank=True, null=True)
     real_name = models.CharField(blank=True, max_length=255, null=True)
+    phone_number = models.CharField(blank=True, max_length=255, null=True)
     street_address = models.CharField(blank=True, max_length=300, null=True)
     city = models.CharField(blank=True, max_length=255, null=True)
     state_provience = models.CharField(blank=True, max_length=255, null=True)
@@ -39,6 +40,11 @@ class UserDetailAdmin(admin.ModelAdmin):
     list_display = ('user', 'real_name', 'city', 'country')
 
 
+def content_file_name(instance, filename):
+    """The path of saving attachment file. The pattern is publisher_id/app_id/filename"""
+    return '/'.join([str(instance.user.id), filename])
+
+
 class UserPublicProfile(models.Model):
     """UserPublicProfile table info."""
     GENDER_TYPES = (
@@ -47,7 +53,7 @@ class UserPublicProfile(models.Model):
         (3, 'Secret'),
     )
     user = models.OneToOneField(User)
-    thumbnail = models.FilePathField(blank=True, null=True)
+    thumbnail = models.FileField(max_length=255, upload_to=content_file_name, null=True)
     gender = models.IntegerField(choices=GENDER_TYPES, blank=True, default=3, null=True)
     homepage = models.CharField(max_length=255, blank=True, null=True)
     twitter_account = models.CharField(max_length=255, blank=True, null=True)

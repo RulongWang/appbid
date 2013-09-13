@@ -13,7 +13,7 @@ from account import forms
 
 
 @csrf_protect
-def login_view(request):
+def loginView(request):
     initParam = {}
     user = authenticate(username=request.POST.get('username'), password=request.POST.get('password'))
     redirect_to = request.POST.get('next', None)
@@ -35,14 +35,14 @@ def login_view(request):
 
 
 @csrf_protect
-def logout_view(request):
+def logoutView(request):
     logout(request)
     redirect_to = '/'
     return render_to_response('account/login.html', {"redirect_to": redirect_to}, context_instance=RequestContext(request))
 
 
 @csrf_protect
-def auth_home(request):
+def authHome(request):
     redirect_to = request.GET.get('next', '/')
     return render_to_response("account/login.html", {'redirect_to': redirect_to}, context_instance=RequestContext(request))
 
@@ -73,7 +73,7 @@ def register(request):
                         privateSet.user_private_item = userPrivateItem[0]
                         privateSet.value = False
                         privateSet.save()
-                    return HttpResponseRedirect("".join(["/account/register_active/", user.username, '/', str(user.id)]))
+                    return HttpResponseRedirect("".join(["/account/register-active/", user.username, '/', str(user.id)]))
                 else:
                     initParam['register_error'] = _('Register failed, please try again.')
     initParam['register_form'] = registerForm
@@ -107,7 +107,7 @@ def ajaxUserVerified(request, *args, **kwargs):
 
 
 @csrf_protect
-def register_active(request, *args, **kwargs):
+def registerActive(request, *args, **kwargs):
     initParam = {}
     if kwargs['username'] and kwargs['pk']:
         user = get_object_or_404(models.User, pk=kwargs['pk'], username=kwargs['username'])
@@ -117,7 +117,7 @@ def register_active(request, *args, **kwargs):
     return render_to_response("account/register_active.html", initParam, context_instance=RequestContext(request))
 
 
-def account_active_by_email(request, *args, **kwargs):
+def accountActiveByEmail(request, *args, **kwargs):
     """Active the account by user clicking the active link."""
     return None
 
@@ -133,47 +133,50 @@ def myprofile(request):
 @login_required(login_url='/account/home/')
 def userDetail(request, *args, **kwargs):
     """Save user detail info."""
+    initParam = {}
     user = get_object_or_404(models.User, pk=request.user.id, username=request.user.username)
-    if user:
-        userDetails = models.UserDetail.objects.filter(user_id=user.id)
-        if userDetails:
-            userDetail = userDetails[0]
-        else:
-            userDetail = models.UserDetail()
-            userDetail.user = user
-            userDetail.save()
+    userDetails = models.UserDetail.objects.filter(user_id=user.id)
+    if userDetails:
+        userDetail = userDetails[0]
+    else:
+        userDetail = models.UserDetail()
+        userDetail.user = user
+        userDetail.save()
     detailForm = forms.UserDetailForm(instance=userDetail)
-    # if request.method == "POST":
-    #     detailForm = forms.UserDetailForm(request.POST)
-    # print detailForm
-    return render_to_response("account/account_setting.html", {"form": detailForm}, context_instance=RequestContext(request))
+    if request.method == "POST":
+        detailForm = forms.UserDetailForm(request.POST, instance=userDetail)
+        if detailForm.is_valid():
+            detailForm.save()
+            initParam['user_detail_msg'] = _('The account detail has been updated.')
+    initParam['form'] = detailForm
+    return render_to_response("account/account_setting.html", initParam, context_instance=RequestContext(request))
 
 
-def payment_account(request):
+def paymentAccount(request):
     payment_accounts = models.Account.objects.all()
     return render_to_response("account/payment_account.html",{"payment_accounts":payment_accounts},
                         context_instance=RequestContext(request))
 
 
-def user_public_profile(request):
+def userPublicProfile(request):
     form = forms.UserPublicProfileForm()
 
     return render_to_response("account/account_profile.html",{'form':form},context_instance=RequestContext(request))
 
 
-def email_notification(request):
+def emailNotification(request):
     email_items = models.EmailItem.objects.all()
 
     return render_to_response("account/account_email_setting.html",{"email_items":email_items},
                         context_instance=RequestContext(request))
 
 
-def change_password(request):
+def changePassword(request):
     return render_to_response("account/account_password.html",{"test":"test"},
                         context_instance=RequestContext(request))
 
 
-def social_connection(request):
+def socialConnection(request):
     return render_to_response("account/social_connection.html",{"test":"test"},
                         context_instance=RequestContext(request))
 
