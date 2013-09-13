@@ -41,53 +41,5 @@
 
         </div>
     {% endfor %}
-
-
     </div>
-
-<script type="text/javascript" language="javascript">
-    $("#price").click(function() {
-        if ($("#price").val() ==="") {
-            id = '{{ app.id }}';
-            $.ajax({
-                type:"POST",
-                url:"{% url 'query:bid_info' id %}",
-                data:{
-                    id:id,
-                    csrfmiddlewaretoken: "{{ csrf_token }}"
-                },
-                success:function(data) {
-                    if(data.ok === 'true' && data.bid_price != null && data.current_price != null && data.bid_num != 0) {
-                        $("#bid_price").text(data.bid_price);
-                        $("#current_price").text(data.current_price+"{{ app.currency.currency }}");
-                        if (data.bid_num == 1) {
-                            $("#bid_num").text(data.bid_num+"bid");
-                        }
-                        else {
-                            $("#bid_num").text(data.bid_num+"bids");
-                        }
-                    }
-                }
-            });
-        }
-    });
-    $("#bid_now").click(function() {
-        if ({{ app.publisher.id }} == {{ request.user.id }}) {
-            $("#price_msg").text("You can not bid your own app.");
-            return false;
-        }
-        if ($("#price").val() =="") {
-            $("#price_msg").text("The price can not be blank");
-            return false;
-        }
-        if (isNaN($("#price").val())) {
-            $("#price_msg").text("The price should be number.");
-            return false;
-        }
-        if (parseFloat($("#price").val()) < parseFloat($("#bid_price").text())) {
-            $("#price_msg").text("The price must bid at least the minimum bid");
-            return false;
-        }
-    });
-</script>
 {% endblock %}

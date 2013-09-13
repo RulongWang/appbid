@@ -3,6 +3,7 @@ from django.http import Http404
 from django.shortcuts import render_to_response, RequestContext, HttpResponseRedirect, get_object_or_404
 from django.views.decorators.csrf import csrf_protect
 from django.contrib.auth.decorators import login_required
+from django.utils.translation import ugettext as _
 from django.db.models import Q, Count
 from django.core.urlresolvers import reverse
 from appbid import models
@@ -20,11 +21,16 @@ def createBid(request, *args, **kwargs):
         app = get_object_or_404(models.App, pk=kwargs['pk'])
         initParam['app'] = app
         initParam['appInfo'] = app.appinfo
+        initBidInfo(app=app, initParam=initParam)#For below code using the value
         if request.method == "POST":
             biddingForm = forms.BiddingForm(request.POST)
             if biddingForm.is_valid():
                 if 'yes' == request.POST.get('bid_create'):#From bid_create.html
                     bid = biddingForm.save(commit=False)
+                    if bid.price < initParam['bid_price']:
+                        initParam['biddingForm'] = biddingForm
+                        initParam['bid_error'] = _('The new bid has been submitted.')
+                        return render_to_response('bid/bid_create.html', initParam, context_instance=RequestContext(request))
                     bid.app = app
                     bid.buyer = request.user
                     bid.status = 1
@@ -38,7 +44,6 @@ def createBid(request, *args, **kwargs):
                     return HttpResponseRedirect(reverse('bid:bid_list', kwargs={'pk': app.id}))
                 else:#From list_detail.html
                     initParam['biddingForm'] = biddingForm
-        initBidInfo(app=app, initParam=initParam)
         views.sendMessage(request, initParam=initParam)
         return render_to_response('bid/bid_create.html', initParam, context_instance=RequestContext(request))
     raise Http404

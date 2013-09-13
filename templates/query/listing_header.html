@@ -1,27 +1,27 @@
        {% load staticfiles %}
         <div class="listing_header">
               <div class="listing_icon left">
-                <img src="{{ MEDIA_URL }}{{ appInfo.icon }}"class="detail_icon"/>
+                <a href="{% url 'query:app_detail' app.id %}"><img src="{{ MEDIA_URL }}{{ appInfo.icon }}"class="detail_icon"/></a>
               </div>
               <div class="app_bid_info">
-                <h1>{{ app.title }}</h1>
+                <h1><a href="{% url 'query:app_detail' app.id %}">{{ app.title }}</a></h1>
                 <div class="margin10px"> <a target="_blank" href="{{ app.app_store_link }}" title="{{ app.app_name }}"><img src="{% static "images/appstore.png" %}"/></a> </div>
-                {% if app.reserve_price and app.reserve_price <= current_price %}
+                {% if app.status == 2 and app.reserve_price and app.reserve_price <= current_price %}
                   <div>
-                    Auction has reached the reserve price
+                    Auction has reached the reserve price.
                   </div>
                 {% endif %}
-                {% ifequal begin_bid True %}
+                {% if app.status == 2 and begin_bid == True %}
                   <div>
                     Listing closes in:{% include "bid/remaintime.html" %}
                   </div>
                 {% else %}
-                    {% if app.begin_date %}
+                    {% if app.status == 2 and app.begin_date %}
                         <div>
                           Beginning bid in:<br><b>{{ app.begin_date }}</b>
                         </div>
                     {% endif %}
-                {% endifequal %}
+                {% endif %}
               </div>
               <div class="bidding_box right">
                 <div class="bidding_status" >
@@ -46,3 +46,48 @@
                 </div>
               </div>
         </div>
+<script type="text/javascript" language="javascript">
+    $("#price").click(function() {
+        if ($("#price").val() ==="") {
+            id = '{{ app.id }}';
+            $.ajax({
+                type:"POST",
+                url:"{% url 'query:bid_info' id %}",
+                data:{
+                    id:id,
+                    csrfmiddlewaretoken: "{{ csrf_token }}"
+                },
+                success:function(data) {
+                    if(data.ok === 'true' && data.bid_price != null && data.current_price != null && data.bid_num != 0) {
+                        $("#bid_price").text(data.bid_price);
+                        $("#current_price").text(data.current_price+"{{ app.currency.currency }}");
+                        if (data.bid_num == 1) {
+                            $("#bid_num").text(data.bid_num+"bid");
+                        }
+                        else {
+                            $("#bid_num").text(data.bid_num+"bids");
+                        }
+                    }
+                }
+            });
+        }
+    });
+    $("#bid_now").click(function() {
+        if ({{ app.publisher.id }} == {{ request.user.id }}) {
+            $("#price_msg").text("You can not bid your own app.");
+            return false;
+        }
+        if ($("#price").val() =="") {
+            $("#price_msg").text("*The price can not be blank.");
+            return false;
+        }
+        if (isNaN($("#price").val())) {
+            $("#price_msg").text("*The price should be number.");
+            return false;
+        }
+        if (parseFloat($("#price").val()) < parseFloat($("#bid_price").text())) {
+            $("#price_msg").text("*The price must bid at least the minimum bid.");
+            return false;
+        }
+    });
+</script>

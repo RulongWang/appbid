@@ -14,12 +14,10 @@
                  <div class="price_box">
                      <div class="label_price"><h1>Your Price:</h1></div>
                      <div>{{ biddingForm.price }}{{ app.currency.currency }}</div>
-                     <div>(Enter <span  id="bid_price">{{ bid_price|floatformat|default:0 }}</span>{{ app.currency.currency }} or more.)</div>
+                     <div>(Enter <span  id="bid_price_new">{{ bid_price|floatformat|default:0 }}</span>{{ app.currency.currency }} or more.)</div>
                  </div>
             </div>
-            <div id="price_msg">
-
-            </div>
+            <div id="price_msg_new">{{ bid_error }}</div>
 
             <div id="bid_agreement">
             <input id="agreement" name="agreement" type="checkbox"/>I have read the Bidding Terms and Conditions and I agree to them
@@ -40,51 +38,26 @@
     {% endif %}
     </div>
 <script type="text/javascript" language="javascript">
-    $("#id_price").click(function() {
-        if ($("#id_price").val() ==="") {
-            id = '{{ app.id }}';
-            $.ajax({
-                type:"POST",
-                url:"{% url 'query:bid_info' id %}",
-                data:{
-                    id:id,
-                    csrfmiddlewaretoken: "{{ csrf_token }}"
-                },
-                success:function(data) {
-                    if(data.ok === 'true' && data.bid_price != null && data.current_price != null && data.bid_num != 0) {
-                        $("#bid_price").text(data.bid_price);
-                        $("#current_price").text(data.current_price + "{{ app.currency.currency }}");
-                        if (data.bid_num == 1) {
-                            $("#bid_num").text(data.bid_num + "bid");
-                        }
-                        else {
-                            $("#bid_num").text(data.bid_num + "bids");
-                        }
-                    }
-                }
-            });
-        }
-    });
     $("#save").click(function() {
         if ({{ app.publisher.id }} == {{ request.user.id }}) {
-            $("#price_msg").text("You can not bid your own app.");
+            $("#price_msg_new").text("You can not bid your own app.");
             return false;
         }
         if ($("#id_price").val() =="") {
-            $("#price_msg").text("The price can not be blank");
+            $("#price_msg_new").text("The price can not be blank.");
             return false;
         }
         if (isNaN($("#id_price").val())) {
-            $("#price_msg").text("The price should be number.");
+            $("#price_msg_new").text("The price should be number.");
             return false;
         }
-        if (parseFloat($("#id_price").val()) < parseFloat($("#bid_price").text())) {
-            $("#price_msg").text("The price must bid at least the minimum bid");
+        if (parseFloat($("#id_price").val()) < parseFloat($("#bid_price_new").text())) {
+            $("#price_msg_new").text("The price must bid at least the minimum bid.");
 
             return false;
         }
         if ($("#agreement").is(':checked') == false) {
-             $("#price_msg").text("亲，貌似你没有同意竞标协议哦！");
+             $("#price_msg_new").text("亲，貌似你没有同意竞标协议哦！");
             return false;
         }
     });
