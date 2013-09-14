@@ -15,6 +15,7 @@ from django.core.urlresolvers import reverse
 from django.db import transaction
 from django.conf import settings
 from order import models as orderModels
+from system import models as systemModels
 
 from seller import forms
 from appbid import models
@@ -89,7 +90,7 @@ def saveAppStoreLink(request, form, model, *args, **kwargs):
         #currency is CNY in chinese version, USD in other version.
         model.currency = models.Currency.objects.get(id=1)
         model.minimum_bid = 10#default value is 10.
-        token_len = models.SystemParam.objects.get(key='token_len')
+        token_len = systemModels.SystemParam.objects.get(key='token_len')
         model.verify_token = ''.join(random.sample(string.ascii_letters+string.digits, string.atoi(token_len.value)))
         model.is_verified = False
     else:
@@ -199,13 +200,13 @@ def saveAdditionalInfo(request, form, model, *args, **kwargs):
 
     pathList = request.FILES.getlist('path')
     if pathList:
-        maxNum = models.SystemParam.objects.filter(key='max_num_attachment')
+        maxNum = systemModels.SystemParam.objects.filter(key='max_num_attachment')
         attachments = models.Attachment.objects.filter(app_id=model.id)
         if maxNum and len(pathList) + len(attachments) > string.atoi(maxNum[0].value):
             initParam['attachmentError'] = _('The attachment number can not be more than %(number)s.') % {'number': maxNum[0].value}
             return None
 
-        attachmentSize = models.SystemParam.objects.filter(key='attachment_size')
+        attachmentSize = systemModels.SystemParam.objects.filter(key='attachment_size')
         for path in pathList:
             attachment = models.Attachment(path=path)
             attachment.name = path.name
@@ -275,9 +276,11 @@ def saveService(request, form, model, *args, **kwargs):
         serviceDetail.app_id = model.id
         serviceDetail.is_payed = False
         #TODO:Need to change them,after user have payed.
-        # serviceDetail.start_date = datetime.datetime.now()
+        serviceDetail.start_date = datetime.datetime.now()
+        print datetime.datetime.now()
+        # print datetime.datetime.now() + datetime.timedelta(months=1)
         # serviceDetail.end_date = datetime.datetime.now() + datetime.timedelta(months=1)
-    discount_rate = models.SystemParam.objects.filter(key='discount_rate')
+    discount_rate = systemModels.SystemParam.objects.filter(key='discount_rate')
     if discount_rate:
         serviceDetail.actual_amount = string.atof(discount_rate[0].value) * amount
     else:

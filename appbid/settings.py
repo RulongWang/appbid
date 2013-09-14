@@ -143,6 +143,8 @@ INSTALLED_APPS = (
     'notification',
     'bid',
     'order',
+    'payment',
+    'system',
 )
 
 # A sample logging configuration. The only tangible logging
