@@ -1,10 +1,11 @@
 __author__ = 'rulongwang'
+
 import json
 import os
 
 from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render_to_response,HttpResponse,  RequestContext, HttpResponseRedirect, get_object_or_404
+from django.shortcuts import render_to_response, HttpResponse, RequestContext, HttpResponseRedirect, get_object_or_404, Http404
 from django.views.decorators.csrf import csrf_protect
 from django.utils.translation import ugettext as _
 from django.db.models import Q
@@ -15,7 +16,7 @@ from account import forms
 
 
 @csrf_protect
-def loginView(request):
+def loginView(request, *args, **kwargs):
     initParam = {}
     user = authenticate(username=request.POST.get('username'), password=request.POST.get('password'))
     redirect_to = request.POST.get('next', None)
@@ -37,20 +38,20 @@ def loginView(request):
 
 
 @csrf_protect
-def logoutView(request):
+def logoutView(request, *args, **kwargs):
     logout(request)
     redirect_to = '/'
     return render_to_response('account/login.html', {"redirect_to": redirect_to}, context_instance=RequestContext(request))
 
 
 @csrf_protect
-def authHome(request):
+def authHome(request, *args, **kwargs):
     redirect_to = request.GET.get('next', '/')
     return render_to_response("account/login.html", {'redirect_to': redirect_to}, context_instance=RequestContext(request))
 
 
 @csrf_protect
-def register(request):
+def register(request, *args, **kwargs):
     """user register method"""
     initParam = {}
     registerForm = forms.RegisterForm()
@@ -154,13 +155,14 @@ def userDetail(request, *args, **kwargs):
     return render_to_response("account/account_setting.html", initParam, context_instance=RequestContext(request))
 
 
-def paymentAccount(request):
+def paymentAccount(request, *args, **kwargs):
     payment_accounts = models.Account.objects.all()
     return render_to_response("account/payment_account.html",{"payment_accounts":payment_accounts},
                         context_instance=RequestContext(request))
 
 
-def userPublicProfile(request):
+def userPublicProfile(request, *args, **kwargs):
+    """Save user public profile."""
     initParam = {}
     user = get_object_or_404(models.User, pk=request.user.id, username=request.user.username)
     userPublicProfiles = models.UserPublicProfile.objects.filter(user_id=user.id)
@@ -193,13 +195,29 @@ def userPublicProfile(request):
     return render_to_response("account/account_profile.html", initParam, context_instance=RequestContext(request))
 
 
-def emailNotification(request):
-    email_items = models.EmailItem.objects.all()
-    return render_to_response("account/account_email_setting.html",{"email_items":email_items},
-                        context_instance=RequestContext(request))
+def subscriptionSetting(request, *args, **kwargs):
+    """Save subscription setting."""
+    initParam = {}
+    user = get_object_or_404(models.User, pk=request.user.id, username=request.user.username)
+    if request.method == "POST":
+        ids = request.POST.getlist('subscription_id')
+        user.subscriptionitem_set.clear()
+        for id in ids:
+            try:
+                subscriptionItem = models.SubscriptionItem.objects.get(id=id)
+                user.subscriptionitem_set.add(subscriptionItem)
+            except models.SubscriptionItem.DoesNotExist:
+                return Http404
+        initParam['account_msg'] = _('The subscription setting has been updated.')
+
+    subscriptionSettings = models.SubscriptionItem.objects.all()
+    selectSettings = user.subscriptionitem_set.all()
+    initParam['subscriptionSettings'] = subscriptionSettings
+    initParam['selectSettings'] = selectSettings
+    return render_to_response("account/account_subscription.html", initParam, context_instance=RequestContext(request))
 
 
-def changePassword(request):
+def changePassword(request, *args, **kwargs):
     initParam = {}
     if request.method == "POST":
         old_password = request.POST.get('old-password')

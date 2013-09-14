@@ -9,7 +9,7 @@
     {% csrf_token %}
             <ul class="account_detail_items">
                     <li>
-                    <div class="fieldWrapper">
+                    <div class="fieldWrapper" style="display: none;">
                         {{ form.user.errors }}
                         <div class="field_label" >{{ form.user.label_tag }}</div>
                         <div class="field_value" >

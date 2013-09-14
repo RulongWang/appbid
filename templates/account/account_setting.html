@@ -8,7 +8,7 @@
 
                 <li class="selected"><a href="/account/setting/">Account Details</a></li>
                 <li><a href="/account/public-profile/">Public Profile</a></li>
-                <li><a href="/account/email-setting/">Subscription Setting</a></li>
+                <li><a href="/account/subscription-setting/">Subscription Setting</a></li>
             </ul>
             <h1>Security Settings</h1>
             <ul>
@@ -34,7 +34,7 @@
                     {% csrf_token %}
                             <ul class="account_detail_items">
                                     <li>
-                                    <div class="fieldWrapper" style="display: none;">
+                                    <div class="fieldWrapper">
                                         {{ form.user.errors }}
                                         <div class="field_label" >{{ form.user.label_tag }}</div>
                                         <div class="field_value" >
@@ -53,12 +53,6 @@
                                     <div class="fieldWrapper">
                                         {{ form.real_name.errors }}
                                         <div class="field_label" >{{ form.real_name.label_tag }}</div><div class="field_value" > {{ form.real_name }}</div>
-                                    </div>
-                                    </li>
-                                    <li>
-                                    <div class="fieldWrapper">
-                                        {{ form.real_name.errors }}
-                                        <div class="field_label" >{{ form.phone_number.label_tag }}</div><div class="field_value" > {{ form.phone_number }}</div>
                                     </div>
                                     </li>
                                     <li>

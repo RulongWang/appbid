@@ -1,0 +1,21 @@
+{% extends "account/account_setting.html" %}
+{% block account_detail %}
+    <div id="account_msg" style="color: green">
+        {{ account_msg }}
+    </div>
+    <form action="" method="post">
+        {% csrf_token %}
+        <div><h1>Email notification settting</h1></div>
+        <ul class="account_detail_items">
+        {% for item in subscriptionSettings %}
+           <li>
+            <input type="checkbox" name="subscription_id" value="{{ item.id }}"
+                    {% if item in selectSettings %}checked="checked"{% endif %}
+                    />&nbsp;{{ item.item}}
+           </li>
+        {% endfor %}
+        </ul>
+    <input name="submit" type="submit" value="Submit" class="newbutton"/>
+    </form>
+
+{% endblock %}

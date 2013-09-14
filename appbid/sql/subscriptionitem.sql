@@ -1,4 +1,4 @@
-INSERT INTO `account_emailitem` (`id`,`item`) VALUES
+INSERT INTO `account_subscriptionitem` (`id`,`item`) VALUES
  (1,'Notify me about changes to XXX itself'),
  (2,'Subscribe me to the XXX newsletter'),
  (3,'Allow XXX to send me special offers'),

@@ -27,7 +27,6 @@ class UserDetail(models.Model):
     user = models.OneToOneField(User)
     birthday = models.DateField(blank=True, null=True)
     real_name = models.CharField(blank=True, max_length=255, null=True)
-    phone_number = models.CharField(blank=True, max_length=255, null=True)
     street_address = models.CharField(blank=True, max_length=300, null=True)
     city = models.CharField(blank=True, max_length=255, null=True)
     state_provience = models.CharField(blank=True, max_length=255, null=True)
@@ -83,14 +82,14 @@ class AccountAdmin(admin.ModelAdmin):
     list_display = ('user', 'type', 'value')
 
 
-class EmailItem(models.Model):
-    """EmailSetting table info - email notification."""
+class SubscriptionItem(models.Model):
+    """SubscriptionItem table info - email notification."""
     user = models.ManyToManyField(User)
     item = models.CharField(max_length=255)
 
 
-class EmailItemAdmin(admin.ModelAdmin):
-    """The set of EmailItem table displaying in admin page."""
+class SubscriptionItemAdmin(admin.ModelAdmin):
+    """The set of SubscriptionItem table displaying in admin page."""
     list_display = ('id', 'item')
 
 
@@ -108,7 +107,7 @@ class SecurityVerification(models.Model):
 
 admin.site.register(UserPrivateItem, UserPrivateItemAdmin)
 admin.site.register(UserDetail, UserDetailAdmin)
-admin.site.register(EmailItem, EmailItemAdmin)
+admin.site.register(SubscriptionItem, SubscriptionItemAdmin)
 admin.site.register(Account, AccountAdmin)
 admin.site.register(UserPublicProfile, UserPublicProfileAdmin)
 

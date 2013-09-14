@@ -1,9 +1,9 @@
 __author__ = 'rulongwang'
+
 from django import forms
 from django.utils.translation import ugettext as _
-from django.contrib.admin import ModelAdmin
 from django.contrib.auth.models import User
-import models
+from account import models
 
 
 class RegisterForm(forms.Form):
@@ -56,8 +56,3 @@ class UserPublicProfileForm(forms.ModelForm):
         instance = getattr(self, 'instance', None)
         if instance and instance.pk:
             self.fields['user'].widget.attrs['hidden'] = True
-
-
-class EmailItemForm(forms.ModelForm):
-    class Meta:
-        model = models.EmailItem

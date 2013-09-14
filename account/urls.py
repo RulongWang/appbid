@@ -1,6 +1,9 @@
 __author__ = 'rulongwang'
+
 from django.conf.urls import patterns, url
 from account import views
+
+
 urlpatterns = patterns('',
     url(r'^login/$', views.loginView, name='login_view'),
     url(r'^logout/$', views.logoutView),
@@ -13,7 +16,7 @@ urlpatterns = patterns('',
     url(r'^home/$', views.authHome),
     url(r'^setting/$', views.userDetail),
     url(r'^public-profile/$', views.userPublicProfile),
-    url(r'^email-setting/$', views.emailNotification),
+    url(r'^subscription-setting/$', views.subscriptionSetting),
     url(r'^change-password/$', views.changePassword),
     url(r'^social-setting/$', views.socialConnection),
     url(r'^payment-setting/$',views.paymentAccount),
