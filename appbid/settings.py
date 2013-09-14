@@ -140,6 +140,7 @@ INSTALLED_APPS = (
     'seller',
     'account',
     'message',
+    'notification',
 )
 
 # A sample logging configuration. The only tangible logging

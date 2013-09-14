@@ -94,6 +94,18 @@ class EmailItemAdmin(admin.ModelAdmin):
     list_display = ('id', 'item')
 
 
+class SecurityVerification(models.Model):
+    """SecurityVerification table info."""
+    VERIFICATION_TYPE = (
+        (1, 'email'),
+        (2, 'phone'),
+    )
+    user = models.ForeignKey(User)
+    vtype = models.IntegerField(choices=VERIFICATION_TYPE)
+    value = models.CharField(max_length=255)
+    is_verified = models.BooleanField(default=False)
+    verified_date = models.DateTimeField(auto_now=True)
+
 admin.site.register(UserPrivateItem, UserPrivateItemAdmin)
 admin.site.register(UserDetail, UserDetailAdmin)
 admin.site.register(EmailItem, EmailItemAdmin)
