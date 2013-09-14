@@ -176,7 +176,7 @@ def userPublicProfile(request):
         userPublicProfileForm = forms.UserPublicProfileForm(request.POST, instance=userPublicProfile)
         if userPublicProfileForm.is_valid():
             userPublicProfile = userPublicProfileForm.save(commit=False)
-            thumbnail = request.FILES['thumbnail']
+            thumbnail = request.FILES.get('thumbnail')
             if thumbnail:
                 path = '/'.join([settings.MEDIA_ROOT, str(user.id)])
                 if os.path.exists(path) is False:
