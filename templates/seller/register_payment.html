@@ -4,22 +4,22 @@
     <form action="" method="post">
         {% csrf_token %}
 
-    {% for paymentItem in paymentItems %}
+    {% for serviceItem in serviceItems %}
         <div class="field_block_payment">
 
             <div class="left" style="width:300px;">
-            <div style="width:300px:height:20px; font-weight: bold;"> {{ paymentItem.short_text }}</div>
-            <div style="width:300px:height:40px;">{{ paymentItem.long_text }}</div>
+            <div style="width:300px:height:20px; font-weight: bold;"> {{ serviceItem.short_text }}</div>
+            <div style="width:300px:height:40px;">{{ serviceItem.long_text }}</div>
              </div>
              <div class="right" style="width:50px">
-             {{ paymentItem.price }}
-                 <input type="checkbox" name="paymentItem_id" value="{{ paymentItem.id }}"
-                       price="{{ paymentItem.price }}" onclick="checkPaymentItem(this)"
-                       {% ifequal paymentItem.is_basic_service True %}checked="checked" disabled
-                       {% else %}{% if paymentItem in selectItems %}checked="checked"{% endif %}
+             {{ serviceItem.price }}
+                 <input type="checkbox" name="serviceItem_id" value="{{ serviceItem.id }}"
+                       price="{{ serviceItem.price }}" onclick="checkServiceItem(this)"
+                       {% ifequal serviceItem.is_basic_service True %}checked="checked" disabled
+                       {% else %}{% if serviceItem in selectItems %}checked="checked"{% endif %}
                        {% endifequal %}>
-                {% ifequal paymentItem.is_basic_service True %}
-                <input type="hidden" name="paymentItem_id" value="{{ paymentItem.id }}">
+                {% ifequal serviceItem.is_basic_service True %}
+                <input type="hidden" name="serviceItem_id" value="{{ serviceItem.id }}">
                 {% endifequal %}
              </div>
         </div>
@@ -41,7 +41,7 @@
 
 <script type="text/javascript" language="javascript">
     var total =  parseFloat(($("#total").text()).replace(",", "."));
-    function checkPaymentItem(obj) {
+    function checkServiceItem(obj) {
         var price = $(obj).attr("price");
         if ($(obj).is(':checked') == true) {
             total += parseFloat(price.replace(",", "."));

@@ -1,4 +1,5 @@
 __author__ = 'rulongwang'
+
 from django.db import models
 from django.dispatch import receiver
 from django.db.models.signals import post_delete,pre_save
@@ -39,21 +40,6 @@ class Category(models.Model):
         return self.name
 
 
-class PaymentItem(models.Model):
-    """PaymentItem table info, include many payment items."""
-    short_text = models.CharField(max_length=255)
-    long_text = models.TextField()
-    price = models.FloatField()
-    #The period unit is month, default value 1 means one month.
-    period = models.IntegerField(default=1)
-    start_date = models.DateTimeField()
-    end_date = models.DateTimeField()
-    is_basic_service = models.BooleanField(default=False)
-
-    def __unicode__(self):
-        return self.short_text
-
-
 class App(models.Model):
     """App table info"""
     APP_STATUS = (
@@ -88,7 +74,6 @@ class App(models.Model):
     platform_version = models.CharField(max_length=255, null=True, blank=True)
     source_code = models.BooleanField(default=True)
     rating = models.CharField(max_length=5, null=True, blank=True)
-    paymentItem = models.ManyToManyField(PaymentItem, null=True, blank=True)
     verify_token = models.CharField(max_length=255, null=True, blank=True)
     #Whether the bid need be verified by app publisher.
     is_verified = models.BooleanField(default=False)
@@ -152,40 +137,6 @@ class AppInfo(models.Model):
     release_date = models.DateTimeField(null=True, blank=True)
 
 
-class Bidding(models.Model):
-    """Bidding table info, status value: 1 approved, 2 rejected, 3 inProgress"""
-    BIDDING_STATUS = (
-        (1, "approved"),
-        (2, "rejected"),
-        (3, "pending"),
-    )
-    app = models.ForeignKey(App)
-    price = models.FloatField()
-    comment = models.TextField(null=True, blank=True)
-    buyer = models.ForeignKey(User)
-    bid_time = models.DateTimeField(auto_now_add=True)
-    status = models.IntegerField(choices=BIDDING_STATUS, null=True, blank=True, default=3)
-
-
-class Gateway(models.Model):
-    """Gateway table info."""
-    #TODO:The fields will be discussed later.
-    name = models.CharField(max_length=255)
-    is_active = models.BooleanField(default=False)
-
-
-class PaymentDetail(models.Model):
-    """PaymentDetail table info, the record of seller's payment detail."""
-    app = models.ForeignKey(App)
-    start_date = models.DateTimeField(null=True, blank=True)
-    end_date = models.DateTimeField(null=True, blank=True)
-    #The actual amount means the amount after using discount_rate.
-    actual_amount = models.FloatField(null=True, blank=True)
-    amount = models.FloatField(null=True, blank=True)
-    gateway = models.ForeignKey(Gateway, null=True, blank=True)
-    is_payed = models.BooleanField(default=False, blank=True)
-
-
 class SystemParam(models.Model):
     """Config the system parameter."""
     key = models.CharField(max_length=255)
@@ -213,6 +164,5 @@ admin.site.register(Device)
 admin.site.register(Currency)
 admin.site.register(Monetize)
 admin.site.register(Category)
-admin.site.register(PaymentItem)
 admin.site.register(SystemParam)
 admin.site.register(Job)

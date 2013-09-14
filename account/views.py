@@ -13,6 +13,7 @@ from django.conf import settings
 from django.contrib.auth.models import User
 from account import models
 from account import forms
+from order import models as orderModels
 
 
 @csrf_protect
@@ -156,7 +157,7 @@ def userDetail(request, *args, **kwargs):
 
 
 def paymentAccount(request, *args, **kwargs):
-    payment_accounts = models.Account.objects.all()
+    payment_accounts = orderModels.Account.objects.all()
     return render_to_response("account/payment_account.html",{"payment_accounts":payment_accounts},
                         context_instance=RequestContext(request))
 

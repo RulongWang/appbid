@@ -1,4 +1,5 @@
 __author__ = 'rulongwang'
+
 from django.db import models
 from django.contrib.auth.models import User
 from django.contrib import admin
@@ -66,22 +67,6 @@ class UserPublicProfileAdmin(admin.ModelAdmin):
     list_display = ('user', 'gender', 'homepage', 'weibo_account')
 
 
-class Account(models.Model):
-    """Account table info - support paypal, alipay now."""
-    ACCOUNT_TYPE = (
-        (1, 'paypal'),
-        (2, 'alipay'),
-    )
-    user = models.ForeignKey(User)
-    type = models.IntegerField(choices=ACCOUNT_TYPE)
-    value = models.EmailField()
-
-
-class AccountAdmin(admin.ModelAdmin):
-    """The set of Account table displaying in admin page."""
-    list_display = ('user', 'type', 'value')
-
-
 class SubscriptionItem(models.Model):
     """SubscriptionItem table info - email notification."""
     user = models.ManyToManyField(User)
@@ -108,7 +93,6 @@ class SecurityVerification(models.Model):
 admin.site.register(UserPrivateItem, UserPrivateItemAdmin)
 admin.site.register(UserDetail, UserDetailAdmin)
 admin.site.register(SubscriptionItem, SubscriptionItemAdmin)
-admin.site.register(Account, AccountAdmin)
 admin.site.register(UserPublicProfile, UserPublicProfileAdmin)
 
 

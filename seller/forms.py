@@ -1,4 +1,5 @@
 __author__ = 'jarvis'
+
 from django import forms
 from appbid import models
 
@@ -52,7 +53,3 @@ class AppInfoForm(forms.ModelForm):
         instance = getattr(self, 'instance', None)
         if instance and instance.pk:
             self.fields['price'].widget.attrs['readonly'] = True
-
-class PaymentItemForm(forms.ModelForm):
-    class Meta:
-        model = models.PaymentItem

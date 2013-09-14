@@ -1,6 +1,7 @@
 __author__ = 'Jarvis'
+
 from django import forms
-from appbid import models
+from bid import models
 
 
 class BiddingForm(forms.ModelForm):
