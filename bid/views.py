@@ -6,11 +6,11 @@ from django.contrib.auth.decorators import login_required
 from django.utils.translation import ugettext as _
 from django.db.models import Q, Count
 from django.core.urlresolvers import reverse
-from appbid import models
+from appbid import models as appModels
 from usersetting import models as userSettingModels
 from bid import forms
 from query.views import initBidInfo
-from message import views
+from message.views import sendMessage
 
 
 @csrf_protect
@@ -18,7 +18,7 @@ from message import views
 def createBid(request, *args, **kwargs):
     if kwargs['pk']:
         initParam = {}
-        app = get_object_or_404(models.App, pk=kwargs['pk'])
+        app = get_object_or_404(appModels.App, pk=kwargs['pk'])
         initParam['app'] = app
         initParam['appInfo'] = app.appinfo
         initBidInfo(app=app, initParam=initParam)#For below code using the value
@@ -41,11 +41,11 @@ def createBid(request, *args, **kwargs):
                         if is_bid_approved and is_bid_approved[0].value == 'True':
                             bid.status = 3
                     bid.save()
-                    views.sendMessage(request)
+                    sendMessage(request)
                     return HttpResponseRedirect(reverse('bid:bid_list', kwargs={'pk': app.id}))
                 else:#From list_detail.html
                     initParam['biddingForm'] = biddingForm
-        views.sendMessage(request, initParam=initParam)
+        sendMessage(request, initParam=initParam)
         return render_to_response('bid/bid_create.html', initParam, context_instance=RequestContext(request))
     raise Http404
 
@@ -53,7 +53,7 @@ def createBid(request, *args, **kwargs):
 def getBids(request, *args, **kwargs):
     if kwargs['pk']:
         initParam = {}
-        app = get_object_or_404(models.App, pk=kwargs['pk'])
+        app = get_object_or_404(appModels.App, pk=kwargs['pk'])
         initParam['app'] = app
         initParam['appInfo'] = app.appinfo
         initBidInfo(app=app, initParam=initParam)
