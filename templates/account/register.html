@@ -49,7 +49,7 @@
         if (name != "") {
             $.ajax({
                 type:"POST",
-                url:"{% url 'account:username_verified' name %}",
+                url:"{% url 'usersetting:username_verified' name %}",
                 data:{
                     username:name,
                     csrfmiddlewaretoken: "{{ csrf_token }}"
@@ -81,7 +81,7 @@
         if (email != "" && valid_email(email)) {
             $.ajax({
                 type:"POST",
-                url:"{% url 'account:email_verified' email %}",
+                url:"{% url 'usersetting:email_verified' email %}",
                 data:{
                     email:email,
                     csrfmiddlewaretoken: "{{ csrf_token }}"

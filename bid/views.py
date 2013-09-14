@@ -7,14 +7,14 @@ from django.utils.translation import ugettext as _
 from django.db.models import Q, Count
 from django.core.urlresolvers import reverse
 from appbid import models
-from account import models as account_mode
+from usersetting import models as userSettingModels
 from bid import forms
 from query.views import initBidInfo
 from message import views
 
 
 @csrf_protect
-@login_required(login_url='/account/home/')
+@login_required(login_url='/usersetting/home/')
 def createBid(request, *args, **kwargs):
     if kwargs['pk']:
         initParam = {}
@@ -34,9 +34,9 @@ def createBid(request, *args, **kwargs):
                     bid.app = app
                     bid.buyer = request.user
                     bid.status = 1
-                    userPrivateItem = account_mode.UserPrivateItem.objects.filter(key='is_bid_approved')
+                    userPrivateItem = userSettingModels.UserPrivateItem.objects.filter(key='is_bid_approved')
                     if userPrivateItem:
-                        is_bid_approved = account_mode.UserPrivateSetting.objects.filter(user_id=app.publisher.id, user_private_item_id=userPrivateItem[0])
+                        is_bid_approved = userSettingModels.UserPrivateSetting.objects.filter(user_id=app.publisher.id, user_private_item_id=userPrivateItem[0])
                         #Need be verified by app publisher.
                         if is_bid_approved and is_bid_approved[0].value == 'True':
                             bid.status = 3

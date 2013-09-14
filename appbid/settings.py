@@ -138,7 +138,7 @@ INSTALLED_APPS = (
     'home',
     'appbid',
     'seller',
-    'account',
+    'usersetting',
     'message',
     'notification',
     'bid',

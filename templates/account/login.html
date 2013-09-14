@@ -12,7 +12,7 @@
     </div>
     <div id="central_block">
         <div class="central_section">
-           <form action="/account/login/" method='post' class="pull-right">
+           <form action="/usersetting/login/" method='post' class="pull-right">
             {% csrf_token %}
            <ul class="central_ul">
             <li>
@@ -28,7 +28,7 @@
                 <button id="submit" class="newbutton" type="submit">登录</button>
             </li>
             <li>
-            <a href="{% url 'account:register_view' %}">Not register？Sign Up</a>&nbsp;&nbsp;
+            <a href="{% url 'usersetting:register_view' %}">Not register？Sign Up</a>&nbsp;&nbsp;
             <a href="#">Forget Password</a>
            </li>
            </ul>

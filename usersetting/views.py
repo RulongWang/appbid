@@ -11,8 +11,8 @@ from django.utils.translation import ugettext as _
 from django.db.models import Q
 from django.conf import settings
 from django.contrib.auth.models import User
-from account import models
-from account import forms
+from usersetting import models
+from usersetting import forms
 from order import models as orderModels
 
 
@@ -21,7 +21,7 @@ def loginView(request, *args, **kwargs):
     initParam = {}
     user = authenticate(username=request.POST.get('username'), password=request.POST.get('password'))
     redirect_to = request.POST.get('next', None)
-    redirect_urls = (None, '', '/account/logout/', '/account/register/', '/account/register-active/')
+    redirect_urls = (None, '', '/usersetting/logout/', '/usersetting/register/', '/usersetting/register-active/')
     for url in redirect_urls:
         if redirect_to == url or redirect_to.startswith(str(url)):
             redirect_to = '/'
@@ -77,7 +77,7 @@ def register(request, *args, **kwargs):
                         privateSet.user_private_item = userPrivateItem[0]
                         privateSet.value = False
                         privateSet.save()
-                    return HttpResponseRedirect("".join(["/account/register-active/", user.username, '/', str(user.id)]))
+                    return HttpResponseRedirect("".join(["/usersetting/register-active/", user.username, '/', str(user.id)]))
                 else:
                     initParam['register_error'] = _('Register failed, please try again.')
     initParam['register_form'] = registerForm
@@ -122,7 +122,7 @@ def registerActive(request, *args, **kwargs):
 
 
 def accountActiveByEmail(request, *args, **kwargs):
-    """Active the account by user clicking the active link."""
+    """Active the usersetting by user clicking the active link."""
     return None
 
 def _login(request, username, password):
@@ -134,7 +134,7 @@ def myprofile(request):
 
 
 @csrf_protect
-@login_required(login_url='/account/home/')
+@login_required(login_url='/usersetting/home/')
 def userDetail(request, *args, **kwargs):
     """Save user detail info."""
     initParam = {}

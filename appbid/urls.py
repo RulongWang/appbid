@@ -5,7 +5,7 @@ from django.conf.urls.static import static
 from home.views import hello
 from home.tests import test
 import seller.urls
-import account.urls
+import usersetting.urls
 import query.urls
 import bid.urls
 
@@ -29,7 +29,7 @@ urlpatterns = patterns('',
     url(r'^test/$', test, name='goodtest'),
     url(r'^seller/', include(seller.urls, namespace='seller')),
     url(r'^searchItunes/$', seller.views.searchItunes),
-    url(r'^account/', include(account.urls, namespace='account')),
+    url(r'^usersetting/', include(usersetting.urls, namespace='usersetting')),
     url(r'^query/', include(query.urls, namespace='query')),
     url(r'^bid/', include(bid.urls, namespace='bid')),
 )

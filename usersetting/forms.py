@@ -3,7 +3,7 @@ __author__ = 'rulongwang'
 from django import forms
 from django.utils.translation import ugettext as _
 from django.contrib.auth.models import User
-from account import models
+from usersetting import models
 
 
 class RegisterForm(forms.Form):

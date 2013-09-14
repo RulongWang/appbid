@@ -22,7 +22,7 @@ from appbid import models
 from utilities import common
 
 @csrf_protect
-@login_required(login_url='/account/home/')
+@login_required(login_url='/usersetting/home/')
 def registerApp(request, *args, **kwargs):
     """The common function for create, update app information."""
     app = None
