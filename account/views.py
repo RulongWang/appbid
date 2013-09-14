@@ -24,7 +24,7 @@ def loginView(request):
         if redirect_to == url or redirect_to.startswith(str(url)):
             redirect_to = '/'
             break
-    if user is not None:
+    if user:
         if user.is_active:
             login(request, user)
             return HttpResponseRedirect(redirect_to)
@@ -195,14 +195,26 @@ def userPublicProfile(request):
 
 def emailNotification(request):
     email_items = models.EmailItem.objects.all()
-
     return render_to_response("account/account_email_setting.html",{"email_items":email_items},
                         context_instance=RequestContext(request))
 
 
 def changePassword(request):
-    return render_to_response("account/account_password.html",{"test":"test"},
-                        context_instance=RequestContext(request))
+    initParam = {}
+    if request.method == "POST":
+        old_password = request.POST.get('old-password')
+        new_password = request.POST.get('new-password')
+        user = authenticate(username=request.user.username, password=old_password)
+        if user:
+            if old_password == new_password:
+                initParam['account_error'] = _('Old password and new password can not be the same.')
+            else:
+                user.set_password(new_password)
+                user.save()
+                initParam['account_msg'] = _('The account password has been updated.')
+        else:
+            initParam['account_error'] = _('Old password is not correct.')
+    return render_to_response("account/account_password.html", initParam, context_instance=RequestContext(request))
 
 
 def socialConnection(request):
