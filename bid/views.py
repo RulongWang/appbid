@@ -35,10 +35,11 @@ def createBid(request, *args, **kwargs):
                     bid.buyer = request.user
                     bid.status = 1
                     userPrivateItem = account_mode.UserPrivateItem.objects.filter(key='is_bid_approved')
-                    is_bid_approved = account_mode.UserPrivateSetting.objects.filter(user_id=app.publisher.id, user_private_item_id=userPrivateItem[0])
-                    #Need be verified by app publisher.
-                    if is_bid_approved and is_bid_approved[0].value == 'True':
-                        bid.status = 3
+                    if userPrivateItem:
+                        is_bid_approved = account_mode.UserPrivateSetting.objects.filter(user_id=app.publisher.id, user_private_item_id=userPrivateItem[0])
+                        #Need be verified by app publisher.
+                        if is_bid_approved and is_bid_approved[0].value == 'True':
+                            bid.status = 3
                     bid.save()
                     views.sendMessage(request)
                     return HttpResponseRedirect(reverse('bid:bid_list', kwargs={'pk': app.id}))
