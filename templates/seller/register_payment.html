@@ -2,8 +2,20 @@
  <fieldset>
       <legend>Marketing</legend>
     <form action="" method="post">
-        {% csrf_token %}
-
+    {% csrf_token %}
+    <div class="field_block_payment">
+        <div class="left" style="font-weight: bold;">SN:
+            {% if serviceDetail %}
+                <input id="sn" type="hidden" name="sn" value="{{ serviceDetail.sn }}">
+                {{ serviceDetail.sn }}
+            {% endif %}
+        </div>
+        <div class="right" style="width:100px;">
+        <label>Total:</label><label id="total">
+        {{ amount|default:0 }}
+        </label>
+        </div>
+    </div>
     {% for serviceItem in serviceItems %}
         <div class="field_block_payment">
 
@@ -16,7 +28,9 @@
                  <input type="checkbox" name="serviceItem_id" value="{{ serviceItem.id }}"
                        price="{{ serviceItem.price }}" onclick="checkServiceItem(this)"
                        {% ifequal serviceItem.is_basic_service True %}checked="checked" disabled
-                       {% else %}{% if serviceItem in selectItems %}checked="checked"{% endif %}
+                       {% else %}
+                       {% if serviceItem in selectItems %}checked="checked"{% endif %}
+                       {% if serviceDetail and serviceDetail.is_payed == True %} disabled {% endif %}
                        {% endifequal %}>
                 {% ifequal serviceItem.is_basic_service True %}
                 <input type="hidden" name="serviceItem_id" value="{{ serviceItem.id }}">
@@ -26,18 +40,29 @@
          <div class="clear"></div>
     {% endfor %}
 
-    <div class="field_block_payment">
-        <div class="right" style="width:100px;">
-        <label>Total:</label><label id="total">
-        {{ amount|default:0 }}
-        </label>
-        </div>
-    </div>
+    {% if serviceDetail == None or serviceDetail and serviceDetail.is_payed != True %}
     <div class="right" style="width:250px;">
         <input id="next" class="nextbutton" type="submit" name="next" value="Checkout"/>
     </div>
+    {% endif %}
     </form>
  </fieldset>
+
+<div class="step_block" >
+{% if serviceDetails %}
+     <span><h2>Your existing payment list:</h2></span>
+     <ol>
+     {% for detail in serviceDetails %}
+         <li>
+         <a href="{% url 'seller:payment' app_id %}">{{ detail.sn }}</a>
+         </li>
+     {% endfor %}
+     </ol>
+     <div>
+         <input id="new_payment" class="nextbutton" type="button" value="new payment" >
+     </div>
+{% endif %}
+ </div>
 
 <script type="text/javascript" language="javascript">
     var total =  parseFloat(($("#total").text()).replace(",", "."));

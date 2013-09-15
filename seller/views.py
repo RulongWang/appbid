@@ -35,12 +35,16 @@ def registerApp(request, *args, **kwargs):
         form = forms.AppForm(instance=app)
         initParam['app_id'] = app.id
         initParam['attachments'] = models.Attachment.objects.filter(app_id=app.id)
-        initParam['selectItems'] = app.serviceitem_set.all()
+        initParam['verify_token'] = app.verify_token
         appInfos = models.AppInfo.objects.filter(app_id=app.id)
         if appInfos:
             initParam['appInfoForm'] = forms.AppInfoForm(instance=appInfos[0])
-        serviceDetails = orderModels.ServiceDetail.objects.filter(app_id=app.id)
+
+        serviceDetails = orderModels.ServiceDetail.objects.filter(app_id=app.id).order_by('-pk')
         if serviceDetails:
+            initParam['selectItems'] = serviceDetails[0].serviceitem.all()
+            initParam['serviceDetails'] = serviceDetails
+            initParam['serviceDetail'] = serviceDetails[0]
             initParam['amount'] = serviceDetails[0].amount
         else:
             amount = 0
@@ -48,7 +52,6 @@ def registerApp(request, *args, **kwargs):
             for serviceItem in serviceItems:
                 amount += serviceItem.price
             initParam['amount'] = amount
-        initParam['verify_token'] = app.verify_token
 
     if request.method == "POST":
         form = forms.AppForm(request.POST)
@@ -259,34 +262,40 @@ def saveService(request, form, model, *args, **kwargs):
     """Save the third register page - Service."""
     if model is None:
         return None
+
+    serviceDetail = orderModels.ServiceDetail()
+    serviceDetail.app_id = model.id
+    serviceDetail.is_payed = False
+    serviceDetail.sn = datetime.datetime.now().strftime('%Y%m%d%H')
+
+    sn = request.POST.get('sn')
+    if sn:
+        serviceDetails = orderModels.ServiceDetail.objects.filter(app_id=model.id, sn=sn)
+        if serviceDetails:
+            serviceDetail = serviceDetails[0]
+            serviceDetail.serviceitem.clear()
+    serviceDetail.save()
+
     amount = 0
     ids = request.POST.getlist('serviceItem_id')
-    model.serviceitem_set.clear()
     for id in ids:
         try:
             serviceItem = orderModels.ServiceItem.objects.get(id=id)
             amount += serviceItem.price
-            model.serviceitem_set.add(serviceItem)
+            serviceDetail.serviceitem.add(serviceItem)
         except orderModels.ServiceItem.DoesNotExist:
             return None
-    try:
-        serviceDetail = orderModels.ServiceDetail.objects.get(app_id=model.id, end_date__gte=datetime.datetime.now())
-    except orderModels.ServiceDetail.DoesNotExist:
-        serviceDetail = orderModels.ServiceDetail()
-        serviceDetail.app_id = model.id
-        serviceDetail.is_payed = False
-        #TODO:Need to change them,after user have payed.
-        serviceDetail.start_date = datetime.datetime.now()
-        print datetime.datetime.now()
-        # print datetime.datetime.now() + datetime.timedelta(months=1)
-        # serviceDetail.end_date = datetime.datetime.now() + datetime.timedelta(months=1)
     discount_rate = systemModels.SystemParam.objects.filter(key='discount_rate')
     if discount_rate:
         serviceDetail.actual_amount = string.atof(discount_rate[0].value) * amount
     else:
         serviceDetail.actual_amount = amount
     serviceDetail.amount = amount
+    #TODO:Need to change them,after user have payed.
+    # serviceDetail.start_date = datetime.datetime.now()
+    # serviceDetail.end_date = datetime.datetime.now() + datetime.timedelta(months=1)
     serviceDetail.save()
+
     return model
 
 
