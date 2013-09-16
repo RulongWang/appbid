@@ -14,6 +14,7 @@ from django.contrib.auth.models import User
 from usersetting import models
 from usersetting import forms
 from order import models as orderModels
+from payment import models as paymentModels
 
 
 @csrf_protect
@@ -35,20 +36,20 @@ def loginView(request, *args, **kwargs):
     else:
         initParam['login_error'] = _('username or password is not correct.')
     initParam['user_name'] = request.POST.get('username')
-    return render_to_response("account/login.html", initParam, context_instance=RequestContext(request))
+    return render_to_response("usersetting/login.html", initParam, context_instance=RequestContext(request))
 
 
 @csrf_protect
 def logoutView(request, *args, **kwargs):
     logout(request)
     redirect_to = '/'
-    return render_to_response('account/login.html', {"redirect_to": redirect_to}, context_instance=RequestContext(request))
+    return render_to_response('usersetting/login.html', {"redirect_to": redirect_to}, context_instance=RequestContext(request))
 
 
 @csrf_protect
 def authHome(request, *args, **kwargs):
     redirect_to = request.GET.get('next', '/')
-    return render_to_response("account/login.html", {'redirect_to': redirect_to}, context_instance=RequestContext(request))
+    return render_to_response("usersetting/login.html", {'redirect_to': redirect_to}, context_instance=RequestContext(request))
 
 
 @csrf_protect
@@ -81,7 +82,7 @@ def register(request, *args, **kwargs):
                 else:
                     initParam['register_error'] = _('Register failed, please try again.')
     initParam['register_form'] = registerForm
-    return render_to_response("account/register.html", initParam, context_instance=RequestContext(request))
+    return render_to_response("usersetting/register.html", initParam, context_instance=RequestContext(request))
 
 
 def ajaxUserVerified(request, *args, **kwargs):
@@ -118,7 +119,7 @@ def registerActive(request, *args, **kwargs):
         initParam['email'] = user.email
         #Send the active email.
         #TODO:do it later.
-    return render_to_response("account/register_active.html", initParam, context_instance=RequestContext(request))
+    return render_to_response("usersetting/register_active.html", initParam, context_instance=RequestContext(request))
 
 
 def accountActiveByEmail(request, *args, **kwargs):
@@ -153,12 +154,12 @@ def userDetail(request, *args, **kwargs):
             detailForm.save()
             initParam['account_msg'] = _('The account detail has been updated.')
     initParam['form'] = detailForm
-    return render_to_response("account/account_setting.html", initParam, context_instance=RequestContext(request))
+    return render_to_response("usersetting/account_setting.html", initParam, context_instance=RequestContext(request))
 
 
 def paymentAccount(request, *args, **kwargs):
-    payment_accounts = orderModels.Account.objects.all()
-    return render_to_response("account/payment_account.html",{"payment_accounts":payment_accounts},
+    payment_accounts = paymentModels.AcceptGateway.objects.all()
+    return render_to_response("usersetting/accept_payment.html",{"payment_accounts":payment_accounts},
                         context_instance=RequestContext(request))
 
 
@@ -193,7 +194,7 @@ def userPublicProfile(request, *args, **kwargs):
             userPublicProfile.save()
             initParam['account_msg'] = _('The public profile has been updated.')
     initParam['form'] = userPublicProfileForm
-    return render_to_response("account/account_profile.html", initParam, context_instance=RequestContext(request))
+    return render_to_response("usersetting/publicprofile.html", initParam, context_instance=RequestContext(request))
 
 
 def subscriptionSetting(request, *args, **kwargs):
@@ -215,7 +216,7 @@ def subscriptionSetting(request, *args, **kwargs):
     selectSettings = user.subscriptionitem_set.all()
     initParam['subscriptionSettings'] = subscriptionSettings
     initParam['selectSettings'] = selectSettings
-    return render_to_response("account/account_subscription.html", initParam, context_instance=RequestContext(request))
+    return render_to_response("usersetting/subscription.html", initParam, context_instance=RequestContext(request))
 
 
 def changePassword(request, *args, **kwargs):
@@ -233,11 +234,15 @@ def changePassword(request, *args, **kwargs):
                 initParam['account_msg'] = _('The account password has been updated.')
         else:
             initParam['account_error'] = _('Old password is not correct.')
-    return render_to_response("account/account_password.html", initParam, context_instance=RequestContext(request))
+    return render_to_response("usersetting/account_password.html", initParam, context_instance=RequestContext(request))
 
 
 def socialConnection(request):
-    return render_to_response("account/social_connection.html",{"test":"test"},
+    return render_to_response("usersetting/social_connection.html",{"test":"test"},
                         context_instance=RequestContext(request))
 
+
+def security_setting(request):
+    return render_to_response("usersetting/security_setting.html",{"test":"test"},
+                        context_instance=RequestContext(request))
 

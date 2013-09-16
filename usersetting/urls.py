@@ -20,5 +20,5 @@ urlpatterns = patterns('',
     url(r'^change-password/$', views.changePassword),
     url(r'^social-setting/$', views.socialConnection),
     url(r'^payment-setting/$',views.paymentAccount),
-
+    url(r'^security-setting/$',views.security_setting),
 )

@@ -1,0 +1,29 @@
+{% extends "usersetting/account_setting.html" %}
+{% block account_detail %}
+    <div id="account_msg" style="color: green">
+        {{ account_msg }}
+    </div>
+    <div class="setting_block">
+        <div  class="setting_title">
+              <h1>Security Center</h1>
+        </div>
+        <div class="security_msg">
+            <h1>Security Message</h1>
+        </div>
+
+        <div class="setting_item">
+            <span>Logon Password</span>
+        </div>
+        <div class="setting_item">
+            <span>Email Verification</span>
+        </div>
+        <div class="setting_item">
+            <span>Cell Verification</span>
+        </div>
+        <div class="setting_item">
+            <span>Payment Password</span>
+        </div>
+
+    </div>
+
+{% endblock %}
