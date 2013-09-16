@@ -52,6 +52,9 @@ def registerApp(request, *args, **kwargs):
             for serviceItem in serviceItems:
                 amount += serviceItem.price
             initParam['amount'] = amount
+        service_expiry_date = systemModels.SystemParam.objects.get(key='service_expiry_date')
+        if service_expiry_date:
+            initParam['service_expiry_date'] = service_expiry_date.value
 
     if request.method == "POST":
         form = forms.AppForm(request.POST)

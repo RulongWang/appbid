@@ -55,6 +55,12 @@
      {% for detail in serviceDetails %}
          <li>
          <a href="{% url 'seller:payment' app_id detail.sn %}">{{ detail.sn }}</a>
+             &nbsp;<b>Expiry Date:</b>
+             {% if detail.is_payed == True and detail.start_date and detail.end_date %}
+               {{ detail.start_date|date:" M j, Y g:iA" }} - {{ detail.end_date|date:" M j, Y g:iA" }}
+             {% else %}
+                {{ service_expiry_date }} month
+             {% endif %}
          </li>
      {% endfor %}
      </ol>
