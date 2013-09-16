@@ -40,7 +40,7 @@ def registerApp(request, *args, **kwargs):
         appInfos = models.AppInfo.objects.filter(app_id=app.id)
         if appInfos:
             initParam['appInfoForm'] = forms.AppInfoForm(instance=appInfos[0])
-        initParam['serviceDetails'] = orderModels.ServiceDetail.objects.filter(app_id=app.id).order_by('-pk')
+        initParam['serviceDetails'] = orderModels.ServiceDetail.objects.filter(app_id=app.id)
         if kwargs.get('sn'):
             serviceDetail = get_object_or_404(orderModels.ServiceDetail, app_id=app.id, sn=kwargs.get('sn'))
             initParam['selectItems'] = serviceDetail.serviceitem.all()
