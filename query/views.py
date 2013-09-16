@@ -56,9 +56,9 @@ def list_featured(request):
 
 def getDetail(request, *args, **kwargs):
     """Get app detail info."""
-    if kwargs['pk']:
+    if kwargs.get('pk'):
         initParam = {}
-        app = get_object_or_404(models.App, pk=kwargs['pk'])
+        app = get_object_or_404(models.App, pk=kwargs.get('pk'))
         initParam['app'] = app
         initParam['appInfo'] = app.appinfo
         initParam['attachments'] = app.attachment_set.all()

@@ -8,5 +8,5 @@ INSERT INTO `usersetting_subscriptionitem` (`id`,`item`) VALUES
  (7,'Notify me when a comment is placed on a listing I\'m watching'),
  (8,'Notify me when a bid is placed above one of my bids'),
  (9,'NoNotify me when new auctions appear for my watched categories'),
- (10,'Notify me when a seller I\'m watching creates new listings')
+ (10,'Notify me when a seller I\'m watching creates new listings');
 

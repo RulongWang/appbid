@@ -54,12 +54,12 @@
      <ol>
      {% for detail in serviceDetails %}
          <li>
-         <a href="{% url 'seller:payment' app_id %}">{{ detail.sn }}</a>
+         <a href="{% url 'seller:payment' app_id detail.sn %}">{{ detail.sn }}</a>
          </li>
      {% endfor %}
      </ol>
      <div>
-         <input id="new_payment" class="nextbutton" type="button" value="new payment" >
+         <a href="{% url 'seller:payment' app_id '' %}"><input id="new_payment" class="nextbutton" type="button" value="new payment"></a>
      </div>
 {% endif %}
  </div>

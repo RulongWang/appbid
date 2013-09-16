@@ -16,9 +16,9 @@ from message.views import sendMessage
 @csrf_protect
 @login_required(login_url='/usersetting/home/')
 def createBid(request, *args, **kwargs):
-    if kwargs['pk']:
+    if kwargs.get('pk'):
         initParam = {}
-        app = get_object_or_404(appModels.App, pk=kwargs['pk'])
+        app = get_object_or_404(appModels.App, pk=kwargs.get('pk'))
         initParam['app'] = app
         initParam['appInfo'] = app.appinfo
         initBidInfo(app=app, initParam=initParam)#For below code using the value
@@ -27,7 +27,7 @@ def createBid(request, *args, **kwargs):
             if biddingForm.is_valid():
                 if 'yes' == request.POST.get('bid_create'):#From bid_create.html
                     bid = biddingForm.save(commit=False)
-                    if bid.price < initParam['bid_price']:
+                    if bid.price < initParam.get('bid_price'):
                         initParam['biddingForm'] = biddingForm
                         initParam['bid_error'] = _('The new bid has been submitted.')
                         return render_to_response('bid/bid_create.html', initParam, context_instance=RequestContext(request))
@@ -51,9 +51,9 @@ def createBid(request, *args, **kwargs):
 
 
 def getBids(request, *args, **kwargs):
-    if kwargs['pk']:
+    if kwargs.get('pk'):
         initParam = {}
-        app = get_object_or_404(appModels.App, pk=kwargs['pk'])
+        app = get_object_or_404(appModels.App, pk=kwargs.get('pk'))
         initParam['app'] = app
         initParam['appInfo'] = app.appinfo
         initBidInfo(app=app, initParam=initParam)

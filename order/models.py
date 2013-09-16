@@ -25,7 +25,7 @@ class ServiceItem(models.Model):
 class ServiceDetail(models.Model):
     """ServiceDetail table info, the record of seller's payment detail."""
     app = models.ForeignKey(appModels.App)
-    #The serial number of service detail for one user, format:YmdH, 2013030507
+    #The serial number of service detail for one user, format:YmdHMS, 20130305071030
     sn = models.CharField(max_length=255)
     #The start date is publish date, and set the date when verify app or pay.
     start_date = models.DateTimeField(null=True, blank=True)

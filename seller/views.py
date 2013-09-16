@@ -7,7 +7,7 @@ import re
 import os
 
 from django.http import HttpResponse
-from django.shortcuts import render_to_response, RequestContext, HttpResponseRedirect, get_object_or_404
+from django.shortcuts import render_to_response, RequestContext, redirect, get_object_or_404
 from django.views.decorators.csrf import csrf_protect
 from django.contrib.auth.decorators import login_required
 from django.utils.translation import ugettext as _
@@ -27,11 +27,12 @@ def registerApp(request, *args, **kwargs):
     """The common function for create, update app information."""
     app = None
     # initParam maybe save error message, when validate failed.
-    initParam = {'flag': kwargs['flag']}
+    initParam = kwargs.copy()
     form = forms.AppForm()
 
-    if kwargs['pk']:
-        app = get_object_or_404(models.App, pk=kwargs['pk'], publisher=request.user)
+    #Initial data
+    if kwargs.get('pk'):
+        app = get_object_or_404(models.App, pk=kwargs.get('pk'), publisher=request.user)
         form = forms.AppForm(instance=app)
         initParam['app_id'] = app.id
         initParam['attachments'] = models.Attachment.objects.filter(app_id=app.id)
@@ -39,13 +40,12 @@ def registerApp(request, *args, **kwargs):
         appInfos = models.AppInfo.objects.filter(app_id=app.id)
         if appInfos:
             initParam['appInfoForm'] = forms.AppInfoForm(instance=appInfos[0])
-
-        serviceDetails = orderModels.ServiceDetail.objects.filter(app_id=app.id).order_by('-pk')
-        if serviceDetails:
-            initParam['selectItems'] = serviceDetails[0].serviceitem.all()
-            initParam['serviceDetails'] = serviceDetails
-            initParam['serviceDetail'] = serviceDetails[0]
-            initParam['amount'] = serviceDetails[0].amount
+        initParam['serviceDetails'] = orderModels.ServiceDetail.objects.filter(app_id=app.id).order_by('-pk')
+        if kwargs.get('sn'):
+            serviceDetail = get_object_or_404(orderModels.ServiceDetail, app_id=app.id, sn=kwargs.get('sn'))
+            initParam['selectItems'] = serviceDetail.serviceitem.all()
+            initParam['serviceDetail'] = serviceDetail
+            initParam['amount'] = serviceDetail.amount
         else:
             amount = 0
             serviceItems = orderModels.ServiceItem.objects.filter(is_basic_service=True, end_date__gte=datetime.datetime.now())
@@ -56,16 +56,14 @@ def registerApp(request, *args, **kwargs):
     if request.method == "POST":
         form = forms.AppForm(request.POST)
         saveMethod = kwargs.pop('saveMethod', None)
-        if form.is_valid() and saveMethod is not None:
-            newApp = saveMethod(request, form, app, initParam=initParam)
-            if newApp is not None:
-                return HttpResponseRedirect(reverse(kwargs['nextPage'], kwargs={'pk': newApp.id}))
+        if form.is_valid() and saveMethod:
+            return saveMethod(request, form, app, initParam=initParam)
 
     initParam['form'] = form
     initParam['attachmentForm'] = forms.AttachmentForm()
     initParam['apps'] = models.App.objects.filter(publisher=request.user).order_by('status')
     initParam['serviceItems'] = orderModels.ServiceItem.objects.filter(end_date__gte=datetime.datetime.now())
-    return render_to_response(kwargs['backPage'], initParam, context_instance=RequestContext(request))
+    return render_to_response(kwargs.get('backPage'), initParam, context_instance=RequestContext(request))
 
 
 @transaction.commit_on_success
@@ -92,9 +90,12 @@ def saveAppStoreLink(request, form, model, *args, **kwargs):
         model.status = 1
         #currency is CNY in chinese version, USD in other version.
         model.currency = models.Currency.objects.get(id=1)
-        model.minimum_bid = 10#default value is 10.
+        minimum_bid = systemModels.SystemParam.objects.get(key='minimum_bid')
+        if minimum_bid:
+            model.minimum_bid = minimum_bid.value
         token_len = systemModels.SystemParam.objects.get(key='token_len')
-        model.verify_token = ''.join(random.sample(string.ascii_letters+string.digits, string.atoi(token_len.value)))
+        if token_len:
+            model.verify_token = ''.join(random.sample(string.ascii_letters+string.digits, string.atoi(token_len.value)))
         model.is_verified = False
     else:
         model.title = form.cleaned_data['title'].strip()
@@ -115,6 +116,7 @@ def saveAppStoreLink(request, form, model, *args, **kwargs):
     else:
         appInfo = models.AppInfo()
         appInfo.app_id = model.id
+
     appInfo.price = result.get('price', 0)
     appInfo.release_date = datetime.datetime.strptime(result.get('releaseDate', None), "%Y-%m-%dT%H:%M:%SZ")
     path = '/'.join([settings.MEDIA_ROOT, str(model.publisher.id), str(model.id)])
@@ -152,7 +154,7 @@ def saveAppStoreLink(request, form, model, *args, **kwargs):
             if deviceName.find(device.device) != -1:
                 model.device.add(device)
                 break
-    return model
+    return redirect(reverse(initParam.get('nextPage'), kwargs={'pk': model.id}))
 
 
 @transaction.commit_on_success
@@ -160,6 +162,8 @@ def saveAppStoreInfo(request, form, model, *args, **kwargs):
     """Save the second register page - AppStore Info."""
     if model is None:
         return None
+
+    initParam = kwargs.get('initParam')
     #App Store info need not save,because of these values from apple store
     # initParam = kwargs.get('initParam')
     # appInfoForm = forms.AppInfoForm(request.POST)
@@ -177,8 +181,7 @@ def saveAppStoreInfo(request, form, model, *args, **kwargs):
     # model.category = form.cleaned_data['category']
     # model.device = form.cleaned_data['device']
     # model.save()
-
-    return model
+    return redirect(reverse(initParam.get('nextPage'), kwargs={'pk': model.id}))
 
 
 @transaction.commit_on_success
@@ -186,11 +189,13 @@ def saveMarketing(request, form, model, *args, **kwargs):
     """Save the second register page - Marketing."""
     if model is None:
         return None
+
+    initParam = kwargs.get('initParam')
     model.dl_amount = form.cleaned_data['dl_amount']
     model.revenue = form.cleaned_data['revenue']
     model.monetize = form.cleaned_data['monetize']
     model.save()
-    return model
+    return redirect(reverse(initParam.get('nextPage'), kwargs={'pk': model.id}))
 
 
 @transaction.commit_on_success
@@ -198,9 +203,9 @@ def saveAdditionalInfo(request, form, model, *args, **kwargs):
     """Save the third register page - Additional info."""
     if model is None:
         return None
+
     initParam = kwargs.get('initParam')
     model.description = form.cleaned_data['description']
-
     pathList = request.FILES.getlist('path')
     if pathList:
         maxNum = systemModels.SystemParam.objects.filter(key='max_num_attachment')
@@ -227,7 +232,7 @@ def saveAdditionalInfo(request, form, model, *args, **kwargs):
             attachment.app = model
             attachment.save()
     model.save()
-    return model
+    return redirect(reverse(initParam.get('nextPage'), kwargs={'pk': model.id}))
 
 
 @transaction.commit_on_success
@@ -235,6 +240,8 @@ def saveSale(request, form, model, *args, **kwargs):
     """Save the third register page - Sale."""
     if model is None:
         return None
+
+    initParam = kwargs.get('initParam')
     model.begin_price = form.cleaned_data['begin_price']
     model.one_price = form.cleaned_data['one_price']
     model.reserve_price = form.cleaned_data['reserve_price']
@@ -243,7 +250,7 @@ def saveSale(request, form, model, *args, **kwargs):
     model.end_date = form.cleaned_data['end_date']
     model.minimum_bid = form.cleaned_data['minimum_bid']
     model.save()
-    return model
+    return redirect(reverse(initParam.get('nextPage'), kwargs={'pk': model.id}))
 
 
 @transaction.commit_on_success
@@ -251,10 +258,12 @@ def saveDelivery(request, form, model, *args, **kwargs):
     """Save the third register page - Delivery."""
     if model is None:
         return None
+
+    initParam = kwargs.get('initParam')
     model.source_code = form.cleaned_data['source_code']
     model.web_site = form.cleaned_data['web_site']
     model.save()
-    return model
+    return redirect('/'.join([initParam.get('nextPage'), str(model.id), kwargs.get('sn', '')]))
 
 
 @transaction.commit_on_success
@@ -263,22 +272,20 @@ def saveService(request, form, model, *args, **kwargs):
     if model is None:
         return None
 
-    serviceDetail = orderModels.ServiceDetail()
-    serviceDetail.app_id = model.id
-    serviceDetail.is_payed = False
-    serviceDetail.sn = datetime.datetime.now().strftime('%Y%m%d%H')
-
+    amount = 0
+    initParam = kwargs.get('initParam')
     sn = request.POST.get('sn')
     if sn:
-        serviceDetails = orderModels.ServiceDetail.objects.filter(app_id=model.id, sn=sn)
-        if serviceDetails:
-            serviceDetail = serviceDetails[0]
-            serviceDetail.serviceitem.clear()
-    serviceDetail.save()
+        serviceDetail = get_object_or_404(orderModels.ServiceDetail, app_id=model.id, sn=sn)
+        serviceDetail.serviceitem.clear()
+    else:
+        serviceDetail = orderModels.ServiceDetail()
+        serviceDetail.app_id = model.id
+        serviceDetail.is_payed = False
+        serviceDetail.sn = datetime.datetime.now().strftime('%Y%m%d%H%M%S')
+        serviceDetail.save()
 
-    amount = 0
-    ids = request.POST.getlist('serviceItem_id')
-    for id in ids:
+    for id in request.POST.getlist('serviceItem_id'):
         try:
             serviceItem = orderModels.ServiceItem.objects.get(id=id)
             amount += serviceItem.price
@@ -295,8 +302,7 @@ def saveService(request, form, model, *args, **kwargs):
     # serviceDetail.start_date = datetime.datetime.now()
     # serviceDetail.end_date = datetime.datetime.now() + datetime.timedelta(months=1)
     serviceDetail.save()
-
-    return model
+    return redirect(reverse(initParam.get('nextPage'), kwargs={'pk': model.id}))
 
 
 @transaction.commit_on_success
