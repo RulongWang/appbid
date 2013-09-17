@@ -309,7 +309,7 @@ def securitySetting(request, *args, **kwargs):
             initParam['email_info'] = securitySetting
         if securitySetting.vtype == 2:
             initParam['phone_info'] = securitySetting
-    return render_to_response("usersetting/security_setting.html",initParam, context_instance=RequestContext(request))
+    return render_to_response("usersetting/security_setting.html", initParam, context_instance=RequestContext(request))
 
 
 @csrf_protect
@@ -319,14 +319,18 @@ def securitySettingEmail(request, *args, **kwargs):
     """Verify email security setting."""
     initParam = {}
     user = get_object_or_404(models.User, pk=request.user.id, username=request.user.username)
+    new_email = kwargs.get('email')
     securitySettings = user.securityverification_set.all()
     for securitySetting in securitySettings:
         if securitySetting.vtype == 1:
-            securitySetting.value = common.hiddenEmail(securitySetting.value)
+            securitySetting.value = securitySetting.value
             initParam['email_info'] = securitySetting
-        if securitySetting.vtype == 2:
-            initParam['phone_info'] = securitySetting
-    return render_to_response("usersetting/security_setting_email.html",initParam, context_instance=RequestContext(request))
+    return render_to_response("usersetting/security_setting_email.html", initParam, context_instance=RequestContext(request))
+
+
+def securitySettingEmailConfirm(request, *args, **kwargs):
+    initParam = {}
+    return render_to_response("usersetting/security_setting_email_confirm.html", initParam, context_instance=RequestContext(request))
 
 
 @csrf_protect
@@ -343,4 +347,9 @@ def securitySettingPhone(request, *args, **kwargs):
             initParam['email_info'] = securitySetting
         if securitySetting.vtype == 2:
             initParam['phone_info'] = securitySetting
-    return render_to_response("usersetting/security_setting_phone.html",initParam, context_instance=RequestContext(request))
+    return render_to_response("usersetting/security_setting_phone.html", initParam, context_instance=RequestContext(request))
+
+
+def securitySettingPhoneConfirm(request, *args, **kwargs):
+    initParam = {}
+    return render_to_response("usersetting/security_setting_phone_confirm.html", initParam, context_instance=RequestContext(request))

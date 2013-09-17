@@ -1,7 +1,32 @@
 {% extends "usersetting/account_setting.html" %}
 {% block account_detail %}
+    <div id="account_error" style="color: red">
+        {{ account_error }}
+    </div>
     <div id="account_msg" style="color: green">
         {{ account_msg }}
     </div>
-email.....
+    <div id="account_msg" style="color: green">
+        {{ account_msg }}
+    </div>
+    <div>
+    <form action=""  method="post">
+        {% csrf_token %}
+        <div>Please enter the new email:</div>
+        <div><input id="id_email" name="email"/></div>
+        <div><input id="submit" type="submit" value="Submit"  class="newbutton"/></div>
+    </form>
+    </div>
+<script type="text/javascript" language="javascript">
+    $("#submit").click(function() {
+        if ($("#id_email").val().trim() == "") {
+            $("#account_error").html("<ul><li>Email is required.</li></ul>");//TODO:it will be set in message.properties.
+            return false;
+        }
+        if (!valid_email($("#id_email").val().trim())) {
+            $(".errors_block").html("<ul><li>Email is not correct.</li></ul>");//TODO:it will be set in message.properties.
+            return false;
+        }
+    });
+</script>
 {% endblock %}
