@@ -1,6 +1,7 @@
 __author__ = 'Jarvis'
 import json
 import urllib2
+import re
 
 
 def getITunes(apple_id):
@@ -18,4 +19,13 @@ def getITunes(apple_id):
     except:
         return None
     return result
+
+
+def hiddenEmail(email):
+    """hidden email, such as: abc@gmail.com - a******c@gmail.com"""
+    if email and email.strip() != "":
+        if bool(re.match(r"^[a-zA-Z]((\w*\.\w*)|\w*)[a-zA-Z0-9]@(\w+\.)+[a-zA-Z]{2,}$", email)):
+            index = email.index('@')
+            return ''.join([email[0], '*****', email[index-1:]])
+    return None
 

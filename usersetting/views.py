@@ -2,6 +2,8 @@ __author__ = 'rulongwang'
 
 import json
 import os
+import random
+import string
 
 from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.decorators import login_required
@@ -13,8 +15,9 @@ from django.conf import settings
 from django.contrib.auth.models import User
 from usersetting import models
 from usersetting import forms
-from order import models as orderModels
+from utilities import email, common
 from payment import models as paymentModels
+from notification import models as notificationModels
 
 
 @csrf_protect
@@ -32,7 +35,7 @@ def loginView(request, *args, **kwargs):
             login(request, user)
             return HttpResponseRedirect(redirect_to)
         else:
-            initParam['login_error'] = _('%(name)s is not active. Please active it by %(email)s.') % {'name': user.username, 'email': user.email}
+            initParam['login_error'] = _('%(name)s is not active. Please active it by %(email)s.') % {'name': user.username, 'email': common.hiddenEmail(user.email)}
     else:
         initParam['login_error'] = _('username or password is not correct.')
     initParam['user_name'] = request.POST.get('username')
@@ -116,9 +119,21 @@ def registerActive(request, *args, **kwargs):
     initParam = {}
     if kwargs['username'] and kwargs['pk']:
         user = get_object_or_404(models.User, pk=kwargs['pk'], username=kwargs['username'])
-        initParam['email'] = user.email
-        #Send the active email.
-        #TODO:do it later.
+        initParam['email'] = common.hiddenEmail(user.email)
+
+        if request.is_secure():
+            link_header = ''.join(['https://', request.META.get('HTTP_HOST')])
+        else:
+            link_header = ''.join(['http://', request.META.get('HTTP_HOST')])
+        token = ''.join(random.sample(string.ascii_letters+string.digits, 30))
+        active_link = '/'.join([link_header, 'usersetting', user.username, 'emails', str(user.id), 'confirm_verification', token])
+
+        templates = notificationModels.NotificationTemplate.objects.filter(name='register-active')
+        if templates:
+            subject = templates[0].subject
+            template = templates[0].template.replace('{username}', user.username).replace('{active_link}', active_link)
+            recipient_list = [user.email]
+            email.sentEmail(subject=subject, message=template, recipient_list=recipient_list)
     return render_to_response("usersetting/register_active.html", initParam, context_instance=RequestContext(request))
 
 

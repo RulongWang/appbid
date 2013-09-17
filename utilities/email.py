@@ -5,9 +5,18 @@ from appbid import models, settings
 import common
 
 
-def sentEmail():
-    send_mail('Subject here', 'Here is message', '****@gmail.com', ['****@163.com'])
-    print 'Send email'
+def sentEmail(*args, **kwargs):
+    """Sent email"""
+    subject = kwargs.get('subject')
+    message = kwargs.get('message')
+    from_email = kwargs.get('from_email', None)
+    if from_email is None:
+        from_email = settings.EMAIL_HOST_USER
+    recipient_list = kwargs.get('recipient_list')
+    if subject and message and recipient_list:
+        send_mail(subject, message, from_email, recipient_list)
+    else:
+        print 'do it later, log error info.'
 
 
 def verificationAppJob(*args, **kwargs):

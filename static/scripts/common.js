@@ -9,7 +9,7 @@ String.prototype.rtrim = function(){
 }
 
 function valid_email(email) {
-    var patten = new RegExp(/^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]+$/);
+    var patten = new RegExp(/^[a-zA-Z]((\w*\.\w*)|\w*)[a-zA-Z0-9]@(\w+\.)+[a-zA-Z]{2,}$/);
     return patten.test(email);
 }
 

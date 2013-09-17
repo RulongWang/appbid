@@ -52,9 +52,9 @@ def registerApp(request, *args, **kwargs):
             for serviceItem in serviceItems:
                 amount += serviceItem.price
             initParam['amount'] = amount
-        service_expiry_date = systemModels.SystemParam.objects.get(key='service_expiry_date')
+        service_expiry_date = systemModels.SystemParam.objects.filter(key='service_expiry_date')
         if service_expiry_date:
-            initParam['service_expiry_date'] = service_expiry_date.value
+            initParam['service_expiry_date'] = service_expiry_date[0].value
 
     if request.method == "POST":
         form = forms.AppForm(request.POST)
@@ -93,12 +93,12 @@ def saveAppStoreLink(request, form, model, *args, **kwargs):
         model.status = 1
         #currency is CNY in chinese version, USD in other version.
         model.currency = models.Currency.objects.get(id=1)
-        minimum_bid = systemModels.SystemParam.objects.get(key='minimum_bid')
+        minimum_bid = systemModels.SystemParam.objects.filter(key='minimum_bid')
         if minimum_bid:
-            model.minimum_bid = minimum_bid.value
-        token_len = systemModels.SystemParam.objects.get(key='token_len')
+            model.minimum_bid = minimum_bid[0].value
+        token_len = systemModels.SystemParam.objects.filter(key='token_len')
         if token_len:
-            model.verify_token = ''.join(random.sample(string.ascii_letters+string.digits, string.atoi(token_len.value)))
+            model.verify_token = ''.join(random.sample(string.ascii_letters+string.digits, string.atoi(token_len[0].value)))
         model.is_verified = False
     else:
         model.title = form.cleaned_data['title'].strip()

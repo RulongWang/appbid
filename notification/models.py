@@ -17,6 +17,7 @@ class NotificationTemplate(models.Model):
     name = models.CharField(max_length=255)
     language = models.IntegerField(choices=LANGUAGES, default=1)
     type = models.IntegerField(choices=NOTIFICATION_TYPE, default=1)
+    subject = models.TextField(null=True)
     template = models.TextField(null=True)
     description = models.TextField(null=True, blank=True)
     version = models.CharField(max_length=255, null=True, blank=True)
