@@ -116,9 +116,10 @@ def ajaxUserVerified(request, *args, **kwargs):
 
 @csrf_protect
 def registerActive(request, *args, **kwargs):
+    """Send the active email to register."""
     initParam = {}
-    if kwargs['username'] and kwargs['pk']:
-        user = get_object_or_404(models.User, pk=kwargs['pk'], username=kwargs['username'])
+    if kwargs.get('username') and kwargs.get('pk'):
+        user = get_object_or_404(models.User, pk=kwargs.get('pk'), username=kwargs.get('username'))
         initParam['email'] = common.hiddenEmail(user.email)
 
         if request.is_secure():
@@ -137,9 +138,22 @@ def registerActive(request, *args, **kwargs):
     return render_to_response("usersetting/register_active.html", initParam, context_instance=RequestContext(request))
 
 
-def accountActiveByEmail(request, *args, **kwargs):
-    """Active the usersetting by user clicking the active link."""
-    return None
+def registerActiveConfirm(request, *args, **kwargs):
+    """Active the account by user clicking the active link."""
+    initParam = {}
+    username = kwargs.get('username')
+    confirm_token = kwargs.get('confirm_token')
+    if username and confirm_token and len(confirm_token) == 30:
+        users = models.User.objects.filter(username=username)
+        if users:
+            users[0].is_active = True
+            users[0].save()
+            initParam['account_msg'] = _('The account active successfully.')
+        else:
+            initParam['account_error'] = _('The account %(name)s is not exist.') % {'name': username}
+    else:
+        initParam['account_error'] = _('The active link is not correct.')
+    return render_to_response("usersetting/register_active_confirm.html", initParam, context_instance=RequestContext(request))
 
 def _login(request, username, password):
     pass

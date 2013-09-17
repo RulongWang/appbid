@@ -1,0 +1,13 @@
+{% extends "index.html" %}
+{% block mainContent %}
+{% load staticfiles %}
+    {% if account_msg %}
+    <div>
+        {{ account_msg }} Please click <a href="/usersetting/home/">login</a> to login AppsWalk.
+    </div>
+    {% else %}
+    <div>
+        Active account failed. {{ account_error }}
+    </div>
+    {% endif %}
+{% endblock %}
