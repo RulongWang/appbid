@@ -5,21 +5,21 @@ import os
 import random
 import string
 
-from django.contrib.auth import authenticate,login,logout
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render_to_response, HttpResponse, RequestContext, HttpResponseRedirect, get_object_or_404, Http404
+from django.shortcuts import render_to_response, HttpResponse, RequestContext, get_object_or_404, Http404, redirect
 from django.views.decorators.csrf import csrf_protect
 from django.utils.translation import ugettext as _
+from django.core.urlresolvers import reverse
 from django.db.models import Q
 from django.db import transaction
 from django.conf import settings
 from django.contrib.auth.models import User
 from usersetting import models
 from usersetting import forms
-from utilities import email, common
+from utilities import common
 from payment import models as paymentModels
-from notification import models as notificationModels
-
+from notification import views as notificationViews
 
 @csrf_protect
 def loginView(request, *args, **kwargs):
@@ -28,13 +28,13 @@ def loginView(request, *args, **kwargs):
     redirect_to = request.POST.get('next', None)
     redirect_urls = (None, '', '/usersetting/logout/', '/usersetting/register/', '/usersetting/register-active/')
     for url in redirect_urls:
-        if redirect_to == url or redirect_to.startswith(str(url)):
+        if redirect_to == url or (url and redirect_to.startswith(str(url))):
             redirect_to = '/'
             break
     if user:
         if user.is_active:
             login(request, user)
-            return HttpResponseRedirect(redirect_to)
+            return redirect(redirect_to)
         else:
             initParam['login_error'] = _('%(name)s is not active. Please active it by %(email)s.') % {'name': user.username, 'email': common.hiddenEmail(user.email)}
     else:
@@ -83,7 +83,7 @@ def register(request, *args, **kwargs):
                         privateSet.user_private_item = userPrivateItem[0]
                         privateSet.value = False
                         privateSet.save()
-                    return HttpResponseRedirect("".join(["/usersetting/register-active/", user.username, '/', str(user.id)]))
+                    return redirect("".join(["/usersetting/register-active/", user.username, '/', str(user.id)]))
                 else:
                     initParam['register_error'] = _('Register failed, please try again.')
     initParam['register_form'] = registerForm
@@ -125,19 +125,7 @@ def registerActive(request, *args, **kwargs):
         user = get_object_or_404(models.User, pk=kwargs.get('pk'), username=kwargs.get('username'))
         initParam['email'] = common.hiddenEmail(user.email)
 
-        if request.is_secure():
-            link_header = ''.join(['https://', request.META.get('HTTP_HOST')])
-        else:
-            link_header = ''.join(['http://', request.META.get('HTTP_HOST')])
-        token = ''.join(random.sample(string.ascii_letters+string.digits, 30))
-        active_link = '/'.join([link_header, 'usersetting', user.username, 'emails', str(user.id), 'confirm_verification', token])
-
-        templates = notificationModels.NotificationTemplate.objects.filter(name='register-active')
-        if templates:
-            subject = templates[0].subject
-            template = templates[0].template.replace('{username}', user.username).replace('{active_link}', active_link)
-            recipient_list = [user.email]
-            email.sentEmail(subject=subject, message=template, recipient_list=recipient_list)
+        notificationViews.sendRegisterActiveEmail(request, user=user)
     return render_to_response("usersetting/register_active.html", initParam, context_instance=RequestContext(request))
 
 
@@ -319,12 +307,19 @@ def securitySettingEmail(request, *args, **kwargs):
     """Verify email security setting."""
     initParam = {}
     user = get_object_or_404(models.User, pk=request.user.id, username=request.user.username)
-    new_email = kwargs.get('email')
-    securitySettings = user.securityverification_set.all()
-    for securitySetting in securitySettings:
-        if securitySetting.vtype == 1:
-            securitySetting.value = securitySetting.value
-            initParam['email_info'] = securitySetting
+    if request.method == "POST":
+        new_email = request.POST.get('email')
+        securitySettings = user.securityverification_set.filter(vtype=1)
+        for securitySetting in securitySettings:
+            if securitySetting.value == new_email:
+                initParam['account_error'] = _('The new email can not be the same as the old one.')
+            elif models.SecurityVerification.objects.filter(vtype=1, value=new_email):
+                initParam['account_error'] = _('%(email)s has been used.') % {'email': new_email}
+            else:
+                securitySetting.value = new_email
+                securitySetting.is_verified = False
+                securitySetting.save()
+                return redirect(reverse('usersetting:security_setting_email_confirm'))
     return render_to_response("usersetting/security_setting_email.html", initParam, context_instance=RequestContext(request))
 
 
