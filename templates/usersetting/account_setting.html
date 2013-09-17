@@ -6,17 +6,17 @@
             <h1>Personal Setting</h1>
             <ul>
 
-                <li class="selected"><a href="/usersetting/user-detail/">Account Details</a></li>
-                <li><a href="/usersetting/public-profile/">Public Profile</a></li>
-                <li><a href="/usersetting/subscription-setting/">Subscription Setting</a></li>
-                <li><a href="/usersetting/change-password/">Logon Password</a></li>
-                <li><a href="/usersetting/public-profile/">Security Settings</a></li>
+                <li class="selected"><a href="{% url 'usersetting:user_detail' %}">Account Details</a></li>
+                <li><a href="{% url 'usersetting:public_profile' %}">Public Profile</a></li>
+                <li><a href="{% url 'usersetting:subscription_setting' %}">Subscription Setting</a></li>
+                <li><a href="{% url 'usersetting:change_password' %}">Logon Password</a></li>
+                <li><a href="{% url 'usersetting:security_setting' %}">Security Settings</a></li>
             </ul>
 
             <h1>Payment Setting</h1>
             <ul>
-                <li><a href="/usersetting/payment-setting/">Accept Payment</a></li>
-                <li><a href="/usersetting/payment-setting/">Payment Password</a></li>
+                <li><a href="{% url 'usersetting:payment_setting' %}">Accept Payment</a></li>
+                <li><a href="{% url 'usersetting:payment_setting' %}">Payment Password</a></li>
             </ul>
         </div>
 

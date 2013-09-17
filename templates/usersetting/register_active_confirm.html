@@ -3,7 +3,7 @@
 {% load staticfiles %}
     {% if account_msg %}
     <div>
-        {{ account_msg }} Please click <a href="/usersetting/home/">login</a> to login AppsWalk.
+        {{ account_msg }} Please click <a href="{% url 'usersetting:home' %}">login</a> to login AppsWalk.
     </div>
     {% else %}
     <div>

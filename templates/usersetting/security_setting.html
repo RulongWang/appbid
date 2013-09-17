@@ -7,23 +7,44 @@
         <div  class="setting_title">
               <h1>Security Center</h1>
         </div>
+        <br/>
         <div class="security_msg">
             <h1>Security Message</h1>
         </div>
-
+        <br/><br/>
         <div class="setting_item">
-            <span>Logon Password</span>
-        </div>
-        <div class="setting_item">
+            {% if email_info and email_info.is_verified == True%}
+            <img src="#"/><!--TODO:add verified image. -->
+             {% else %}
+            <img src="#"><!--TODO:add unverified image. -->
+            {% endif %}
             <span>Email Verification</span>
+            <div>
+                {% if email_info %}
+                <span>Your email: {{ email_info.value }}</span>
+                {% else %}
+                <span>Your still have no email. Please provide and verify it ASAP.</span>
+                {% endif %}
+                <a id="email_update" style="float: right;margin-right: 50px;" href="{% url 'usersetting:security_setting_email' %}">Update</a>
+            </div>
         </div>
+        <br/><br/>
         <div class="setting_item">
+            {% if phone_info and phone_info.is_verified == True%}
+            <img src="#"/><!--TODO:add verified image. -->
+            {% else %}
+            <img src="#"><!--TODO:add unverified image. -->
+            {% endif %}
             <span>Cell Verification</span>
+            <div>
+                {% if phone_info %}
+                <span>Your phone: {{ phone_info.value }}</span>
+                {% else %}
+                <span>Your still have no phone. Please provide and verify it ASAP.</span>
+                {% endif %}
+                <a id="phone_update" style="float: right;margin-right: 50px;" href="{% url 'usersetting:security_setting_phone' %}">Update</a>
+            </div>
         </div>
-        <div class="setting_item">
-            <span>Payment Password</span>
-        </div>
-
     </div>
 
 {% endblock %}

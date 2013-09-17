@@ -11,6 +11,7 @@ from django.shortcuts import render_to_response, HttpResponse, RequestContext, H
 from django.views.decorators.csrf import csrf_protect
 from django.utils.translation import ugettext as _
 from django.db.models import Q
+from django.db import transaction
 from django.conf import settings
 from django.contrib.auth.models import User
 from usersetting import models
@@ -56,6 +57,7 @@ def authHome(request, *args, **kwargs):
 
 
 @csrf_protect
+@transaction.commit_on_success
 def register(request, *args, **kwargs):
     """user register method"""
     initParam = {}
@@ -88,6 +90,7 @@ def register(request, *args, **kwargs):
     return render_to_response("usersetting/register.html", initParam, context_instance=RequestContext(request))
 
 
+@csrf_protect
 def ajaxUserVerified(request, *args, **kwargs):
     """Verified user name or email in register user."""
     data = {}
@@ -138,6 +141,8 @@ def registerActive(request, *args, **kwargs):
     return render_to_response("usersetting/register_active.html", initParam, context_instance=RequestContext(request))
 
 
+@csrf_protect
+@transaction.commit_on_success
 def registerActiveConfirm(request, *args, **kwargs):
     """Active the account by user clicking the active link."""
     initParam = {}
@@ -148,12 +153,19 @@ def registerActiveConfirm(request, *args, **kwargs):
         if users:
             users[0].is_active = True
             users[0].save()
+            securityVerification = models.SecurityVerification()
+            securityVerification.user_id = users[0].id
+            securityVerification.vtype = 1
+            securityVerification.value = users[0].email
+            securityVerification.is_verified = True
+            securityVerification.save()
             initParam['account_msg'] = _('The account active successfully.')
         else:
             initParam['account_error'] = _('The account %(name)s is not exist.') % {'name': username}
     else:
         initParam['account_error'] = _('The active link is not correct.')
     return render_to_response("usersetting/register_active_confirm.html", initParam, context_instance=RequestContext(request))
+
 
 def _login(request, username, password):
     pass
@@ -164,6 +176,7 @@ def myprofile(request):
 
 
 @csrf_protect
+@transaction.commit_on_success
 @login_required(login_url='/usersetting/home/')
 def userDetail(request, *args, **kwargs):
     """Save user detail info."""
@@ -186,12 +199,17 @@ def userDetail(request, *args, **kwargs):
     return render_to_response("usersetting/account_setting.html", initParam, context_instance=RequestContext(request))
 
 
+@csrf_protect
+@transaction.commit_on_success
+@login_required(login_url='/usersetting/home/')
 def paymentAccount(request, *args, **kwargs):
     payment_accounts = paymentModels.AcceptGateway.objects.all()
     return render_to_response("usersetting/accept_payment.html",{"payment_accounts":payment_accounts},
                         context_instance=RequestContext(request))
 
-
+@csrf_protect
+@transaction.commit_on_success
+@login_required(login_url='/usersetting/home/')
 def userPublicProfile(request, *args, **kwargs):
     """Save user public profile."""
     initParam = {}
@@ -226,6 +244,9 @@ def userPublicProfile(request, *args, **kwargs):
     return render_to_response("usersetting/publicprofile.html", initParam, context_instance=RequestContext(request))
 
 
+@csrf_protect
+@transaction.commit_on_success
+@login_required(login_url='/usersetting/home/')
 def subscriptionSetting(request, *args, **kwargs):
     """Save subscription setting."""
     initParam = {}
@@ -248,6 +269,9 @@ def subscriptionSetting(request, *args, **kwargs):
     return render_to_response("usersetting/subscription.html", initParam, context_instance=RequestContext(request))
 
 
+@csrf_protect
+@transaction.commit_on_success
+@login_required(login_url='/usersetting/home/')
 def changePassword(request, *args, **kwargs):
     initParam = {}
     if request.method == "POST":
@@ -266,12 +290,57 @@ def changePassword(request, *args, **kwargs):
     return render_to_response("usersetting/account_password.html", initParam, context_instance=RequestContext(request))
 
 
-def socialConnection(request):
+def socialConnection(request, *args, **kwargs):
     return render_to_response("usersetting/social_connection.html",{"test":"test"},
                         context_instance=RequestContext(request))
 
 
-def security_setting(request):
-    return render_to_response("usersetting/security_setting.html",{"test":"test"},
-                        context_instance=RequestContext(request))
+@csrf_protect
+@transaction.commit_on_success
+@login_required(login_url='/usersetting/home/')
+def securitySetting(request, *args, **kwargs):
+    """security setting include email, phone"""
+    initParam = {}
+    user = get_object_or_404(models.User, pk=request.user.id, username=request.user.username)
+    securitySettings = user.securityverification_set.all()
+    for securitySetting in securitySettings:
+        if securitySetting.vtype == 1:
+            securitySetting.value = common.hiddenEmail(securitySetting.value)
+            initParam['email_info'] = securitySetting
+        if securitySetting.vtype == 2:
+            initParam['phone_info'] = securitySetting
+    return render_to_response("usersetting/security_setting.html",initParam, context_instance=RequestContext(request))
 
+
+@csrf_protect
+@transaction.commit_on_success
+@login_required(login_url='/usersetting/home/')
+def securitySettingEmail(request, *args, **kwargs):
+    """Verify email security setting."""
+    initParam = {}
+    user = get_object_or_404(models.User, pk=request.user.id, username=request.user.username)
+    securitySettings = user.securityverification_set.all()
+    for securitySetting in securitySettings:
+        if securitySetting.vtype == 1:
+            securitySetting.value = common.hiddenEmail(securitySetting.value)
+            initParam['email_info'] = securitySetting
+        if securitySetting.vtype == 2:
+            initParam['phone_info'] = securitySetting
+    return render_to_response("usersetting/security_setting_email.html",initParam, context_instance=RequestContext(request))
+
+
+@csrf_protect
+@transaction.commit_on_success
+@login_required(login_url='/usersetting/home/')
+def securitySettingPhone(request, *args, **kwargs):
+    """Verify phone security setting."""
+    initParam = {}
+    user = get_object_or_404(models.User, pk=request.user.id, username=request.user.username)
+    securitySettings = user.securityverification_set.all()
+    for securitySetting in securitySettings:
+        if securitySetting.vtype == 1:
+            securitySetting.value = common.hiddenEmail(securitySetting.value)
+            initParam['email_info'] = securitySetting
+        if securitySetting.vtype == 2:
+            initParam['phone_info'] = securitySetting
+    return render_to_response("usersetting/security_setting_phone.html",initParam, context_instance=RequestContext(request))
