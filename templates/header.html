@@ -40,10 +40,10 @@
         <ul class="user_bar_menu_link">
             {% if request.user.is_authenticated  %}
             <li><a href="/" class="">Welcome: {{ request.user }}</a></li>
-            <li><a href="/usersetting/user-detail/" class="">Account</a></li>
+            <li><a href="{% url 'usersetting:user_detail' %}" class="">Account</a></li>
             <li><a href="/" class="">Inbox</a></li>
             <li><a href="/" class="">Watchlist</a></li>
-            <li><a href="/usersetting/logout/" class="">Logout</a></li>
+            <li><a href="{% url 'usersetting:logout_view' %}" class="">Logout</a></li>
             {% else %}
             <li><a href="/usersetting/home/?next={{ request.path }}" class="">Login</a></li>
             <li><a href="/usersetting/register/?next={{ request.path }}" class="">Sign Up</a></li>
