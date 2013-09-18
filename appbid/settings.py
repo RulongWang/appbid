@@ -15,7 +15,7 @@ DATABASES = {
         'NAME': 'appbid',                      # Or path to database file if using sqlite3.
         # The following settings are not used with sqlite3:
         'USER': 'root',
-        'PASSWORD': '123456',
+        'PASSWORD': '',
         'HOST': '127.0.0.1',                      # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
         'PORT': '3306',                      # Set to empty string for default.
     }
@@ -183,13 +183,13 @@ DEFAULT_CHARSET = 'utf-8'
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 
 #Set email config
-# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'#Send the mail actually
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'#Show by console
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'#Send the mail actually
+# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'#Show by console
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = '25'
-EMAIL_HOST_USER = 'kunpengzai@gmail.com'#your email username
-EMAIL_HOST_PASSWORD = '180913jia' #your email passowrd
+EMAIL_HOST_USER = '*****@gmail.com'#your email username
+EMAIL_HOST_PASSWORD = '*****' #your email passowrd
 
 # CRONJOBS = [
 #     ('*/1 * * * *', 'utilities.job.jobTest')

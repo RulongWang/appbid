@@ -420,15 +420,24 @@ def securitySettingPhone(request, *args, **kwargs):
         pin = request.POST.get('pin')
         #TODO:Check whether pin is correct judging with session value. to do it later.
         securitySettings = user.securityverification_set.filter(vtype=2)
-        for securitySetting in securitySettings:
-            if securitySetting.value == new_phone:
+        if securitySettings:
+            if securitySettings[0].value == new_phone:
                 messages.error(request, _('The new phone number can not be the same as the old one.'))
             elif models.SecurityVerification.objects.filter(vtype=2, value=new_phone):
                 messages.error(request, _('%(param)s has been used.') % {'param': new_phone})
             else:
-                securitySetting.value = new_phone
-                securitySetting.is_verified = True
-                securitySetting.save()
+                securitySettings[0].value = new_phone
+                securitySettings[0].is_verified = True
+                securitySettings[0].save()
                 messages.info(request, _('The phone number has been updated.'))
                 return redirect(reverse('usersetting:security_setting'))
+        else:
+            securitySetting = models.SecurityVerification()
+            securitySetting.user = user
+            securitySetting.vtype = 2
+            securitySetting.value = new_phone
+            securitySetting.is_verified = True
+            securitySetting.save()
+            messages.info(request, _('The phone number has been updated.'))
+            return redirect(reverse('usersetting:security_setting'))
     return render_to_response("usersetting/security_setting_phone.html", context_instance=RequestContext(request))
