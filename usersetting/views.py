@@ -363,7 +363,7 @@ def securitySettingEmail(request, *args, **kwargs):
         for securitySetting in securitySettings:
             if securitySetting.value == new_email:
                 messages.error(request, _('The new email can not be the same as the old one.'))
-            elif models.SecurityVerification.objects.filter(vtype=1, value=new_email):
+            elif models.User.objects.filter(email=new_email):
                 messages.error(request, _('%(param)s has been used.') % {'param': new_email})
             else:
                 user.email = new_email
