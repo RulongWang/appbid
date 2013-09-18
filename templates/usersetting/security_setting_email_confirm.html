@@ -1,13 +1,13 @@
 {% extends "index.html" %}
 {% block mainContent %}
 {% load staticfiles %}
-    {% if account_msg %}
-    <div>
-        {{ account_msg }}
-    </div>
-    {% else %}
-    <div>
-        {{ account_error }}
-    </div>
+    {% if messages %}
+        <ul class="messages">
+        {% for message in messages %}
+            <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>
+            {{ message }}
+            </li>
+        {% endfor %}
+        </ul>
     {% endif %}
 {% endblock %}

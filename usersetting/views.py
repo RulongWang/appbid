@@ -7,6 +7,7 @@ import string
 
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 from django.shortcuts import render_to_response, HttpResponse, RequestContext, get_object_or_404, Http404, redirect
 from django.views.decorators.csrf import csrf_protect
 from django.utils.translation import ugettext as _
@@ -319,9 +320,8 @@ def changePassword(request, *args, **kwargs):
             else:
                 user.set_password(new_password)
                 user.save()
-                initParam['account_msg'] = _('The account password has been updated.')
+                messages.info(request, _('The account password has been updated.'))
                 return redirect(reverse('usersetting:security_setting'))
-                # return render_to_response("usersetting/security_setting.html", initParam, context_instance=RequestContext(request))
         else:
             initParam['account_error'] = _('Old password is not correct.')
     return render_to_response("usersetting/account_password.html", initParam, context_instance=RequestContext(request))
@@ -362,9 +362,9 @@ def securitySettingEmail(request, *args, **kwargs):
         securitySettings = user.securityverification_set.filter(vtype=1)
         for securitySetting in securitySettings:
             if securitySetting.value == new_email:
-                initParam['account_error'] = _('The new email can not be the same as the old one.')
+                messages.error(request, _('The new email can not be the same as the old one.'))
             elif models.SecurityVerification.objects.filter(vtype=1, value=new_email):
-                initParam['account_error'] = _('%(param)s has been used.') % {'param': new_email}
+                messages.error(request, _('%(param)s has been used.') % {'param': new_email})
             else:
                 user.email = new_email
                 user.save()
@@ -389,7 +389,6 @@ def securitySettingEmailUpdate(request, *args, **kwargs):
 @csrf_protect
 @transaction.commit_on_success
 def securitySettingEmailConfirm(request, *args, **kwargs):
-    initParam = {}
     username = kwargs.get('username')
     confirm_token = kwargs.get('confirm_token')
     if username and confirm_token and len(confirm_token) == 30:
@@ -400,14 +399,14 @@ def securitySettingEmailConfirm(request, *args, **kwargs):
                 securityVerification[0].value = users[0].email
                 securityVerification[0].is_verified = True
                 securityVerification[0].save()
-                initParam['account_msg'] = _('Your new email verify successfully.')
+                messages.info(request, _('Your new email verify successfully.'))
             else:
-                initParam['account_error'] = _('The email verification failed.')
+                messages.error(request, _('The email verification failed.'))
         else:
-            initParam['account_error'] = _('The verification link is not correct.')
+            messages.error(request, _('The verification link is not correct.'))
     else:
-        initParam['account_error'] = _('The verification link is not correct.')
-    return render_to_response("usersetting/security_setting_email_confirm.html", initParam, context_instance=RequestContext(request))
+        messages.error(request, _('The verification link is not correct.'))
+    return render_to_response("usersetting/security_setting_email_confirm.html", context_instance=RequestContext(request))
 
 
 @csrf_protect
@@ -415,7 +414,6 @@ def securitySettingEmailConfirm(request, *args, **kwargs):
 @login_required(login_url='/usersetting/home/')
 def securitySettingPhone(request, *args, **kwargs):
     """Verify phone security setting."""
-    initParam = {}
     user = get_object_or_404(models.User, pk=request.user.id, username=request.user.username)
     if request.method == "POST":
         new_phone = request.POST.get('phone')
@@ -424,21 +422,13 @@ def securitySettingPhone(request, *args, **kwargs):
         securitySettings = user.securityverification_set.filter(vtype=2)
         for securitySetting in securitySettings:
             if securitySetting.value == new_phone:
-                initParam['account_error'] = _('The new phone number can not be the same as the old one.')
+                messages.error(request, _('The new phone number can not be the same as the old one.'))
             elif models.SecurityVerification.objects.filter(vtype=2, value=new_phone):
-                initParam['account_error'] = _('%(param)s has been used.') % {'param': new_phone}
+                messages.error(request, _('%(param)s has been used.') % {'param': new_phone})
             else:
                 securitySetting.value = new_phone
                 securitySetting.is_verified = True
                 securitySetting.save()
-                initParam['account_msg'] = _('The phone number has been updated.')
+                messages.info(request, _('The phone number has been updated.'))
                 return redirect(reverse('usersetting:security_setting'))
-                # return render_to_response("usersetting/security_setting.html", initParam, context_instance=RequestContext(request))
-    return render_to_response("usersetting/security_setting_phone.html", initParam, context_instance=RequestContext(request))
-
-
-@csrf_protect
-@transaction.commit_on_success
-def securitySettingPhoneConfirm(request, *args, **kwargs):
-    initParam = {}
-    return render_to_response("usersetting/security_setting_phone_confirm.html", initParam, context_instance=RequestContext(request))
+    return render_to_response("usersetting/security_setting_phone.html", context_instance=RequestContext(request))

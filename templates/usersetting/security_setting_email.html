@@ -1,10 +1,15 @@
 {% extends "usersetting/account_setting.html" %}
 {% block account_detail %}
-    <div id="account_error" style="color: red">
-        {{ account_error }}
-    </div>
-    <div id="account_msg" style="color: green">
-        {{ account_msg }}
+    <div id="account_msg" style="color: red">
+    {% if messages %}
+        <ul class="messages">
+        {% for message in messages %}
+            <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>
+            {{ message }}
+            </li>
+        {% endfor %}
+        </ul>
+    {% endif %}
     </div>
     <div>
     <form action=""  method="post">
@@ -17,11 +22,11 @@
 <script type="text/javascript" language="javascript">
     $("#submit").click(function() {
         if ($("#id_email").val().trim() == "") {
-            $("#account_error").html("<ul><li>Email is required.</li></ul>");//TODO:it will be set in message.properties.
+            $("#account_msg").html("<ul><li>Email is required.</li></ul>");//TODO:it will be set in message.properties.
             return false;
         }
         if (!valid_email($("#id_email").val().trim())) {
-            $("#account_error").html("<ul><li>Email is not correct.</li></ul>");//TODO:it will be set in message.properties.
+            $("#account_msg").html("<ul><li>Email is not correct.</li></ul>");//TODO:it will be set in message.properties.
             return false;
         }
     });
