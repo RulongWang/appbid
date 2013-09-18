@@ -1,2 +1,4 @@
 insert into notification_notificationtemplate(`name`,`language`,`type`,`subject`,`template`,`description`,`version`,`create_time`,`last_modify`,`modifier_id`)
-values('register-active',1,1,'The active account email for register from AppsWalk','Hi {username},\n\r Please click the blow link to active your account \n\r {active_link}','active account email','1.0',now(),now(),1);
+values('register_active',1,1,'The active account email for register from AppsWalk','Hi {username},\n\r Please click the blow link to active your account \n\r {active_link}','active account email','1.0',now(),now(),1);
+insert into notification_notificationtemplate(`name`,`language`,`type`,`subject`,`template`,`description`,`version`,`create_time`,`last_modify`,`modifier_id`)
+values('email_security_verification',1,1,'The security verification email for new email from AppsWalk','Hi {username},\n\r Please click the blow link to verify your new email \n\r {active_link}','The security verification email for new email.','1.0',now(),now(),1);

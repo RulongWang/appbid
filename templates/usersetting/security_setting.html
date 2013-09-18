@@ -1,5 +1,8 @@
 {% extends "usersetting/account_setting.html" %}
 {% block account_detail %}
+    <div id="account_error" style="color: red">
+        {{ account_error }}
+    </div>
     <div id="account_msg" style="color: green">
         {{ account_msg }}
     </div>
@@ -10,6 +13,15 @@
         <br/>
         <div class="security_msg">
             <h1>Security Message</h1>
+        </div>
+        <br/><br/>
+        <div class="setting_item">
+            <img src="#"/><!--TODO:add verified image. -->
+            <span>Account Password</span>
+            <div>
+                Please keep your account password.
+                <a id="password_update" style="float: right;margin-right: 50px;" href="{% url 'usersetting:security_verification_password' %}">Update</a>
+            </div>
         </div>
         <br/><br/>
         <div class="setting_item">
@@ -25,15 +37,15 @@
                 {% else %}
                 <span>Your still have no email. Please provide and verify it ASAP.</span>
                 {% endif %}
-                <a id="email_update" style="float: right;margin-right: 50px;" href="{% url 'usersetting:security_setting_email' %}">Update</a>
+                <a id="email_update" style="float: right;margin-right: 50px;" href="{% url 'usersetting:security_verification_email' %}">Update</a>
             </div>
         </div>
         <br/><br/>
         <div class="setting_item">
             {% if phone_info and phone_info.is_verified == True%}
-            <img src="#"/><!--TODO:add verified image. -->
+            <img src="#"/>+<!--TODO:add verified image. -->
             {% else %}
-            <img src="#"><!--TODO:add unverified image. -->
+            <img src="#">-<!--TODO:add unverified image. -->
             {% endif %}
             <span>Cell Verification</span>
             <div>
@@ -42,7 +54,7 @@
                 {% else %}
                 <span>Your still have no phone. Please provide and verify it ASAP.</span>
                 {% endif %}
-                <a id="phone_update" style="float: right;margin-right: 50px;" href="{% url 'usersetting:security_setting_phone' %}">Update</a>
+                <a id="phone_update" style="float: right;margin-right: 50px;" href="{% url 'usersetting:security_verification_phone' %}">Update</a>
             </div>
         </div>
     </div>

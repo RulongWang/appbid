@@ -6,9 +6,6 @@
     <div id="account_msg" style="color: green">
         {{ account_msg }}
     </div>
-    <div id="account_msg" style="color: green">
-        {{ account_msg }}
-    </div>
     <div>
     <form action=""  method="post">
         {% csrf_token %}
@@ -24,7 +21,7 @@
             return false;
         }
         if (!valid_email($("#id_email").val().trim())) {
-            $(".errors_block").html("<ul><li>Email is not correct.</li></ul>");//TODO:it will be set in message.properties.
+            $("#account_error").html("<ul><li>Email is not correct.</li></ul>");//TODO:it will be set in message.properties.
             return false;
         }
     });

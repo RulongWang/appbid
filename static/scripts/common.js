@@ -13,3 +13,7 @@ function valid_email(email) {
     return patten.test(email);
 }
 
+function valid_phone(phone) {
+    var patten = new RegExp(/^13|14|15|18\d{9}$/);
+    return patten.test(phone);
+}

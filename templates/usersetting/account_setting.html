@@ -9,7 +9,6 @@
                 <li class="selected"><a href="{% url 'usersetting:user_detail' %}">Account Details</a></li>
                 <li><a href="{% url 'usersetting:public_profile' %}">Public Profile</a></li>
                 <li><a href="{% url 'usersetting:subscription_setting' %}">Subscription Setting</a></li>
-                <li><a href="{% url 'usersetting:change_password' %}">Logon Password</a></li>
                 <li><a href="{% url 'usersetting:security_setting' %}">Security Settings</a></li>
             </ul>
 
@@ -35,7 +34,7 @@
                                         {{ form.user.errors }}
                                         <div class="field_label" >{{ form.user.label_tag }}</div>
                                         <div class="field_value" >
-                                            {{ form.user }}
+                                            <span style="display: none">{{ form.user }}</span>
                                             <input id="username" name="username" value="{{ request.user.username }}" readonly="true"/>
                                         </div>
                                     </div>

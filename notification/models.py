@@ -23,7 +23,7 @@ class NotificationTemplate(models.Model):
     version = models.CharField(max_length=255, null=True, blank=True)
     create_time = models.DateTimeField(auto_now_add=True)
     last_modify = models.DateTimeField(auto_now=True)
-    modifier = models.OneToOneField(User)
+    modifier = models.ForeignKey(User)
 
 
 class NotificationTemplateAdmin(admin.ModelAdmin):

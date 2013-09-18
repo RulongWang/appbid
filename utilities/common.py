@@ -29,3 +29,11 @@ def hiddenEmail(email):
             return ''.join([email[0], '*****', email[index-1:]])
     return None
 
+
+def hiddenPhone(phone):
+    """hidden phone, such as: 13623424568 - 136******568"""
+    if phone and phone.strip() != "":
+        if bool(re.match(r"^13|14|15|18\d{9}$", phone)):
+            return ''.join([phone[0:3], '*****', phone[8:]])
+    return None
+

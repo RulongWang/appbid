@@ -6,12 +6,9 @@
     <div id="account_msg" style="color: green">
         {{ account_msg }}
     </div>
-    <div>
     <form action=""  method="post">
         {% csrf_token %}
-        <div>
-            Please enter the new phone number:<input id="id_phone" name="phone"/>
-        </div>
+        <div>Your verified phone number:{{ phone_number }}</div>
         <div>
             <input id="id_get_pin" name="get_pin" type="button" value="Get PIN" class="newbutton" />
         </div>
@@ -22,10 +19,10 @@
             Please enter PIN:<input id="id_pin" name="pin" type="text" disabled />
         </div>
         <div>
+            <input id="next" name="next" type="hidden" value="{{ next }}" />
             <input id="submit" type="submit" value="Submit"  class="newbutton" />
         </div>
     </form>
-    </div>
 <script type="text/javascript" language="javascript">
     var interval;
     $("#id_get_pin").click(function() {
@@ -65,14 +62,6 @@
     }
 
     $("#submit").click(function() {
-        if ($("#id_phone").val().trim() == "") {
-            $("#account_error").html("<ul><li>Phone number is required.</li></ul>");//TODO:it will be set in message.properties.
-            return false;
-        }
-        if (!valid_phone($("#id_phone").val().trim())) {
-            $("#account_error").html("<ul><li>Phone number is not correct.</li></ul>");//TODO:it will be set in message.properties.
-            return false;
-        }
         if ($("#id_pin").val().trim() == "") {
             $("#account_error").html("<ul><li>PIN is required.</li></ul>");//TODO:it will be set in message.properties.
             return false;
