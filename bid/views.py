@@ -51,6 +51,7 @@ def createBid(request, *args, **kwargs):
     raise Http404
 
 
+@csrf_protect
 def getBids(request, *args, **kwargs):
     if kwargs.get('pk'):
         initParam = {}
@@ -58,7 +59,10 @@ def getBids(request, *args, **kwargs):
         initParam['app'] = app
         initParam['appInfo'] = app.appinfo
         initBidInfo(app=app, initParam=initParam)
-        bids = app.bidding_set.filter(Q(status=1) | Q(buyer=request.user)).order_by('-price', '-bid_time')
+        if request.user.id and request.user.username:
+            bids = app.bidding_set.filter(Q(status=1) | Q(buyer=request.user)).order_by('-price', '-bid_time')
+        else:
+            bids = app.bidding_set.filter(status=1).order_by('-price', '-bid_time')
         buyer_map = {}
         bid_info_list = []
         for bid in bids:

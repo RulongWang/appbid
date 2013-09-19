@@ -1,11 +1,14 @@
 import json
 import time
 import datetime
+import string
 
 from django.http import HttpResponse, Http404
 from django.shortcuts import render_to_response, render, RequestContext, get_object_or_404
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.models import Max
 from appbid import models as appModels
+from utilities import common
 
 
 #register app entry
@@ -93,6 +96,40 @@ def initBidInfo(*args, **kwargs):
         initParam['begin_bid'] = True
     if app.end_date:
         initParam['time_remaining'] = time.mktime(time.strptime(str(app.end_date), '%Y-%m-%d %H:%M:%S'))
+
+
+def queryAppsWithPaginator(*args, **kwargs):
+    """App query function for home page, feature page and so on."""
+    app_list = []
+    page_range = kwargs.get('page_range')
+    page = kwargs.get('page', 1)
+    apps = kwargs.get('apps')
+
+    if page_range is None:
+        page_range = common.getSystemParam(key='page_range', default=10)
+
+    if apps:
+        for app in apps:
+            info_list = [app]#info 0:The app info
+            app_list.append(info_list)
+
+        paginator = Paginator(app_list, page_range)
+        try:
+            appInfoList = paginator.page(page)
+        except PageNotAnInteger:
+            appInfoList = paginator.page(1)
+        except EmptyPage:
+            appInfoList = paginator.page(paginator.num_pages)
+
+        #Just query the app bid information showed in the current page.
+        for info_list in appInfoList:
+            data = {}
+            initBidInfo(app=info_list[0], initParam=data)
+            info_list.append(data.get('current_price'))#info 1:current price
+            info_list.append(data.get('bid_num'))#info 2:bid numbers
+            info_list.append(data.get('bid_price'))#info 3:bid price
+
+    return appInfoList
 
 
 def getBidInfo(request, *args, **kwargs):

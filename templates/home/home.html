@@ -27,29 +27,29 @@
                             <li>
                                 <div class="app_wrapper">
                                        <div class="app_img">
-                                           <a href="{% url 'query:app_detail' app.id %}"><img class="img_140x140" src="{{ MEDIA_URL }}{{ app.appinfo.icon }}"/></a>
+                                           <a href="{% url 'query:app_detail' app.0.id %}"><img class="img_140x140" src="{{ MEDIA_URL }}{{ app.0.appinfo.icon }}"/></a>
                                        </div>
 
                                        <div class="app_attribute">
                                            <div class="info_detail">
-                                            <span><h1><a href="{% url 'query:app_detail' app.id %}"> {{ app.app_name }}</a></h1></span>
-                                            {% if app.publish_date %}
-                                               <div>{{ app.publish_date }} </div>
+                                            <span><h1><a href="{% url 'query:app_detail' app.0.id %}"> {{ app.0.app_name }}</a></h1></span>
+                                            {% if app.0.publish_date %}
+                                               <div>{{ app.0.publish_date }} </div>
                                             {% endif %}
                                             <div class="margin10px fontcolor_light_grey">
-                                               <p style="font-size: 14px;">{{ app.title }}</p>
+                                               <p style="font-size: 14px;">{{ app.0.title }}</p>
                                             </div>
-                                            <span class="fontcolor_light_grey">Monthly Downloads:{{ app.dl_amount }}</span>
-                                            {% if app.revenue %}
-                                               <div class="fontcolor_light_grey">Revenue:{{ app.revenue }} </div>
+                                            <span class="fontcolor_light_grey">Monthly Downloads:{{ app.0.dl_amount }}</span>
+                                            {% if app.0.revenue %}
+                                               <div class="fontcolor_light_grey">Revenue:{{ app.0.revenue }} </div>
                                             {% endif %}
-                                               <div class="fontcolor_light_grey">Rating:{{ app.rating }} </div>
-                                               <div class="fontcolor_light_grey">AppleStore Price:{{ app.appinfo.price }} </div>
+                                               <div class="fontcolor_light_grey">Rating:{{ app.0.rating }} </div>
+                                               <div class="fontcolor_light_grey">AppleStore Price:{{ app.0.appinfo.price }} </div>
 
                                            </div>
                                            <div class="bidding_info">
-                                               <div>5$</div>
-                                               <div>200Bids</div>
+                                               <div>{{ app.1|floatformat|default:0 }}{{ app.0.currency.currency }}</div>
+                                               <div><a href="{% url 'bid:bid_list' app.0.id %}">{{ app.2|floatformat|default:0 }}Bid{{ app.2|floatformat|pluralize }}</a></div>
                                            </div>
                                        </div>
                                 </div>

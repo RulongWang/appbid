@@ -15,7 +15,6 @@ from django.core.urlresolvers import reverse
 from django.db import transaction
 from django.conf import settings
 from order import models as orderModels
-from system import models as systemModels
 
 from seller import forms
 from appbid import models as appModels
@@ -52,9 +51,7 @@ def registerApp(request, *args, **kwargs):
             for serviceItem in serviceItems:
                 amount += serviceItem.price
             initParam['amount'] = amount
-        service_expiry_date = systemModels.SystemParam.objects.filter(key='service_expiry_date')
-        if service_expiry_date:
-            initParam['service_expiry_date'] = service_expiry_date[0].value
+        initParam['service_expiry_date'] = common.getSystemParam(key='service_expiry_date', default=1)
 
     if request.method == "POST":
         form = forms.AppForm(request.POST)
@@ -95,12 +92,9 @@ def saveAppStoreLink(request, form, model, *args, **kwargs):
         model.status = 1
         #currency is CNY in chinese version, USD in other version.
         model.currency = appModels.Currency.objects.get(id=1)
-        minimum_bid = systemModels.SystemParam.objects.filter(key='minimum_bid')
-        if minimum_bid:
-            model.minimum_bid = minimum_bid[0].value
-        token_len = systemModels.SystemParam.objects.filter(key='token_len')
-        if token_len:
-            model.verify_token = ''.join(random.sample(string.ascii_letters+string.digits, string.atoi(token_len[0].value)))
+        model.minimum_bid = common.getSystemParam(key='minimum_bid', default=10)
+        token_len = common.getSystemParam(key='token_len', default=10)
+        model.verify_token = ''.join(random.sample(string.ascii_letters+string.digits, string.atoi(token_len)))
         model.is_verified = False
     else:
         model.title = form.cleaned_data['title'].strip()
@@ -213,13 +207,13 @@ def saveAdditionalInfo(request, form, model, *args, **kwargs):
     model.description = form.cleaned_data['description']
     pathList = request.FILES.getlist('path')
     if pathList:
-        maxNum = systemModels.SystemParam.objects.filter(key='max_num_attachment')
+        maxNum = common.getSystemParam(key='max_num_attachment', default=50)
         attachments = appModels.Attachment.objects.filter(app_id=model.id)
-        if maxNum and len(pathList) + len(attachments) > string.atoi(maxNum[0].value):
+        if len(pathList) + len(attachments) > string.atoi(maxNum):
             initParam['attachmentError'] = _('The attachment number can not be more than %(number)s.') % {'number': maxNum[0].value}
             return None
 
-        attachmentSize = systemModels.SystemParam.objects.filter(key='attachment_size')
+        attachmentSize = common.getSystemParam(key='attachment_size', default=50000000)
         for path in pathList:
             attachment = appModels.Attachment(path=path)
             attachment.name = path.name
@@ -231,7 +225,7 @@ def saveAdditionalInfo(request, form, model, *args, **kwargs):
                 attachment.type = 4
             else:
                 attachment.type = 4
-            if attachmentSize and path.size > string.atof(attachmentSize[0].value):
+            if path.size > string.atof(attachmentSize):
                 initParam['attachmentError'] = _('The file can not be more than 50M.')
                 return None
             attachment.app = model
@@ -297,11 +291,8 @@ def saveService(request, form, model, *args, **kwargs):
             serviceDetail.serviceitem.add(serviceItem)
         except orderModels.ServiceItem.DoesNotExist:
             return None
-    discount_rate = systemModels.SystemParam.objects.filter(key='discount_rate')
-    if discount_rate:
-        serviceDetail.actual_amount = string.atof(discount_rate[0].value) * amount
-    else:
-        serviceDetail.actual_amount = amount
+    discount_rate = common.getSystemParam(key='discount_rate', default=0)
+    serviceDetail.actual_amount = string.atof(discount_rate) * amount
     serviceDetail.amount = amount
     #TODO:Need to change them,after user have payed.
     # serviceDetail.start_date = datetime.datetime.now()

@@ -5,7 +5,7 @@ import string
 
 from notification import models
 from utilities import email
-from system import models as systemModels
+from utilities import common
 
 
 def sendRegisterActiveEmail(request, *args, **kwargs):
@@ -17,12 +17,8 @@ def sendRegisterActiveEmail(request, *args, **kwargs):
         link_header = ''.join(['https://', request.META.get('HTTP_HOST')])
     else:
         link_header = ''.join(['http://', request.META.get('HTTP_HOST')])
-    service_expiry_date = systemModels.SystemParam.objects.filter(key='active_link_confirm_token_length')
-    if service_expiry_date:
-        length = string.atoi(service_expiry_date[0].value)
-    else:
-        length = 30
-    token = ''.join(random.sample(string.ascii_letters+string.digits, length))
+    length = common.getSystemParam(key='active_link_confirm_token_length', default=30)
+    token = ''.join(random.sample(string.ascii_letters+string.digits, string.atoi(length)))
     #TODO:user id or other value, we will discuss it.
     active_link = '/'.join([link_header, 'usersetting', user.username, 'emails', str(user.id), 'register-confirm-verification', token])
 
@@ -43,12 +39,8 @@ def sendSecurityVerificationEmail(request, *args, **kwargs):
         link_header = ''.join(['https://', request.META.get('HTTP_HOST')])
     else:
         link_header = ''.join(['http://', request.META.get('HTTP_HOST')])
-    service_expiry_date = systemModels.SystemParam.objects.filter(key='active_link_confirm_token_length')
-    if service_expiry_date:
-        length = string.atoi(service_expiry_date[0].value)
-    else:
-        length = 30
-    token = ''.join(random.sample(string.ascii_letters+string.digits, length))
+    length = common.getSystemParam(key='active_link_confirm_token_length', default=30)
+    token = ''.join(random.sample(string.ascii_letters+string.digits, string.atoi(length)))
     #TODO:user id or other value, we will discuss it.
     active_link = '/'.join([link_header, 'usersetting', user.username, 'emails', str(user.id), 'email_security_verification', token])
 

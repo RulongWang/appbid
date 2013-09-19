@@ -4,6 +4,8 @@ import json
 import urllib2
 import re
 
+from system import models as systemModels
+
 
 def getITunes(apple_id):
     """Get the app information in apple store by iTunes api, such as:https://itunes.apple.com/lookup?id=639384326"""
@@ -36,5 +38,19 @@ def hiddenPhone(phone):
     if phone and phone.strip() != "":
         if bool(re.match(r"^13|14|15|18\d{9}$", phone)):
             return ''.join([phone[0:3], '*****', phone[8:]])
+    return None
+
+
+def getSystemParam(*args, **kwargs):
+    """Get the value in system param table by key."""
+    key = kwargs.get('key')
+    default_value = kwargs.get('default')
+    if key:
+        params = systemModels.SystemParam.objects.filter(key=key)
+        if params:
+            return params[0].value
+        else:
+            if default_value:
+                return default_value
     return None
 
