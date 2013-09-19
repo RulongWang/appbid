@@ -1,9 +1,9 @@
 from django.conf.urls import patterns, include, url
-from django.contrib import admin, comments
+from django.contrib import admin
 from django.conf import settings
 from django.conf.urls.static import static
-from home.views import hello
 from home.tests import test
+import home.urls
 import seller.urls
 import usersetting.urls
 import query.urls
@@ -16,11 +16,7 @@ import dashboard.urls
 admin.autodiscover()
 
 urlpatterns = patterns('',
-    # Examples:
-    #home
-    url(r'^$', 'home.views.home', name='home'),
-    # url(r'^appbid/', include('appbid.foo.urls')),
-
+    url(r'^$', include(home.urls, namespace='home')),
     # Uncomment the admin/doc line below to enable admin documentation:
     # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
 

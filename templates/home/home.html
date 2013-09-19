@@ -57,6 +57,11 @@
                              {% endfor %}
                         </ul>
                      </div>
+                     <div class="pagination" style="float: right">
+                        {% if apps.has_previous %}<a href="?page={{ apps.previous_page_number }}">previous</a>{% endif %}
+                        Page {{ apps.number }} of {{ apps.paginator.num_pages }}
+                        {% if apps.has_next %}<a href="?page={{ apps.next_page_number }}">next</a>{% endif %}
+                     </div>
                 </div>
 
 {% endblock %}
