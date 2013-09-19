@@ -60,7 +60,9 @@ def registerApp(request, *args, **kwargs):
         form = forms.AppForm(request.POST)
         saveMethod = kwargs.pop('saveMethod', None)
         if form.is_valid() and saveMethod:
-            return saveMethod(request, form, app, initParam=initParam)
+            result = saveMethod(request, form, app, initParam=initParam)
+            if result:
+                return result
 
     initParam['form'] = form
     initParam['attachmentForm'] = forms.AttachmentForm()

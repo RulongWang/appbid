@@ -19,7 +19,7 @@
             <input id="id_get_pin" name="get_pin" type="button" value="Get PIN" class="newbutton" />
         </div>
         <div id="pin_msg" style="display: none">
-            The PIN has been sent, please take care your message. If you don't receive it, please get PIN again after <span id="remain_time">30</span>s.
+            The PIN has been sent, please take care your message. If you don't receive it, please get PIN again after <span id="remain_time">60</span>s.
         </div>
         <div>
             Please enter PIN:<input id="id_pin" name="pin" type="text" disabled />
@@ -43,7 +43,7 @@
                     $("#id_get_pin").attr("disabled", true);
                     $("#pin_msg").show();
                     $("#id_pin").attr("disabled", false);
-                    $("#remain_time").text(30);
+                    $("#remain_time").text(60);
                     interval = setInterval("remainTimer()", 1000);
                 }
                 else {
