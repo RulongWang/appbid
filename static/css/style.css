@@ -45,7 +45,7 @@ body {
 	padding:0;
     font: 13px/16px "Helvetica Neue",Arial, Sans-serif;
 	/*font:13px/16px "Helvetica Neue", Arial, Sans-serif;*/
-	color:#0070ff;
+	color:#555;
 	/*background-color: #ddeef6;*/
 	/*background-image: url(images/front-bg.gif);*/
 	background-repeat: repeat;
@@ -84,9 +84,9 @@ h1{
     /*background: #eee;*/
     /*background: -webkit-linear-gradient(top,#f7f7f7,#eaeaea);*/
     /*background: -moz-linear-gradient(top,#f7f7f7,#eaeaea 100%);*/
-
+    text-shadow: 1px 1px 0 #fff;
     font-weight: bold;
-    border-bottom: 1px solid #a7a7aa;
+    /*border-bottom: 1px solid #a7a7aa;*/
 }
 #row{
     margin:0 auto;
@@ -156,6 +156,10 @@ h1{
 
     /*background: coral;*/
     clear:both;
+    border-bottom: 1px solid rgba(0,0,0,0.2);
+    background: #F7F7F7;
+;
+
 }
 #header_top{
     margin:0;
@@ -195,9 +199,8 @@ h1{
 }
 #company{
     margin:0 auto;
-    margin-top:10px;
     width:960px;
-    height: 55px;
+    height: 75px;
     padding: 0;
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
@@ -215,11 +218,62 @@ box-shadow: inset 0 0 1px #ffbfbf;
 
 }
 #company_logo{
-    width:300px;
+    width:600px;
     margin-top:15px;
     margin-left:20px;
+    float:left;
 
+}
+.logo_text{
+    width:200px;
+    color:white;
+    font-size: 38px;
+    font-weight:bold;
+    opacity: 1;
 
+}
+.logo_desc{
+    margin-top: 10px;
+    margin-left: 20px;
+    float: left;
+    width:400px;
+    color:white;
+    opacity: 0.7;
+
+}
+.search_button{
+    margin-top:10px;
+    background-color: white;
+    font: right;
+    border:0;
+    width:100px;
+    height:30px;
+    border-radius: 3px;
+}
+#header_search{
+    display: block;
+    float: right;
+    padding: 6px;
+    border: 1px solid transparent;
+}
+#header_search form{
+    display: block;
+}
+#header_search input[type=text]{
+    font-size: 13px;
+    float: left;
+    margin: 20px,0,0,0;
+
+    padding: 7px 10px 6px;
+    width: 200px;
+    color: #bbb;
+    -webkit-border-radius: 3px 0 0 3px;
+    -moz-border-radius: 3px 0 0 3px;
+    border-radius: 3px 0 0 3px;
+    border: 1px solid #9F0100;
+    -moz-box-shadow: inset 0 0 3px #dfdfdf;
+    -webkit-box-shadow: inset 0 0 3px #dfdfdf;
+    box-shadow: inset 0 0 3px #dfdfdf;
 }
 
 
@@ -576,11 +630,12 @@ box-shadow: inset 0 0 1px #ffbfbf;
 /********************Quick message*****************/
 #quick_msg{
     margin:0 auto;
-    margin-top:10px;
+    padding-top: 10px;
     margin-bottom: 10px;
     font-weight: bold;
     color:#FFaaaa;
     text-align: center;
+    border-top:1px solid rgba(255,255,255,0.8);
 
 }
 /*********************central block****************/

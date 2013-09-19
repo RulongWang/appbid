@@ -188,8 +188,8 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'#Send the mail actu
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = '25'
-EMAIL_HOST_USER = '*****@gmail.com'#your email username
-EMAIL_HOST_PASSWORD = '*****' #your email passowrd
+EMAIL_HOST_USER = 'me@rulong.org'#your email username
+EMAIL_HOST_PASSWORD = 'snowsun_@816' #your email passowrd
 
 # CRONJOBS = [
 #     ('*/1 * * * *', 'utilities.job.jobTest')
