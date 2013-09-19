@@ -18,7 +18,7 @@ from order import models as orderModels
 from system import models as systemModels
 
 from seller import forms
-from appbid import models
+from appbid import models as appModels
 from utilities import common
 
 @csrf_protect
@@ -32,12 +32,12 @@ def registerApp(request, *args, **kwargs):
 
     #Initial data
     if kwargs.get('pk'):
-        app = get_object_or_404(models.App, pk=kwargs.get('pk'), publisher=request.user)
+        app = get_object_or_404(appModels.App, pk=kwargs.get('pk'), publisher=request.user)
         form = forms.AppForm(instance=app)
         initParam['app_id'] = app.id
-        initParam['attachments'] = models.Attachment.objects.filter(app_id=app.id)
+        initParam['attachments'] = appModels.Attachment.objects.filter(app_id=app.id)
         initParam['verify_token'] = app.verify_token
-        appInfos = models.AppInfo.objects.filter(app_id=app.id)
+        appInfos = appModels.AppInfo.objects.filter(app_id=app.id)
         if appInfos:
             initParam['appInfoForm'] = forms.AppInfoForm(instance=appInfos[0])
         initParam['serviceDetails'] = orderModels.ServiceDetail.objects.filter(app_id=app.id)
@@ -66,7 +66,7 @@ def registerApp(request, *args, **kwargs):
 
     initParam['form'] = form
     initParam['attachmentForm'] = forms.AttachmentForm()
-    initParam['apps'] = models.App.objects.filter(publisher=request.user).order_by('status')
+    initParam['apps'] = appModels.App.objects.filter(publisher=request.user).order_by('status')
     initParam['serviceItems'] = orderModels.ServiceItem.objects.filter(end_date__gte=datetime.datetime.now())
     return render_to_response(kwargs.get('backPage'), initParam, context_instance=RequestContext(request))
 
@@ -91,10 +91,10 @@ def saveAppStoreLink(request, form, model, *args, **kwargs):
 
     if model is None:
         model = form.save(commit=False)
-        model.publisher = models.User.objects.get(id=request.user.id)
+        model.publisher = appModels.User.objects.get(id=request.user.id)
         model.status = 1
         #currency is CNY in chinese version, USD in other version.
-        model.currency = models.Currency.objects.get(id=1)
+        model.currency = appModels.Currency.objects.get(id=1)
         minimum_bid = systemModels.SystemParam.objects.filter(key='minimum_bid')
         if minimum_bid:
             model.minimum_bid = minimum_bid[0].value
@@ -115,11 +115,11 @@ def saveAppStoreLink(request, form, model, *args, **kwargs):
     model.seller_name = result.get('sellerName', None)
     model.save()
 
-    appInfos = models.AppInfo.objects.filter(app_id=model.id)
+    appInfos = appModels.AppInfo.objects.filter(app_id=model.id)
     if appInfos:
         appInfo = appInfos[0]
     else:
-        appInfo = models.AppInfo()
+        appInfo = appModels.AppInfo()
         appInfo.app_id = model.id
 
     appInfo.price = result.get('price', 0)
@@ -144,17 +144,17 @@ def saveAppStoreLink(request, form, model, *args, **kwargs):
     model.category.clear()
     genres = result.get('genres', None)
     for genre in genres:
-        categories = models.Category.objects.filter(name=genre)
+        categories = appModels.Category.objects.filter(name=genre)
         if categories:
             category = categories[0]
         else:
-            category = models.Category()
+            category = appModels.Category()
             category.name = genre
             category.save()
         model.category.add(category)
 
     model.device.clear()
-    for device in models.Device.objects.all():
+    for device in appModels.Device.objects.all():
         for deviceName in result.get('supportedDevices', None):
             if deviceName.find(device.device) != -1:
                 model.device.add(device)
@@ -214,14 +214,14 @@ def saveAdditionalInfo(request, form, model, *args, **kwargs):
     pathList = request.FILES.getlist('path')
     if pathList:
         maxNum = systemModels.SystemParam.objects.filter(key='max_num_attachment')
-        attachments = models.Attachment.objects.filter(app_id=model.id)
+        attachments = appModels.Attachment.objects.filter(app_id=model.id)
         if maxNum and len(pathList) + len(attachments) > string.atoi(maxNum[0].value):
             initParam['attachmentError'] = _('The attachment number can not be more than %(number)s.') % {'number': maxNum[0].value}
             return None
 
         attachmentSize = systemModels.SystemParam.objects.filter(key='attachment_size')
         for path in pathList:
-            attachment = models.Attachment(path=path)
+            attachment = appModels.Attachment(path=path)
             attachment.name = path.name
             if path.content_type.find('image') != -1:
                 attachment.type = 1
@@ -317,9 +317,9 @@ def saveVerification(request, form, model, *args, **kwargs):
         return None
     initParam = kwargs.get('initParam')
     try:
-        ownerShipScan = models.OwnerShip_Scan.objects.get(app_id=model.id)
-    except models.OwnerShip_Scan.DoesNotExist:
-        ownerShipScan = models.OwnerShip_Scan()
+        ownerShipScan = appModels.OwnerShip_Scan.objects.get(app_id=model.id)
+    except appModels.OwnerShip_Scan.DoesNotExist:
+        ownerShipScan = appModels.OwnerShip_Scan()
         ownerShipScan.app_id = model.id
         ownerShipScan.save()
     initParam['verify_msg'] = _('The verification will be done later. Send the email to you after verified.')
@@ -336,10 +336,10 @@ def deleteAttachment(request, *args, **kwargs):
     except:
         dict = request.GET
     try:
-        attachment = models.Attachment.objects.get(id=dict.get('id'))
+        attachment = appModels.Attachment.objects.get(id=dict.get('id'))
         attachment.delete()
         data['ok'] = 'true'
-    except models.Attachment.DoesNotExist:
+    except appModels.Attachment.DoesNotExist:
         data['ok'] = 'false'
         data['message'] = _('The attachment "%(name)s" does not exist.') % {'name': dict.get('name')}
     return HttpResponse(json.dumps(data), mimetype=u'application/json')

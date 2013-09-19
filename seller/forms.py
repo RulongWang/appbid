@@ -1,7 +1,7 @@
 __author__ = 'jarvis'
 
 from django import forms
-from appbid import models
+from appbid import models as appModels
 
 
 class AppForm(forms.ModelForm):
@@ -19,7 +19,7 @@ class AppForm(forms.ModelForm):
     )
 
     class Meta:
-        model = models.App
+        model = appModels.App
         exclude = {'publisher'}
 
     def __init__(self, *args, **kwargs):
@@ -39,13 +39,13 @@ class AttachmentForm(forms.ModelForm):
     )
 
     class Meta:
-        model = models.Attachment
+        model = appModels.Attachment
         exclude = {'app'}
 
 
 class AppInfoForm(forms.ModelForm):
     class Meta:
-        model = models.AppInfo
+        model = appModels.AppInfo
         exclude = {'app'}
 
     def __init__(self, *args, **kwargs):

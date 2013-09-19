@@ -1,4 +1,5 @@
 __author__ = 'Jarvis'
+
 from django.http import Http404
 from django.shortcuts import render_to_response, RequestContext, HttpResponseRedirect, get_object_or_404
 from django.views.decorators.csrf import csrf_protect

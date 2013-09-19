@@ -1,3 +1,4 @@
+
 from django.conf.urls import patterns, url
 from seller import views
 

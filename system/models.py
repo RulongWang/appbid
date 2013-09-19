@@ -1,8 +1,8 @@
 __author__ = 'Jarvis'
 
-
 from django.db import models
 from django.contrib import admin
+
 
 class SystemParam(models.Model):
     """Config the system parameter."""

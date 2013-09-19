@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from django.shortcuts import render_to_response
 from django.shortcuts import render_to_response,HttpResponse,  RequestContext, HttpResponseRedirect, get_object_or_404
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from appbid import models
+from appbid import models as appModels
 from system import models as systemModels
 
 
@@ -20,7 +20,7 @@ def home(request, *args, **kwargs):
         page_range = page_range[0].value
     else:
         page_range = 10
-    app_list = models.App.objects.all()
+    app_list = appModels.App.objects.all()
     paginator = Paginator(app_list, page_range)
 
     page = request.GET.get('page', 1)

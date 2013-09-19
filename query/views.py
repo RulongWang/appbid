@@ -5,7 +5,7 @@ import datetime
 from django.http import HttpResponse, Http404
 from django.shortcuts import render_to_response, render, RequestContext, get_object_or_404
 from django.db.models import Max
-from appbid import models
+from appbid import models as appModels
 
 
 #register app entry
@@ -23,34 +23,34 @@ def getIcon(request):
 
 def list_latest(request):
     list_apps = []
-    list_apps = models.App.objects.all()
+    list_apps = appModels.App.objects.all()
 
     return render_to_response('query/listing_base.html', {"list_latest": list_apps}, context_instance=RequestContext(request))
 
 
 def most_active(request):
     list_apps = []
-    list_apps = models.App.objects.all()
+    list_apps = appModels.App.objects.all()
 
     return render_to_response('query/listing_base.html', {"list_latest": list_apps}, context_instance=RequestContext(request))
 
 
 def list_ending_soon(request):
     list_apps = []
-    list_apps = models.App.objects.all()
+    list_apps = appModels.App.objects.all()
 
     return render_to_response('query/listing_base.html', {"list_latest": list_apps}, context_instance=RequestContext(request))
 
 
 def list_just_sold(request):
     list_apps = []
-    list_apps = models.App.objects.all()
+    list_apps = appModels.App.objects.all()
 
     return render_to_response('query/listing_base.html', {"list_latest": list_apps}, context_instance=RequestContext(request))
 
 def list_featured(request):
     list_apps = []
-    list_apps = models.App.objects.all()
+    list_apps = appModels.App.objects.all()
 
     return render_to_response('query/listing_base.html', {"list_latest": list_apps}, context_instance=RequestContext(request))
 
@@ -58,12 +58,12 @@ def getDetail(request, *args, **kwargs):
     """Get app detail info."""
     if kwargs.get('pk'):
         initParam = {}
-        app = get_object_or_404(models.App, pk=kwargs.get('pk'))
+        app = get_object_or_404(appModels.App, pk=kwargs.get('pk'))
         initParam['app'] = app
         initParam['appInfo'] = app.appinfo
         initParam['attachments'] = app.attachment_set.all()
         initParam['cur_monetizes'] = app.monetize.all()
-        initParam['all_monetizes'] = models.Monetize.objects.all()
+        initParam['all_monetizes'] = appModels.Monetize.objects.all()
         category_nums = {}
         for category in app.category.all():
             category_nums[category] = len(category.app_set.filter(category=category))
@@ -103,9 +103,9 @@ def getBidInfo(request, *args, **kwargs):
     except:
         dict = request.GET
     try:
-        app = models.App.objects.get(id=dict.get('id'))
+        app = appModels.App.objects.get(id=dict.get('id'))
         initBidInfo(app=app, initParam=data)
         data['ok'] = 'true'
-    except models.App.DoesNotExist:
+    except appModels.App.DoesNotExist:
         data['ok'] = 'false'
     return HttpResponse(json.dumps(data), mimetype=u'application/json')
