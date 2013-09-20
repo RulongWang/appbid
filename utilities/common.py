@@ -51,6 +51,6 @@ def getSystemParam(*args, **kwargs):
             return params[0].value
         else:
             if default_value:
-                return default_value
+                return str(default_value)
     return None
 
