@@ -11,6 +11,6 @@ def home(request, *args, **kwargs):
     page = request.GET.get('page', 1)
     apps = appModels.App.objects.filter(status=2)
 
-    initParam['apps'] = queryAppsWithPaginator(page=page, apps=apps)
+    initParam['apps'] = queryAppsWithPaginator(request, page=page, apps=apps)
 
     return render_to_response('home/home.html', initParam, context_instance=RequestContext(request))

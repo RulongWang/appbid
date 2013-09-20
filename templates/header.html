@@ -77,10 +77,10 @@ $(function(){
         <div id="menu">
         <ul class="sf-menu">
             <li >
-                <a href="/" title="Home">Home</a>
+                <a href="{% url 'home:home' %}" title="Home">Home</a>
             </li>
             <li >
-                <a href="/query/featured/" title="Featured listings">Featured</a>
+                <a href="{% url 'query:featured' %}" title="Featured listings">Featured</a>
             </li>
             <li >
                 <a href="/query/app-list/">New Listings</a>

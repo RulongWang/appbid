@@ -26,6 +26,7 @@ class Currency(models.Model):
 
 class Monetize(models.Model):
     """Monetize table info, method value: advertisement, software sale"""
+    name = models.CharField(max_length=255)
     method = models.CharField(max_length=255)
 
     def __unicode__(self):

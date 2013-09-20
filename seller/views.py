@@ -63,7 +63,7 @@ def registerApp(request, *args, **kwargs):
 
     initParam['form'] = form
     initParam['attachmentForm'] = forms.AttachmentForm()
-    initParam['apps'] = appModels.App.objects.filter(publisher=request.user).order_by('status')
+    initParam['apps'] = appModels.App.objects.filter(publisher=request.user).order_by('-status', 'create_time')
     initParam['serviceItems'] = orderModels.ServiceItem.objects.filter(end_date__gte=datetime.datetime.now())
     return render_to_response(kwargs.get('backPage'), initParam, context_instance=RequestContext(request))
 
@@ -90,8 +90,9 @@ def saveAppStoreLink(request, form, model, *args, **kwargs):
         model = form.save(commit=False)
         model.publisher = appModels.User.objects.get(id=request.user.id)
         model.status = 1
-        #currency is CNY in chinese version, USD in other version.
-        model.currency = appModels.Currency.objects.get(id=1)
+        currency_name = common.getSystemParam(key='currency', default='USD')
+        currency = get_object_or_404(appModels.Currency, currency=currency_name)
+        model.currency = appModels.Currency.objects.get(id=currency.id)
         model.minimum_bid = common.getSystemParam(key='minimum_bid', default=10)
         token_len = common.getSystemParam(key='token_len', default=10)
         model.verify_token = ''.join(random.sample(string.ascii_letters+string.digits, string.atoi(token_len)))

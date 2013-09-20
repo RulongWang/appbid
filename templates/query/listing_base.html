@@ -3,19 +3,29 @@
 {% load staticfiles %}
         <div class="listing_wrapper">
             <div id="breadcrumb">
-                <span>Category: <a href="#">Category Parent</a> &gt <a href="#">Photography</a></span>
+                {% if query_tile %}
+                <span>{{ query_tile.0 }}-&gt <a href="{{ query_tile.2 }}">{{ query_tile.1 }}</a></span>
+                {% else %}
+                    <span>&nbsp;</span>
+                {% endif %}
             </div>
             <div class="clear"></div>
             <div class="listing_section">
-                 <div class="listing_nav"><!--navigation bar-->
+                 <div class="listing_nav">
                     <div class="search_criteria">
-                        <h1>Revenue(USD/Month)</h1>
+                        <h1>Revenue({{ currency }}/Month)</h1>
                         <ul>
-                            <li><span class="">Over $2000</span><span class="right">12{{ amount }}</span></li>
-                            <li><span class="">Over $1000</span><span class="right">12{{ amount }}</span></li>
-                            <li><span class="">Over $500</span><span class="right">12{{ amount }}</span></li>
-                            <li><span class="">Over $100</span><span class="right">12{{ amount }}</span></li>
-                            <li><span class="">Over $0</span><span class="right">12{{ amount }}</span></li>
+                            {% for revenue in revenue_list %}
+                                <li><a href="?revenue_min={{ revenue.0 }}"><span class="">Over {{ revenue.0 }}</span><span class="right">{{ revenue.1 }}</span></a></li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    <div class="search_criteria">
+                        <h1>Monetize </h1>
+                        <ul>
+                            {% for monetize in monetize_list %}
+                                <li><a href="?monetize={{ monetize.0.name }}"><span class="">{{ monetize.0.method }}</span><span class="right">{{ monetize.1 }}</span></a></li>
+                            {% endfor %}
                         </ul>
                     </div>
                     <div class="search_criteria">
@@ -30,55 +40,56 @@
                             <li><span class="">Business</span><span class="right">12{{ amount }}</span></li>
                         </ul>
                     </div>
-                    <div class="search_criteria">
-                        <h1>Monetize </h1>
-                        <ul>
-                            <li><span class="">App Sales</span></li>
-                            <li><span class="">In-App Sales</span></li>
-                            <li><span class="">Advertise</span></li>
-                        </ul>
-                    </div>
                  </div>
                  <div class="listing_block">
                      <div class="listing_title">
-
                      </div>
                      <div class="listing_content">
                         <ul >
-                            {% for app in list_latest %}
+                            {% for app in apps %}
                             <li>
                                 <div class="app_wrapper">
                                        <div class="app_img">
-                                           <a href="{% url 'query:app_detail' app.id %}"><img class="img_140x140" src="{{ MEDIA_URL }}{{ app.appinfo.icon }}"/></a>
+                                           <a href="{% url 'query:app_detail' app.0.id %}"><img class="img_140x140" src="{{ MEDIA_URL }}{{ app.0.appinfo.icon }}"/></a>
                                        </div>
 
                                        <div class="app_attribute">
                                            <div class="info_detail">
-                                            <span><h1><a href="{% url 'query:app_detail' app.id %}"> {{ app.app_name }}</a></h1></span>
-                                            {% if app.publish_date %}
-                                               <div>{{ app.publish_date }} </div>
+                                            <span><h1><a href="{% url 'query:app_detail' app.0.id %}"> {{ app.0.app_name }}</a></h1></span>
+                                            {% if app.0.publish_date %}
+                                               <div>{{ app.0.publish_date }} </div>
                                             {% endif %}
                                             <div class="margin10px fontcolor_light_grey">
-                                               <p style="font-size: 14px;">{{ app.title }}</p>
+                                               <p style="font-size: 14px;">{{ app.0.title }}</p>
                                             </div>
-                                            <span class="fontcolor_light_grey">Monthly Downloads:{{ app.dl_amount }}</span>
-                                            {% if app.revenue %}
-                                               <div class="fontcolor_light_grey">Revenue:{{ app.revenue }} </div>
+                                            <span class="fontcolor_light_grey">Monthly Downloads:{{ app.0.dl_amount }}</span>
+                                            {% if app.0.revenue %}
+                                               <div class="fontcolor_light_grey">Revenue:{{ app.0.revenue }} </div>
                                             {% endif %}
-                                               <div class="fontcolor_light_grey">Rating:{{ app.rating }} </div>
-                                               <div class="fontcolor_light_grey">AppleStore Price:{{ app.appinfo.price }} </div>
+                                               <div class="fontcolor_light_grey">Rating:{{ app.0.rating }} </div>
+                                               <div class="fontcolor_light_grey">AppleStore Price:{{ app.0.appinfo.price }} </div>
 
                                            </div>
                                            <div class="bidding_info">
-                                               <div>5$</div>
-                                               <div>200Bids</div>
+                                               <div>{{ app.1|floatformat|default:0 }}{{ app.0.currency.currency }}</div>
+                                               <div><a href="{% url 'bid:bid_list' app.0.id %}">{{ app.2|floatformat|default:0 }}Bid{{ app.2|floatformat|pluralize }}</a></div>
                                            </div>
                                        </div>
                                 </div>
                             </li>
                              {% endfor %}
+                             {% if result_msg %}
+                                 <li>{{ result_msg }}</li>
+                             {% endif %}
                         </ul>
                      </div>
+                     {% if apps %}
+                     <div class="pagination" style="float: right">
+                        {% if apps.has_previous %}<a href="?page={{ apps.previous_page_number }}">previous</a>{% endif %}
+                        Page {{ apps.number }} of {{ apps.paginator.num_pages }}
+                        {% if apps.has_next %}<a href="?page={{ apps.next_page_number }}">next</a>{% endif %}
+                     </div>
+                     {% endif %}
                 </div>
 
             </div>

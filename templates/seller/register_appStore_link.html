@@ -65,7 +65,7 @@
                 <li>
                 <!--TODO:Green color, if published; Red color, if draft. -->
                 <a style="color: blue; font-weight: bold;" href="{% url 'seller:appStore_link' app.id %}">{{ app.title }}</a>
-                (last modified {{ app.last_modify|date:"jS F" }}{% ifequal app.status 2 %}, published {{ app.publish_date|date:"jS F" }}{% endifequal %})
+                (last modified: {{ app.last_modify|date:"jS M, Y" }}{% ifequal app.status 2 %}, published: {{ app.publish_date|date:"jS M, Y" }}{% endifequal %})
                 </li>
                 {% endfor %}
                 </ol>

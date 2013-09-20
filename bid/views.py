@@ -22,7 +22,7 @@ def createBid(request, *args, **kwargs):
         app = get_object_or_404(appModels.App, pk=kwargs.get('pk'))
         initParam['app'] = app
         initParam['appInfo'] = app.appinfo
-        initBidInfo(app=app, initParam=initParam)#For below code using the value
+        initBidInfo(request, app=app, initParam=initParam)#For below code using the value
         if request.method == "POST":
             biddingForm = forms.BiddingForm(request.POST)
             if biddingForm.is_valid():
@@ -58,7 +58,7 @@ def getBids(request, *args, **kwargs):
         app = get_object_or_404(appModels.App, pk=kwargs.get('pk'))
         initParam['app'] = app
         initParam['appInfo'] = app.appinfo
-        initBidInfo(app=app, initParam=initParam)
+        initBidInfo(request, app=app, initParam=initParam)
         if request.user.id and request.user.username:
             bids = app.bidding_set.filter(Q(status=1) | Q(buyer=request.user)).order_by('-price', '-bid_time')
         else:
