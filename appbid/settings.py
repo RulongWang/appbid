@@ -189,7 +189,7 @@ EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = '25'
 EMAIL_HOST_USER = 'me@rulong.org'#your email username
-EMAIL_HOST_PASSWORD = 'snowsun_@816' #your email passowrd
+EMAIL_HOST_PASSWORD = '' #your email passowrd
 
 # CRONJOBS = [
 #     ('*/1 * * * *', 'utilities.job.jobTest')

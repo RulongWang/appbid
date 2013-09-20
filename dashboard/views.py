@@ -14,13 +14,13 @@ from django.contrib.auth.models import User
 
 
 def activity(request, *args, **kwargs):
-    return render_to_response("dashboard/dashboard.html",{"payment_accounts":'test'},
+    return render_to_response("dashboard/activity.html",{"payment_accounts":'test'},
                         context_instance=RequestContext(request))
 
 
 
 def inbox(request, *args, **kwargs):
-    return render_to_response("dashboard/inbox.html",{"payment_accounts":'test'},
+    return render_to_response("dashboard/activity.html",{"payment_accounts":'test'},
                         context_instance=RequestContext(request))
 
 def sentMsg(request, *args, **kwargs):
