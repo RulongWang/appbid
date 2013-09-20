@@ -7,7 +7,6 @@ import string
 from django.http import HttpResponse, Http404
 from django.shortcuts import render_to_response, render, RequestContext, get_object_or_404
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.contrib import messages
 from django.utils.translation import ugettext as _
 from django.db.models import Max
 from appbid import models as appModels
@@ -98,10 +97,7 @@ def listFeatured(request, *args, **kwargs):
         apps = appModels.App.objects.filter(status=2, category=categoryModel)
 
     #Query data
-    list_app = queryAppsWithPaginator(request, page=page, apps=apps)
-    if list_app is None:
-        initParam['result_msg'] = _('No result to find.')
-    initParam['apps'] = list_app
+    initParam['apps'] = queryAppsWithPaginator(request, page=page, apps=apps)
 
     return render_to_response('query/listing_base.html', initParam, context_instance=RequestContext(request))
 
@@ -179,7 +175,6 @@ def queryAppsWithPaginator(request, *args, **kwargs):
             info_list.append(data.get('bid_num'))#info 2:bid numbers
             info_list.append(data.get('bid_price'))#info 3:bid price
     else:
-        messages.info(request, _('No result to find.'))
         return None
 
     return appInfoList
