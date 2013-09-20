@@ -186,10 +186,10 @@ SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'#Send the mail actually
 # EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'#Show by console
 EMAIL_USE_TLS = True
-EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST = 'smtp.live.com'
 EMAIL_PORT = '25'
-EMAIL_HOST_USER = 'me@rulong.org'#your email username
-EMAIL_HOST_PASSWORD = '' #your email passowrd
+EMAIL_HOST_USER = 'support@appswalk.com'#your email username
+EMAIL_HOST_PASSWORD = '20130101' #your email passowrd
 
 # CRONJOBS = [
 #     ('*/1 * * * *', 'utilities.job.jobTest')
