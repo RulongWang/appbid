@@ -61,7 +61,8 @@ def listFeatured(request, *args, **kwargs):
     revenue_min = request.GET.get('revenue_min', None)
     category = request.GET.get('category', None)
     monetize = request.GET.get('monetize', None)
-    initParam['currency'] = common.getSystemParam(key='currency', default='USD')
+    currency_id = common.getSystemParam(key='currency', default=2)
+    initParam['currency'] = get_object_or_404(appModels.Currency, pk=currency_id)
 
     if revenue_min is None and category is None and monetize is None:
         apps = appModels.App.objects.filter(status=2)
@@ -76,13 +77,14 @@ def listFeatured(request, *args, **kwargs):
             temp_apps = appModels.App.objects.filter(status=2, revenue__lt=REVENUE_LIST[i-1], revenue__gte=REVENUE_LIST[i])
         if revenue_min and string.atoi(revenue_min) == REVENUE_LIST[i]:
             apps = temp_apps
-            initParam['query_tile'] = ['Revenue(USD/Month)', ' '.join(['Over', revenue_min]), ''.join(['?revenue_min=', revenue_min])]
+            initParam['query_tile'] = [''.join(['Revenue(', initParam['currency'].currency, '/Month)']),
+                    ' '.join(['Over', revenue_min]), ''.join(['?revenue_min=', revenue_min])]
         initParam['revenue_list'].append([REVENUE_LIST[i], len(temp_apps)])
 
     #Monetize Part
     initParam['monetize_list'] = []
     if monetize:
-        monetizeModel = get_object_or_404(appModels.Monetize, name=monetize)
+        monetizeModel = get_object_or_404(appModels.Monetize, pk=monetize)
     for temp_monetize in appModels.Monetize.objects.all():
         if monetize and monetizeModel == temp_monetize:
             apps = monetizeModel.app_set.filter(status=2, monetize=monetizeModel)
@@ -92,9 +94,17 @@ def listFeatured(request, *args, **kwargs):
             initParam['monetize_list'].append([temp_monetize, len(temp_monetize.app_set.filter(status=2))])
 
     #Category Part
+    initParam['category_list'] = []
     if category:
-        categoryModel = get_object_or_404(appModels.Category, name=category)
-        apps = appModels.App.objects.filter(status=2, category=categoryModel)
+        categoryModel = get_object_or_404(appModels.Category, apple_id=category)
+    for temp_category in appModels.Category.objects.all():
+        if category and categoryModel == temp_category:
+            apps = appModels.App.objects.filter(status=2, category=categoryModel)
+            initParam['category_list'].append([temp_category, len(apps)])
+            initParam['query_tile'] = ['Category', temp_category.name, ''.join(['?category=', category])]
+        else:
+            initParam['category_list'].append([temp_category, len(temp_category.app_set.filter(status=2))])
+    common.sortWithIndexLie(initParam['category_list'], 1, order='desc')
 
     #Query data
     initParam['apps'] = queryAppsWithPaginator(request, page=page, apps=apps)

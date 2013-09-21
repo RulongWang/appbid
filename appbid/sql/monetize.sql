@@ -1,3 +1,4 @@
-insert into appbid_monetize(`name`,`method`) values('app-sales','App Sales');
-insert into appbid_monetize(`name`,`method`) values('in-app-sales','In-App Sales');
-insert into appbid_monetize(`name`,`method`) values('advertising','Advertising');
+insert into appbid_monetize(`id`,`method`) values(1,'App Sales');
+insert into appbid_monetize(`id`,`method`) values(2,'In-App Sales');
+insert into appbid_monetize(`id`,`method`) values(3,'Advertising');
+insert into appbid_monetize(`id`,`method`) values(4,'Free');

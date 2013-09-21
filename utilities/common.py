@@ -54,3 +54,22 @@ def getSystemParam(*args, **kwargs):
                 return str(default_value)
     return None
 
+
+def sortWithIndexLie(A, indexLie=0, order='asc'):
+    """Sort with some one lie for Double Dimensional Array. order: asc, desc"""
+    if indexLie < 0:
+        indexLie = 0
+    elif indexLie >= len(A[0]):
+        indexLie = 0
+    if indexLie != 0:
+        for i in range(len(A)):
+            (A[i][0], A[i][indexLie]) = (A[i][indexLie], A[i][0])
+    if order == 'asc':
+        A.sort()
+    elif order == 'desc':
+        def myCmp(e1, e2):
+            return -cmp(e1[0], e2[0])
+        A.sort(myCmp)
+    if indexLie != 0:
+        for i in range(len(A)):
+            (A[i][0], A[i][indexLie]) = (A[i][indexLie], A[i][0])

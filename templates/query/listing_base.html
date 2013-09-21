@@ -13,7 +13,7 @@
             <div class="listing_section">
                  <div class="listing_nav">
                     <div class="search_criteria">
-                        <h1>Revenue({{ currency }}/Month)</h1>
+                        <h1>Revenue({{ currency.currency }}/Month)</h1>
                         <ul>
                             {% for revenue in revenue_list %}
                                 <li><a href="?revenue_min={{ revenue.0 }}"><span class="">Over {{ revenue.0 }}</span><span class="right">{{ revenue.1 }}</span></a></li>
@@ -24,20 +24,19 @@
                         <h1>Monetize </h1>
                         <ul>
                             {% for monetize in monetize_list %}
-                                <li><a href="?monetize={{ monetize.0.name }}"><span class="">{{ monetize.0.method }}</span><span class="right">{{ monetize.1 }}</span></a></li>
+                                <li><a href="?monetize={{ monetize.0.id }}"><span class="">{{ monetize.0.method }}</span><span class="right">{{ monetize.1 }}</span></a></li>
                             {% endfor %}
                         </ul>
                     </div>
                     <div class="search_criteria">
                         <h1>Category </h1>
                         <ul>
-                            <li><span class="">Business</span><span class="right">12{{ amount }}</span></li>
-                            <li><span class="">Business</span><span class="right">12{{ amount }}</span></li>
-                            <li><span class="">Business</span><span class="right">12{{ amount }}</span></li>
-                            <li><span class="">Business</span><span class="right">12{{ amount }}</span></li>
-                            <li><span class="">Business</span><span class="right">12{{ amount }}</span></li>
-                            <li><span class="">Business</span><span class="right">12{{ amount }}</span></li>
-                            <li><span class="">Business</span><span class="right">12{{ amount }}</span></li>
+                            {% for category in category_list %}
+                                <li class="category_li" {% if forloop.counter > 10 %}style="display: none" {% endif %}>
+                                    <a href="?category={{ category.0.apple_id }}"><span class="">{{ category.0.name }}</span><span class="right">{{ category.1 }}</span></a>
+                                </li>
+                            {% endfor %}
+                                <li id='more_show' style="text-align: center">More</li>
                         </ul>
                     </div>
                  </div>
@@ -93,4 +92,10 @@
         <div class="clear"></div>
 
         </div><!--end of listing-wrapper-->
+<script type="text/javascript" language="javascript">
+    $("#more_show").click(function() {
+        $(".category_li").show();
+        $("#more_show").hide();
+    });
+</script>
 {% endblock %}

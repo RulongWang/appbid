@@ -90,9 +90,8 @@ def saveAppStoreLink(request, form, model, *args, **kwargs):
         model = form.save(commit=False)
         model.publisher = appModels.User.objects.get(id=request.user.id)
         model.status = 1
-        currency_name = common.getSystemParam(key='currency', default='USD')
-        currency = get_object_or_404(appModels.Currency, currency=currency_name)
-        model.currency = appModels.Currency.objects.get(id=currency.id)
+        currency_id = common.getSystemParam(key='currency', default=1)
+        model.currency = get_object_or_404(appModels.Currency, pk=currency_id)
         model.minimum_bid = common.getSystemParam(key='minimum_bid', default=10)
         token_len = common.getSystemParam(key='token_len', default=10)
         model.verify_token = ''.join(random.sample(string.ascii_letters+string.digits, string.atoi(token_len)))
@@ -109,6 +108,9 @@ def saveAppStoreLink(request, form, model, *args, **kwargs):
     model.description = result.get('description', None)
     model.seller_name = result.get('sellerName', None)
     model.save()
+
+    monetize_id = common.getSystemParam(key='monetize', default=4)
+    model.monetize.add(get_object_or_404(appModels.Monetize, pk=monetize_id))
 
     appInfos = appModels.AppInfo.objects.filter(app_id=model.id)
     if appInfos:
@@ -137,16 +139,25 @@ def saveAppStoreLink(request, form, model, *args, **kwargs):
     appInfo.save()
 
     model.category.clear()
+    model.subcategory.clear()
     genres = result.get('genres', None)
-    for genre in genres:
-        categories = appModels.Category.objects.filter(name=genre)
-        if categories:
-            category = categories[0]
-        else:
-            category = appModels.Category()
-            category.name = genre
-            category.save()
-        model.category.add(category)
+    genreIds = result.get('genreIds', None)
+    if genres and genreIds and len(genres) == len(genreIds):
+        for i in range(len(genreIds)):
+            categories = appModels.Category.objects.filter(apple_id=string.atoi(genreIds[i]))
+            if categories:
+                model.category.add(categories[0])
+            else:
+                subCategories = appModels.SubCategory.objects.filter(apple_id=string.atoi(genreIds[i]))
+                if subCategories:
+                    model.subcategory.add(subCategories[0])
+                else:
+                    category = appModels.Category()
+                    category.apple_id = genreIds[i]
+                    category.name = genres[i]
+                    category.save()
+                    model.category.add(category)
+                    #TODO:Auto send email to administrator to add new category
 
     model.device.clear()
     for device in appModels.Device.objects.all():

@@ -26,7 +26,6 @@ class Currency(models.Model):
 
 class Monetize(models.Model):
     """Monetize table info, method value: advertisement, software sale"""
-    name = models.CharField(max_length=255)
     method = models.CharField(max_length=255)
 
     def __unicode__(self):
@@ -35,6 +34,17 @@ class Monetize(models.Model):
 
 class Category(models.Model):
     """Category table info."""
+    apple_id = models.IntegerField()
+    name = models.CharField(max_length=255)
+
+    def __unicode__(self):
+        return self.name
+
+
+class SubCategory(models.Model):
+    """Category table info."""
+    category = models.ForeignKey(Category)
+    apple_id = models.IntegerField()
     name = models.CharField(max_length=255)
 
     def __unicode__(self):
@@ -54,6 +64,7 @@ class App(models.Model):
     title = models.CharField(max_length=255, blank=True)
     app_name = models.CharField(max_length=255, blank=True)
     category = models.ManyToManyField(Category, null=True, blank=True)
+    subcategory = models.ManyToManyField(SubCategory, null=True, blank=True)
     begin_price = models.FloatField(null=True, blank=True)
     one_price = models.FloatField(null=True, blank=True)
     reserve_price = models.FloatField(null=True, blank=True)

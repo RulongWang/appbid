@@ -6,4 +6,5 @@ insert into system_systemparam(`key`,`value`,`description`) values('minimum_bid'
 insert into system_systemparam(`key`,`value`,`description`) values('service_expiry_date','1','The default service expiry date for app is 1 month.');
 insert into system_systemparam(`key`,`value`,`description`) values('active_link_confirm_token_length','30','The length of confirm token in user account active link.');
 insert into system_systemparam(`key`,`value`,`description`) values('page_range','10','The maximum number of items to include on a page.');
-insert into system_systemparam(`key`,`value`,`description`) values('currency','CNY','The default currency in the system.');
+insert into system_systemparam(`key`,`value`,`description`) values('currency','2','The default currency is 2 - USD.');
+insert into system_systemparam(`key`,`value`,`description`) values('monetize','4','The default monetize is 4 - Free.');
