@@ -27,7 +27,7 @@ def sendRegisterActiveEmail(request, *args, **kwargs):
         subject = templates[0].subject
         template = templates[0].template.replace('{username}', user.username).replace('{active_link}', active_link)
         recipient_list = [user.email]
-        email.sentEmail(subject=subject, message=template, recipient_list=recipient_list)
+        email.EmailThread(subject=subject, message=template, recipient_list=recipient_list).start()
 
 
 def sendSecurityVerificationEmail(request, *args, **kwargs):
@@ -49,4 +49,4 @@ def sendSecurityVerificationEmail(request, *args, **kwargs):
         subject = templates[0].subject
         template = templates[0].template.replace('{username}', user.username).replace('{active_link}', active_link)
         recipient_list = [user.email]
-        email.sentEmail(subject=subject, message=template, recipient_list=recipient_list)
+        email.EmailThread(subject=subject, message=template, recipient_list=recipient_list).start()
