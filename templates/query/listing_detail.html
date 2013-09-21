@@ -151,8 +151,28 @@
                 <div class="widget">
                    <span class="widget_title">Category </span>
                    <ul>
-                       {% for category, num in category_nums.items %}
-                       <li><span><a target="_blank" href="#">{{ category.name }}({{ num }})</a></span></li>
+                       {% for category, sub_list in category_map.items %}
+                           <!--Category start-->
+                           <li>
+                               <span><a href="/query/featured?category={{ category.apple_id }}">{{ category.name }}({{ sub_list.0 }})</a></span>
+                           </li>
+                           <!--Category end-->
+
+                           <!--SubCategory start-->
+                           {% if sub_list|length > 1 %}
+                               <li>
+                                   <ul>
+                                   {% for subcategory in sub_list %}
+                                       {% if forloop.counter > 1 %}
+                                           <li>
+                                               <span><a href="/query/featured?subcategory={{ subcategory.0.apple_id }}">{{ subcategory.0.name }}({{ subcategory.1 }})</a></span>
+                                           </li>
+                                       {% endif %}
+                                   {% endfor %}
+                                   </ul>
+                               </li>
+                           {% endif %}
+                           <!--SubCategory end-->
                        {% endfor %}
                    </ul>
                 </div>

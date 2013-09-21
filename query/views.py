@@ -8,6 +8,7 @@ from django.http import HttpResponse, Http404
 from django.shortcuts import render_to_response, render, RequestContext, get_object_or_404
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.utils.translation import ugettext as _
+from django.views.decorators.csrf import csrf_protect
 from django.db.models import Max
 from appbid import models as appModels
 from utilities import common
@@ -54,17 +55,19 @@ def list_just_sold(request):
     return render_to_response('query/listing_base.html', {"list_latest": list_apps}, context_instance=RequestContext(request))
 
 
+@csrf_protect
 def listFeatured(request, *args, **kwargs):
     """Query the apps info in featured page."""
     initParam = {}
     page = request.GET.get('page', 1)
     revenue_min = request.GET.get('revenue_min', None)
     category = request.GET.get('category', None)
+    subcategory = request.GET.get('subcategory', None)
     monetize = request.GET.get('monetize', None)
     currency_id = common.getSystemParam(key='currency', default=2)
     initParam['currency'] = get_object_or_404(appModels.Currency, pk=currency_id)
 
-    if revenue_min is None and category is None and monetize is None:
+    if revenue_min is None and category is None and subcategory is None and monetize is None:
         apps = appModels.App.objects.filter(status=2)
 
     #Revenue Part
@@ -77,8 +80,9 @@ def listFeatured(request, *args, **kwargs):
             temp_apps = appModels.App.objects.filter(status=2, revenue__lt=REVENUE_LIST[i-1], revenue__gte=REVENUE_LIST[i])
         if revenue_min and string.atoi(revenue_min) == REVENUE_LIST[i]:
             apps = temp_apps
-            initParam['query_tile'] = [''.join(['Revenue(', initParam['currency'].currency, '/Month)']),
-                    ' '.join(['Over', revenue_min]), ''.join(['?revenue_min=', revenue_min])]
+            title = _('Revenue(%(param)s/Month)') % {'param': initParam['currency'].currency}
+            subTitle = _('Over %(param)s') % {'param': revenue_min}
+            initParam['query_tile'] = [title, subTitle, ''.join(['?revenue_min=', revenue_min])]
         initParam['revenue_list'].append([REVENUE_LIST[i], len(temp_apps)])
 
     #Monetize Part
@@ -89,7 +93,7 @@ def listFeatured(request, *args, **kwargs):
         if monetize and monetizeModel == temp_monetize:
             apps = monetizeModel.app_set.filter(status=2, monetize=monetizeModel)
             initParam['monetize_list'].append([temp_monetize, len(apps)])
-            initParam['query_tile'] = ['Monetize', temp_monetize.method, ''.join(['?monetize=', monetize])]
+            initParam['query_tile'] = [_('Monetize'), temp_monetize.method, ''.join(['?monetize=', monetize])]
         else:
             initParam['monetize_list'].append([temp_monetize, len(temp_monetize.app_set.filter(status=2))])
 
@@ -101,10 +105,16 @@ def listFeatured(request, *args, **kwargs):
         if category and categoryModel == temp_category:
             apps = appModels.App.objects.filter(status=2, category=categoryModel)
             initParam['category_list'].append([temp_category, len(apps)])
-            initParam['query_tile'] = ['Category', temp_category.name, ''.join(['?category=', category])]
+            initParam['query_tile'] = [_('Category'), temp_category.name, ''.join(['?category=', category])]
         else:
             initParam['category_list'].append([temp_category, len(temp_category.app_set.filter(status=2))])
     common.sortWithIndexLie(initParam['category_list'], 1, order='desc')
+
+    #SubCategory Part from app detail page.
+    if subcategory:
+        subcategoryModel = get_object_or_404(appModels.SubCategory, apple_id=subcategory)
+        apps = appModels.App.objects.filter(status=2, subcategory=subcategoryModel)
+        initParam['query_tile'] = ['SubCategory', subcategoryModel.name, ''.join(['?subcategory=', subcategory])]
 
     #Query data
     initParam['apps'] = queryAppsWithPaginator(request, page=page, apps=apps)
@@ -112,6 +122,7 @@ def listFeatured(request, *args, **kwargs):
     return render_to_response('query/listing_base.html', initParam, context_instance=RequestContext(request))
 
 
+@csrf_protect
 def getDetail(request, *args, **kwargs):
     """Get app detail info."""
     if kwargs.get('pk'):
@@ -122,11 +133,19 @@ def getDetail(request, *args, **kwargs):
         initParam['attachments'] = app.attachment_set.all()
         initParam['cur_monetizes'] = app.monetize.all()
         initParam['all_monetizes'] = appModels.Monetize.objects.all()
-        category_nums = {}
+
+        category_map = {}
         for category in app.category.all():
-            category_nums[category] = len(category.app_set.filter(category=category))
-        initParam['category_nums'] = category_nums
+            # Map key:category, Map value list[0]:the app number of category
+            category_map[category] = [len(category.app_set.all())]
+        for subcategory in app.subcategory.all():
+            if category_map.get(subcategory.category):
+                # Map value list[1]:subcategory, Map value list[2]:the app number of subcategory
+                category_map.get(subcategory.category).append([subcategory, len(subcategory.app_set.all())])
+        initParam['category_map'] = category_map
+
         initBidInfo(request, app=app, initParam=initParam)
+
         return render_to_response('query/listing_detail.html', initParam, context_instance=RequestContext(request))
     raise Http404
 
@@ -155,7 +174,6 @@ def initBidInfo(request, *args, **kwargs):
 
 def queryAppsWithPaginator(request, *args, **kwargs):
     """App query function for home page, feature page and so on."""
-    appInfoList = []
     page_range = kwargs.get('page_range')
     page = kwargs.get('page', 1)
     apps = kwargs.get('apps')
@@ -166,7 +184,8 @@ def queryAppsWithPaginator(request, *args, **kwargs):
     if apps:
         app_list = []
         for app in apps:
-            info_list = [app]#info 0:The app info
+            #info list[0]:The app info
+            info_list = [app]
             app_list.append(info_list)
 
         paginator = Paginator(app_list, page_range)
@@ -181,9 +200,12 @@ def queryAppsWithPaginator(request, *args, **kwargs):
         for info_list in appInfoList:
             data = {}
             initBidInfo(request, app=info_list[0], initParam=data)
-            info_list.append(data.get('current_price'))#info 1:current price
-            info_list.append(data.get('bid_num'))#info 2:bid numbers
-            info_list.append(data.get('bid_price'))#info 3:bid price
+            #info list[1]:current price
+            info_list.append(data.get('current_price'))
+            #info list[2]:bid numbers
+            info_list.append(data.get('bid_num'))
+            #info list[3]:bid price
+            info_list.append(data.get('bid_price'))
     else:
         return None
 
