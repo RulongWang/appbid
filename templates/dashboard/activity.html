@@ -5,9 +5,8 @@
         <div class="pannel_nav">
            <ul>
             <h1>Activity Overview</h1>
-			<li><a href="#">Inbox</a></li>
-			<li><a href="#">Sent Messages</a></li>
-			<li><a href="#">Sent Messages</a></li>
+			<li><a href="{% url 'dashboard:inbox' %}">Inbox</a></li>
+			<li><a href="{% url 'dashboard:sent_messages' %}">Sent Messages</a></li>
           </ul>
 
             <h1>Your Listings</h1>
@@ -31,71 +30,37 @@
 			<li><a href="#">Past orders</a></li>
           </ul>
 
-
         </div>
 
         <div class="account_details">
-               {% block account_detail %}
+               {% block dashboard_detail %}
                    <fieldset>
-                    <legend>Account Details</legend>
-
-                    <form action=""  method="post">
-                    {% csrf_token %}
-                            <ul class="account_detail_items">
-                                    <li>
-                                    <div class="fieldWrapper">
-                                        {{ form.user.errors }}
-                                        <div class="field_label" >{{ form.user.label_tag }}</div><div class="field_value" > {{ form.user }}</div>
-                                    </div>
-                                    </li>
-                                    <li>
-                                    <div class="fieldWrapper">
-                                        {{ form.birthday.errors }}
-                                        <div class="field_label" >{{ form.birthday.label_tag }}</div><div class="field_value" > {{ form.birthday }}</div>
-                                    </div>
-                                    </li>
-                                    <li>
-                                    <div class="fieldWrapper">
-                                        {{ form.real_name.errors }}
-                                        <div class="field_label" >{{ form.real_name.label_tag }}</div><div class="field_value" > {{ form.real_name }}</div>
-                                    </div>
-                                    </li>
-                                    <li>
-                                    <div class="fieldWrapper">
-                                        {{ form.street_address.errors }}
-                                        <div class="field_label" >{{ form.street_address.label_tag }}</div><div class="field_value" > {{ form.street_address }}</div>
-                                    </div>
-                                    </li>
-                                    <li>
-                                    <div class="fieldWrapper">
-                                        {{ form.city.errors }}
-                                        <div class="field_label" >{{ form.city.label_tag }}</div><div class="field_value" > {{ form.city }}</div>
-                                    </div>
-                                    </li>
-                                    <li>
-                                    <div class="fieldWrapper">
-                                        {{ form.state_provience.errors }}
-                                        <div class="field_label" >{{ form.state_provience.label_tag }}</div><div class="field_value" > {{ form.state_provience }}</div>
-                                    </div>
-                                    </li>
-                                    <li>
-                                    <div class="fieldWrapper">
-                                        {{ form.post_code.errors }}
-                                        <div class="field_label" >{{ form.post_code.label_tag }}</div><div class="field_value" > {{ form.post_code }}</div>
-                                    </div>
-                                    </li>
-                                    <li>
-                                    <div class="fieldWrapper">
-                                        {{ form.country.errors }}
-                                        <div class="field_label" >{{ form.country.label_tag }}</div><div class="field_value" > {{ form.country }}</div>
-                                    </div>
-                                    </li>
-                                    <li>
-
-                                </ul>
-                                 <div><input type="submit" value="Submit"  class="newbutton"/></div>
-                    </form>
-                </fieldset>
+                    <legend>Inbox</legend>
+                       {% for message in message_list %}
+                           <div style="float: left; width: 100px;">
+                           {{ message.sender }}
+                           </div>
+                           <div style="float: left; width: 100px;">
+                           {{ message.title }}
+                           </div>
+                           <div style="float: left; width: 250px;">
+                           {{ message.content }}
+                           </div>
+                           <div style="float: left;">
+                           {{ message.submit_date }}
+                           </div>
+                           <div><a href="#{{ message.sender }}"><input id="reply" type="button" value="reply"></a></div>
+                       {% empty %}
+                           No received message.
+                       {% endfor %}
+                   </fieldset>
+                     {% if message_list %}
+                     <div class="pagination" style="float: right">
+                        {% if message_list.has_previous %}<a href="?page={{ message_list.previous_page_number }}">previous</a>{% endif %}
+                        Page {{ message_list.number }} of {{ message_list.paginator.num_pages }}
+                        {% if message_list.has_next %}<a href="?page={{ message_list.next_page_number }}">next</a>{% endif %}
+                     </div>
+                     {% endif %}
                {% endblock %}
         </div>
        </div>

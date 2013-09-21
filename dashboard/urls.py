@@ -5,6 +5,6 @@ from dashboard import views
 
 
 urlpatterns = patterns('',
-    url(r'^activity/$', views.activity, name='dashboard'),
-
+    url(r'^inbox$', views.inbox, name='inbox'),
+    url(r'^sent-messages$', views.sentMessages, name='sent_messages'),
 )

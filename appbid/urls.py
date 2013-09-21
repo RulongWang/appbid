@@ -29,7 +29,7 @@ urlpatterns = patterns('',
     url(r'^usersetting/', include(usersetting.urls, namespace='usersetting')),
     url(r'^query/', include(query.urls, namespace='query')),
     url(r'^bid/', include(bid.urls, namespace='bid')),
-    url(r'^dashboard/',include(dashboard.urls,namespace='dashboard')),
+    url(r'^dashboard/',include(dashboard.urls, namespace='dashboard')),
 )
 
 if settings.DEBUG:
