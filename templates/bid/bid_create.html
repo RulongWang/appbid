@@ -27,8 +27,8 @@
             <input id="save" class="newbutton" type="submit" name="save" value="Save"/>
             <div id="bid_form">
             <div class="bid_comments_form">
-                <input id="id_sender" name="sender" type="text" hidden="hidden" value="{{ request.user.id }}">
-                <input id="id_receiver" name="receiver" type="text" hidden="hidden" value="{{ app.publisher.id }}">
+                <input id="id_sender" name="sender" type="text" hidden="hidden" value="{{ sender.id }}">
+                <input id="id_receiver" name="receiver" type="text" hidden="hidden" value="{{ receiver.id }}">
                 {{ messageForm.title.label_tag }}{{ messageForm.title }}
                 {{ messageForm.content.label_tag }} {{ messageForm.content }}
                 <input type="hidden" id="bid_create" name="bid_create" value="yes"/>

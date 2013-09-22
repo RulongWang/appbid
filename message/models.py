@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 
 class Message(models.Model):
     title = models.CharField(max_length=255)
-    content = models.TextField(blank=True)
+    content = models.TextField(null=True, blank=True)
     type = models.IntegerField(default=1, blank=True)#use later.
     sender = models.ForeignKey(User, related_name='msg_sender')
     receiver = models.ForeignKey(User, related_name='msg_receiver')

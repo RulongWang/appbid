@@ -1,0 +1,23 @@
+{% extends "dashboard/activity.html" %}
+{% block dashboard_detail %}
+       <fieldset>
+        <legend>Message Detail</legend>
+            <div>
+                Back
+            </div>
+           {% if message %}
+               <div style="float: left; width: 100px;">
+               <{{ message.receiver.username }}
+               </div>
+               <div style="float: left; width: 100px;">
+               {{ message.title }}
+               </div>
+               <div style="float: left; width: 250px;">
+               {{ message.content }}
+               </div>
+               <div style="float: left;">
+               {{ message.submit_date }}
+               </div>
+           {% endif %}
+       </fieldset>
+{% endblock %}

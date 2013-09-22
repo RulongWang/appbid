@@ -1,21 +1,36 @@
 {% extends "dashboard/activity.html" %}
 {% block dashboard_detail %}
-    <div id="account_msg" style="color: green">
-        {{ account_msg }}
+    <div id="message_msg" style="color: red">
     </div>
     <form action="" method="post">
         {% csrf_token %}
-        <div><h1>Email notification settting</h1></div>
+        <div><h1>Send Message</h1></div>
         <ul class="account_detail_items">
-        {% for item in subscriptionSettings %}
-           <li>
-            <input type="checkbox" name="subscription_id" value="{{ item.id }}"
-                    {% if item in selectSettings %}checked="checked"{% endif %}
-                    />&nbsp;{{ item.item}}
-           </li>
-        {% endfor %}
+            <li>
+                {{ messageForm.receiver.label_tag }}
+                <input id="temp_receiver" name="temp_receiver" type="text" value="{{ receiver.username }}" readonly="true" />
+            </li>
+            <li>
+                {{ messageForm.title.label_tag }}
+                {{ messageForm.title }}
+            </li>
+            <li>
+                {{ messageForm.content.label_tag }}
+                {{ messageForm.content }}
+            </li>
+            <li>
+                <input id="id_sender" name="sender" type="text" hidden="hidden" value="{{ sender.id }}" />
+                <input id="id_receiver" name="receiver" type="text" hidden="hidden" value="{{ receiver.id }}" />
+                <input id="submit" name="submit" type="submit" value="Submit" class="newbutton"/>
+            </li>
         </ul>
-    <input name="submit" type="submit" value="Submit" class="newbutton"/>
     </form>
-
+<script type="text/javascript" language="javascript">
+    $("#submit").click(function() {
+        if ($("#id_title").val().trim() == "") {
+            $("#message_msg").html("Title is required.");//TODO:it will be set in message.properties.
+            return false;
+        }
+    });
+</script>
 {% endblock %}

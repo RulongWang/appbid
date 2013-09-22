@@ -1,10 +1,19 @@
 {% extends "dashboard/activity.html" %}
 {% block dashboard_detail %}
+        {% if messages %}
+            <ul class="messages">
+            {% for message in messages %}
+                <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>
+                {{ message }}
+                </li>
+            {% endfor %}
+            </ul>
+        {% endif %}
        <fieldset>
         <legend>Sent Messages</legend>
            {% for message in message_list %}
                <div style="float: left; width: 100px;">
-               {{ message.receiver }}
+               {{ message.receiver.username }}
                </div>
                <div style="float: left; width: 100px;">
                {{ message.title }}
@@ -15,7 +24,9 @@
                <div style="float: left;">
                {{ message.submit_date }}
                </div>
-               <div><a href="#{{ message.receiver }}"><input id="reply" type="button" value="send"></a></div>
+               <div><a href="{% url 'dashboard:create_message' message.receiver.username message.receiver.id %}">
+                   <input id="send" type="button" value="send"></a>
+               </div>
            {% empty %}
                No sent message.
            {% endfor %}

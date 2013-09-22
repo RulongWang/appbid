@@ -38,7 +38,7 @@
                     <legend>Inbox</legend>
                        {% for message in message_list %}
                            <div style="float: left; width: 100px;">
-                           {{ message.sender }}
+                           {{ message.sender.username }}
                            </div>
                            <div style="float: left; width: 100px;">
                            {{ message.title }}
@@ -49,7 +49,10 @@
                            <div style="float: left;">
                            {{ message.submit_date }}
                            </div>
-                           <div><a href="#{{ message.sender }}"><input id="reply" type="button" value="reply"></a></div>
+                           <div>
+                               <a href="{% url 'dashboard:create_message' message.sender.username message.sender.id %}">
+                               <input id="reply" type="button" value="reply"></a>
+                           </div>
                        {% empty %}
                            No received message.
                        {% endfor %}
