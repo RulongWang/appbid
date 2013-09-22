@@ -64,46 +64,38 @@
         </div>
 
     </div>
-<script>
-$(function(){
-    var sidebar = $('#menu');
-    sidebar.delegate('a','click',function(){
-        sidebar.find('.active').toggleClass('active inactive');
-        $(this).toggleClass('active inactive');
-    });
-});
-  </script>
-    <div id="nav_menu">
-        <div id="menu">
-        <ul class="sf-menu">
-            <li >
-                <a href="{% url 'home:home' %}" title="Home">Home</a>
-            </li>
-            <li >
-                <a href="{% url 'query:featured' %}" title="Featured listings">Featured</a>
-            </li>
-            <li >
-                <a href="/query/app-list/">New Listings</a>
-            </li>
-            <li >
-                <a href="/query/most_active/" title="Listings with the most bidding activity">Most Active</a>
-            </li>
-            <li >
-                <a href="/query/ending_soon/" title="Listings which are almost over">Ending Soon</a>
-            </li>
-            <li >
-                <a href="/query/just_sold/" title="Listings which have just been sold">Just Sold</a>
-            </li>
 
-            <li >
-                <a href="/classifieds">Classifieds</a>
-            </li>
-            <li >
-                <a href="/seller/app-store-link" class="special">Sell Your Apps!</a>
-            </li>
-        </ul>
-        </div>
-    </div>
+{#    <div id="nav_menu">#}
+{#        <div id="menu">#}
+{#        <ul class="sf-menu">#}
+{#            <li >#}
+{#                <a href="{% url 'home:home' %}" title="Home">Home</a>#}
+{#            </li>#}
+{#            <li >#}
+{#                <a href="{% url 'query:featured' %}" title="Featured listings">Featured</a>#}
+{#            </li>#}
+{#            <li >#}
+{#                <a href="/query/app-list/">New Listings</a>#}
+{#            </li>#}
+{#            <li >#}
+{#                <a href="/query/most_active/" title="Listings with the most bidding activity">Most Active</a>#}
+{#            </li>#}
+{#            <li >#}
+{#                <a href="/query/ending_soon/" title="Listings which are almost over">Ending Soon</a>#}
+{#            </li>#}
+{#            <li >#}
+{#                <a href="/query/just_sold/" title="Listings which have just been sold">Just Sold</a>#}
+{#            </li>#}
+{##}
+{#            <li >#}
+{#                <a href="/classifieds">Classifieds</a>#}
+{#            </li>#}
+{#            <li >#}
+{#                <a href="/seller/app-store-link" class="special">Sell Your Apps!</a>#}
+{#            </li>#}
+{#        </ul>#}
+{#        </div>#}
+{#    </div>#}
 {#    <div id="nav_menu">#}
 {#        <div id="menu">#}
 {#        <ul class="sf-menu" id="example">#}

@@ -2,29 +2,31 @@
     margin:0 auto;
     height: 38px;
     color:white;
-    font-weight: bold;
+    /*font-weight: bold;*/
 }
 
 .sf-menu li{
-
+    margin-right:3px;
     float:left;
     height:30px;
     padding: 8px  4px 0px 10px;
+    border-radius: 3px;
+    border-bottom: 1px dashed #eeeeee;
 }
 
 .sf-menu li:hover{
     float:left;
     height:30px;
     padding: 8px  4px 0px 10px;
-    background-color:#009aff;;
+    /*background-color:#009aff;;*/
 }
 .sf-menu a,.sf-menu a:link, .sf-menu a:visited{
-    color:white;
+    color: #9f0100;
     text-transform: uppercase;
     padding: 4px;
     height: 30px;
     /*text-shadow: 0 1px 2px rgba(0,0,0,0.25);*/
-    text-shadow: 2px 3px 3px rgba(1,0,0,0.25);
+    /*text-shadow: 2px 3px 3px rgba(1,0,0,0.25);*/
 
 
 }
@@ -36,7 +38,7 @@
     text-decoration: none;
     padding: 4px;
     height: 30px;
-    font-weight: bold;
+    /*font-weight: bold;*/
     /*text-decoration:underline;*/
     text-shadow: 2px 3px 3px rgba(1,0,0,0.25);
     background:#009aff;
@@ -45,6 +47,7 @@
     -o-filter: blur(4px);
     -ms-filter: blur(4px);
     filter: blur(4px);
+    border-radius: 3px;
 
 
 }
