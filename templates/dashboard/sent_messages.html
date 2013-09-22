@@ -12,20 +12,12 @@
        <fieldset>
         <legend>Sent Messages</legend>
            {% for message in message_list %}
-               <div style="float: left; width: 100px;">
-               {{ message.receiver.username }}
-               </div>
-               <div style="float: left; width: 100px;">
-               {{ message.title }}
-               </div>
-               <div style="float: left; width: 250px;">
-               {{ message.content }}
-               </div>
-               <div style="float: left;">
-               {{ message.submit_date }}
-               </div>
-               <div><a href="{% url 'dashboard:create_message' message.receiver.username message.receiver.id %}">
-                   <input id="send" type="button" value="send"></a>
+               <div>
+                   <a href="/dashboard/message-detail/send/{{ message.id }}?page={{ message_list.number }}">
+                   <span style="margin-left:10px;float:left;width: 100px;">{{ message.receiver.username }}</span>
+                   <span>{{ message.title }}</span>
+                   <span style="float:right;width: 200px;">{{ message.submit_date }}</span>
+                   </a>
                </div>
            {% empty %}
                No sent message.

@@ -1,11 +1,12 @@
 __author__ = 'rulongwang'
 
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render_to_response, RequestContext, get_object_or_404, redirect
+from django.shortcuts import render_to_response, RequestContext, get_object_or_404, redirect, Http404
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.views.decorators.csrf import csrf_protect
 from django.utils.translation import ugettext as _
 from django.core.urlresolvers import reverse
+from django.db.models import Q
 from django.db import transaction
 from django.contrib import messages
 from django.contrib.auth.models import User
@@ -60,10 +61,17 @@ def sentMessages(request, *args, **kwargs):
 @csrf_protect
 @login_required(login_url='/usersetting/home/')
 def messageDetail(request, *args, **kwargs):
+    """Query the message detail."""
     initParam = {}
+    msg_action = kwargs.get('msg_action')
+    if msg_action and (msg_action == 'reply' or msg_action == 'send'):
+        initParam['msg_action'] = msg_action
+    else:
+        raise Http404
     user = get_object_or_404(User, pk=request.user.id, username=request.user.username)
-    message = get_object_or_404(messageModels.Message, pk=kwargs.get('pk'))
+    message = get_object_or_404(messageModels.Message, Q(pk=kwargs.get('msg_id')) & (Q(sender_id=user.id) | Q(receiver_id=user.id)))
     initParam['message'] = message
+    initParam['page'] = request.GET.get('page', 1)
 
     return render_to_response("dashboard/message_detail.html", initParam, context_instance=RequestContext(request))
 
@@ -75,14 +83,29 @@ def createMessage(request, *args, **kwargs):
     """User from inbox page and send messages page reply or send message."""
     initParam = {}
     username = kwargs.get('username')
-    user_id = kwargs.get('pk')
+    user_id = kwargs.get('user_id')
+    msg_id = kwargs.get('msg_id')
+    msg_action = kwargs.get('msg_action')
+    if msg_action and (msg_action == 'reply' or msg_action == 'send'):
+        initParam['msg_action'] = msg_action
+    else:
+        raise Http404
+    initParam['page'] = request.GET.get('page', 1)
     user = get_object_or_404(User, pk=request.user.id, username=request.user.username)
     receiver = get_object_or_404(User, pk=user_id, username=username)
     initParam['sender'] = user
     initParam['receiver'] = receiver
+
+    if msg_action == 'reply':
+        message = get_object_or_404(messageModels.Message, pk=msg_id, sender_id=receiver.id, receiver_id=user.id)
+    if msg_action == 'send':
+        message = get_object_or_404(messageModels.Message, pk=msg_id, sender_id=user.id, receiver_id=receiver.id)
+    initParam['msg_id'] = message.id
+
     if sendMessage(request, initParam=initParam):
         messages.info(request, _('Send message successfully.'))
         return redirect(reverse('dashboard:sent_messages'))
+
     return render_to_response("dashboard/create_message.html", initParam, context_instance=RequestContext(request))
 
 

@@ -4,8 +4,7 @@ import time
 import datetime
 import string
 
-from django.http import HttpResponse, Http404
-from django.shortcuts import render_to_response, render, RequestContext, get_object_or_404
+from django.shortcuts import render_to_response, render, RequestContext, get_object_or_404, HttpResponse, Http404
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.utils.translation import ugettext as _
 from django.views.decorators.csrf import csrf_protect

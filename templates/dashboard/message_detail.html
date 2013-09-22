@@ -3,21 +3,37 @@
        <fieldset>
         <legend>Message Detail</legend>
             <div>
-                Back
+             {% ifequal msg_action 'reply' %}
+                 <span>
+                     <a href="/dashboard/inbox?page={{ page }}">
+                         <input id="id_back" name="back" type="button" value="Back" />
+                     </a>
+                 </span>
+                 <span>
+                     <a href="/dashboard/create-message/reply/{{ message.sender.username }}/{{ message.sender.id }}/{{ message.id }}?page={{ page }}">
+                         <input id="id_reply" name="reply" type="button" value="Reply" />
+                     </a>
+                 </span>
+             {% endifequal %}
+             {% ifequal msg_action 'send' %}
+                 <span>
+                     <a href="/dashboard/sent-messages?page={{ page }}">
+                        <input id="id_back" name="back" type="button" value="Back" />
+                     </a>
+                 </span>
+                 <span>
+                     <a href="/dashboard/create-message/send/{{ message.receiver.username }}/{{ message.receiver.id }}/{{ message.id }}?page={{ page }}">
+                         <input id="id_reply" name="reply" type="button" value="Reply" />
+                 </a>
+                 </span>
+             {% endifequal %}
             </div>
            {% if message %}
-               <div style="float: left; width: 100px;">
-               <{{ message.receiver.username }}
-               </div>
-               <div style="float: left; width: 100px;">
-               {{ message.title }}
-               </div>
-               <div style="float: left; width: 250px;">
-               {{ message.content }}
-               </div>
-               <div style="float: left;">
-               {{ message.submit_date }}
-               </div>
+            <div><b>Title</b>{{ message.title }}</div>
+            <div><b>From:</b>{{ message.sender.username }}</div>
+            <div><b>To:</b>{{ message.receiver.username }}</div>
+            <div><b>Receive Date:</b>{{ message.submit_date }}</div>
+            <div><textarea cols="40" name="content" rows="10" readonly="true">{{ message.content }}</textarea></div>
            {% endif %}
        </fieldset>
 {% endblock %}
