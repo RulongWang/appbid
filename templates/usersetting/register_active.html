@@ -1,7 +1,8 @@
 {% extends "index.html" %}
 {% block mainContent %}
 {% load staticfiles %}
-    <div>
-        The register is successful. The active email have sent to <span style="color: blue">{{ email }}</span>. Please login the email to active your account by click the active link.
+    <div class="message_back">
+        <p>Welcome to join Appswalk. Your registration email has been sent to your email address <span style="color:#ca0100;">{{ email }}</span>.
+       </p><p> Please kindly login your email account to active registration by clicking the attached activation link.</p>
     </div>
 {% endblock %}

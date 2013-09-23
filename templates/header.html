@@ -29,8 +29,8 @@
     <div id="row">
         <ul class="user_bar_menu">
             <li><a href="/" class=""><img src="{% static "images/home.gif" %}" title="Home" /></a></li>
-            <li>Buy Apps</li>
-            <li>Sell Apps</li>
+            <li><a href="/query/featured">Buy Apps</a></li>
+            <li><a href="/seller/app-store-link">Sell Apps</a></li>
         </ul>
         <ul class="user_bar_menu_link">
             {% if request.user.is_authenticated  %}

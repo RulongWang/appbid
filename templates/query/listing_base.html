@@ -86,14 +86,14 @@
 
                                        <div class="app_attribute">
                                            <div class="info_detail">
-                                            <span><h1><a href="{% url 'query:app_detail' app.0.id %}"> {{ app.0.app_name }}</a></h1></span>
+                                            <div><h1><a href="{% url 'query:app_detail' app.0.id %}"> {{ app.0.app_name }}</a></h1></div>
                                             {% if app.0.publish_date %}
                                                <div>{{ app.0.publish_date }} </div>
                                             {% endif %}
-                                            <div class="margin10px fontcolor_light_grey">
+                                            <div class="fontcolor_light_grey">
                                                <p style="font-size: 14px;">{{ app.0.title }}</p>
                                             </div>
-                                            <span class="fontcolor_light_grey">Monthly Downloads:{{ app.0.dl_amount }}</span>
+                                            <div class="fontcolor_light_grey">Monthly Downloads:{{ app.0.dl_amount }}</div>
                                             {% if app.0.revenue %}
                                                <div class="fontcolor_light_grey">Revenue:{{ app.0.revenue }} </div>
                                             {% endif %}

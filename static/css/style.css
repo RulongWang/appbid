@@ -210,7 +210,7 @@ h1{
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
     border-radius: 3px;
-    border: 1px solid #9f0100;
+    /*border: 1px solid #9f0100;*/
     background-color: #ca0100;
     background: -webkit-gradient(linear,0% 0%,0% 100%,from(#b80201),to(#ca0100));
     background: -webkit-linear-gradient(top,#ca0100,#b80201);
@@ -303,8 +303,13 @@ box-shadow: inset 0 0 1px #ffbfbf;
     border:1px solid #ddd;
     border-radius:3px;
     -moz-border-radius:3px;
-     -webkit-border-radius: 3px;
-
+    -webkit-border-radius: 3px;
+    background-color: #fefefe;
+    background: -webkit-gradient(linear,0% 0%,0% 100%,from(#fff),to(#fefefe));
+    background: -webkit-linear-gradient(top,#ffffff,#fefefe);
+    background: -moz-linear-gradient(top,#ffffff,#fefefe);
+    background: -ms-linear-gradient(top,#ffffff,#fefefe);
+    background: -o-linear-gradient(top,#ffffff,#fefefe);
 
 }
 
@@ -547,17 +552,26 @@ box-shadow: inset 0 0 1px #ffbfbf;
 }
 
 .app_attribute{
-    padding:10px;
+    padding: 5px;
     width:480px;
     float: right;
+
 
 }
 .info_detail{
     float:left;
+    padding-bottom: 10px;
     width:350px;
 }
 .info_detail span{
     margin-top:10px;
+}
+.att_line{
+    margin-top: 5px;
+    font-weight: bold;
+    /*color:#a52a2a;*/
+    opacity: 0.9;
+    text-shadow: 2px 2px 2 white;
 }
 .app_img{
     padding:5px;
@@ -570,6 +584,7 @@ box-shadow: inset 0 0 1px #ffbfbf;
 
 .bidding_info{
     margin-top:20px;
+    padding:10px;
     width:40px;
     float:right;
 }
@@ -680,6 +695,10 @@ box-shadow: inset 0 0 1px #ffbfbf;
 .user_register td{
     padding:3px;
     text-align: left;
+
+}
+.user_td_width{
+    width:200px;
 }
 .user_register input{
     -webkit-box-shadow: inset 0 1px 0.25em #d9d9d9;
@@ -707,10 +726,10 @@ box-shadow: inset 0 0 1px #ffbfbf;
     width:960px;
     /*border-radius: 10px;*/
     /*background:#41a096;*/
-    background: #eee;
-    background:linear-gradient(top,#eeeeee,#dddddd);
-    background:-moz-linear-gradient(top,#eeeeee,#dddddd);
-    background:-webkit-linear-gradient(top,#eeeeee,#dddddd);
+    background: #f1f1f1;
+    background:linear-gradient(top,#ffffff,#f1f1f1);
+    background:-moz-linear-gradient(top,#ffffff,#f1f1f1);
+    background:-webkit-linear-gradient(top,#ffffff,#f1f1f1);
 
     height:120px;
 }
@@ -986,6 +1005,25 @@ fieldset {
     height:30px;
     border-radius: 3px;
 }
+
+.bid_button{
+     display: block;
+    background-color: #679b08;
+   border:0;
+    height:20px;
+    width:70px;
+    text-align: center;
+    vertical-align: middle;
+    border-radius: 3px;
+    padding:3px 5px;
+
+}
+.bid_button a,.bid_button a:link,.bid_button a:visited{
+    color:white;
+    text-transform: uppercase;
+}
+
+
 .buyitnow{
     background-color: #679b08;
     color:white;
@@ -1071,6 +1109,7 @@ fieldset {
     border-radius:3px;
     float: right;
     width:200px;
+
 }
 
 
@@ -1654,7 +1693,10 @@ fieldset {
 
 /*******font color*****/
 .fontcolor_light_grey{
+    margin-top:5px;
     color:#666;
+    font-size: 14px;
+
 }
 
 /******util********/
@@ -1701,7 +1743,7 @@ fieldset {
 /*input[type="checkbox"]:checked:after,input[type="radio"]:checked:after {*/
 	/*left: 22px;*/
 /*}*/
-
+/***iOS7 radio box style*/
  input[type=radio] {
 	appearance: none;
   -webkit-appearance: none;
@@ -1736,3 +1778,17 @@ input[type=radio]:after {
 input[type="radio"]:checked:after {
 	left: 22px;
 }
+
+/***************end of iOS7 style of radio box***********/
+
+/**************start of usersetting *******************/
+.message_back{
+    margin:0 auto;
+    width:600px;
+    padding:10px;
+
+
+}
+
+/**************end of user settting ********************/
+

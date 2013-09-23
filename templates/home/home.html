@@ -19,7 +19,7 @@
 
                  <div class="listing_block_home">
                      <div class="home_listing_title">
-                        <span style="float:left;"><h1>Recommendation</h1></span><span style="float:right;"><h1><a href="#">See More>></a></h1></span>
+                        <span style="float:left;"><h1>Recommendation</h1></span><span style="float:right;"><h1><a href="/query/featured">See More>></a></h1></span>
                      </div>
                      <div class="listing_content">
                         <ul >
@@ -32,24 +32,26 @@
 
                                        <div class="app_attribute">
                                            <div class="info_detail">
-                                            <span><h1><a href="{% url 'query:app_detail' app.0.id %}"> {{ app.0.app_name }}</a></h1></span>
+                                            <div><h1><a href="{% url 'query:app_detail' app.0.id %}"> {{ app.0.app_name }}</a></h1></div>
                                             {% if app.0.publish_date %}
                                                <div>{{ app.0.publish_date }} </div>
                                             {% endif %}
-                                            <div class="margin10px fontcolor_light_grey">
-                                               <p style="font-size: 14px;">{{ app.0.title }}</p>
+                                            <div class="fontcolor_light_grey">
+                                               <p >{{ app.0.title }}</p>
                                             </div>
-                                            <span class="fontcolor_light_grey">Monthly Downloads:{{ app.0.dl_amount }}</span>
+                                            <div class="fontcolor_light_grey"><span class="att_line">Monthly Downloads:</span> {{ app.0.dl_amount }} times</div>
                                             {% if app.0.revenue %}
-                                               <div class="fontcolor_light_grey">Revenue:{{ app.0.revenue }} </div>
+                                               <div class="fontcolor_light_grey" ><span class="att_line">Revenue:</span> {{ app.0.revenue }} {{ app.0.currency.currency }}</div>
                                             {% endif %}
-                                               <div class="fontcolor_light_grey">Rating:{{ app.0.rating }} </div>
-                                               <div class="fontcolor_light_grey">AppleStore Price:{{ app.0.appinfo.price }} </div>
+                                               <div class="fontcolor_light_grey" >
+                                                   <span class="att_line">Rating:</span> {{ app.0.rating }} </div>
+                                               <div class="fontcolor_light_grey"><span class="att_line">AppleStore Price:</span> {{ app.0.appinfo.price }} {{ app.0.currency.currency }} </div>
 
                                            </div>
                                            <div class="bidding_info">
                                                <div>{{ app.1|floatformat|default:0 }}{{ app.0.currency.currency }}</div>
-                                               <div><a href="{% url 'bid:bid_list' app.0.id %}">{{ app.2|floatformat|default:0 }}Bid{{ app.2|floatformat|pluralize }}</a></div>
+                                               <div class="bid_button"><a href="{% url 'bid:bid_list' app.0.id %}">{{ app.2|floatformat|default:0 }}Bid{{ app.2|floatformat|pluralize }}</a></div>
+{#                                               <div><a href="#"><img src="{% static "images/favrioute.png" %}"/></a></div>#}
                                            </div>
                                        </div>
                                 </div>
