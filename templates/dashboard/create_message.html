@@ -22,7 +22,7 @@
                 <input id="id_sender" name="sender" type="text" hidden="hidden" value="{{ sender.id }}" />
                 <input id="id_receiver" name="receiver" type="text" hidden="hidden" value="{{ receiver.id }}" />
                 <input id="submit" name="submit" type="submit" value="Submit" class="newbutton"/>
-                <a href="/dashboard/message-detail/{{ msg_action }}/{{ msg_id }}?page={{ page }}">
+                <a href="{{ next }}{% if page %}?page={{ page }}{% endif %}">
                     <input id="cancel" name="cancel" type="button" value="Cancel" class="newbutton"/>
                 </a>
             </li>

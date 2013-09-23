@@ -80,7 +80,7 @@ def messageDetail(request, *args, **kwargs):
 @transaction.commit_on_success
 @login_required(login_url='/usersetting/home/')
 def createMessage(request, *args, **kwargs):
-    """User from inbox page and send messages page reply or send message."""
+    """User from inbox page, send messages page and app detail page, reply or send message."""
     initParam = {}
     username = kwargs.get('username')
     user_id = kwargs.get('user_id')
@@ -90,17 +90,21 @@ def createMessage(request, *args, **kwargs):
         initParam['msg_action'] = msg_action
     else:
         raise Http404
-    initParam['page'] = request.GET.get('page', 1)
+
     user = get_object_or_404(User, pk=request.user.id, username=request.user.username)
     receiver = get_object_or_404(User, pk=user_id, username=username)
+
+    if msg_id:
+        if msg_action == 'reply':
+            message = get_object_or_404(messageModels.Message, pk=msg_id, sender_id=receiver.id, receiver_id=user.id)
+        if msg_action == 'send':
+            message = get_object_or_404(messageModels.Message, pk=msg_id, sender_id=user.id, receiver_id=receiver.id)
+        initParam['msg_id'] = message.id
+
     initParam['sender'] = user
     initParam['receiver'] = receiver
-
-    if msg_action == 'reply':
-        message = get_object_or_404(messageModels.Message, pk=msg_id, sender_id=receiver.id, receiver_id=user.id)
-    if msg_action == 'send':
-        message = get_object_or_404(messageModels.Message, pk=msg_id, sender_id=user.id, receiver_id=receiver.id)
-    initParam['msg_id'] = message.id
+    initParam['next'] = request.GET.get('next', None)
+    initParam['page'] = request.GET.get('page', 1)
 
     if sendMessage(request, initParam=initParam):
         messages.info(request, _('Send message successfully.'))
