@@ -10,5 +10,6 @@ class Message(models.Model):
     type = models.IntegerField(default=1, blank=True)#use later.
     sender = models.ForeignKey(User, related_name='msg_sender')
     receiver = models.ForeignKey(User, related_name='msg_receiver')
+    is_read = models.BooleanField(default=False, blank=True)
     submit_date = models.DateTimeField(auto_now_add=True)
 

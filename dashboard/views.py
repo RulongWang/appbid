@@ -59,6 +59,7 @@ def sentMessages(request, *args, **kwargs):
 
 
 @csrf_protect
+@transaction.commit_on_success
 @login_required(login_url='/usersetting/home/')
 def messageDetail(request, *args, **kwargs):
     """Query the message detail."""
@@ -70,6 +71,10 @@ def messageDetail(request, *args, **kwargs):
         raise Http404
     user = get_object_or_404(User, pk=request.user.id, username=request.user.username)
     message = get_object_or_404(messageModels.Message, Q(pk=kwargs.get('msg_id')) & (Q(sender_id=user.id) | Q(receiver_id=user.id)))
+    if msg_action == 'reply':
+        message.is_read = True
+        message.save()
+
     initParam['message'] = message
     initParam['page'] = request.GET.get('page', 1)
 

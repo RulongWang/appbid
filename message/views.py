@@ -25,6 +25,7 @@ def sendMessage(request, *args, **kwargs):
         if messageForm.is_valid():
             message = messageForm.save(commit=False)
             message.type = 1
+            message.is_read = False
             message.save()
             return message
         elif initParam:
