@@ -53,7 +53,7 @@
 }
 
 
-.special{
+.special a,.special a:link,.special a:visited{
     color:#ffffff;
     text-transform: uppercase;
     text-decoration: none;
