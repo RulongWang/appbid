@@ -1,0 +1,36 @@
+{% extends "dashboard/activity.html" %}
+{% block dashboard_detail %}
+        {% if messages %}
+            <ul class="messages">
+            {% for message in messages %}
+                <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>
+                {{ message }}
+                </li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+       <fieldset>
+        <legend>Your Apps</legend>
+           {% for app in apps %}
+               <div>
+                   <span>
+                       {{ app.title }}
+                   </span>
+{#                   <a href="/dashboard/message-detail/send/{{ message.id }}?page={{ message_list.number }}">#}
+{#                   <span style="margin-left:10px;float:left;width: 100px;">{{ message.receiver.username }}</span>#}
+{#                   <span>{{ message.title }}</span>#}
+{#                   <span style="float:right;width: 200px;">{{ message.submit_date }}</span>#}
+{#                   </a>#}
+               </div>
+           {% empty %}
+               No sent message.
+           {% endfor %}
+       </fieldset>
+{#         {% if message_list %}#}
+{#         <div class="pagination" style="float: right">#}
+{#            {% if message_list.has_previous %}<a href="?page={{ message_list.previous_page_number }}">previous</a>{% endif %}#}
+{#            Page {{ message_list.number }} of {{ message_list.paginator.num_pages }}#}
+{#            {% if message_list.has_next %}<a href="?page={{ message_list.next_page_number }}">next</a>{% endif %}#}
+{#         </div>#}
+{#         {% endif %}#}
+{% endblock %}

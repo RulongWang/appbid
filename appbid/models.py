@@ -57,7 +57,14 @@ class App(models.Model):
         (1, 'draft'),
         (2, 'published'),
     )
+    STORE_TYPES = (
+        (1, 'AppleStore'),
+        (2, 'Android'),
+        (3, 'BlackBerry'),
+        (4, 'Symbian'),
+    )
     publisher = models.ForeignKey(User)
+    store_type = models.IntegerField(choices=STORE_TYPES, null=True, blank=True, default=1)
     seller_name = models.CharField(max_length=255, null=True, blank=True)
     publish_date = models.DateTimeField(null=True, blank=True)
     status = models.IntegerField(choices=APP_STATUS, null=True, blank=True, default=1)

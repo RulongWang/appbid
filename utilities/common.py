@@ -4,6 +4,7 @@ import json
 import urllib2
 import re
 
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from system import models as systemModels
 
 
@@ -73,3 +74,25 @@ def sortWithIndexLie(A, indexLie=0, order='asc'):
     if indexLie != 0:
         for i in range(len(A)):
             (A[i][0], A[i][indexLie]) = (A[i][indexLie], A[i][0])
+
+
+def queryWithPaginator(request, *args, **kwargs):
+    """Query method with paginator function."""
+    page_range = kwargs.get('page_range')
+    page = kwargs.get('page', 1)
+    obj = kwargs.get('obj')
+
+    if page_range is None:
+        page_range = getSystemParam(key='page_range', default=10)
+
+    if obj:
+        paginator = Paginator(obj, page_range)
+        try:
+            objList = paginator.page(page)
+        except PageNotAnInteger:
+            objList = paginator.page(1)
+        except EmptyPage:
+            objList = paginator.page(paginator.num_pages)
+        return objList
+
+    return None

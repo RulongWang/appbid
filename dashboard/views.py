@@ -12,6 +12,7 @@ from django.contrib import messages
 from django.contrib.auth.models import User
 
 from message import models as messageModels
+from appbid import models as appModels
 from utilities import common
 from message.views import sendMessage
 
@@ -118,23 +119,34 @@ def createMessage(request, *args, **kwargs):
     return render_to_response("dashboard/create_message.html", initParam, context_instance=RequestContext(request))
 
 
-def past_orders(request, *args, **kwargs):
-    return render_to_response("dashboard/past_orders.html",{"payment_accounts":'test'},
-                        context_instance=RequestContext(request))
+@csrf_protect
+@login_required(login_url='/usersetting/home/')
+def listingOverview(request, *args, **kwargs):
+    """Query user's app in listing overview page."""
+    initParam = {}
+    page = request.GET.get('page', 1)
+    user = get_object_or_404(User, pk=request.user.id, username=request.user.username)
+    apps = appModels.App.objects.filter(publisher_id=user)
+    initParam['apps'] = common.queryWithPaginator(request, page=page, obj=apps)
 
-def past_invoices(request, *args, **kwargs):
-    return render_to_response("dashboard/pastinvoices.html",{"payment_accounts":'test'},
-                        context_instance=RequestContext(request))
+    return render_to_response("dashboard/listing_overview.html", initParam, context_instance=RequestContext(request))
 
-def unpaid_fees(request, *args, **kwargs):
-    return render_to_response("dashboard/unpaid_fees.html",{"payment_accounts":'test'},
-                        context_instance=RequestContext(request))
 
 def watched(request, *args, **kwargs):
     return render_to_response("dashboard/watched.html",{"payment_accounts":'test'},
                         context_instance=RequestContext(request))
 
-def your_listing(request, *args, **kwargs):
-    return render_to_response("dashboard/yourlisting.html",{"payment_accounts":'test'},
+
+def past_invoices(request, *args, **kwargs):
+    return render_to_response("dashboard/pastinvoices.html",{"payment_accounts":'test'},
                         context_instance=RequestContext(request))
 
+
+def unpaid_fees(request, *args, **kwargs):
+    return render_to_response("dashboard/unpaid_fees.html",{"payment_accounts":'test'},
+                        context_instance=RequestContext(request))
+
+
+def past_orders(request, *args, **kwargs):
+    return render_to_response("dashboard/past_orders.html",{"payment_accounts":'test'},
+                        context_instance=RequestContext(request))

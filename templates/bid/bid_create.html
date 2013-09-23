@@ -24,6 +24,7 @@
 
             </div>
             <input id="insert_comment" name="Add Comment" value="Add Comment"  type="button" class="newbutton"/>
+            <input type="hidden" id="bid_create" name="bid_create" value="yes"/>
             <input id="save" class="newbutton" type="submit" name="save" value="Save"/>
             <div id="bid_form">
             <div class="bid_comments_form">
@@ -31,7 +32,6 @@
                 <input id="id_receiver" name="receiver" type="text" hidden="hidden" value="{{ receiver.id }}">
                 {{ messageForm.title.label_tag }}{{ messageForm.title }}
                 {{ messageForm.content.label_tag }} {{ messageForm.content }}
-                <input type="hidden" id="bid_create" name="bid_create" value="yes"/>
             </div>
             </div>
         </form>

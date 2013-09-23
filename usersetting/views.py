@@ -27,7 +27,7 @@ def loginView(request, *args, **kwargs):
     initParam = {}
     user = authenticate(username=request.POST.get('username'), password=request.POST.get('password'))
     redirect_to = request.POST.get('next', None)
-    redirect_urls = (None, '', '/usersetting/logout/', '/usersetting/register/', '/usersetting/register-active/')
+    redirect_urls = (None, '', '/usersetting/logout/', '/usersetting/register/', '/usersetting/register-active/', '/usersetting/home/')
     for url in redirect_urls:
         if redirect_to == url or (url and redirect_to.startswith(str(url))):
             redirect_to = '/'
@@ -181,6 +181,7 @@ def userDetail(request, *args, **kwargs):
     detailForm = forms.UserDetailForm(instance=userDetail)
     if request.method == "POST":
         detailForm = forms.UserDetailForm(request.POST, instance=userDetail)
+        print detailForm
         if detailForm.is_valid():
             detailForm.save()
             initParam['account_msg'] = _('The account detail has been updated.')

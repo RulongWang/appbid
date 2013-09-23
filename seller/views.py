@@ -89,6 +89,7 @@ def saveAppStoreLink(request, form, model, *args, **kwargs):
     if model is None:
         model = form.save(commit=False)
         model.publisher = appModels.User.objects.get(id=request.user.id)
+        model.store_type = 1
         model.status = 1
         currency_id = common.getSystemParam(key='currency', default=1)
         model.currency = get_object_or_404(appModels.Currency, pk=currency_id)
