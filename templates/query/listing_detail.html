@@ -10,7 +10,7 @@
             <div class="feature_block">
                 <ul class="feature_list">
                     <li><span class="li_title">Rating and Reviews</span></li>
-                    <li><span>Rating:</span><span class="right margin_right_20" >{{ app.rating }}</span></li>
+                    <li><span>Rating:</span><span class="right margin_right_20" ><img src="{% static "images/rating/" %}{{ app.rating }}.png"/></span></li>
                     <li><span>Reviews:</span><span class="right margin_right_20" >{{ app.reviews|default:0 }}</span></li>
 
                 </ul>

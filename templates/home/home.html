@@ -43,9 +43,12 @@
                                             {% if app.0.revenue %}
                                                <div class="fontcolor_light_grey" ><span class="att_line">Revenue:</span> {{ app.0.revenue }} {{ app.0.currency.currency }}</div>
                                             {% endif %}
+
                                                <div class="fontcolor_light_grey" >
-                                                   <span class="att_line">Rating:</span> {{ app.0.rating }} </div>
-                                               <div class="fontcolor_light_grey"><span class="att_line">AppleStore Price:</span> {{ app.0.appinfo.price }} {{ app.0.currency.currency }} </div>
+                                                   <span class="att_line">Rating:</span> <img src="{% static "images/rating/" %}{{ app.0.rating }}.png"/>
+                                               </div>
+                                               <div class="fontcolor_light_grey">
+                                                   <span class="att_line">AppleStore Price:</span> {{ app.0.appinfo.price }} {{ app.0.currency.currency }} </div>
 
                                            </div>
                                            <div class="bidding_info">

@@ -85,7 +85,6 @@ h1{
     margin:0;
     height:34px;
     width:100%;
-    background: #F7F7F7;
     /*background: #eee;*/
     /*background: -webkit-linear-gradient(top,#f7f7f7,#eaeaea);*/
     /*background: -moz-linear-gradient(top,#f7f7f7,#eaeaea 100%);*/
@@ -169,6 +168,11 @@ h1{
 #header_top{
     margin:0;
     height:85px;
+    background: #f1f1f1;
+    background:linear-gradient(top,#ffffff,#f1f1f1);
+    background:-moz-linear-gradient(top,#ffffff,#f1f1f1);
+    background:-webkit-linear-gradient(top,#ffffff,#f1f1f1);
+
 
 }
 #nav_menu{
@@ -292,7 +296,11 @@ box-shadow: inset 0 0 1px #ffbfbf;
     color:#444;
     /*font:13px/16px  Calibri,Georgia,"Helvetica",Arial, Sans-serif;*/
     font:14px/18px "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
-    background: white;
+    background: #ffffff;
+    /*background:linear-gradient(top,#ffffff,#ffeffe);*/
+    /*background:-moz-linear-gradient(top,#ffffff,#ffeffe);*/
+    /*background:-webkit-linear-gradient(top,#ffffff,#ffeffe);*/
+
     /*color:#888888;*/
     /*background: coral;*/
     width:960px;

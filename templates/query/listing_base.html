@@ -97,7 +97,9 @@
                                             {% if app.0.revenue %}
                                                <div class="fontcolor_light_grey">Revenue:{{ app.0.revenue }} </div>
                                             {% endif %}
-                                               <div class="fontcolor_light_grey">Rating:{{ app.0.rating }} </div>
+                                               <div class="fontcolor_light_grey">
+                                                   <span class="att_line">Rating:</span> <img src="{% static "images/rating/" %}{{ app.0.rating }}.png"/>
+                                               </div>
                                                <div class="fontcolor_light_grey">AppleStore Price:{{ app.0.appinfo.price }} </div>
 
                                            </div>
