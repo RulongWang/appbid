@@ -100,9 +100,11 @@
                    <span class="widget_title">Seller</span>
                    <ul>
                        <li><span>{{ app.seller_name }}</span>
+                           {% if app.publisher.username != request.user.username %}
                            <span><a href="/dashboard/create-message/reply/{{ app.publisher.username }}/{{ app.publisher.id }}?next={{ request.path }}">
                                <b>Send Message</b><!--TODO:It is better to use image.-->
                            </a></span>
+                           {% endif %}
                        </li>
                    </ul>
 
