@@ -104,8 +104,8 @@
 
                                            </div>
                                            <div class="bidding_info">
-                                               <div>{{ app.1|floatformat|default:0 }}{{ app.0.currency.currency }}</div>
-                                               <div><a href="{% url 'bid:bid_list' app.0.id %}">{{ app.2|floatformat|default:0 }}Bid{{ app.2|floatformat|pluralize }}</a></div>
+                                               <div style="text-align: center;">{{ app.1|floatformat|default:0 }}{{ app.0.currency.currency }}</div>
+                                               <div class="bid_button"><a href="{% url 'bid:bid_list' app.0.id %}">{{ app.2|floatformat|default:0 }}Bid{{ app.2|floatformat|pluralize }}</a></div>
                                            </div>
                                        </div>
                                 </div>
