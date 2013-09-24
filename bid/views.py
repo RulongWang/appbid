@@ -44,11 +44,15 @@ def createBid(request, *args, **kwargs):
                         bid.save()
 
                         #Send the message to app publisher
-                        if sendMessage(request, initParam=initParam):
-                            return HttpResponseRedirect(reverse('bid:bid_list', kwargs={'pk': app.id}))
+                        send_message = request.POST.get('send_message')
+                        if send_message and send_message == 'yes':
+                            if sendMessage(request, initParam=initParam):
+                                return HttpResponseRedirect(reverse('bid:bid_list', kwargs={'pk': app.id}))
+                            else:
+                                initParam['biddingForm'] = biddingForm
+                                initParam['bid_error'] = initParam['message_error']
                         else:
-                            initParam['biddingForm'] = biddingForm
-                            initParam['bid_error'] = initParam['message_error']
+                            return HttpResponseRedirect(reverse('bid:bid_list', kwargs={'pk': app.id}))
                     else:
                         initParam['biddingForm'] = biddingForm
                         initParam['bid_error'] = _('The new bid has been submitted.')

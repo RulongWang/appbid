@@ -27,7 +27,7 @@ def loginView(request, *args, **kwargs):
     initParam = {}
     user = authenticate(username=request.POST.get('username'), password=request.POST.get('password'))
     redirect_to = request.POST.get('next', None)
-    redirect_urls = (None, '', '/usersetting/logout/', '/usersetting/register/', '/usersetting/register-active/', '/usersetting/home/')
+    redirect_urls = (None, '', '/usersetting/', '/dashboard/')
     for url in redirect_urls:
         if redirect_to == url or (url and redirect_to.startswith(str(url))):
             redirect_to = '/'

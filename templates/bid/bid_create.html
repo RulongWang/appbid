@@ -27,12 +27,15 @@
             <input type="hidden" id="bid_create" name="bid_create" value="yes"/>
             <input id="save" class="newbutton" type="submit" name="save" value="Save"/>
             <div id="bid_form">
-            <div class="bid_comments_form">
-                <input id="id_sender" name="sender" type="text" hidden="hidden" value="{{ sender.id }}">
-                <input id="id_receiver" name="receiver" type="text" hidden="hidden" value="{{ receiver.id }}">
-                {{ messageForm.title.label_tag }}{{ messageForm.title }}
-                {{ messageForm.content.label_tag }} {{ messageForm.content }}
-            </div>
+                <div class="bid_comments_form">
+                    <input type="hidden" id="is_send_message" name="send_message" value="no"/>
+                    <input id="id_sender" name="sender" type="text" hidden="hidden" value="{{ sender.id }}">
+                    <input id="id_receiver" name="receiver" type="text" hidden="hidden" value="{{ receiver.id }}">
+                    {{ messageForm.title.label_tag }}{{ messageForm.title }}
+                    <div>
+                        {{ messageForm.content.label_tag }} {{ messageForm.content }}
+                    </div>
+                </div>
             </div>
         </form>
     {% endif %}
@@ -60,9 +63,20 @@
              $("#price_msg_new").text("亲，貌似你没有同意竞标协议哦！");
             return false;
         }
+        if (($("#bid_form").is(":visible") || $("#is_send_message").val()=="yes") && $("#id_title").val().trim() == "") {
+            $("#price_msg_new").html("Title is required.");//TODO:it will be set in message.properties.
+            return false;
+        }
     });
     $("#insert_comment").click(function() {
+        if ($("#bid_form").is(":visible")) {
+            $("#bid_form").hide("fast");
+            $("#is_send_message").val('no');
+        }
+        else{
             $("#bid_form").show("fast");
+            $("#is_send_message").val('yes');
+        }
     });
 </script>
 {% endblock %}

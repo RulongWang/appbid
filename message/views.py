@@ -29,6 +29,7 @@ def sendMessage(request, *args, **kwargs):
             message.save()
             return message
         elif initParam:
+            # print messageForm.errors#TODO:log the error message
             initParam['message_error'] = _('Send private message failed.')
     return None
 
