@@ -1,11 +1,21 @@
 <div id="register_app">
 
     <div class="errors_block">
+            {% if form.unique_sell.errors %}
+            <div>
+            {{ form.unique_sell.errors }}
+            </div>
+            {% endif %}
             {% if form.source_code.errors %}
             <div>
             {{ form.source_code.errors }}
             </div>
-             {% endif %}
+            {% endif %}
+            {% if form.delivery_detail.errors %}
+            <div>
+            {{ form.delivery_detail.errors }}
+            </div>
+            {% endif %}
             {% if form.web_site.errors %}
             <div>
             {{ form.web_site.errors }}
@@ -18,36 +28,48 @@
     <form action="" method="post">
         {% csrf_token %}
     <fieldset>
-      <legend>Delivery </legend>
-
-
-    <div class="field_block_deliery">
-        <div class="left" style="width:300px;">
-            <div style="width:300px:height:20px;">{{ form.source_code.label_tag }}</div>
-            <div style="width:300px:height:40px;">{{ form.source_code.help_text }}</div>
+        <legend>Delivery </legend>
+        <div style="font-weight: bold">*The blow fields can be edit just in draft.</div>
+        <div class="field_block_deliery">
+            <div class="left" style="width:300px;">
+                <div style="width:300px:height:20px;">{{ form.unique_sell.label_tag }}</div>
+            </div>
+            <div class="right" style="width:50px">
+                 {{ form.unique_sell }}
+            </div>
         </div>
-        <div class="right" style="width:50px">
-             {{ form.source_code }}
+        <div class="clear"></div>
+        <div class="field_block_deliery">
+            <div class="left" style="width:300px;">
+                <div style="width:300px:height:20px;">{{ form.source_code.label_tag }}</div>
+                <div style="width:300px:height:40px;">{{ form.source_code.help_text }}</div>
+            </div>
+            <div class="right" style="width:50px">
+                 {{ form.source_code }}
+            </div>
         </div>
-    </div>
-    <div class="clear"></div>
-    <div class="field_block_deliery">
-        <div class="left" style="width:300px;">
-            <div style="width:300px:height:30px;">{{ form.web_site.label_tag }}</div>
-            <div style="margin-top:10px;width:300px:height:40px;"> {{ form.web_site.help_text }}</div>
+        <div class="clear"></div>
+        <div class="field_block_deliery" style="height:50px;">
+            <div class="left" style="width:200px;">
+                <div style="width:300px:height:20px;">{{ form.delivery_detail.label_tag }}</div>
+            </div>
+            <div class="right">
+                {{ form.delivery_detail }}
+            </div>
         </div>
-        <div class="right" style="width:50px">
-             {{ form.web_site }}
+        <div class="clear"></div>
+        <div class="field_block_deliery">
+            <div class="left" style="width:300px;">
+                <div style="width:300px:height:30px;">{{ form.web_site.label_tag }}</div>
+                <div style="margin-top:10px;width:300px:height:40px;"> {{ form.web_site.help_text }}</div>
+            </div>
+            <div class="right" style="width:50px">
+                 {{ form.web_site }}
+            </div>
         </div>
-
-
-
-
-    </div>
-
-        <div class="button_block">
-            <input id="next" class="nextbutton" type="submit" name="next" value="Next"/>
-        </div>
+            <div class="button_block">
+                <input id="next" class="nextbutton" type="submit" name="next" value="Next"/>
+            </div>
     </fieldset>
     </form>
 

@@ -88,9 +88,12 @@ def saveAppStoreLink(request, form, model, *args, **kwargs):
 
     if model is None:
         model = form.save(commit=False)
+        #New app, and init some data
         model.publisher = appModels.User.objects.get(id=request.user.id)
         model.store_type = 1
         model.status = 1
+        model.source_code = True
+        model.unique_sell = True
         currency_id = common.getSystemParam(key='currency', default=1)
         model.currency = get_object_or_404(appModels.Currency, pk=currency_id)
         model.minimum_bid = common.getSystemParam(key='minimum_bid', default=10)
@@ -254,14 +257,15 @@ def saveSale(request, form, model, *args, **kwargs):
         return None
 
     initParam = kwargs.get('initParam')
-    model.begin_price = form.cleaned_data['begin_price']
-    model.one_price = form.cleaned_data['one_price']
-    model.reserve_price = form.cleaned_data['reserve_price']
-    model.currency_id = form.cleaned_data['currency']
-    model.begin_date = form.cleaned_data['begin_date']
-    model.end_date = form.cleaned_data['end_date']
-    model.minimum_bid = form.cleaned_data['minimum_bid']
-    model.save()
+    if model.status == 1:
+        model.begin_price = form.cleaned_data['begin_price']
+        model.one_price = form.cleaned_data['one_price']
+        model.reserve_price = form.cleaned_data['reserve_price']
+        model.currency_id = form.cleaned_data['currency']
+        model.begin_date = form.cleaned_data['begin_date']
+        model.end_date = form.cleaned_data['end_date']
+        model.minimum_bid = form.cleaned_data['minimum_bid']
+        model.save()
     return redirect(reverse(initParam.get('nextPage'), kwargs={'pk': model.id}))
 
 
@@ -272,9 +276,12 @@ def saveDelivery(request, form, model, *args, **kwargs):
         return None
 
     initParam = kwargs.get('initParam')
-    model.source_code = form.cleaned_data['source_code']
-    model.web_site = form.cleaned_data['web_site']
-    model.save()
+    if model.status == 1:
+        model.unique_sell = form.cleaned_data['unique_sell']
+        model.source_code = form.cleaned_data['source_code']
+        model.delivery_detail = form.cleaned_data['delivery_detail'].strip()
+        model.web_site = form.cleaned_data['web_site']
+        model.save()
     return redirect('/'.join([initParam.get('nextPage'), str(model.id), kwargs.get('sn', '')]))
 
 

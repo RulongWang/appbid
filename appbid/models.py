@@ -56,6 +56,7 @@ class App(models.Model):
     APP_STATUS = (
         (1, 'draft'),
         (2, 'published'),
+        (3, 'closed'),
     )
     STORE_TYPES = (
         (1, 'AppleStore'),
@@ -92,6 +93,8 @@ class App(models.Model):
     device = models.ManyToManyField(Device, null=True, blank=True)
     platform_version = models.CharField(max_length=255, null=True, blank=True)
     source_code = models.BooleanField(default=True)
+    delivery_detail = models.TextField(null=True, blank=True)
+    unique_sell = models.BooleanField(default=True)
     rating = models.CharField(max_length=5, null=True, blank=True)
     verify_token = models.CharField(max_length=255, null=True, blank=True)
     #Whether the bid need be verified by app publisher.

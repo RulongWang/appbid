@@ -13,6 +13,10 @@ class AppForm(forms.ModelForm):
         required=False,
         help_text='Whether you provide the source code and document,when transferring the app.'
     )
+    delivery_detail = forms.CharField(
+        required=False,
+        widget=forms.Textarea(attrs={'cols': 40, 'rows': 5})
+    )
     web_site = forms.URLField(
         required=False,
         help_text='The support web site link for your app.'
@@ -26,11 +30,23 @@ class AppForm(forms.ModelForm):
         super(AppForm, self).__init__(*args, **kwargs)
         instance = getattr(self, 'instance', None)
         if instance and instance.pk:
-            self.fields['apple_id'].widget.attrs['readonly'] = True
-            self.fields['platform_version'].widget.attrs['readonly'] = True
-            self.fields['rating'].widget.attrs['readonly'] = True
+            self.fields['apple_id'].widget.attrs['disabled'] = True
+            self.fields['platform_version'].widget.attrs['disabled'] = True
+            self.fields['rating'].widget.attrs['disabled'] = True
             self.fields['category'].widget.attrs['disabled'] = True
             self.fields['device'].widget.attrs['disabled'] = True
+            if instance.status != 1:
+                self.fields['begin_price'].widget.attrs['disabled'] = True
+                self.fields['one_price'].widget.attrs['disabled'] = True
+                self.fields['reserve_price'].widget.attrs['disabled'] = True
+                self.fields['currency'].widget.attrs['disabled'] = True
+                self.fields['begin_date'].widget.attrs['disabled'] = True
+                self.fields['end_date'].widget.attrs['disabled'] = True
+                self.fields['minimum_bid'].widget.attrs['disabled'] = True
+                self.fields['source_code'].widget.attrs['disabled'] = True
+                self.fields['delivery_detail'].widget.attrs['disabled'] = True
+                self.fields['unique_sell'].widget.attrs['disabled'] = True
+                self.fields['web_site'].widget.attrs['disabled'] = True
 
 
 class AttachmentForm(forms.ModelForm):
@@ -52,4 +68,4 @@ class AppInfoForm(forms.ModelForm):
         super(AppInfoForm, self).__init__(*args, **kwargs)
         instance = getattr(self, 'instance', None)
         if instance and instance.pk:
-            self.fields['price'].widget.attrs['readonly'] = True
+            self.fields['price'].widget.attrs['disabled'] = True

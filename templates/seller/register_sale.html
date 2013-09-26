@@ -24,7 +24,7 @@
         {% csrf_token %}
     <fieldset>
       <legend>Sale Information</legend>
-
+    <div style="font-weight: bold">*The blow fields can be edit just in draft.</div>
     <div class="field_block_sale">
         *{{ form.begin_price.label_tag }}
         {% if form.begin_price.errors %}

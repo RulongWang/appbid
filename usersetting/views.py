@@ -77,13 +77,13 @@ def register(request, *args, **kwargs):
                     user.is_active = False
                     user.save()
                     #Init some setting for the user
-                    privateSet = models.UserPrivateSetting()
-                    privateSet.user = user
-                    userPrivateItem = models.UserPrivateItem.objects.filter(key='is_bid_approved')
-                    if userPrivateItem:
-                        privateSet.user_private_item = userPrivateItem[0]
-                        privateSet.value = False
-                        privateSet.save()
+                    # privateSet = models.UserPrivateSetting()
+                    # privateSet.user = user
+                    # userPrivateItem = models.UserPrivateItem.objects.filter(key='is_bid_approved')
+                    # if userPrivateItem:
+                    #     privateSet.user_private_item = userPrivateItem[0]
+                    #     privateSet.value = False
+                    #     privateSet.save()
                     return redirect("".join(["/usersetting/register-active/", user.username, '/', str(user.id)]))
                 else:
                     initParam['register_error'] = _('Register failed, please try again.')

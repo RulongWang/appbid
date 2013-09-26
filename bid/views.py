@@ -35,12 +35,12 @@ def createBid(request, *args, **kwargs):
                         bid.app = app
                         bid.buyer = request.user
                         bid.status = 1
-                        userPrivateItem = userSettingModels.UserPrivateItem.objects.filter(key='is_bid_approved')
-                        if userPrivateItem:
-                            is_bid_approved = userSettingModels.UserPrivateSetting.objects.filter(user_id=app.publisher.id, user_private_item_id=userPrivateItem[0])
-                            #Need be verified by app publisher.
-                            if is_bid_approved and is_bid_approved[0].value == 'True':
-                                bid.status = 3
+                        # userPrivateItem = userSettingModels.UserPrivateItem.objects.filter(key='is_bid_approved')
+                        # if userPrivateItem:
+                        #     is_bid_approved = userSettingModels.UserPrivateSetting.objects.filter(user_id=app.publisher.id, user_private_item_id=userPrivateItem[0])
+                        #     #Need be verified by app publisher.
+                        #     if is_bid_approved and is_bid_approved[0].value == 'True':
+                        #         bid.status = 3
                         bid.save()
 
                         #Send the message to app publisher
