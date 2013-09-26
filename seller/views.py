@@ -82,10 +82,12 @@ def saveAppStoreLink(request, form, model, *args, **kwargs):
         result = common.getITunes(match.group(1))
         if result is None:
             raise
-    except:
+    except Exception, e:
+        #print e #TODO:log the error message
         initParam['app_store_link_error'] = _('The app store link is not correct.')
         return None
 
+    #Save app data
     if model is None:
         model = form.save(commit=False)
         #New app, and init some data
@@ -113,35 +115,42 @@ def saveAppStoreLink(request, form, model, *args, **kwargs):
     model.seller_name = result.get('sellerName', None)
     model.save()
 
-    monetize_id = common.getSystemParam(key='monetize', default=4)
-    model.monetize.add(get_object_or_404(appModels.Monetize, pk=monetize_id))
-
+    #Save date in appinfo table.
     appInfos = appModels.AppInfo.objects.filter(app_id=model.id)
     if appInfos:
         appInfo = appInfos[0]
     else:
         appInfo = appModels.AppInfo()
         appInfo.app_id = model.id
-
     appInfo.price = result.get('price', 0)
     appInfo.release_date = datetime.datetime.strptime(result.get('releaseDate', None), "%Y-%m-%dT%H:%M:%SZ")
-    path = '/'.join([settings.MEDIA_ROOT, str(model.publisher.id), str(model.id)])
-    if os.path.exists(path) is False:
-        os.makedirs(path)
-    path = '/'.join([path, 'Icon.jpg'])
-    if os.path.exists(path):
-        os.remove(path)
-    if result.get('artworkUrl512', None):
+    try:
+        path = '/'.join([settings.MEDIA_ROOT, str(model.publisher.id), str(model.id)])
+        if os.path.exists(path) is False:
+            os.makedirs(path)
+        path = '/'.join([path, 'Icon.jpg'])
         if os.path.exists(path):
             os.remove(path)
-        urllib.urlretrieve(result.get('artworkUrl512', None), path)
-    elif result.get('artworkUrl100', None):
-        urllib.urlretrieve(result.get('artworkUrl100', None), path)
-    elif result.get('artworkUrl60', None):
-        urllib.urlretrieve(result.get('artworkUrl60', None), path)
+        if result.get('artworkUrl512', None):
+            if os.path.exists(path):
+                os.remove(path)
+            urllib.urlretrieve(result.get('artworkUrl512', None), path)
+        elif result.get('artworkUrl100', None):
+            urllib.urlretrieve(result.get('artworkUrl100', None), path)
+        elif result.get('artworkUrl60', None):
+            urllib.urlretrieve(result.get('artworkUrl60', None), path)
+    except Exception, e:
+        #print e #TODO:log the error message
+        initParam['app_store_link_error'] = _('The app store link is not correct.')
+        return None
     appInfo.icon = '/'.join([str(model.publisher.id), str(model.id), 'Icon.jpg'])
     appInfo.save()
 
+    #Save monetize data
+    monetize_id = common.getSystemParam(key='monetize', default=4)
+    model.monetize.add(get_object_or_404(appModels.Monetize, pk=monetize_id))
+
+    #Save category, subcategory data
     model.category.clear()
     model.subcategory.clear()
     genres = result.get('genres', None)
@@ -163,6 +172,7 @@ def saveAppStoreLink(request, form, model, *args, **kwargs):
                     model.category.add(category)
                     #TODO:Auto send email to administrator to add new category
 
+    #Save device data
     model.device.clear()
     for device in appModels.Device.objects.all():
         for deviceName in result.get('supportedDevices', None):
