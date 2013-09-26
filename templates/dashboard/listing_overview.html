@@ -1,36 +1,76 @@
 {% extends "dashboard/activity.html" %}
 {% block dashboard_detail %}
-        {% if messages %}
-            <ul class="messages">
-            {% for message in messages %}
-                <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>
-                {{ message }}
-                </li>
-            {% endfor %}
-            </ul>
-        {% endif %}
        <fieldset>
-        <legend>Your Apps</legend>
-           {% for app in apps %}
+        <legend>Draft Apps</legend>
+            <div>
+               <span>App title</span>
+               <span>Create Time</span>
+               <span>Last Modify</span>
+               <span>Is Verified</span>
+               <span>Payment</span>
+           </div>
+           {% for app in draft_apps %}
                <div>
                    <span>
-                       {{ app.title }}
+                       <a href="{% url 'query:app_detail' app.id %}">{{ app.title }}</a>
                    </span>
-{#                   <a href="/dashboard/message-detail/send/{{ message.id }}?page={{ message_list.number }}">#}
-{#                   <span style="margin-left:10px;float:left;width: 100px;">{{ message.receiver.username }}</span>#}
-{#                   <span>{{ message.title }}</span>#}
-{#                   <span style="float:right;width: 200px;">{{ message.submit_date }}</span>#}
-{#                   </a>#}
+                   <span>{{ app.create_time }}</span>
+                   <span>{{ app.last_modify }}</span>
+                   {% ifequal app.is_verified True %}
+                       <span>{{ app.is_verified }}</span>
+                       <span><a href="{% url 'seller:payment' app.id '' %}">Payment</a></span>
+                   {% else %}
+                       <span><a href="{% url 'seller:verification' app.id %}">Verification</a></span>
+                       <span style="color: red">Payment after verified.</span>
+                   {% endifequal %}
                </div>
            {% empty %}
                No sent message.
            {% endfor %}
+           {% if draft_apps %}
+             <div class="pagination" style="float: right">
+                {% if draft_apps.has_previous %}<a href="?draft_page={{ draft_apps.previous_page_number }}">previous</a>{% endif %}
+                Page {{ draft_apps.number }} of {{ draft_apps.paginator.num_pages }}
+                {% if draft_apps.has_next %}<a href="?draft_page={{ draft_apps.next_page_number }}">next</a>{% endif %}
+             </div>
+           {% endif %}
        </fieldset>
-{#         {% if message_list %}#}
-{#         <div class="pagination" style="float: right">#}
-{#            {% if message_list.has_previous %}<a href="?page={{ message_list.previous_page_number }}">previous</a>{% endif %}#}
-{#            Page {{ message_list.number }} of {{ message_list.paginator.num_pages }}#}
-{#            {% if message_list.has_next %}<a href="?page={{ message_list.next_page_number }}">next</a>{% endif %}#}
-{#         </div>#}
-{#         {% endif %}#}
+
+        <fieldset>
+        <legend>Published Apps</legend>
+           <div>
+               <span>App title</span>
+               <span>Create Time</span>
+               <span>Published Time</span>
+               <span>Service Begin Time</span>
+               <span>Service End Time</span>
+               <span>Bid List</span>
+               <span>Repayment</span>
+           </div>
+           {% for app in published_apps %}
+               <div>
+                   <span>
+                       <a href="{% url 'query:app_detail' app.id %}">{{ app.title }}</a>
+                   </span>
+                   <span>{{ app.create_time }}</span>
+                   <span>{{ app.last_modify }}</span>
+                   {% ifequal app.is_verified True %}
+                       <span>{{ app.is_verified }}</span>
+                       <span><a href="{% url 'seller:payment' app.id '' %}">Payment</a></span>
+                   {% else %}
+                       <span><a href="{% url 'seller:verification' app.id %}">Verification</a></span>
+                       <span style="color: red">Payment after verified.</span>
+                   {% endifequal %}
+               </div>
+           {% empty %}
+               No sent message.
+           {% endfor %}
+           {% if draft_apps %}
+             <div class="pagination" style="float: right">
+                {% if draft_apps.has_previous %}<a href="?published_page={{ draft_apps.previous_page_number }}">previous</a>{% endif %}
+                Page {{ draft_apps.number }} of {{ draft_apps.paginator.num_pages }}
+                {% if draft_apps.has_next %}<a href="?published_page={{ draft_apps.next_page_number }}">next</a>{% endif %}
+             </div>
+           {% endif %}
+       </fieldset>
 {% endblock %}

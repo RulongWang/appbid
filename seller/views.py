@@ -318,6 +318,14 @@ def saveService(request, form, model, *args, **kwargs):
     # serviceDetail.start_date = datetime.datetime.now()
     # serviceDetail.end_date = datetime.datetime.now() + datetime.timedelta(months=1)
     serviceDetail.save()
+
+    if model.is_verified == False:
+        initParam['payment_msg'] = _('The service is made, but can payment after app is verified. Please click verification to send request message to us.')
+        initParam['selectItems'] = serviceDetail.serviceitem.all()
+        initParam['serviceDetail'] = serviceDetail
+        initParam['amount'] = serviceDetail.amount
+        return None
+
     return redirect(reverse(initParam.get('nextPage'), kwargs={'pk': model.id}))
 
 

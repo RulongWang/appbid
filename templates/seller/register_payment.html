@@ -1,4 +1,7 @@
 <div id="register_app">
+<div>
+    {{ payment_msg }}
+</div>
  <fieldset>
       <legend>Marketing</legend>
     <form action="" method="post">
@@ -62,6 +65,8 @@
              {% else %}
                 {{ service_expiry_date }} month
              {% endif %}
+         {% else %}
+             <b>non-payment</b>
          {% endif %}
          </li>
      {% endfor %}

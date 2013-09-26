@@ -124,10 +124,15 @@ def createMessage(request, *args, **kwargs):
 def listingOverview(request, *args, **kwargs):
     """Query user's app in listing overview page."""
     initParam = {}
-    page = request.GET.get('page', 1)
+    draft_page = request.GET.get('draft_page', 1)
+    published_page = request.GET.get('published_page', 1)
+    traded_page = request.GET.get('traded_page', 1)
     user = get_object_or_404(User, pk=request.user.id, username=request.user.username)
-    apps = appModels.App.objects.filter(publisher_id=user)
-    initParam['apps'] = common.queryWithPaginator(request, page=page, obj=apps)
+    draft_apps = appModels.App.objects.filter(publisher_id=user, status=1)
+    initParam['draft_apps'] = common.queryWithPaginator(request, page=draft_page, obj=draft_apps)
+
+    published_apps = appModels.App.objects.filter(publisher_id=user, status=2)
+    initParam['published_apps'] = common.queryWithPaginator(request, page=published_page, obj=published_apps)
 
     return render_to_response("dashboard/listing_overview.html", initParam, context_instance=RequestContext(request))
 
