@@ -5,7 +5,7 @@
  <form action="" method="post">
         {% csrf_token %}
     <fieldset>
-      <legend>Appstore Info</legend>
+      <legend>App Attributes</legend>
         <div class="register_icon">
             {{ appInfoForm.icon.label_tag }}
             {% if appInfoForm.icon.errors %}

@@ -46,9 +46,9 @@ abbr,acronym { border:0;
 body {
 	margin:0;
 	padding:0;
-    font: 13px/16px "Helvetica Neue",Arial, Sans-serif;
+    font: 13px/16px "sofiapro", "Helvetica Neue",Arial, Sans-serif;
 	/*font:13px/16px "Helvetica Neue", Arial, Sans-serif;*/
-	color:#555;
+	color: #555;
 	/*background-color: #ddeef6;*/
 	/*background-image: url(images/front-bg.gif);*/
 	background-repeat: repeat;
@@ -301,7 +301,7 @@ box-shadow: inset 0 0 1px #ffbfbf;
     padding-top: 0;
     color:#444;
     /*font:13px/16px  Calibri,Georgia,"Helvetica",Arial, Sans-serif;*/
-    font:14px/18px "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
+    font:14px/18px sofiapro, "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
     background: #ffffff;
     /*background:linear-gradient(top,#ffffff,#ffeffe);*/
     /*background:-moz-linear-gradient(top,#ffffff,#ffeffe);*/
@@ -310,6 +310,7 @@ box-shadow: inset 0 0 1px #ffbfbf;
     /*color:#888888;*/
     /*background: coral;*/
     width:960px;
+    height:auto;
     clear:both;
     /*-moz-box-shadow: 0 0 6px #888;*/
     /*-webkit-box-shadow: 0 0 6px #888;*/
@@ -324,6 +325,7 @@ box-shadow: inset 0 0 1px #ffbfbf;
     background: -moz-linear-gradient(top,#ffffff,#fefefe);
     background: -ms-linear-gradient(top,#ffffff,#fefefe);
     background: -o-linear-gradient(top,#ffffff,#fefefe);
+
 
 }
 
@@ -891,7 +893,7 @@ box-shadow: inset 0 0 1px #ffbfbf;
     margin:0 auto;
     margin-top:20px;
     width:940px;
-    height:620px;
+    height:680px;
 
 
 }
@@ -913,8 +915,21 @@ box-shadow: inset 0 0 1px #ffbfbf;
 
 
 }
-#register_app label{
+ label{
     font-weight: bold;
+    color: #555;
+}
+
+.nav_title{
+    text-align: center;
+    height:20px;
+    border-radius: 3px;
+    background:#679b08;
+    width:213px;
+    color: white;
+    margin-left: 25px;
+    padding:5px;
+
 }
 
 #register_new_nav{
@@ -922,6 +937,8 @@ box-shadow: inset 0 0 1px #ffbfbf;
 
 
 }
+
+
 
 #register_new_nav li{
 
@@ -957,10 +974,15 @@ box-shadow: inset 0 0 1px #ffbfbf;
 
 
 .preview_buttons{
-    margin:15px 0px 0px  0px;
+    margin:15px 0px 0px  25px;
+    text-align: center;
+    width:215px;
+    height:20px;
     padding: 5px;
     font-size: 18px;
     font-weight: bold;
+    background: #EEEEEE;
+    border-radius: 5px;
 }
 
 #id_title{
@@ -990,14 +1012,17 @@ box-shadow: inset 0 0 1px #ffbfbf;
 }
 
 legend {
+    background: #EEE;
+    padding:6px;
 	color:#000; /* IE styles legends with blue text by default */
 	margin-left:10px; /* A hack that only ie reads to position the legend in the same place cross browser */
-
+    border-radius: 5px;
 }
 fieldset {
-	border:1px solid #dedede; /* Default fieldset borders vary cross browser, so make them the same */
+	border:1px solid #Fafafa; /* Default fieldset borders vary cross browser, so make them the same */
     padding-bottom: 10px;
     border-radius: 10px;
+    background: #fefefe;
 }
 
 .errors_block{
@@ -1081,8 +1106,8 @@ fieldset {
 .field_block{
     margin-top:10px;
     padding-left: 10px;
-    width:400px;
-    height:30px;
+    width:500px;
+    height:50px;
     border-bottom:1px dashed #ddd;
 }
 
@@ -1090,7 +1115,7 @@ fieldset {
 .field_block_selected{
     margin-top:20px;
     padding-left: 10px;
-    width:400px;
+    width:500px;
     height:60px;
     border-bottom:1px dashed #ddd;
     vertical-align: middle;
@@ -1098,7 +1123,7 @@ fieldset {
 .register_icon{
     margin-top:15px;
     padding-left: 15px;
-    width:400px;
+    width:500px;
     height:60px;
     border-bottom:1px dashed #ddd;
     vertical-align: middle;
@@ -1135,6 +1160,7 @@ fieldset {
     border-radius:3px;
     float:right;
     padding: 3px;
+    height:20px;
      width:190px;
 }
 
@@ -1159,7 +1185,7 @@ fieldset {
     margin-top:30px;
     margin-left: 20px;
     padding-left:10px;
-    width:400px;
+    width:500px;
     height:30px;
     border-bottom: 1px dashed #ddd;
 }
@@ -1174,6 +1200,7 @@ fieldset {
     border-radius:3px;
     float:right;
     padding: 3px;
+    height:20px;
     width:190px;
 }
 .field_block_sale select{
@@ -1208,6 +1235,7 @@ fieldset {
     float:right;
     padding: 3px;
      width:190px;
+    height:20px;
 }
 .field_block_addi input[type=checkbox]{
       float:right;
@@ -1235,6 +1263,7 @@ fieldset {
     border-radius:3px;
     float:right;
     padding: 3px;
+    height:20px;
      width:190px;
 }
 .field_block_deliery input[type=checkbox]{
@@ -1262,6 +1291,7 @@ fieldset {
     border-radius:3px;
     float:right;
     padding: 3px;
+    height:20px;
      width:190px;
 }
 .appinfo input[type=text]{
@@ -1271,7 +1301,7 @@ fieldset {
     border: 1px solid #858585;
     border-radius:3px;
     padding: 3px;
-
+    height:20px;
 }
 .field_block_payment input[type=checkbox]{
       float:right;
@@ -1309,6 +1339,7 @@ fieldset {
 #attachment{
     margin-top:5px;
     padding: 5px;
+    width:500px;
 }
 
 #id_path{
