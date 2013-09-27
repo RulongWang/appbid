@@ -18,8 +18,18 @@
             <img width="57px" height="57px" src="{{ MEDIA_URL }}{{ appInfoForm.icon.value }}"/>
             </div>
             {% endif %}
-
         </div>
+
+        <div class="field_block">
+            {{ form.app_name.label_tag }}
+            {% if form.app_name.errors %}
+                <div>
+                {{ form.app_name.errors }}
+                </div>
+            {% endif %}
+            {{ form.app_name }}
+        </div>
+
         <div class="field_block">
             {{ form.apple_id.label_tag }}
             {% if form.apple_id.errors %}

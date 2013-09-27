@@ -34,6 +34,7 @@ def registerApp(request, *args, **kwargs):
         app = get_object_or_404(appModels.App, pk=kwargs.get('pk'), publisher=request.user)
         form = forms.AppForm(instance=app)
         initParam['app_id'] = app.id
+        initParam['app_status'] = app.status
         initParam['attachments'] = appModels.Attachment.objects.filter(app_id=app.id)
         initParam['verify_token'] = app.verify_token
         appInfos = appModels.AppInfo.objects.filter(app_id=app.id)
@@ -72,6 +73,10 @@ def registerApp(request, *args, **kwargs):
 def saveAppStoreLink(request, form, model, *args, **kwargs):
     """Save the first register page - AppleStore Link."""
     initParam = kwargs.get('initParam')
+    # The app in status=3 can not be edit.
+    if model and model.status == 3:
+        return redirect(reverse(initParam.get('nextPage'), kwargs={'pk': model.id}))
+
     if form.cleaned_data['title'].strip() == "" or form.cleaned_data['app_store_link'].strip() == "":
         return None
     try:
@@ -214,12 +219,14 @@ def saveMarketing(request, form, model, *args, **kwargs):
     """Save the second register page - Marketing."""
     if model is None:
         return None
-
     initParam = kwargs.get('initParam')
-    model.dl_amount = form.cleaned_data['dl_amount']
-    model.revenue = form.cleaned_data['revenue']
-    model.monetize = form.cleaned_data['monetize']
-    model.save()
+
+    # The app in status=3 can not be edit.
+    if model.status != 3:
+        model.dl_amount = form.cleaned_data['dl_amount']
+        model.revenue = form.cleaned_data['revenue']
+        model.monetize = form.cleaned_data['monetize']
+        model.save()
     return redirect(reverse(initParam.get('nextPage'), kwargs={'pk': model.id}))
 
 
@@ -228,8 +235,11 @@ def saveAdditionalInfo(request, form, model, *args, **kwargs):
     """Save the third register page - Additional info."""
     if model is None:
         return None
-
     initParam = kwargs.get('initParam')
+    # The app in status=3 can not be edit.
+    if model.status == 3:
+        return redirect(reverse(initParam.get('nextPage'), kwargs={'pk': model.id}))
+
     model.description = form.cleaned_data['description']
     pathList = request.FILES.getlist('path')
     if pathList:
@@ -267,7 +277,8 @@ def saveSale(request, form, model, *args, **kwargs):
         return None
 
     initParam = kwargs.get('initParam')
-    if model.status == 1:
+    # The app in status=3 can not be edit.
+    if model.status != 3:
         model.begin_price = form.cleaned_data['begin_price']
         model.one_price = form.cleaned_data['one_price']
         model.reserve_price = form.cleaned_data['reserve_price']
@@ -286,7 +297,8 @@ def saveDelivery(request, form, model, *args, **kwargs):
         return None
 
     initParam = kwargs.get('initParam')
-    if model.status == 1:
+    # The app in status=3 can not be edit.
+    if model.status != 3:
         model.unique_sell = form.cleaned_data['unique_sell']
         model.source_code = form.cleaned_data['source_code']
         model.delivery_detail = form.cleaned_data['delivery_detail'].strip()
@@ -300,9 +312,11 @@ def saveService(request, form, model, *args, **kwargs):
     """Save the third register page - Service."""
     if model is None:
         return None
-
-    amount = 0
     initParam = kwargs.get('initParam')
+    # The app in status=3 can not be edit.
+    if model.status == 3:
+        return redirect(reverse(initParam.get('nextPage'), kwargs={'pk': model.id}))
+
     sn = request.POST.get('sn')
     if sn:
         serviceDetail = get_object_or_404(orderModels.ServiceDetail, app_id=model.id, sn=sn)
@@ -320,6 +334,7 @@ def saveService(request, form, model, *args, **kwargs):
         serviceDetail.save()
 
     #Save service items
+    amount = 0
     for id in request.POST.getlist('serviceItem_id'):
         try:
             serviceItem = orderModels.ServiceItem.objects.get(id=id)
@@ -350,7 +365,7 @@ def saveService(request, form, model, *args, **kwargs):
 @transaction.commit_on_success
 def saveVerification(request, form, model, *args, **kwargs):
     """Save the third register page - Verification."""
-    if model is None:
+    if model is None or model.status == 3:
         return None
     initParam = kwargs.get('initParam')
     try:

@@ -1,0 +1,25 @@
+{% extends "dashboard/activity.html" %}
+{% block dashboard_detail %}
+    <div><h1>Bidding List</h1></div>
+    <div class="clear"></div>
+    <div>
+        <div>
+            <span>Bidder Name</span>
+            <span>Bid Price</span>
+            <span>Bid Time</span>
+        </div>
+
+        {% for bid in bid_list %}
+            <div>
+                <span>{{ bid.0.buyer.username }}</span>
+                <span>{{ bid.0.price|floatformat }}{{ currency }}</span>
+                <span>{{ bid.0.bid_time }}</span>
+            {% ifequal forloop.counter 1 %}
+                <span><a href="#"><input id="id_trade" type="button" value="Trade Now" /></a></span>
+            {% endifequal %}
+            </div>
+        {% empty %}
+            <div>No bid.</div>
+        {% endfor %}
+    </div>
+{% endblock %}

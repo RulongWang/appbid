@@ -19,6 +19,10 @@ class AppForm(forms.ModelForm):
         required=False,
         widget=forms.Textarea(attrs={'cols': 40, 'rows': 5})
     )
+    description = forms.CharField(
+        required=False,
+        widget=forms.Textarea(attrs={'cols': 86, 'rows': 25})
+    )
     web_site = forms.URLField(
         required=False,
         help_text='The support web site link for your app.'
@@ -33,11 +37,19 @@ class AppForm(forms.ModelForm):
         instance = getattr(self, 'instance', None)
         if instance and instance.pk:
             self.fields['apple_id'].widget.attrs['disabled'] = True
+            self.fields['app_name'].widget.attrs['disabled'] = True
             self.fields['platform_version'].widget.attrs['disabled'] = True
             self.fields['rating'].widget.attrs['disabled'] = True
             self.fields['category'].widget.attrs['disabled'] = True
             self.fields['device'].widget.attrs['disabled'] = True
-            if instance.status != 1:
+            if instance.status == 3:
+                self.fields['store_type'].widget.attrs['disabled'] = True
+                self.fields['title'].widget.attrs['disabled'] = True
+                self.fields['app_store_link'].widget.attrs['disabled'] = True
+                self.fields['dl_amount'].widget.attrs['disabled'] = True
+                self.fields['revenue'].widget.attrs['disabled'] = True
+                self.fields['monetize'].widget.attrs['disabled'] = True
+                self.fields['description'].widget.attrs['disabled'] = True
                 self.fields['begin_price'].widget.attrs['disabled'] = True
                 self.fields['one_price'].widget.attrs['disabled'] = True
                 self.fields['reserve_price'].widget.attrs['disabled'] = True

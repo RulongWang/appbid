@@ -128,13 +128,57 @@ def listingOverview(request, *args, **kwargs):
     published_page = request.GET.get('published_page', 1)
     traded_page = request.GET.get('traded_page', 1)
     user = get_object_or_404(User, pk=request.user.id, username=request.user.username)
+
     draft_apps = appModels.App.objects.filter(publisher_id=user, status=1)
     initParam['draft_apps'] = common.queryWithPaginator(request, page=draft_page, obj=draft_apps)
 
     published_apps = appModels.App.objects.filter(publisher_id=user, status=2)
-    initParam['published_apps'] = common.queryWithPaginator(request, page=published_page, obj=published_apps)
+    initParam['published_apps'] = common.queryWithPaginator(request, page=published_page,
+                                                            obj=published_apps, query_method=queryAppServiceDetail)
+
+    traded_apps = appModels.App.objects.filter(publisher_id=user, status=3)
+    initParam['traded_apps'] = common.queryWithPaginator(request, page=traded_page,
+                                                         obj=traded_apps, query_method=queryAppServiceDetail)
 
     return render_to_response("dashboard/listing_overview.html", initParam, context_instance=RequestContext(request))
+
+
+def queryAppServiceDetail(request, *args, **kwargs):
+    app = kwargs.get('app')
+    return app.servicedetail_set.filter(is_payed=True).order_by('-pk')
+
+
+@csrf_protect
+@login_required(login_url='/usersetting/home/')
+def biddingList(request, *args, **kwargs):
+    """Query app bidding list."""
+    initParam = {}
+    page = request.GET.get('page', 1)
+    app = get_object_or_404(appModels.App, pk=kwargs.get('pk'), publisher=request.user)
+    bids = app.bidding_set.all().order_by('-pk')
+
+    initParam['currency'] = app.currency.currency
+    initParam['bid_list'] = common.queryWithPaginator(request, page=page, obj=bids)
+    return render_to_response("dashboard/bidding_list.html", initParam, context_instance=RequestContext(request))
+
+
+@csrf_protect
+@login_required(login_url='/usersetting/home/')
+def biddingManagement(request, *args, **kwargs):
+    """Bidding management."""
+    initParam = {}
+    bid_page = request.GET.get('bid_page', 1)
+    joined_page = request.GET.get('joined_page', 1)
+    won_page = request.GET.get('won_page', 1)
+    user = get_object_or_404(User, pk=request.user.id, username=request.user.username)
+
+    published_apps = appModels.App.objects.filter(publisher_id=user, status=2)
+    initParam['published_apps'] = common.queryWithPaginator(request, page=bid_page,
+                                                            obj=published_apps, query_method=queryAppServiceDetail)
+
+    joined_apps = ''
+    won_apps = ''
+    return render_to_response("dashboard/bidding_management.html", initParam, context_instance=RequestContext(request))
 
 
 def watched(request, *args, **kwargs):

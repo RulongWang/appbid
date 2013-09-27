@@ -81,18 +81,32 @@ def queryWithPaginator(request, *args, **kwargs):
     page_range = kwargs.get('page_range')
     page = kwargs.get('page', 1)
     obj = kwargs.get('obj')
+    queryMethod = kwargs.get('query_method')
 
     if page_range is None:
         page_range = getSystemParam(key='page_range', default=10)
 
     if obj:
-        paginator = Paginator(obj, page_range)
+        obj_list = []
+        for info in obj:
+            #info list[0]:The obj info
+            info_list = [info]
+            obj_list.append(info_list)
+
+        paginator = Paginator(obj_list, page_range)
         try:
             objList = paginator.page(page)
         except PageNotAnInteger:
             objList = paginator.page(1)
         except EmptyPage:
             objList = paginator.page(paginator.num_pages)
+
+        # Just query the obj information showed in the current page.
+        if queryMethod:
+            for info_list in objList:
+                result = queryMethod(request, app=info_list[0])
+                if result:
+                    info_list.append(result)
         return objList
 
     return None

@@ -33,10 +33,13 @@ tinymce.init({
             {{ form.description.errors }}
             </div>
         {% endif %}
-{#        {{ form.description }}#}
+        {% if app_status != 3 %}
             <textarea class="mceEditor" name="description" cols="40" rows="20" style="width: 40em; height: 20em">
                 {{ form.description.value }}
             </textarea>
+        {% else %}
+            {{ form.description }}
+        {% endif %}
     </div>
 
     {% if attachments != None or attachmentForm %}
@@ -53,12 +56,14 @@ tinymce.init({
                 </div>
             {% endif %}
             <a style="color: blue; font-weight: bold;" target="_new" href="{{ attachment.path.url }}">{{ attachment.name }}</a>
+            {% if app_status != 3 %}
 <!--        TODO: It is better to use the image with delete meaning. -->
             <input id="{{ attachment.id }}" name="{{ attachment.name }}" type="button" value="Remove" onclick="deleteAttachment(this)">
+            {% endif %}
         </div>
         {% endfor %}
     {% endif %}
-
+    {% if app_status != 3 %}
     <div id="attachment">
          <div>
             <label for="attachment">Attachment</label>
@@ -78,6 +83,7 @@ tinymce.init({
             </div>
         {% endif %}
     </div>
+    {% endif %}
 
 
         <input id="next" class="nextbutton" type="submit" name="next" value="next"/>

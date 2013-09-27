@@ -1,80 +1,46 @@
 {% extends "dashboard/activity.html" %}
 {% block dashboard_detail %}
        <fieldset>
-        <legend>Draft Apps</legend>
+        <legend>My App Bidding</legend>
             <div>
                <span>App title</span>
-               <span>Create Time</span>
-               <span>Last Modify</span>
-               <span>Is Verified</span>
-               <span>Payment</span>
-           </div>
-           {% for app in draft_apps %}
-               <div>
-                   <span>
-                       <a href="{% url 'query:app_detail' app.0.id %}">{{ app.0.title }}</a>
-                   </span>
-                   <span>{{ app.0.create_time }}</span>
-                   <span>{{ app.0.last_modify }}</span>
-                   {% ifequal app.0.is_verified True %}
-                       <span>{{ app.0.is_verified }}</span>
-                       <span><a href="{% url 'seller:payment' app.0.id '' %}">Payment</a></span>
-                   {% else %}
-                       <span><a href="{% url 'seller:verification' app.0.id %}">Verification</a></span>
-                       <span style="color: red">Payment after verified.</span>
-                   {% endifequal %}
-               </div>
-           {% empty %}
-               No draft app.
-           {% endfor %}
-           {% if draft_apps %}
-             <div class="pagination" style="float: right">
-                {% if draft_apps.has_previous %}<a href="?draft_page={{ draft_apps.previous_page_number }}">previous</a>{% endif %}
-                Page {{ draft_apps.number }} of {{ draft_apps.paginator.num_pages }}
-                {% if draft_apps.has_next %}<a href="?draft_page={{ draft_apps.next_page_number }}">next</a>{% endif %}
-             </div>
-           {% endif %}
-       </fieldset>
-
-        <fieldset>
-        <legend>Published Apps</legend>
-           <div>
-               <span>App title</span>
-               <span>Create Time</span>
-               <span>Published Time</span>
                <span>Service Begin Time</span>
                <span>Service End Time</span>
+                <span>Begin Price</span>
+                <span>One Price</span>
+                <span>Reserve Price</span>
+                <span>Max bid Price</span>
                <span>Bid List</span>
-               <span>Repayment</span>
            </div>
            {% for app in published_apps %}
                <div>
                    <span>
                        <a href="{% url 'query:app_detail' app.0.id %}">{{ app.0.title }}</a>
                    </span>
-                   <span>{{ app.0.create_time }}</span>
-                   <span>{{ app.0.publish_date }}</span>
                    <span>{{ app.1.0.start_date }}</span>
-                   <span>{{ app.1.0.end_date }}</span>
+                   <span><b>{{ app.1.0.end_date }}</b></span>
+                   <span>{{ app.0.begin_price }}{{ app.0.currency.currency }}</span>
+                   <span>{{ app.0.one_price }}{{ app.0.currency.currency }}</span>
+                   <span>{{ app.0.reserve_price }}{{ app.0.currency.currency }}</span>
+                   <span><b>-100-</b>{{ app.0.currency.currency }}</span>
                    <span>
                        <a href="{% url 'dashboard:bidding_list' app.0.id %}">Bid List</a>
                    </span>
-                   <span><a href="{% url 'seller:payment' app.0.id '' %}">RePayment</a></span>
                </div>
            {% empty %}
-               No published app.
+               No app.
            {% endfor %}
            {% if published_apps %}
              <div class="pagination" style="float: right">
-                {% if published_apps.has_previous %}<a href="?published_page={{ published_apps.previous_page_number }}">previous</a>{% endif %}
+                {% if published_apps.has_previous %}<a href="?bid_page={{ published_apps.previous_page_number }}">previous</a>{% endif %}
                 Page {{ published_apps.number }} of {{ published_apps.paginator.num_pages }}
-                {% if published_apps.has_next %}<a href="?published_page={{ published_apps.next_page_number }}">next</a>{% endif %}
+                {% if published_apps.has_next %}<a href="?bid_page={{ published_apps.next_page_number }}">next</a>{% endif %}
              </div>
            {% endif %}
        </fieldset>
 
-       <fieldset>
-        <legend>Traded Apps</legend>
+        <fieldset>
+        <legend>My Joined Bidding</legend>
            <div>
                <span>App title</span>
                <span>Create Time</span>
@@ -84,7 +50,7 @@
                <span>Bid List</span>
                <span>Repayment</span>
            </div>
-           {% for app in traded_apps %}
+           {% for app in joined_apps %}
                <div>
                    <span>
                        <a href="{% url 'query:app_detail' app.0.id %}">{{ app.0.title }}</a>
@@ -99,13 +65,50 @@
                    <span><a href="{% url 'seller:payment' app.0.id '' %}">RePayment</a></span>
                </div>
            {% empty %}
-               No traded app.
+               No joined bidding.
            {% endfor %}
-           {% if traded_apps %}
+           {% if joined_apps %}
              <div class="pagination" style="float: right">
-                {% if traded_apps.has_previous %}<a href="?traded_page={{ traded_apps.previous_page_number }}">previous</a>{% endif %}
-                Page {{ traded_apps.number }} of {{ traded_apps.paginator.num_pages }}
-                {% if traded_apps.has_next %}<a href="?traded_page={{ traded_apps.next_page_number }}">next</a>{% endif %}
+                {% if joined_apps.has_previous %}<a href="?joined_page={{ joined_apps.previous_page_number }}">previous</a>{% endif %}
+                Page {{ joined_apps.number }} of {{ joined_apps.paginator.num_pages }}
+                {% if joined_apps.has_next %}<a href="?joined_page={{ joined_apps.next_page_number }}">next</a>{% endif %}
+             </div>
+           {% endif %}
+       </fieldset>
+
+       <fieldset>
+        <legend>My Won Bidding</legend>
+           <div>
+               <span>App title</span>
+               <span>Create Time</span>
+               <span>Published Time</span>
+               <span>Service Begin Time</span>
+               <span>Service End Time</span>
+               <span>Bid List</span>
+               <span>Repayment</span>
+           </div>
+           {% for app in won_apps %}
+               <div>
+                   <span>
+                       <a href="{% url 'query:app_detail' app.0.id %}">{{ app.0.title }}</a>
+                   </span>
+                   <span>{{ app.0.create_time }}</span>
+                   <span>{{ app.0.publish_date }}</span>
+                   <span>{{ app.1.0.start_date }}</span>
+                   <span>{{ app.1.0.end_date }}</span>
+                   <span>
+                       <a href="{% url 'dashboard:bidding_list' app.0.id %}">Bid List</a>
+                   </span>
+                   <span><a href="{% url 'seller:payment' app.0.id '' %}">RePayment</a></span>
+               </div>
+           {% empty %}
+               No won bidding.
+           {% endfor %}
+           {% if won_apps %}
+             <div class="pagination" style="float: right">
+                {% if won_apps.has_previous %}<a href="?won_page={{ won_apps.previous_page_number }}">previous</a>{% endif %}
+                Page {{ won_apps.number }} of {{ won_apps.paginator.num_pages }}
+                {% if won_apps.has_next %}<a href="?won_page={{ won_apps.next_page_number }}">next</a>{% endif %}
              </div>
            {% endif %}
        </fieldset>

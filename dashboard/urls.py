@@ -11,4 +11,6 @@ urlpatterns = patterns('',
     url(r'^create-message/(?P<msg_action>\w+)/(?P<username>\S+)/(?P<user_id>\d+)/(?P<msg_id>\d*)$', views.createMessage, name='create_message'),
 
     url(r'^listing-overview$', views.listingOverview, name='listing_overview'),
+    url(r'^bidding-list/(?P<pk>\d+)$', views.biddingList, name='bidding_list'),
+    url(r'^bidding-management$', views.biddingManagement, name='bidding_management'),
 )
