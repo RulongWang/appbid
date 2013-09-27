@@ -14,6 +14,9 @@ table {
 fieldset,img {
 	border:0;
 }
+
+
+
 /*input{*/
 	/*border:1px solid #b0b0b0;*/
 	/*padding:3px 5px 4px;*/
@@ -50,7 +53,7 @@ body {
 	/*background-image: url(images/front-bg.gif);*/
 	background-repeat: repeat;
     line-height: 18px;
-    background:#ffffff;
+    background:#fafafa;
 }
 
 a{
@@ -919,12 +922,37 @@ box-shadow: inset 0 0 1px #ffbfbf;
 
 
 }
-#register_new_nav li{
-    margin-top:15px;
 
+#register_new_nav li{
+
+    margin-top:13px;
+    height:20px;
+    padding:5px 5px 5px 5px;
+    background:#Fafafa;
+    border:1px solid #f1f1f1;
+    border-left:4px solid #ddd;
+    border-right:4px solid #ddd;
+
+    border-radius: 3px;
 }
-#register_new_nav li ul{
-    list-style: none;
+#register_new_nav li:hover{
+    /*transform:rotate(5deg);*/
+    /*-ms-transform:rotate(5deg); *//* IE 9 */
+    /*-webkit-transform:rotate(5deg); *//* Safari and Chrome */
+    color: white;
+    margin-top:13px;
+    height:20px;
+    padding:5px 5px 5px 5px;
+    background:#679b08;
+}
+
+#register_new_nav a,#register_new_nav a:link,#register_new_nav a:visited{
+    display: block;
+    padding: 3px;
+}
+#register_new_nav a:hover,#register_new_nav a:active{
+    color:white;
+    text-decoration: none;
 }
 
 
@@ -1172,10 +1200,10 @@ fieldset {
     padding: 3px;
 }
 .field_block_addi input[type=text]{
-    -webkit-box-shadow: inset 0 1px 0.25em #d9d9d9;
-    -moz-box-shadow: inset 0 1px 0.25em #d9d9d9;
-    box-shadow: inset 0 1px 0.25em #d9d9d9;
-    border: 1px solid #858585;
+    -webkit-box-shadow: inset 0 1px 0.1em #d9d9d9;
+    -moz-box-shadow: inset 0 1px 0.1em #d9d9d9;
+    box-shadow: inset 0 1px 0.1em #d9d9d9;
+    border: 1px solid #f1f1f1;
     border-radius:3px;
     float:right;
     padding: 3px;

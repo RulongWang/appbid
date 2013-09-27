@@ -6,8 +6,10 @@ from appbid import models as appModels
 
 class AppForm(forms.ModelForm):
     app_store_link = forms.URLField(
+        widget=forms.TextInput(attrs={'placeholder': 'Eg. https://itunes.apple.com/us/app/YOURAPP/id0000000?mt=8'}),
         required=False,
         help_text="Your app link in app store."
+
     )
     source_code = forms.BooleanField(
         required=False,

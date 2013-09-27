@@ -1,18 +1,18 @@
 <div id="register_nav">
-    <ol id="register_new_nav">
+    <ul id="register_new_nav">
         <li>
             <a href="{% url 'seller:appStore_link' app_id %}">App Info</a>
-            <ul>
+         </li>
                 <li>
                     <a href="{% url 'seller:appStore_link' app_id %}">AppleStore Link</a><!--TODO:The other nav links except for this one should be not linked, when app_id is none. -->
                 </li>
-                {% if app_id %}
+         {% if app_id %}
                 <li>
                     <a href="{% url 'seller:appStore_info' app_id %}">Appstore Info</a>
                 </li>
-                {% endif %}
-            </ul>
-        </li>
+         {% endif %}
+
+
         {% if app_id %}
         <li>
             <a href="{% url 'seller:marketing' app_id %}">Marketing</a>
@@ -34,7 +34,7 @@
             <a href="{% url 'seller:verification' app_id %}">Verification</a>
         </li>
         {% endif %}
-    </ol>
+    </ul>
     {% if app_id %}
     <div class="preview_buttons"><a href="{% url 'query:app_detail' app_id %}">Preview your App</a></div>
     {% endif %}
