@@ -308,12 +308,18 @@ def saveService(request, form, model, *args, **kwargs):
         serviceDetail = get_object_or_404(orderModels.ServiceDetail, app_id=model.id, sn=sn)
         serviceDetail.serviceitem.clear()
     else:
+        #Check if there is the unpaid payment, before create the new one.
+        if model.servicedetail_set.filter(is_payed=False):
+            initParam['payment_msg'] = _('You have the unpaid payment.')
+            return None
+        #Create the new service detail.
         serviceDetail = orderModels.ServiceDetail()
         serviceDetail.app_id = model.id
         serviceDetail.is_payed = False
         serviceDetail.sn = datetime.datetime.now().strftime('%Y%m%d%H%M%S')
         serviceDetail.save()
 
+    #Save service items
     for id in request.POST.getlist('serviceItem_id'):
         try:
             serviceItem = orderModels.ServiceItem.objects.get(id=id)
@@ -321,6 +327,7 @@ def saveService(request, form, model, *args, **kwargs):
             serviceDetail.serviceitem.add(serviceItem)
         except orderModels.ServiceItem.DoesNotExist:
             return None
+    #Update amount value
     discount_rate = common.getSystemParam(key='discount_rate', default=0)
     serviceDetail.actual_amount = string.atof(discount_rate) * amount
     serviceDetail.amount = amount
@@ -329,6 +336,7 @@ def saveService(request, form, model, *args, **kwargs):
     # serviceDetail.end_date = datetime.datetime.now() + datetime.timedelta(months=1)
     serviceDetail.save()
 
+    #Check if the app is verified before check out.
     if model.is_verified == False:
         initParam['payment_msg'] = _('The service is made, but can payment after app is verified. Please click verification to send request message to us.')
         initParam['selectItems'] = serviceDetail.serviceitem.all()
