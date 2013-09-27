@@ -1,4 +1,3 @@
-
 import json
 import time
 import datetime
@@ -153,9 +152,9 @@ def initBidInfo(request, *args, **kwargs):
     """Init bid info, include bid num, current price, bid min price."""
     initParam = kwargs.get('initParam')
     app = kwargs.get('app')
-    bids_len = app.bidding_set.count()
-    initParam['bid_num'] = bids_len
-    if bids_len:
+    bids = app.bidding_set.all()
+    initParam['bid_num'] = len(bids)
+    if bids:
         max_price = app.bidding_set.filter(status=1).aggregate(Max('price'))
         initParam['current_price'] = max_price.get('price__max')
     else:

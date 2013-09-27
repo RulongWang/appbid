@@ -59,9 +59,14 @@
          <li>
          <a href="{% url 'seller:payment' app_id detail.sn %}">{{ detail.sn }}</a>
          {% if detail.is_payed == True %}
-               ({{ detail.start_date|date:" M j, Y g:iA" }} - {{ detail.end_date|date:" M j, Y g:iA" }} )
+             &nbsp;<b>Expiry Date:</b>
+             {% if detail.start_date and detail.end_date %}
+               {{ detail.start_date|date:" M j, Y g:iA" }} - {{ detail.end_date|date:" M j, Y g:iA" }}
+             {% else %}
+                {{ service_expiry_date }} month
+             {% endif %}
          {% else %}
-             <b>Unpaid</b>
+             <b>non-payment</b>
          {% endif %}
          </li>
      {% endfor %}
