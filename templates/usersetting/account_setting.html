@@ -16,18 +16,18 @@
 
        <div id="account_wrapper">
         <div class="pannel_nav">
-            <h1>Personal Setting</h1>
-            <ul>
+            <div class="account_nav_title">Personal Setting</div>
+            <ul class="account_nav">
 
-                <li class="selected"><a href="{% url 'usersetting:user_detail' %}">Account Details</a></li>
+                <li ><a href="{% url 'usersetting:user_detail' %}">Account Details</a></li>
                 <li><a href="{% url 'usersetting:public_profile' %}">Public Profile</a></li>
                 <li><a href="{% url 'usersetting:subscription_setting' %}">Subscription Setting</a></li>
                 <li><a href="{% url 'usersetting:security_setting' %}">Security Settings</a></li>
             </ul>
 
-            <h1>Payment Setting</h1>
-            <ul>
-                <li><a href="{% url 'usersetting:payment_setting' %}">Payment Account</a></li>
+            <div class="account_nav_title">Payment Setting</div>
+            <ul class="account_nav">
+                <li><a href="{% url 'usersetting:payment_setting' %}">Accept Payment</a></li>
             </ul>
         </div>
 

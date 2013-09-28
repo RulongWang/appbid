@@ -893,7 +893,7 @@ box-shadow: inset 0 0 1px #ffbfbf;
     margin:0 auto;
     margin-top:20px;
     width:940px;
-    height:680px;
+    height:720px;
 
 
 }
@@ -933,6 +933,7 @@ box-shadow: inset 0 0 1px #ffbfbf;
 }
 
 #register_new_nav{
+    margin-top:10px;
     margin-left:25px;
 
 
@@ -971,6 +972,8 @@ box-shadow: inset 0 0 1px #ffbfbf;
     color:white;
     text-decoration: none;
 }
+
+
 
 
 .preview_buttons{
@@ -1113,8 +1116,9 @@ fieldset {
 
 
 .field_block_selected{
-    margin-top:20px;
+    /*margin-top:20px;*/
     padding-left: 10px;
+    padding-top:20px;
     width:500px;
     height:60px;
     border-bottom:1px dashed #ddd;
@@ -1417,23 +1421,15 @@ fieldset {
 /****************************account setting **************************/
 #account_wrapper{
     margin: 0 auto;
-    height:530px;
-    clear:both;
+    height:auto;
+    overflow: auto;
+	width: 100%
 }
 .pannel_nav{
     padding: 20px 10px;
     float:left;
     width:230px;
 
-}
-.pannel_nav ul li{
-    padding: 7px;
-
-}
-
-.pannel_nav a:hover{
-    color:#ff3b30;
-    /*font-weight:bold;*/
 }
 
 .account_details{
@@ -1453,6 +1449,65 @@ fieldset {
 
 
 }
+
+.account_nav_title{
+    margin-top:10px;
+    text-align: center;
+    height:20px;
+    border-radius: 3px;
+    background:#679b08;
+    width:196px;
+    color: white;
+    margin-left: 25px;
+    padding:5px;
+}
+/*****begin of account********/
+.account_nav{
+    margin-top:10px;
+    margin-left:25px;
+
+
+}
+
+
+
+.account_nav li{
+
+    margin-top:13px;
+    height:20px;
+    padding:5px 5px 5px 15px;
+    background:#Fafafa;
+    border:1px solid #f1f1f1;
+    border-left:4px solid #ddd;
+    border-right:4px solid #ddd;
+
+    border-radius: 3px;
+}
+.account_nav li:hover{
+    /*transform:rotate(5deg);*/
+    /*-ms-transform:rotate(5deg); *//* IE 9 */
+    /*-webkit-transform:rotate(5deg); *//* Safari and Chrome */
+    color: white;
+    margin-top:13px;
+    height:20px;
+    padding:5px 5px 5px 15px;
+    background:#679b08;
+    border:1px solid #f1f1f1;
+
+}
+
+.account_nav li a,.account_nav li a:link,.account_nav li a:visited{
+    display: block;
+    height:20px;
+    padding: 3px;
+
+}
+.account_nav li a:hover,.account_nav li a:active{
+    color:white;
+    text-decoration: none;
+}
+
+
 .payement_wrapper{
     margin-top:20px;
     height:80px;

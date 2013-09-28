@@ -1,30 +1,31 @@
 {% extends "index.html" %}
 {% block mainContent %}
 {% load staticfiles %}
+       <div class="clear"></div>
        <div id="account_wrapper">
         <div class="pannel_nav">
-           <ul>
-            <h1>Activity Overview</h1>
+        <div class="account_nav_title">Activity Overview</div>
+           <ul class="account_nav">
 			<li><a href="{% url 'dashboard:inbox' %}">Inbox</a></li>
 			<li><a href="{% url 'dashboard:sent_messages' %}">Sent Messages</a></li>
           </ul>
 
-            <h1>Your Listings</h1>
+        <div class="account_nav_title">Your Listings</div>
 
-            <ul>
+            <ul class="account_nav">
 			<li><a href="{% url 'dashboard:listing_overview' %}">Listing Overview</a></li>
 			<li><a href="{% url 'dashboard:bidding_management' %}">Bidding Management</a></li>
           </ul>
 
 
-            <h1>Watch List</h1>
-            <ul>
+        <div class="account_nav_title">Watch List</div>
+            <ul class="account_nav">
 			<li><a href="#">Watched Listings</a></li>
 			<li><a href="#">Watched Sellers</a></li>
 			<li><a href="#">Watched Categories</a></li>
             </ul>
-            <h1>Your Account</h1>
-            <ul>
+        <div class="account_nav_title">Your Account</div>
+            <ul class="account_nav">
 			<li><a href="#">Past invoices</a></li>
 			<li><a href="#">Unpaid Succession Fee </a></li>
 			<li><a href="#">Past orders</a></li>
