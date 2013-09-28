@@ -42,7 +42,7 @@ urlpatterns = patterns('',
     url(r'^payment/(?P<pk>\d+)/(?P<sn>\d*)$', views.registerApp,
         {'flag': 6,
          'backPage': 'seller/register_content.html',
-         'nextPage': 'seller:verification',#TODO: will redirect check out page.
+         'nextPage': 'payment:payment',#TODO: will redirect check out page.
          'saveMethod': views.saveService,
          }, name='payment'),
     url(r'^verification/(?P<pk>\d*)$', views.registerApp,

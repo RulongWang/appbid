@@ -2,45 +2,26 @@
 {% block account_detail %}
 {% load staticfiles %}
 <fieldset>
-    <legend>Payment Setting</legend>
+    <legend>Payment Account Setting</legend>
     <form action="" method="post">
-       {% csrf_token %}
-
-            {% for payment_account in payment_accounts %}
-
-                    <div class="payement_wrapper">
-                        {{ payment_account.type.errors }}
-                        <div class="field_label" >
-                            {% ifequal payment_account.type 1 %}
-{#                                {{ payment_account.type }}#}
-                                <img src="{% static "images/paypal.png" %}" />
-                            {% endifequal %}
-                            {% ifequal payment_account.type 2 %}
-    {#                                {{ payment_account.type }}#}
-                                    <img src="{% static "images/Alipay-logo.png" %}" />
-                            {% endifequal %}
-                        </div>
-                        <div class="field_value" >
-                            <div class="field_wrapper">
-                                 <input type="text" value="{{ payment_account.value }}" />
-                            </div>
-                            <div class="button_group" >
-                                 <input type="button" value="update" class="paybutton">
-                                 <input type="button" value="delete" class="paybutton_delete">
-
-                            </div>
-                        </div>
+        {% csrf_token %}
+        {% for gateway in gateways %}
+            <div class="payement_wrapper">
+                <div class="field_label" >
+                        <img src="{% static gateway.logo %}" />
+                </div>
+                <div class="field_value" >
+                    <div class="field_wrapper">
+                         <input type="text" value="" />
                     </div>
-
-            {% endfor %}
-                    <div class="payement_wrapper">
-                        {{ payment_account.type.errors }}
-
-                        <div class="field_value" > {{ payment_account.value }}
-                        <input type="button" value="Add New" class="addnew">
-                        </div>
-                    </div>
-
+                </div>
+            </div>
+        {% endfor %}
+        <div class="payement_wrapper">
+            <div class="field_value" >
+            <input type="button" value="Submit" class="addnew">
+            </div>
+        </div>
     </form>
 </fieldset>
 {% endblock %}

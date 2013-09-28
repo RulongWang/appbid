@@ -1,0 +1,2 @@
+insert into appbid.payment_gateway (`name`, `logo`, `description`, `is_active`) values ('paypal', 'images/paypal.png', 'Paypal', true);
+insert into appbid.payment_gateway (`name`, `logo`, `description`, `is_active`) values ('alipay', 'images/Alipay-logo.png', 'Alipay', false);

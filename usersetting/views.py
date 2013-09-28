@@ -192,14 +192,6 @@ def userDetail(request, *args, **kwargs):
 @csrf_protect
 @transaction.commit_on_success
 @login_required(login_url='/usersetting/home/')
-def paymentAccount(request, *args, **kwargs):
-    payment_accounts = paymentModels.AcceptGateway.objects.all()
-    return render_to_response("usersetting/accept_payment.html", {"payment_accounts":payment_accounts},
-                        context_instance=RequestContext(request))
-
-@csrf_protect
-@transaction.commit_on_success
-@login_required(login_url='/usersetting/home/')
 def userPublicProfile(request, *args, **kwargs):
     """Save user public profile."""
     initParam = {}
@@ -449,3 +441,14 @@ def securitySettingPhone(request, *args, **kwargs):
             messages.info(request, _('The phone number has been updated.'))
             return redirect(reverse('usersetting:security_setting'))
     return render_to_response("usersetting/security_setting_phone.html", initParam, context_instance=RequestContext(request))
+
+
+@csrf_protect
+@transaction.commit_on_success
+@login_required(login_url='/usersetting/home/')
+def paymentAccount(request, *args, **kwargs):
+    """payment account setting."""
+    initParam = {}
+    gateways = paymentModels.Gateway.objects.filter(is_active=True)
+    initParam['gateways'] = gateways
+    return render_to_response("usersetting/accept_payment.html", initParam, context_instance=RequestContext(request))

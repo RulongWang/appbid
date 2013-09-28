@@ -9,6 +9,7 @@ import usersetting.urls
 import query.urls
 import bid.urls
 import dashboard.urls
+import payment.urls
 
 
 # Uncomment the next two lines to enable the admin:
@@ -25,11 +26,11 @@ urlpatterns = patterns('',
     url(r'^comments/', include('django.contrib.comments.urls')),
     url(r'^test/$', test, name='goodtest'),
     url(r'^seller/', include(seller.urls, namespace='seller')),
-    url(r'^searchItunes/$', seller.views.searchItunes),
     url(r'^usersetting/', include(usersetting.urls, namespace='usersetting')),
     url(r'^query/', include(query.urls, namespace='query')),
     url(r'^bid/', include(bid.urls, namespace='bid')),
-    url(r'^dashboard/',include(dashboard.urls, namespace='dashboard')),
+    url(r'^dashboard/', include(dashboard.urls, namespace='dashboard')),
+    url(r'^payment/', include(payment.urls, namespace='payment')),
 )
 
 if settings.DEBUG:

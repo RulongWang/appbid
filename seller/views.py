@@ -358,8 +358,7 @@ def saveService(request, form, model, *args, **kwargs):
         initParam['serviceDetail'] = serviceDetail
         initParam['amount'] = serviceDetail.amount
         return None
-
-    return redirect(reverse(initParam.get('nextPage'), kwargs={'pk': model.id}))
+    return redirect(reverse(initParam.get('nextPage'), kwargs={'app_id': model.id, 'service_id': serviceDetail.id}))
 
 
 @transaction.commit_on_success
@@ -395,17 +394,3 @@ def deleteAttachment(request, *args, **kwargs):
         data['ok'] = 'false'
         data['message'] = _('The attachment "%(name)s" does not exist.') % {'name': dict.get('name')}
     return HttpResponse(json.dumps(data), mimetype=u'application/json')
-
-
-def hello(request):
-    return HttpResponse(" This is the home page")
-
-
-def searchItunes(request):
-    search_url = 'https://itunes.apple.com/lookup?id=639384326'
-    raw = urllib.urlopen(search_url)
-    js = raw.read()
-    js_object = json.loads(js)
-    return render_to_response('home/test.html',{"json_objects":js_object["resultCount"]})
-
-
