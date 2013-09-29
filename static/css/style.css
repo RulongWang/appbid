@@ -1388,6 +1388,8 @@ fieldset {
     width:100px;
     float:left;
     text-align: center;
+    text-overflow:ellipsis;
+
 }
 .inbox_subject{
     width:350px;
@@ -1460,6 +1462,21 @@ fieldset {
     font-size: 14px;
     line-height: 1.7em;
 
+}
+
+.app_title{
+    width:150px;
+    float:left;
+    text-align: center;
+    overflow: hidden;
+    text-wrap: none;
+}
+.app_title_long{
+    width:200px;
+    float:left;
+    text-align: center;
+    overflow: hidden;
+    text-wrap: none;
 }
 /*****************footer part *********************/
 /****************底部******************************/
