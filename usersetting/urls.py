@@ -48,5 +48,5 @@ urlpatterns = patterns('',
     url(r'^security-setting-phone$', views.securitySettingPhone, name='security_setting_phone'),
 
     url(r'^social-setting$', views.socialConnection, name='social_setting'),
-    url(r'^payment-setting$', views.paymentAccount, name='payment_setting'),
+    url(r'^payment-setting/(?P<next>\S*)$', views.paymentAccount, name='payment_setting'),
 )

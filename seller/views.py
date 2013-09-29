@@ -14,10 +14,11 @@ from django.utils.translation import ugettext as _
 from django.core.urlresolvers import reverse
 from django.db import transaction
 from django.conf import settings
-from order import models as orderModels
 
 from seller import forms
+from order import models as orderModels
 from appbid import models as appModels
+from payment import models as paymentModels
 from utilities import common
 
 @csrf_protect
@@ -358,7 +359,17 @@ def saveService(request, form, model, *args, **kwargs):
         initParam['serviceDetail'] = serviceDetail
         initParam['amount'] = serviceDetail.amount
         return None
-    return redirect(reverse(initParam.get('nextPage'), kwargs={'app_id': model.id, 'service_id': serviceDetail.id}))
+
+    #Check if user's payment account is set.
+    acceptGateway = paymentModels.AcceptGateway.objects.filter(user_id=request.user.id, is_active=True, is_default=True).count()
+    if acceptGateway == 0:
+        #Go back this page, after payment account setting.
+        next = '/'.join(['payment/payment', str(model.id), str(serviceDetail.id), str(serviceDetail.sn)])
+        #redirect payment account setting page.
+        page_url = '/'.join(['/usersetting/payment-setting', next])
+        return redirect(page_url)
+
+    return redirect(reverse(initParam.get('nextPage'), kwargs={'app_id': model.id, 'service_id': serviceDetail.id, 'service_sn': serviceDetail.sn}))
 
 
 @transaction.commit_on_success

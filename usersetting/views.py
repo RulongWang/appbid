@@ -468,6 +468,9 @@ def paymentAccount(request, *args, **kwargs):
                 acceptGateway.is_default = True
                 acceptGateway.save()
             initParam['account_msg'] = _('Payment account is updated.')
+            #The parameter 'next' means the original URL.
+            if request.POST.get('next'):
+                return redirect(''.join(['/', request.POST.get('next')]))
 
     #Init payment account data in page.
     gateways_map = {}
@@ -477,5 +480,7 @@ def paymentAccount(request, *args, **kwargs):
         acceptGateway.value = common.hiddenEmail(acceptGateway.value)
         gateways_map[acceptGateway.type] = acceptGateway
     initParam['gateways_map'] = gateways_map
+    if kwargs.get('next'):
+        initParam['next'] = kwargs.get('next')
 
     return render_to_response("usersetting/accept_payment.html", initParam, context_instance=RequestContext(request))
