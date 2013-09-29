@@ -1323,7 +1323,11 @@ fieldset {
     font-family:  13px "Gill Sans", "Source Sans Pro", "Helvetica Neue", Helvetica, sans-serif;
 }
 .step_block p{
-    line-height: 1.5em;
+    line-height: 1.7em;
+}
+.step_block input[type=text]{
+    height:20px;
+    padding: 3px;
 }
 .step_block ol{
     /*list-style: none;*/
@@ -1336,7 +1340,7 @@ fieldset {
 .verification_block{
     margin-top:10px;
     padding-left: 10px;
-    width:400px;
+    width:100%;
 }
 
 
@@ -1362,7 +1366,96 @@ fieldset {
 
 }
 
+/**********************dashboard*******************/
+.inbox_list{
+    list-style:none;
 
+}
+
+.inbox_list li{
+    height:30px;
+    padding: 10px 0px;
+    border-bottom: 1px dashed #eeeeee;
+}
+.inbox_list li:hover{
+    height:30px;
+    padding: 10px 0px;
+    border-bottom: 1px dashed #eeeeee;
+    background:#fafafa;
+}
+
+.inbox_from{
+    width:100px;
+    float:left;
+    text-align: center;
+}
+.inbox_subject{
+    width:350px;
+    float:left;
+    text-align: center;
+}
+.inbox_received_time{
+    width:200px;
+    float:left;
+    text-align: center;
+}
+
+.inbox_list li a{
+    display:block;
+    height:30px;
+    padding: 10px 0px;
+}
+
+.message_header{
+    margin-left:20px;
+    margin-right:20px;
+
+    height:20px;
+    padding: 10px 0px;
+    border-bottom: 1px dashed #eeeeee;
+}
+.message_content{
+    margin-left:20px;
+    margin-right:20px;
+    padding:10px 0px;
+    line-height: 1.7em;
+    background: #fbfbfb;
+    min-height: 100px;
+    border-radius: 5px;
+}
+.message_content p{
+    padding-left:10px;
+}
+.msg_header_content{
+    text-align: center;
+    padding-left:20px;
+}
+
+#temp_receiver{
+    margin-left:20px;
+    height:20px;
+    width:200px;
+    padding: 3px;
+    border:1px solid #eee;
+
+}
+#message_subject{
+    margin-left:48px;
+    height:20px;
+    width:200px;
+    padding: 3px;
+    border:1px solid #eee;
+
+}
+
+#id_content{
+    margin:10px;
+    width:97%;
+    height:100%;
+    border:none;
+    border-radius: 3px;
+
+}
 /*****************footer part *********************/
 /****************底部******************************/
 .footer{
@@ -1918,3 +2011,11 @@ input[type="radio"]:checked:after {
 
 /**************end of user settting ********************/
 
+.general_btn{
+    background-color: #08c;
+    color:white;
+    border:0;
+    width:100px;
+    height:30px;
+    border-radius: 3px;
+}

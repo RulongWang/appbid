@@ -36,19 +36,34 @@
         <div class="account_details">
                {% block dashboard_detail %}
                    <fieldset>
-                    <legend>Inbox</legend>
+                   <legend>Inbox</legend>
+                   <ul class="inbox_list">
+
+
+                       <li>
+                            <div class="inbox_from" style="font-weight: bold;">From</div>
+                            <div class="inbox_subject" style="font-weight: bold;">Message Subject</div>
+                            <div class="inbox_received_time" style="font-weight: bold;">Received Time</div>
+
+                        </li>
                        {% for message in message_list %}
-                           <div {% ifequal message.is_read False %}style="font-weight:bold" {% endifequal %}>
-                               <a href="/dashboard/message-detail/reply/{{ message.id }}?page={{ message_list.number }}">
-                               <span style="margin-left:10px;float:left;width: 100px;">{{ message.sender.username }}</span>
-                               <span>{{ message.title }}</span>
-                               <span style="float:right;width: 220px;">{{ message.submit_date }}</span>
-                               </a>
+                           <li {% ifequal message.is_read False %}style="font-weight:bold" {% endifequal %}>
+                           <a href="/dashboard/message-detail/reply/{{ message.id }}?page={{ message_list.number }}">
+                               <div class="inbox_from" >
+                               {{ message.sender.username }}
+
                            </div>
+                           <div class="inbox_subject">{{ message.title }}</div>
+                           <div class="inbox_received_time">{{ message.submit_date|date:"d M Y" }}, {{ message.submit_date|time:"H:i"}}</div>
+                            </a>
+                           </li>
                        {% empty %}
-                           No received message.
+
+                           <div style="margin:0 auto; text-align: center">No received message.</div>
                        {% endfor %}
+                   </ul>
                    </fieldset>
+
                      {% if message_list %}
                      <div class="pagination" style="float: right">
                         {% if message_list.has_previous %}<a href="?page={{ message_list.previous_page_number }}">previous</a>{% endif %}

@@ -2,38 +2,42 @@
 {% block dashboard_detail %}
        <fieldset>
         <legend>Message Detail</legend>
-            <div>
+           {% if message %}
+            <div class="message_header"><b>Title:</b><span class="msg_header_content">{{ message.title }}</span></div>
+            <div class="message_header"><b>From:</b><span class="msg_header_content">{{ message.sender.username }}</span></div>
+            <div class="message_header"><b>To:</b><span class="msg_header_content">{{ message.receiver.username }}</span></div>
+            <div class="message_header"><b>Receive at:</b><span class="msg_header_content">{{ message.submit_date }}</span></div>
+            <div class="message_content">
+                <p>
+                    {{ message.content }}
+                </p>
+            </div>
+           {% endif %}
+            <div class="message_header">
              {% ifequal msg_action 'reply' %}
                  <span>
                      <a href="/dashboard/inbox?page={{ page }}">
-                         <input id="id_back" name="back" type="button" value="Back" />
+                         <input id="id_back" name="back" class="general_btn" type="button" value="Back" />
                      </a>
                  </span>
                  <span>
                      <a href="/dashboard/create-message/reply/{{ message.sender.username }}/{{ message.sender.id }}/{{ message.id }}?next={{ request.path }}&page={{ page }}">
-                         <input id="id_reply" name="reply" type="button" value="Reply" />
+                         <input id="id_reply" name="reply" type="button" class="general_btn" value="Reply" />
                      </a>
                  </span>
              {% endifequal %}
              {% ifequal msg_action 'send' %}
                  <span>
                      <a href="/dashboard/sent-messages?page={{ page }}">
-                        <input id="id_back" name="back" type="button" value="Back" />
+                        <input id="id_back" name="back" type="button" class="general_btn" value="Back" />
                      </a>
                  </span>
                  <span>
                      <a href="/dashboard/create-message/send/{{ message.receiver.username }}/{{ message.receiver.id }}/{{ message.id }}?next={{ request.path }}&page={{ page }}">
-                         <input id="id_reply" name="reply" type="button" value="Reply" />
+                         <input id="id_reply" name="reply" type="button" class="general_btn" value="Reply" />
                  </a>
                  </span>
              {% endifequal %}
             </div>
-           {% if message %}
-            <div><b>Title</b>{{ message.title }}</div>
-            <div><b>From:</b>{{ message.sender.username }}</div>
-            <div><b>To:</b>{{ message.receiver.username }}</div>
-            <div><b>Receive Date:</b>{{ message.submit_date }}</div>
-            <div><textarea cols="40" name="content" rows="10" readonly="true">{{ message.content }}</textarea></div>
-           {% endif %}
        </fieldset>
 {% endblock %}
