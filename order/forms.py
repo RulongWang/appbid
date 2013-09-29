@@ -7,3 +7,8 @@ from order import models
 class ServiceItemForm(forms.ModelForm):
     class Meta:
         model = models.ServiceItem
+
+
+class ServiceDetailForm(forms.ModelForm):
+    class Meta:
+        model = models.ServiceDetail

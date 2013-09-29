@@ -1,0 +1,37 @@
+{% extends "index.html" %}
+{% block mainContent %}
+{% load staticfiles %}
+<script type="text/javascript" language="javascript">
+  $(function() {
+    $( "#id_start_date" ).datepicker({
+        showOtherMonths: true,
+        selectOtherMonths: true,
+        changeMonth: true,
+        changeYear: true,
+        dateFormat: 'yy-mm-dd'
+    });
+
+  });
+</script>
+    <div>{{ order_error }}</div>
+    <form action=""  method="post">
+        {% csrf_token %}
+        <div>
+            {{ serviceDetailForm.sn.label_tag }}:{{ serviceDetailForm.sn.value }}
+        </div>
+        <div>
+            Payment Fee: {{ serviceDetailForm.actual_amount.value|floatformat|default:0 }}{{ currency }}
+        </div>
+        <div>
+            Service Begin Date: {{ serviceDetailForm.start_date }}
+        </div>
+        <div>
+            Service End Date: {{ serviceDetailForm.end_date }}
+        </div>
+        <div>
+            <img src="{% static acceptgateway.type.logo %}" style="width:90px;height:30px;">
+            <input id="id_account" name="account" type="text" value="{{ acceptgateway.value }}" />
+        </div>
+        <div><input id="submit" type="submit" value="Submit"  class="newbutton"/></div>
+    </form>
+{% endblock %}

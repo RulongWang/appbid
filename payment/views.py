@@ -14,5 +14,6 @@ from payment import models
 def payment(request, *args, **kwargs):
     """Payment."""
     initParam = {}
-
-    return render_to_response("payment/payment.html", initParam, context_instance=RequestContext(request))
+    #TODO:Payment
+    return 'success'
+    # return render_to_response("payment/payment.html", initParam, context_instance=RequestContext(request))
