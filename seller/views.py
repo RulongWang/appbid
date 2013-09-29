@@ -364,7 +364,7 @@ def saveService(request, form, model, *args, **kwargs):
     acceptGateway = paymentModels.AcceptGateway.objects.filter(user_id=request.user.id, is_active=True, is_default=True).count()
     if acceptGateway == 0:
         #Go back this page, after payment account setting.
-        next = '/'.join(['payment/payment', str(model.id), str(serviceDetail.id), str(serviceDetail.sn)])
+        next = '/'.join(['order/checkout', str(model.id), str(serviceDetail.id), str(serviceDetail.sn)])
         #redirect payment account setting page.
         page_url = '/'.join(['/usersetting/payment-setting', next])
         return redirect(page_url)

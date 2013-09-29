@@ -159,6 +159,13 @@ class AppInfo(models.Model):
     release_date = models.DateTimeField(null=True, blank=True)
 
 
+class AppHistory(models.Model):
+    """Log app changed history."""
+    app = models.ForeignKey(App)
+    modified = models.DateTimeField()
+    content = models.TextField()
+
+
 class OwnerShip_Scan(models.Model):
     """OwnerShip_Scan table info."""
     app = models.OneToOneField(App)
