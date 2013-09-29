@@ -11,14 +11,30 @@
         {% endif %}
        <fieldset>
         <legend>Sent Messages</legend>
+        <ul class="inbox_list">
+           <li>
+           <div class="inbox_from" style="font-weight: bold;">From</div>
+           <div class="inbox_subject" style="font-weight: bold;">Message Subject</div>
+           <div class="inbox_received_time" style="font-weight: bold;">Received Time</div>
+
+           </li>
+
            {% for message in message_list %}
-               <div>
-                   <a href="/dashboard/message-detail/send/{{ message.id }}?page={{ message_list.number }}">
-                   <span style="margin-left:10px;float:left;width: 100px;">{{ message.receiver.username }}</span>
-                   <span>{{ message.title }}</span>
-                   <span style="float:right;width: 200px;">{{ message.submit_date }}</span>
-                   </a>
+               <li>
+               <a href="/dashboard/message-detail/send/{{ message.id }}?page={{ message_list.number }}">
+               <div class="inbox_from">
+
+                   {{ message.receiver.username }}
                </div>
+               <div class="inbox_subject">
+                   {{ message.title }}
+               </div>
+               <div class="inbox_received_time">
+                   {{ message.submit_date|date:"d M Y" }}, {{ message.submit_date|time:"H:i"}}
+
+               </div>
+                </a>
+               </li>
            {% empty %}
                No sent message.
            {% endfor %}

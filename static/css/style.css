@@ -1391,8 +1391,11 @@ fieldset {
 }
 .inbox_subject{
     width:350px;
+    height:20px;
     float:left;
     text-align: center;
+    text-overflow:ellipsis;
+    overflow: hidden;
 }
 .inbox_received_time{
     width:200px;
@@ -1454,6 +1457,8 @@ fieldset {
     height:100%;
     border:none;
     border-radius: 3px;
+    font-size: 14px;
+    line-height: 1.7em;
 
 }
 /*****************footer part *********************/

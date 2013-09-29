@@ -47,7 +47,7 @@
 
                         </li>
                        {% for message in message_list %}
-                           <li {% ifequal message.is_read False %}style="font-weight:bold" {% endifequal %}>
+                           <li {% ifequal message.is_read False %}style="font-weight:bold;" {% endifequal %}>
                            <a href="/dashboard/message-detail/reply/{{ message.id }}?page={{ message_list.number }}">
                                <div class="inbox_from" >
                                {{ message.sender.username }}

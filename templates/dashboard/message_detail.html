@@ -5,8 +5,8 @@
            {% if message %}
             <div class="message_header"><b>Title:</b><span class="msg_header_content">{{ message.title }}</span></div>
             <div class="message_header"><b>From:</b><span class="msg_header_content">{{ message.sender.username }}</span></div>
-            <div class="message_header"><b>To:</b><span class="msg_header_content">{{ message.receiver.username }}</span></div>
-            <div class="message_header"><b>Receive at:</b><span class="msg_header_content">{{ message.submit_date }}</span></div>
+{#            <div class="message_header"><b>To:</b><span class="msg_header_content">{{ message.receiver.username }}</span></div>#}
+            <div class="message_header"><b>Received at:</b><span class="msg_header_content">{{ message.submit_date }}</span></div>
             <div class="message_content">
                 <p>
                     {{ message.content }}
