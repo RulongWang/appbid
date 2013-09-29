@@ -181,7 +181,6 @@ def userDetail(request, *args, **kwargs):
     detailForm = forms.UserDetailForm(instance=userDetail)
     if request.method == "POST":
         detailForm = forms.UserDetailForm(request.POST, instance=userDetail)
-        print detailForm
         if detailForm.is_valid():
             detailForm.save()
             initParam['account_msg'] = _('The account detail has been updated.')
@@ -449,6 +448,34 @@ def securitySettingPhone(request, *args, **kwargs):
 def paymentAccount(request, *args, **kwargs):
     """payment account setting."""
     initParam = {}
-    gateways = paymentModels.Gateway.objects.filter(is_active=True)
-    initParam['gateways'] = gateways
+    user = get_object_or_404(models.User, pk=request.user.id, username=request.user.username)
+
+    if request.method == "POST":
+        types = request.POST.getlist('gateway_type')
+        accounts = request.POST.getlist('payment_account')
+        if types and accounts and len(types) == len(accounts):
+            for i in range(len(types)):
+                gateway = get_object_or_404(paymentModels.Gateway, pk=types[i])
+                acceptGateways = user.acceptgateway_set.filter(type_id=types[i])
+                if acceptGateways:
+                    acceptGateway = acceptGateways[0]
+                else:
+                    acceptGateway = paymentModels.AcceptGateway()
+                    acceptGateway.user = user
+                    acceptGateway.type = gateway
+                acceptGateway.value = accounts[i].strip()
+                acceptGateway.is_active = True
+                acceptGateway.is_default = True
+                acceptGateway.save()
+            initParam['account_msg'] = _('Payment account is updated.')
+
+    #Init payment account data in page.
+    gateways_map = {}
+    for gateway in paymentModels.Gateway.objects.filter(is_active=True):
+        gateways_map[gateway] = None
+    for acceptGateway in user.acceptgateway_set.all():
+        acceptGateway.value = common.hiddenEmail(acceptGateway.value)
+        gateways_map[acceptGateway.type] = acceptGateway
+    initParam['gateways_map'] = gateways_map
+
     return render_to_response("usersetting/accept_payment.html", initParam, context_instance=RequestContext(request))
