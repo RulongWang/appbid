@@ -19,6 +19,7 @@ class AcceptGateway(models.Model):
     type = models.ForeignKey(Gateway)
     value = models.EmailField()
     is_active = models.BooleanField(default=False)
+    is_default = models.BooleanField(default=False, blank=True)
 
 
 class AcceptGatewayAdmin(admin.ModelAdmin):
