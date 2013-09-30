@@ -284,8 +284,8 @@ def saveSale(request, form, model, *args, **kwargs):
         model.one_price = form.cleaned_data['one_price']
         model.reserve_price = form.cleaned_data['reserve_price']
         model.currency_id = form.cleaned_data['currency']
-        model.begin_date = form.cleaned_data['begin_date']
-        model.end_date = form.cleaned_data['end_date']
+        # model.begin_date = form.cleaned_data['begin_date']
+        # model.end_date = form.cleaned_data['end_date']
         model.minimum_bid = form.cleaned_data['minimum_bid']
         model.save()
     return redirect(reverse(initParam.get('nextPage'), kwargs={'pk': model.id}))
@@ -314,10 +314,6 @@ def saveService(request, form, model, *args, **kwargs):
     if model is None:
         return None
     initParam = kwargs.get('initParam')
-    # The app in status=3 can not be edit.
-    if model.status == 3:
-        return redirect(reverse(initParam.get('nextPage'), kwargs={'pk': model.id}))
-
     sn = request.POST.get('sn')
     if sn:
         serviceDetail = get_object_or_404(orderModels.ServiceDetail, app_id=model.id, sn=sn)
@@ -347,13 +343,10 @@ def saveService(request, form, model, *args, **kwargs):
     discount_rate = common.getSystemParam(key='discount_rate', default=0)
     serviceDetail.actual_amount = string.atof(discount_rate) * amount
     serviceDetail.amount = amount
-    #TODO:Need to change them,after user have payed.
-    # serviceDetail.start_date = datetime.datetime.now()
-    # serviceDetail.end_date = datetime.datetime.now() + datetime.timedelta(months=1)
     serviceDetail.save()
 
     #Check if the app is verified before check out.
-    if model.is_verified == False:
+    if not model.is_verified:
         initParam['payment_msg'] = _('The service is made, but can payment after app is verified. Please click verification to send request message to us.')
         initParam['selectItems'] = serviceDetail.serviceitem.all()
         initParam['serviceDetail'] = serviceDetail

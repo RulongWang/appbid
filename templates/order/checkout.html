@@ -10,28 +10,72 @@
         changeYear: true,
         dateFormat: 'yy-mm-dd'
     });
-
   });
 </script>
-    <div>{{ order_error }}</div>
+    <div id="order_error">{{ order_error }}</div>
     <form action=""  method="post">
         {% csrf_token %}
         <div>
-            {{ serviceDetailForm.sn.label_tag }}:{{ serviceDetailForm.sn.value }}
+            {{ form.sn.label_tag }}:{{ form.sn.value }}
+            <input id="id_sn" name="sn" type="hidden" value="{{ form.sn.value }}"  />
         </div>
         <div>
-            Payment Fee: {{ serviceDetailForm.actual_amount.value|floatformat|default:0 }}{{ currency }}
+            Payment Fee: {{ form.actual_amount.value|floatformat|default:0 }}{{ currency }}
+            <input id="id_actual_amount" name="actual_amount" type="hidden" value="{{ form.actual_amount.value }}"  />
         </div>
         <div>
-            Service Begin Date: {{ serviceDetailForm.start_date }}
+            Service Begin Date: {{ form.start_date }}
         </div>
         <div>
-            Service End Date: {{ serviceDetailForm.end_date }}
+            Service End Date:
+            <input id="id_end_date" name="end_date" type="text" readonly="readonly" value="" />
+        </div>
+        {% if acceptGateway %}<!-- prevent user's cheat -->
+        <div>
+            <img src="{% static acceptGateway.type.logo %}" style="width:90px;height:30px;">
+            <input id="id_account" name="account" type="text" value="{{ acceptGateway.value }}" readonly="readonly" />
         </div>
         <div>
-            <img src="{% static acceptgateway.type.logo %}" style="width:90px;height:30px;">
-            <input id="id_account" name="account" type="text" value="{{ acceptgateway.value }}" />
+            <input id="submit" type="submit" value="Submit"  class="newbutton"/>
         </div>
-        <div><input id="submit" type="submit" value="Submit"  class="newbutton"/></div>
+        {% endif %}
     </form>
+<script type="text/javascript" language="javascript">
+    function validStartDate() {
+        var date_str = $("#id_start_date").val().trim();
+        if (date_str != "") {
+            if (validDate(date_str)) {
+                var end_date = new Date(date_str);
+                var begin_date_str = "{{ begin_date|date:'Y-m-d' }}";
+                if (begin_date_str && new Date(begin_date_str) > end_date) {
+                    $("#end_date_str").val("");
+                    $("#id_end_date").val("");
+                    $("#order_error").html("Service begin date should be later than service end date of your paid payment.");//TODO:it will be set in message.properties.
+                    return false;
+                }
+                end_date.setMonth(end_date.getMonth() + 1);
+                $("#end_date_str").val(end_date.format('yyyy-MM-dd'));
+                $("#id_end_date").val(end_date.format('yyyy-MM-dd'));
+                $("#order_error").html("");
+                return true;
+            }
+            else {
+                $("#end_date_str").val("");
+                $("#id_end_date").val("");
+                $("#order_error").html("Service begin date is not correct.");//TODO:it will be set in message.properties.
+                return false;
+            }
+        }
+        else {
+             $("#order_error").html("Service begin date is required.");//TODO:it will be set in message.properties.
+             return false;
+        }
+    }
+    $("#id_start_date").change(function() {
+        validStartDate();
+    });
+    $("#submit").click(function(){
+        return validStartDate();
+    });
+</script>
 {% endblock %}

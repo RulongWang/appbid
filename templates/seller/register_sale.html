@@ -64,25 +64,25 @@
         {{ form.currency }}
     </div>
 
-    <div class="field_block_sale">
-        *{{ form.begin_date.label_tag }}
-        {% if form.begin_date.errors %}
-            <div>
-            {{ form.begin_date.errors }}
-            </div>
-        {% endif %}
-        {{ form.begin_date }}
-    </div>
-
-    <div class="field_block_sale">
-        *{{ form.end_date.label_tag }}
-        {% if form.end_date.errors %}
-            <div>
-            {{ form.end_date.errors }}
-            </div>
-        {% endif %}
-        {{ form.end_date }}
-    </div>
+{#    <div class="field_block_sale">#}
+{#        *{{ form.begin_date.label_tag }}#}
+{#        {% if form.begin_date.errors %}#}
+{#            <div>#}
+{#            {{ form.begin_date.errors }}#}
+{#            </div>#}
+{#        {% endif %}#}
+{#        {{ form.begin_date }}#}
+{#    </div>#}
+{##}
+{#    <div class="field_block_sale">#}
+{#        *{{ form.end_date.label_tag }}#}
+{#        {% if form.end_date.errors %}#}
+{#            <div>#}
+{#            {{ form.end_date.errors }}#}
+{#            </div>#}
+{#        {% endif %}#}
+{#        {{ form.end_date }}#}
+{#    </div>#}
 
     <div class="field_block_sale">
         *{{ form.minimum_bid.label_tag }}
@@ -114,27 +114,28 @@
             $(".errors_block").html("<ul><li>Currency is required.</li></ul>");//TODO:it will be set in message.properties.
             return false;
         }
+        /*
         if ($("#id_begin_date").val().trim() == "") {
-            $(".errors_block").html("<ul><li>Begin date is required.</li></ul>");//TODO:it will be set in message.properties.
+            $(".errors_block").html("<ul><li>Begin date is required.</li></ul>");
             return false;
         }
-        var reg = /^((((1[6-9]|[2-9]\d)\d{2})-(0?[13578]|1[02])-(0?[1-9]|[12]\d|3[01]))|(((1[6-9]|[2-9]\d)\d{2})-(0?[13456789]|1[012])-(0?[1-9]|[12]\d|30))|(((1[6-9]|[2-9]\d)\d{2})-0?2-(0?[1-9]|1\d|2[0-8]))|(((1[6-9]|[2-9]\d)(0[48]|[2468][048]|[13579][26])|((16|[2468][048]|[3579][26])00))-0?2-29-))(\s(([01]\d{1})|(2[0123])):([0-5]\d):([0-5]\d))?$/;
-        if (!reg.test($("#id_begin_date").val())) {
-            $(".errors_block").html("<ul><li>Begin date is not correct.</li></ul>");//TODO:it will be set in message.properties.
+        if (!validDateTime($("#id_begin_date").val())) {
+            $(".errors_block").html("<ul><li>Begin date is not correct.</li></ul>");
             return false;
         }
         if ($("#id_end_date").val().trim() == "") {
-            $(".errors_block").html("<ul><li>End date is required.</li></ul>");//TODO:it will be set in message.properties.
+            $(".errors_block").html("<ul><li>End date is required.</li></ul>");
             return false;
         }
-        if (!reg.test($("#id_end_date").val())) {
-            $(".errors_block").html("<ul><li>End date is not correct.</li></ul>");//TODO:it will be set in message.properties.
+        if (!validDateTime($("#id_end_date").val())) {
+            $(".errors_block").html("<ul><li>End date is not correct.</li></ul>");
             return false;
         }
         if (new Date($("#id_end_date").val().replace(/\-/g, "\/")) <= new Date($("#id_begin_date").val().replace(/\-/g, "\/"))) {
-            $(".errors_block").html("<ul><li>End date should be later than begin date.</li></ul>");//TODO:it will be set in message.properties.
+            $(".errors_block").html("<ul><li>End date should be later than begin date.</li></ul>");
             return false;
         }
+        */
         if ($("#id_minimum_bid").val().trim() == "") {
             $(".errors_block").html("<ul><li>Minimum bid is required.</li></ul>");//TODO:it will be set in message.properties.
             return false;
