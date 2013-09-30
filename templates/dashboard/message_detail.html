@@ -3,7 +3,7 @@
        <fieldset>
         <legend>Message Detail</legend>
            {% if message %}
-            <div class="message_header"><b>Title:</b><span class="msg_header_content">{{ message.title }}</span></div>
+            <div class="message_header"><b>Subject:</b><span class="msg_header_content">{{ message.title }}</span></div>
             {% ifequal msg_action 'reply' %}
             <div class="message_header"><b>From:</b><span class="msg_header_content">{{ message.sender.username }}</span></div>
             {% endifequal %}
