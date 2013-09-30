@@ -50,8 +50,8 @@
 {#               <div class="app_title">Published Time</div>#}
                <div class="app_title">Auction Beginning</div>
                <div class="app_title">Auction Ending</div>
-{#               <div class="app_title">Bid List</div>#}
-               <div class="app_title">Repayment</div>
+               <div class="app_title">Bid List</div>
+{#               <div class="app_title">Repayment</div>#}
            </li>
            {% for app in published_apps %}
                 <li>
@@ -75,10 +75,10 @@
                        {% endif %}
 
                    </div>
-{#                   <div class="app_title">#}
-{#                       <a href="{% url 'dashboard:bidding_list' app.0.id %}">Bid List</a>#}
-{#                   </div>#}
-                   <div class="app_title"><a href="{% url 'seller:payment' app.0.id '' %}">Extend Auction</a></div>
+                   <div class="app_title">
+                       <a href="{% url 'dashboard:bidding_list' app.0.id %}">Bid List</a>
+                   </div>
+{#                   <div class="app_title"><a href="{% url 'seller:payment' app.0.id '' %}">Extend Auction</a></div>#}
                </li>
            {% empty %}
                No published app.
@@ -94,16 +94,17 @@
        </fieldset>
 
        <fieldset>
-        <legend>Sold Apps</legend>
+        <legend>Sold/Closed Apps</legend>
            <ul class="inbox_list">
            <li>
                <div class="app_title">App title</div>
-               <div class="app_title">Create Time</div>
+{#               <div class="app_title">Sold Time</div>#}
 {#               <div class="app_title">Published Time</div>#}
 {#               <div class="app_title">Service Begin Time</div>#}
 {#               <div class="app_title">Service End Time</div>#}
-{#               <div class="app_title">Bid List</div>#}
-               <div class="app_title">Repayment</div>
+               <div class="app_title">Sold Price</div>
+               <div class="app_title">Action</div>
+               <div class="app_title" style="color: red;">Status</div>
            </li>
            {% for app in traded_apps %}
                <li>
@@ -114,9 +115,9 @@
 {#                   <div class="app_title">{{ app.0.publish_date }}</div>#}
 {#                   <div class="app_title">{{ app.1.0.start_date }}</div>#}
 {#                   <div class="app_title">{{ app.1.0.end_date }}</div>#}
-{#                   <div class="app_title">#}
-{#                       <a href="{% url 'dashboard:bidding_list' app.0.id %}">Bid List</a>#}
-{#                   </div>#}
+                   <div class="app_title">
+                       <a href="{% url 'dashboard:bidding_list' app.0.id %}">Bid List</a>
+                   </div>
                    <div class="app_title"><a href="{% url 'seller:payment' app.0.id '' %}">RePayment</a></div>
                </li>
            {% empty %}
