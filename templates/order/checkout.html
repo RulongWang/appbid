@@ -23,6 +23,11 @@
             Payment Fee: {{ form.actual_amount.value|floatformat|default:0 }}{{ currency }}
             <input id="id_actual_amount" name="actual_amount" type="hidden" value="{{ form.actual_amount.value }}"  />
         </div>
+        {% if begin_date %}
+        <div>
+            Your have the valid service payment. The end date is {{ begin_date|date:'Y-m-d' }}.The service begin date of the payment should be later than the date.
+        </div>
+        {% endif %}
         <div>
             Service Begin Date: {{ form.start_date }}
         </div>
