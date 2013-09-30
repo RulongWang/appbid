@@ -33,6 +33,8 @@ def checkout(request, *args, **kwargs):
     if serviceDetails:
         initParam['begin_date'] = serviceDetails[0].end_date
         serviceDetail.start_date = serviceDetails[0].end_date
+    else:
+        serviceDetail.start_date = datetime.datetime.now()
 
     if request.method == "POST":
         form = forms.ServiceDetailForm(request.POST)
