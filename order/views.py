@@ -20,6 +20,7 @@ from order import models, forms
 def checkout(request, *args, **kwargs):
     """checkout for service detail payment."""
     initParam = {}
+    initParam['begin_date'] = None
     app_id = kwargs.get('app_id')
     service_id = kwargs.get('service_id')
     service_sn = kwargs.get('service_sn')
