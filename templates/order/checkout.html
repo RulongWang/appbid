@@ -56,6 +56,12 @@
                     $("#order_error").html("Service begin date should be later than service end date of your paid payment.");//TODO:it will be set in message.properties.
                     return false;
                 }
+                if (begin_date_str == "" && new Date().format('yyyy-MM-dd') > end_date.format('yyyy-MM-dd')) {
+                    $("#end_date_str").val("");
+                    $("#id_end_date").val("");
+                    $("#order_error").html("Service begin date should be later than today.");//TODO:it will be set in message.properties.
+                    return false;
+                }
                 end_date.setMonth(end_date.getMonth() + 1);
                 $("#end_date_str").val(end_date.format('yyyy-MM-dd'));
                 $("#id_end_date").val(end_date.format('yyyy-MM-dd'));
