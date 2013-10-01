@@ -123,6 +123,7 @@ WSGI_APPLICATION = 'appbid.wsgi.application'
 TEMPLATE_DIRS = (os.path.join(os.path.dirname(__file__), '..', 'templates').replace('\\', '/'),)
 
 INSTALLED_APPS = (
+
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -135,16 +136,17 @@ INSTALLED_APPS = (
     'django.contrib.admindocs',
     'django.contrib.comments',
     # 'django_crontab',
-    'home',
+
     'appbid',
-    'seller',
-    'usersetting',
-    'message',
+     'bid',
+     'home',
+     'message',
     'notification',
-    'bid',
     'order',
     'payment',
     'system',
+    'seller',
+     'usersetting',
 )
 
 # A sample logging configuration. The only tangible logging
