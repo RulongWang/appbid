@@ -36,24 +36,36 @@ def registerApp(request, *args, **kwargs):
         form = forms.AppForm(instance=app)
         initParam['app_id'] = app.id
         initParam['app_status'] = app.status
+        #For Additional Info
         initParam['attachments'] = appModels.Attachment.objects.filter(app_id=app.id)
+        #For App Verification
         initParam['verify_token'] = app.verify_token
+        #For App Attributes
         appInfos = appModels.AppInfo.objects.filter(app_id=app.id)
         if appInfos:
             initParam['appInfoForm'] = forms.AppInfoForm(instance=appInfos[0])
-        initParam['serviceDetails'] = orderModels.ServiceDetail.objects.filter(app_id=app.id)
-        if kwargs.get('sn'):
-            serviceDetail = get_object_or_404(orderModels.ServiceDetail, app_id=app.id, sn=kwargs.get('sn'))
+        #For Payment
+        serviceDetails = orderModels.ServiceDetail.objects.filter(app_id=app.id).order_by('-pk')
+        initParam['serviceDetails'] = serviceDetails
+        sn = kwargs.get('sn', None)
+        if sn and sn != 'new':
+            #For query service detail by sn.
+            serviceDetail = get_object_or_404(orderModels.ServiceDetail, app_id=app.id, sn=sn)
             initParam['selectItems'] = serviceDetail.serviceitem.all()
             initParam['serviceDetail'] = serviceDetail
             initParam['amount'] = serviceDetail.amount
+        elif sn is None and serviceDetails:
+            #For query the latest payment. The rule: Publisher just has one unpaid payment.
+            initParam['selectItems'] = serviceDetails[0].serviceitem.all()
+            initParam['serviceDetail'] = serviceDetails[0]
+            initParam['amount'] = serviceDetails[0].amount
         else:
+            #Create the new payment.
             amount = 0
             serviceItems = orderModels.ServiceItem.objects.filter(is_basic_service=True, end_date__gte=datetime.datetime.now())
             for serviceItem in serviceItems:
                 amount += serviceItem.price
             initParam['amount'] = amount
-        initParam['service_expiry_date'] = common.getSystemParam(key='service_expiry_date', default=1)
 
     if request.method == "POST":
         form = forms.AppForm(request.POST)
@@ -63,9 +75,11 @@ def registerApp(request, *args, **kwargs):
             if result:
                 return result
 
+    #Initial data
     initParam['form'] = form
     initParam['attachmentForm'] = forms.AttachmentForm()
     initParam['apps'] = appModels.App.objects.filter(publisher=request.user).order_by('-status', 'create_time')
+    #For Payment
     initParam['serviceItems'] = orderModels.ServiceItem.objects.filter(end_date__gte=datetime.datetime.now())
     return render_to_response(kwargs.get('backPage'), initParam, context_instance=RequestContext(request))
 

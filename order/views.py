@@ -12,6 +12,7 @@ from django.contrib.auth.models import User
 from appbid import models as appModels
 from payment import views as paymentViews
 from order import models, forms
+from utilities import common
 
 
 @csrf_protect
@@ -65,6 +66,7 @@ def checkout(request, *args, **kwargs):
 
     #Init data
     initParam['form'] = forms.ServiceDetailForm(instance=serviceDetail)
+    initParam['service_expiry_date'] = common.getSystemParam(key='service_expiry_date', default=1)
     initParam['currency'] = app.currency.currency
     if acceptGateways:
         initParam['acceptGateway'] = acceptGateways[0]

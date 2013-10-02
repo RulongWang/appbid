@@ -66,9 +66,11 @@
          </li>
      {% endfor %}
      </ol>
+    {% if serviceDetail != None and serviceDetail.is_payed == True %}
      <div>
-         <a href="{% url 'seller:payment' app_id '' %}"><input id="new_payment" class="nextbutton" type="button" value="new payment"></a>
+         <a href="{% url 'seller:payment' app_id 'new' %}"><input id="new_payment" class="nextbutton" type="button" value="new payment"></a>
      </div>
+    {% endif %}
 {% endif %}
  </div>
 
