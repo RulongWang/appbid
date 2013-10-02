@@ -54,7 +54,7 @@ def registerApp(request, *args, **kwargs):
             initParam['selectItems'] = serviceDetail.serviceitem.all()
             initParam['serviceDetail'] = serviceDetail
             initParam['amount'] = serviceDetail.amount
-        elif sn is None and serviceDetails:
+        elif (sn is None or sn == '') and serviceDetails:
             #For query the latest payment. The rule: Publisher just has one unpaid payment.
             initParam['selectItems'] = serviceDetails[0].serviceitem.all()
             initParam['serviceDetail'] = serviceDetails[0]
