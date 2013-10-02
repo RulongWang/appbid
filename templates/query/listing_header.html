@@ -18,7 +18,7 @@
                 {% else %}
                     {% if app.status == 2 and app.begin_date %}
                         <div>
-                          Beginning bid in:<br><b>{{ app.begin_date }}</b>
+                          Beginning bid in:{% include "bid/remaintime.html" %}
                         </div>
                     {% endif %}
                 {% endif %}
