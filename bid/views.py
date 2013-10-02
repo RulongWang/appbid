@@ -8,6 +8,7 @@ from django.db import transaction
 from django.utils.translation import ugettext as _
 from django.db.models import Q, Count
 from django.core.urlresolvers import reverse
+
 from appbid import models as appModels
 from usersetting import models as userSettingModels
 from bid import forms

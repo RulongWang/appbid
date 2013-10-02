@@ -15,11 +15,12 @@ from django.core.urlresolvers import reverse
 from django.db import transaction
 from django.conf import settings
 
-from seller import forms
-from order import models as orderModels
-from appbid import models as appModels
 from payment import models as paymentModels
+from appbid import models as appModels
+from order import models as orderModels
+from seller import forms
 from utilities import common
+
 
 @csrf_protect
 @login_required(login_url='/usersetting/home/')

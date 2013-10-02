@@ -8,6 +8,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.utils.translation import ugettext as _
 from django.views.decorators.csrf import csrf_protect
 from django.db.models import Max
+
 from appbid import models as appModels
 from utilities import common
 

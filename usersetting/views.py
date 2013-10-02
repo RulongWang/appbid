@@ -16,11 +16,13 @@ from django.db.models import Q
 from django.db import transaction
 from django.conf import settings
 from django.contrib.auth.models import User
+
 from usersetting import models
-from usersetting import forms
-from utilities import common
 from payment import models as paymentModels
+from usersetting import forms
 from notification import views as notificationViews
+from utilities import common
+
 
 @csrf_protect
 def loginView(request, *args, **kwargs):

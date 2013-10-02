@@ -1,8 +1,8 @@
 __author__ = 'Jarvis'
 
-from appbid import models as appModels
 from django.db import models
 from django.contrib.auth.models import User
+from appbid import models as appModels
 
 
 class Bidding(models.Model):

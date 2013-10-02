@@ -10,8 +10,8 @@ from django.db import transaction
 from django.contrib.auth.models import User
 
 from appbid import models as appModels
-from payment import views as paymentViews
 from order import models, forms
+from payment import views as paymentViews
 from utilities import common
 
 
