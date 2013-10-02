@@ -38,7 +38,11 @@
             <div class="bidder_times">
                 {{ bid_info.0.bid_time }}
             </div>
-
+            {% if forloop.counter == 1 and app.publisher.username == request.user.username %}
+            <div>
+                <span><a href="#"><input id="id_trade" type="button" value="Trade Now" /></a></span>
+            </div>
+            {% endif %}
         </div>
     {% endfor %}
     </div>

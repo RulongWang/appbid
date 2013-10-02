@@ -10,7 +10,6 @@ urlpatterns = patterns('',
     url(r'^message-detail/(?P<msg_action>\w+)/(?P<msg_id>\d+)$', views.messageDetail, name='message_detail'),
     url(r'^create-message/(?P<msg_action>\w+)/(?P<username>\S+)/(?P<user_id>\d+)/(?P<msg_id>\d*)$', views.createMessage, name='create_message'),
 
-    url(r'^listing-overview$', views.listingOverview, name='listing_overview'),
-    url(r'^bidding-list/(?P<pk>\d+)$', views.biddingList, name='bidding_list'),
-    url(r'^bidding-management$', views.biddingManagement, name='bidding_management'),
+    url(r'^my-listing$', views.myListing, name='my_listing'),
+    url(r'^my-bidding$', views.myBidding, name='my_bidding'),
 )

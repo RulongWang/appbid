@@ -6,7 +6,6 @@
 
             <li>
                <div class="app_title">App title</div>
-{#               <div class="app_title">Create Time</div>#}
                <div class="app_title">Last Modify</div>
                <div class="app_title">Is Verified</div>
                <div class="app_title">Payment</div>
@@ -16,16 +15,13 @@
                    <div class="app_title">
                        <a href="{% url 'query:app_detail' app.0.id %}">{{ app.0.app_name }}</a>
                    </div>
-{#                   <div class="app_title">#}
-{#                       {{ app.0.create_time|date:" Y-m-d " }}{{ app.0.create_time|time:"H:i" }}#}
-{#                   </div>#}
-                   <div class="app_title">{{ app.0.last_modify|date:" Y-m-d " }}{{ app.0.last_modify|time:"H:i" }}</div>
+                   <div class="app_title">{{ app.0.last_modify|date:"Y-m-d G:i"|default:"N/A" }}</div>
                    {% ifequal app.0.is_verified True %}
                        <div class="app_title">{{ app.0.is_verified }}</div>
                        <div class="app_title"><a href="{% url 'seller:payment' app.0.id '' %}">Payment</a></div>
                    {% else %}
                        <div class="app_title"><a href="{% url 'seller:verification' app.0.id %}">Verification</a></div>
-                       <div class="app_title" style="color: red">Payment after verified.</div>
+                       <div class="app_title" style="color: red;">Payment after verified.</div>
                    {% endifequal %}
                </li>
            {% empty %}
@@ -46,39 +42,24 @@
          <ul class="inbox_list">
            <li>
                <div class="app_title">App title</div>
-{#               <div class="app_title">Create Time</div>#}
-{#               <div class="app_title">Published Time</div>#}
                <div class="app_title">Auction Beginning</div>
                <div class="app_title">Auction Ending</div>
-               <div class="app_title">Bid List</div>
-{#               <div class="app_title">Repayment</div>#}
+               <div class="app_title">Bids</div>
            </li>
            {% for app in published_apps %}
                 <li>
                    <div class="app_title">
                        <a href="{% url 'query:app_detail' app.0.id %}">{{ app.0.app_name }}</a>
                    </div>
-{#                   <div class="app_title">{{ app.0.create_time }}</div>#}
-{#                   <div class="app_title">{{ app.0.publish_date }}</div>#}
                    <div class="app_title">
-                       {% if  app.1.0.start_date %}
-                        {{ app.1.0.start_date }}
-                        {% else %}
-                         N/A
-                       {% endif %}
+                       {{ app.1.0|date:"Y-m-d G:i"|default:"N/A" }}
                    </div>
                    <div class="app_title">
-                       {% if  app.1.0.end_date %}
-                        {{ app.1.0.end_date }}
-                        {% else %}
-                         N/A
-                       {% endif %}
-
+                       {{ app.1.1|date:"Y-m-d G:i"|default:"N/A" }}
                    </div>
                    <div class="app_title">
-                       <a href="{% url 'dashboard:bidding_list' app.0.id %}">Bid List</a>
+                       <a href="{% url 'bid:bid_list' app.0.id %}">{{ app.1.2|floatformat|default:0 }}bid{{ app.1.2|floatformat|pluralize }}</a>
                    </div>
-{#                   <div class="app_title"><a href="{% url 'seller:payment' app.0.id '' %}">Extend Auction</a></div>#}
                </li>
            {% empty %}
                No published app.

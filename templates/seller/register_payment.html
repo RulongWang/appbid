@@ -59,7 +59,7 @@
          <li>
          <a href="{% url 'seller:payment' app_id detail.sn %}">{{ detail.sn }}</a>
          {% if detail.is_payed == True %}
-             ({{ detail.start_date|date:" M j, Y g:iA" }} - {{ detail.end_date|date:" M j, Y g:iA" }} )
+             ({{ detail.start_date|date:"Y-m-d G:i" }} - {{ detail.end_date|date:"Y-m-d G:i" }} )
          {% else %}
              <b>Unpaid</b>
          {% endif %}
