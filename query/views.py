@@ -166,12 +166,12 @@ def initBidInfo(request, *args, **kwargs):
         initParam['bid_price'] = app.minimum_bid
     initParam['begin_bid'] = False
     current_date = datetime.datetime.combine(datetime.date.today(), datetime.time())
-    if app.begin_date and current_date >= app.begin_date:
-        initParam['begin_bid'] = True
-    if app.begin_date and current_date < app.begin_date:
-        initParam['time_remaining'] = time.mktime(time.strptime(str(app.begin_date), '%Y-%m-%d %H:%M:%S'))
-    elif app.end_date:
-        initParam['time_remaining'] = time.mktime(time.strptime(str(app.end_date), '%Y-%m-%d %H:%M:%S'))
+    if app.begin_date and app.end_date:
+        if current_date >= app.begin_date:
+            initParam['begin_bid'] = True
+            initParam['time_remaining'] = time.mktime(time.strptime(str(app.end_date), '%Y-%m-%d %H:%M:%S'))
+        else:
+            initParam['time_remaining'] = time.mktime(time.strptime(str(app.begin_date), '%Y-%m-%d %H:%M:%S'))
 
 
 def queryAppsWithPaginator(request, *args, **kwargs):
