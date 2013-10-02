@@ -3,13 +3,31 @@
 {% load staticfiles %}
 <script type="text/javascript" language="javascript">
   $(function() {
-    $( "#id_start_date" ).datepicker({
-        showOtherMonths: true,
-        selectOtherMonths: true,
-        changeMonth: true,
-        changeYear: true,
-        dateFormat: 'yy-mm-dd'
-    });
+    var begin_date = "{{ begin_date|date:'Y-m-d' }}";
+    if (begin_date) {
+        $("#id_start_date").attr("readonly", true);
+        var date_str = $("#id_start_date").val().trim();
+        var end_date = new Date(date_str);
+        var service_expiry_date = {{ service_expiry_date }};
+        if (service_expiry_date) {
+            end_date.setMonth(end_date.getMonth() + service_expiry_date);
+        }
+        else{
+            end_date.setMonth(end_date.getMonth() + 1);
+        }
+        $("#end_date_str").val(end_date.format('yyyy-MM-dd'));
+        $("#id_end_date").val(end_date.format('yyyy-MM-dd'));
+        $("#order_error").html("");
+    }
+    else {
+        $( "#id_start_date" ).datepicker({
+            showOtherMonths: true,
+            selectOtherMonths: true,
+            changeMonth: true,
+            changeYear: true,
+            dateFormat: 'yy-mm-dd'
+        });
+    }
   });
 </script>
     <div id="order_error">{{ order_error }}</div>
@@ -21,7 +39,7 @@
         </div>
         <div>
             Payment Fee: {{ form.actual_amount.value|floatformat|default:0 }}{{ currency }}
-            <input id="id_actual_amount" name="actual_amount" type="hidden" value="{{ form.actual_amount.value }}"  />
+            <input id="id_actual_amount" name="actual_amount" type="hidden" value="{{ form.actual_amount.value }}" />
         </div>
         <div>
             Service Begin Date: <input id="id_start_date" name="start_date" type="text" value="{{ form.start_date.value|date:'Y-m-d' }}" />

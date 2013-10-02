@@ -56,9 +56,13 @@ def checkout(request, *args, **kwargs):
                     serviceDetail.save()
                     # If app is draft or has been closed, change app to published after payment,.
                     if app.status == 1 or app.status == 3:
-                        app.publish_date = form.cleaned_data['start_date']
                         app.status = 2
-                        app.save()
+                        app.publish_date = form.cleaned_data['start_date']
+                        app.begin_date = form.cleaned_data['start_date']
+                        app.end_date = form.cleaned_data['end_date']
+                    else:
+                        app.end_date = form.cleaned_data['end_date']
+                    app.save()
                     return render_to_response(initParam['success_url'], initParam, context_instance=RequestContext(request))
                 else:
                     initParam['order_error'] = _('Payment failed.')
