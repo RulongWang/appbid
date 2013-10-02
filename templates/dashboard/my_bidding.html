@@ -1,48 +1,7 @@
 {% extends "dashboard/activity.html" %}
 {% block dashboard_detail %}
-{#       <fieldset>#}
-{#        <legend>My App Bidding</legend>#}
-{#           <ul class="inbox_list">#}
-{#           <li>#}
-{#               <div class="app_title">App title</div>#}
-{#               <div class="app_title">Service Begin Time</div>#}
-{#               <div class="app_title">Service End Time</div>#}
-{#                <div class="app_title">Begin Price</div>#}
-{#                <div class="app_title">One Price</div>#}
-{#                <div class="app_title">Reserve Price</div>#}
-{#                <div class="app_title">Max bid Price</div>#}
-{#               <div class="app_title">Bid List</div>#}
-{#           </li>#}
-{#           {% for app in published_apps %}#}
-{#               <li>#}
-{#                   <div class="app_title">#}
-{#                       <a href="{% url 'query:app_detail' app.0.id %}">{{ app.0.title }}</a>#}
-{#                   </div>#}
-{#                   <div class="app_title">{{ app.1.0.start_date }}</div>#}
-{#                   <div class="app_title"><b>{{ app.1.0.end_date }}</b></div>#}
-{#                   <div class="app_title">{{ app.0.begin_price }}{{ app.0.currency.currency }}</div>#}
-{#                   <div class="app_title">{{ app.0.one_price }}{{ app.0.currency.currency }}</div>#}
-{#                   <div class="app_title">{{ app.0.reserve_price }}{{ app.0.currency.currency }}</div>#}
-{#                   <div class="app_title"><b>-100-</b>{{ app.0.currency.currency }}</div>#}
-{#                   <div class="app_title">#}
-{#                       <a href="{% url 'dashboard:bidding_list' app.0.id %}">Bid List</a>#}
-{#                   </div>#}
-{#               </li>#}
-{#           {% empty %}#}
-{#               No app.#}
-{#           {% endfor %}#}
-{#           {% if published_apps %}#}
-{#             <div class="pagination" style="float: right">#}
-{#                {% if published_apps.has_previous %}<a href="?bid_page={{ published_apps.previous_page_number }}">previous</a>{% endif %}#}
-{#                Page {{ published_apps.number }} of {{ published_apps.paginator.num_pages }}#}
-{#                {% if published_apps.has_next %}<a href="?bid_page={{ published_apps.next_page_number }}">next</a>{% endif %}#}
-{#             </div>#}
-{#           {% endif %}#}
-{#           </ul>#}
-{#       </fieldset>#}
-
         <fieldset>
-        <legend>My Joined Bidding</legend>
+        <legend>Joined Bidding</legend>
            <ul class="inbox_list">
             <li>
                <div class="app_title">App Name</div>
@@ -53,13 +12,15 @@
            {% for app in joined_apps %}
                <li>
                    <div class="app_title">
-                       <a href="{% url 'query:app_detail' app.0.id %}">{{ app.0.title }}</a>
+                       <a href="{% url 'query:app_detail' app.0 %}">{{ app.2 }}</a>
                    </div>
-                   <div class="app_title">{{ app.1.0.start_date }}</div>
+                   <div class="app_title">{{ app.3|date:"Y-m-d G:i"|default:"N/A" }}</div>
                    <div class="app_title">
-                       <a href="{% url 'dashboard:bidding_list' app.0.id %}">Bid List</a>
+                       <a href="{% url 'bid:bid_list' app.0 %}">{{ app.1 }}{{ app.5 }}</a>
                    </div>
-                   <div class="app_title"><a href="{% url 'seller:payment' app.0.id '' %}">RePayment</a></div>
+                   <div class="app_title">
+                       <a href="{% url 'bid:bid_list' app.0 %}">{{ app.4 }}{{ app.5 }}</a>
+                   </div>
                </li>
            {% empty %}
                No joined bidding.
@@ -75,7 +36,7 @@
        </fieldset>
 
        <fieldset>
-        <legend>My Won Bidding</legend>
+        <legend>Won Bidding</legend>
            <ul class="inbox_list">
            <li>
                <div class="app_title">App Name</div>

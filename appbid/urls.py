@@ -3,7 +3,6 @@ from django.contrib import admin
 from django.conf import settings
 from django.conf.urls.static import static
 from home.tests import test
-import home.urls
 import seller.urls
 import usersetting.urls
 import query.urls
@@ -23,7 +22,7 @@ urlpatterns = patterns('',
 
     # Uncomment the next line to enable the admin:
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^$', include(home.urls, namespace='home')),
+    url(r'^$', include('home.urls', namespace='home')),
     url(r'^comments/', include('django.contrib.comments.urls')),
     url(r'^test/$', test, name='goodtest'),
     url(r'^seller/', include(seller.urls, namespace='seller')),

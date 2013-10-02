@@ -20,8 +20,7 @@ from utilities import common
 @login_required(login_url='/usersetting/home/')
 def checkout(request, *args, **kwargs):
     """checkout for service detail payment."""
-    initParam = {}
-    initParam['begin_date'] = None
+    initParam = {'begin_date': None}
     app_id = kwargs.get('app_id')
     service_id = kwargs.get('service_id')
     service_sn = kwargs.get('service_sn')
@@ -29,7 +28,8 @@ def checkout(request, *args, **kwargs):
     app = get_object_or_404(appModels.App, pk=app_id, publisher_id=user.id)
     serviceDetail = get_object_or_404(models.ServiceDetail, pk=service_id, app_id=app_id, sn=service_sn)
     acceptGateways = user.acceptgateway_set.filter(is_active=True, is_default=True)
-    serviceDetails = models.ServiceDetail.objects.filter(app_id=app_id, is_payed=True, end_date__gt=datetime.datetime.now()).order_by('-pk')
+    serviceDetails = models.ServiceDetail.objects.filter(app_id=app_id, is_payed=True,
+                                                         end_date__gte=datetime.datetime.now().strftime('%Y-%m-%d')).order_by('-pk')
     #Init data
     if serviceDetails:
         initParam['begin_date'] = serviceDetails[0].end_date

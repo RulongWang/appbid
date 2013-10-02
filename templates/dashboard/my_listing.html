@@ -52,13 +52,13 @@
                        <a href="{% url 'query:app_detail' app.0.id %}">{{ app.0.app_name }}</a>
                    </div>
                    <div class="app_title">
-                       {{ app.1.0|date:"Y-m-d G:i"|default:"N/A" }}
+                       {{ app.0.begin_date|date:"Y-m-d G:i"|default:"N/A" }}
                    </div>
                    <div class="app_title">
-                       {{ app.1.1|date:"Y-m-d G:i"|default:"N/A" }}
+                       {{ app.0.end_date|date:"Y-m-d G:i"|default:"N/A" }}
                    </div>
                    <div class="app_title">
-                       <a href="{% url 'bid:bid_list' app.0.id %}">{{ app.1.2|floatformat|default:0 }}bid{{ app.1.2|floatformat|pluralize }}</a>
+                       <a href="{% url 'bid:bid_list' app.0.id %}">{{ app.1|floatformat|default:0 }}bid{{ app.1|floatformat|pluralize }}</a>
                    </div>
                </li>
            {% empty %}
