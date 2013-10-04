@@ -4,7 +4,8 @@
                 <a href="{% url 'query:app_detail' app.id %}"><img src="{{ MEDIA_URL }}{{ appInfo.icon }}"class="detail_icon"/></a>
               </div>
               <div class="app_bid_info">
-                <h1><a href="{% url 'query:app_detail' app.id %}">{{ app.title }}</a></h1>
+                <h1><a href="{% url 'query:app_detail' app.id %}">{{ app.app_name }}</a></h1>
+                <div style="font-size: 15px;margin-top: 5px;">{{ app.title }}</div>
                 <div class="margin10px"> <a target="_blank" href="{{ app.app_store_link }}" title="{{ app.app_name }}"><img src="{% static "images/appstore.png" %}"/></a> </div>
                 {% if app.status == 2 and app.reserve_price and app.reserve_price <= current_price %}
                   <div>
