@@ -138,15 +138,18 @@ INSTALLED_APPS = (
     # 'django_crontab',
 
     'appbid',
-     'bid',
-     'home',
-     'message',
+    'bid',
+    'home',
+    'message',
     'notification',
     'order',
     'payment',
     'system',
     'seller',
-     'usersetting',
+    'usersetting',
+    'credit',
+    'dashboard',
+    'transaction',
 )
 
 # A sample logging configuration. The only tangible logging

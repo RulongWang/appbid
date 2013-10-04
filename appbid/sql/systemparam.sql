@@ -8,3 +8,4 @@ insert into system_systemparam(`key`,`value`,`description`) values('active_link_
 insert into system_systemparam(`key`,`value`,`description`) values('page_range','10','The maximum number of items to include on a page.');
 insert into system_systemparam(`key`,`value`,`description`) values('currency','2','The default currency is 2 - USD.');
 insert into system_systemparam(`key`,`value`,`description`) values('monetize','4','The default monetize is 4 - Free.');
+insert into system_systemparam(`key`,`value`,`description`) values('credit_point','100','The default credit point is 100.');
