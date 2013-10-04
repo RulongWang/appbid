@@ -50,17 +50,19 @@
                                </div>
 
                                <div class="bidding_info">
-                                   <div style="text-align: center;">
+                                    <div class="clock_wrapper">
+
+                                      <div class="clock1" title="Ending: {{ app.4.0|floatformat }} {{ app.4.1 }}{{ app.4.0|floatformat|pluralize }}"></div>
+                                   </div>
+                                   <div style="text-align: center;margin-bottom: 10px;">
                                        {{ app.1|floatformat:"-2"|default:0 }} {{ app.0.currency.currency }}
                                    </div>
-                                   <div class="bid_button">
+                                   <div class="bid_button" style="margin:0 auto;">
                                        <a href="{% url 'bid:bid_list' app.0.id %}">
                                            {{ app.2|floatformat|default:0 }} bid{{ app.2|floatformat|pluralize }}
                                        </a>
                                    </div>
-                                   <div>
-                                       Ending: {{ app.4.0|floatformat }} {{ app.4.1 }}{{ app.4.0|floatformat|pluralize }}
-                                   </div>
+
 {#                                   <div><a href="#"><img src="{% static "images/favrioute.png" %}"/></a></div>#}
                            </div>
                            </div>
@@ -70,11 +72,15 @@
             </ul>
          </div>
          {% if apps %}
-             <div class="pagination" style="float: right">
-                {% if apps.has_previous %}<a href="?page={{ apps.previous_page_number }}">previous</a>{% endif %}
-                Page {{ apps.number }} of {{ apps.paginator.num_pages }}
-                {% if apps.has_next %}<a href="?page={{ apps.next_page_number }}">next</a>{% endif %}
-             </div>
+{#             <div class="pagination" style="float: right">#}
+{#                {% if apps.has_previous %}<a href="?page={{ apps.previous_page_number }}">previous</a>{% endif %}#}
+{#                Page {{ apps.number }} of {{ apps.paginator.num_pages }}#}
+{#                {% if apps.has_next %}<a href="?page={{ apps.next_page_number }}">next</a>{% endif %}#}
+{#             </div>#}
+
+          <div class="more_block">
+                <input type ="button" name="getmore" value="More.." class="getmore"/>
+          </div>
          {% endif %}
     </div>
 
