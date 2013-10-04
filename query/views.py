@@ -208,6 +208,8 @@ def queryAppsWithPaginator(request, *args, **kwargs):
             info_list.append(data.get('bid_num'))
             #info list[3]:bid price
             info_list.append(data.get('bid_price'))
+            #info list[4]:remaining date, such as: [10, day], [25, minute]
+            info_list.append(common.dateRemaining(info_list[0].end_date))
     else:
         return None
 

@@ -3,6 +3,7 @@ __author__ = 'Jarvis'
 import json
 import urllib2
 import re
+import datetime
 
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from system import models as systemModels
@@ -110,3 +111,53 @@ def queryWithPaginator(request, *args, **kwargs):
         return objList
 
     return None
+
+
+def dateRemaining(date=datetime.datetime.now()):
+    """Get the remaining time of date - now, such as: 10days, 15hours, 20minutes, 10seconds."""
+    interval = (
+        (60 * 60 * 24 * 365, 'year'),
+        (60 * 60 * 24 * 30, 'month'),
+        (60 * 60 * 24 * 7, 'week'),
+        (60 * 60 * 24, 'day'),
+        (60 * 60, 'hour'),
+        (60, 'minute'),
+        (1, 'second'),
+    )
+    if date:
+        if not isinstance(date, datetime.datetime):
+            date = datetime.datetime(date.year, date.month, date.day)
+        delta = date - datetime.datetime.now()
+        remaining = delta.total_seconds()
+        if remaining > 0:
+            for seconds, unit in interval:
+                count = remaining // seconds
+                if count != 0:
+                    break
+            return [str(count), unit]
+    return [0, 'second']
+
+
+def dateBefore(date=datetime.datetime.now()):
+    """Get the before time of date - now, such as: 10days ago, 15hours ago, 20minutes ago, 10seconds ago."""
+    interval = (
+        (60 * 60 * 24 * 365, 'year'),
+        (60 * 60 * 24 * 30, 'month'),
+        (60 * 60 * 24 * 7, 'week'),
+        (60 * 60 * 24, 'day'),
+        (60 * 60, 'hour'),
+        (60, 'minute'),
+        (1, 'second'),
+    )
+    if date:
+        if not isinstance(date, datetime.datetime):
+            date = datetime.datetime(date.year, date.month, date.day)
+        delta = datetime.datetime.now() - date
+        remaining = delta.total_seconds()
+        if remaining > 0:
+            for seconds, unit in interval:
+                count = remaining // seconds
+                if count != 0:
+                    break
+            return [str(count), unit, 'ago']
+    return [0, 'second', 'ago']

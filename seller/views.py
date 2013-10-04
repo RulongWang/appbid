@@ -194,12 +194,18 @@ def saveAppStoreLink(request, form, model, *args, **kwargs):
                     #TODO:Auto send email to administrator to add new category
 
     #Save device data
+    kind = result.get('kind', None)
     model.device.clear()
-    for device in appModels.Device.objects.all():
-        for deviceName in result.get('supportedDevices', None):
-            if deviceName.find(device.device) != -1:
-                model.device.add(device)
-                break
+    if kind and kind == 'software':
+        for device in appModels.Device.objects.all():
+            for deviceName in result.get('supportedDevices'):
+                if deviceName.find(device.device) != -1:
+                    model.device.add(device)
+                    break
+    elif kind and kind == 'mac-software':
+        device = appModels.Device.objects.get(device='MAC')
+        model.device.add(device)
+
     return redirect(reverse(initParam.get('nextPage'), kwargs={'pk': model.id}))
 
 
