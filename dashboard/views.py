@@ -1,9 +1,10 @@
 __author__ = 'rulongwang'
 
 import datetime
+import json
 
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render_to_response, RequestContext, get_object_or_404, redirect, Http404
+from django.shortcuts import render_to_response, HttpResponse, RequestContext, get_object_or_404, redirect, Http404
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.views.decorators.csrf import csrf_protect
 from django.utils.translation import ugettext as _
@@ -16,7 +17,7 @@ from django.contrib.auth.models import User
 from message import models as messageModels
 from appbid import models as appModels
 from bid import models as bidModels
-from order import models as orderModels
+from dashboard import models
 from utilities import common
 from message.views import sendMessage
 
@@ -189,6 +190,59 @@ def myBidding(request, *args, **kwargs):
 
     won_apps = ''
     return render_to_response("dashboard/my_bidding.html", initParam, context_instance=RequestContext(request))
+
+
+@csrf_protect
+@transaction.commit_on_success
+@login_required(login_url='/usersetting/home/')
+def watchApp(request, *args, **kwargs):
+    data = {}
+    try:
+        dict = request.POST
+    except:
+        dict = request.GET
+    try:
+        apps = appModels.App.objects.filter(pk=dict.get('app_id'))
+        if apps:
+            data['ok'] = 'true'
+            count = models.WatchApp.objects.filter(app_id=apps[0].id, buyer_id=request.user.id).count()
+            if count == 0:
+                watchApp = models.WatchApp()
+                watchApp.app = apps[0]
+                watchApp.buyer = request.user
+                watchApp.save()
+        else:
+            raise
+    except:
+        data['ok'] = 'false'
+        data['message'] = _('Watch app failed.')
+    return HttpResponse(json.dumps(data), mimetype=u'application/json')
+
+
+@csrf_protect
+@transaction.commit_on_success
+@login_required(login_url='/usersetting/home/')
+def unwatchApp(request, *args, **kwargs):
+    data = {}
+    try:
+        dict = request.POST
+    except:
+        dict = request.GET
+    try:
+        apps = appModels.App.objects.filter(pk=dict.get('app_id'))
+        if apps:
+            data['ok'] = 'true'
+            watchApps = models.WatchApp.objects.filter(app_id=apps[0].id, buyer_id=request.user.id)
+            if watchApps:
+                watchApps[0].delete()
+            else:
+                raise
+        else:
+            raise
+    except:
+        data['ok'] = 'false'
+        data['message'] = _('Unwatch app failed.')
+    return HttpResponse(json.dumps(data), mimetype=u'application/json')
 
 
 def watched(request, *args, **kwargs):

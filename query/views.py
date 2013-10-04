@@ -10,6 +10,7 @@ from django.views.decorators.csrf import csrf_protect
 from django.db.models import Max
 
 from appbid import models as appModels
+from dashboard import models as dashboardModels
 from utilities import common
 
 
@@ -144,6 +145,13 @@ def getDetail(request, *args, **kwargs):
         initParam['category_map'] = category_map
 
         initBidInfo(request, app=app, initParam=initParam)
+
+        #Check if user watch the app, if user is login.
+        if request.user.is_authenticated():
+            if dashboardModels.WatchApp.objects.filter(app_id=app.id, buyer_id=request.user.id).count():
+                initParam['watch'] = True
+        else:
+            initParam['login'] = True
 
         return render_to_response('query/listing_detail.html', initParam, context_instance=RequestContext(request))
     raise Http404

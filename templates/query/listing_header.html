@@ -23,6 +23,9 @@
                         </div>
                     {% endif %}
                 {% endif %}
+                <div style="margin-top: 10px;">
+                    <span id="watch_app" class="buyitnow">{% if watch and watch == True %}Unwatch{% else %}Watch{% endif %}</span>
+                </div>
               </div>
               <div class="bidding_box right">
                 <div class="bidding_status" >
@@ -94,6 +97,46 @@
         if (parseFloat($("#price").val()) < parseFloat($("#bid_price").text())) {
             $("#price_msg").text("*The price must bid at least the minimum bid.");
             return false;
+        }
+    });
+    $("#watch_app").click(function() {
+        var value = $("#watch_app").text();
+        if (value == "Watch") {
+            var id = '{{ app.id }}';
+            $.ajax({
+                type:"POST",
+                url:"{% url 'dashboard:watch_app' app.id %}",
+                data:{
+                    app_id:id,
+                    csrfmiddlewaretoken: "{{ csrf_token }}"
+                },
+                success:function(data) {
+                    if(data.ok === 'true') {
+                        $("#watch_app").text("Unwatch");
+                    }
+                    else if (data.ok === 'false') {
+                    }
+                    else {
+                        //TODO:to do it later.
+                    }
+                }
+            });
+        }
+        else {
+            var id = '{{ app.id }}';
+            $.ajax({
+                type:"POST",
+                url:"{% url 'dashboard:unwatch_app' app.id %}",
+                data:{
+                    app_id:id,
+                    csrfmiddlewaretoken: "{{ csrf_token }}"
+                },
+                success:function(data) {
+                    if(data.ok === 'true') {
+                        $("#watch_app").text("Watch");
+                    }
+                }
+            });
         }
     });
 </script>

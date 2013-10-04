@@ -12,4 +12,7 @@ urlpatterns = patterns('',
 
     url(r'^my-listing$', views.myListing, name='my_listing'),
     url(r'^my-bidding$', views.myBidding, name='my_bidding'),
+
+    url(r'^watch-app/(?P<app_id>\d+)$', views.watchApp, name='watch_app'),
+    url(r'^unwatch-listing/(?P<app_id>\d+)$', views.unwatchApp, name='unwatch_app'),
 )
