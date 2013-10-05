@@ -11,7 +11,7 @@
            {% for watch_seller in watch_sellers %}
                <li>
                    <div class="app_title">{{ watch_seller.0.seller.username }}</div>
-                   <div class="app_title"><a href="#">
+                   <div class="app_title"><a href="/query/featured?seller={{ watch_seller.0.seller.id }}">
                        {{ watch_seller.1|default:0 }}
                    </a></div>
                </li>

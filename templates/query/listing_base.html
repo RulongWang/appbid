@@ -139,9 +139,21 @@
                      </div>
                      {% if apps %}
                          <div class="pagination" style="float: right">
-                            {% if apps.has_previous %}<a href="?page={{ apps.previous_page_number }}">previous</a>{% endif %}
+                            {% if apps.has_previous %}
+                                {% if query_tile %}
+                                    <a href="{{ query_tile.2 }}&page={{ apps.previous_page_number }}">previous</a>
+                                {% else %}
+                                    <a href="?page={{ apps.previous_page_number }}">previous</a>
+                                {% endif %}
+                            {% endif %}
                             Page {{ apps.number }} of {{ apps.paginator.num_pages }}
-                            {% if apps.has_next %}<a href="?page={{ apps.next_page_number }}">next</a>{% endif %}
+                            {% if apps.has_next %}
+                                {% if query_tile %}
+                                    <a href="{{ query_tile.2 }}&page={{ apps.next_page_number }}">next</a>
+                                {% else %}
+                                    <a href="?page={{ apps.next_page_number }}">next</a>
+                                {% endif %}
+                            {% endif %}
                          </div>
                      {% endif %}
                 </div>

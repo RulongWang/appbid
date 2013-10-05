@@ -314,14 +314,15 @@ def watchSellers(request, *args, **kwargs):
     user = get_object_or_404(User, pk=request.user.id, username=request.user.username)
     watch_sellers = models.WatchSeller.objects.filter(buyer_id=user.id)
     initParam['watch_sellers'] = common.queryWithPaginator(request, page=page,
-                                                        obj=watch_sellers, query_method=querySellerApps)
+                                                           obj=watch_sellers, query_method=querySellerApps)
     return render_to_response("dashboard/watched_sellers.html", initParam, context_instance=RequestContext(request))
 
 
 def querySellerApps(request, *args, **kwargs):
     """Return The user's app count."""
     watchSeller = kwargs.get('obj_param')
-    return  watchSeller.seller.app_set.count()
+    if watchSeller:
+        return appModels.App.objects.filter(Q(status=2) | Q(status=3), publisher_id=watchSeller.seller.id).count()
     return None
 
 

@@ -7,7 +7,8 @@ from django.shortcuts import render_to_response, render, RequestContext, get_obj
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.utils.translation import ugettext as _
 from django.views.decorators.csrf import csrf_protect
-from django.db.models import Max
+from django.db.models import Q, Max
+from django.contrib.auth.models import User
 
 from appbid import models as appModels
 from dashboard import models as dashboardModels
@@ -64,6 +65,7 @@ def listFeatured(request, *args, **kwargs):
     category = request.GET.get('category', None)
     subcategory = request.GET.get('subcategory', None)
     monetize = request.GET.get('monetize', None)
+    seller = request.GET.get('seller', None)
     currency_id = common.getSystemParam(key='currency', default=2)
     initParam['currency'] = get_object_or_404(appModels.Currency, pk=currency_id)
 
@@ -115,6 +117,12 @@ def listFeatured(request, *args, **kwargs):
         subcategoryModel = get_object_or_404(appModels.SubCategory, apple_id=subcategory)
         apps = appModels.App.objects.filter(status=2, subcategory=subcategoryModel)
         initParam['query_tile'] = ['SubCategory', subcategoryModel.name, ''.join(['?subcategory=', subcategory])]
+
+    #Seller part from watch sellers page.
+    if seller:
+        sellerModel = get_object_or_404(User, pk=seller)
+        apps = appModels.App.objects.filter(Q(status=2) | Q(status=3), publisher_id=sellerModel.id)
+        initParam['query_tile'] = ['Seller', sellerModel.username, ''.join(['?seller=', seller])]
 
     #Query data
     initParam['apps'] = queryAppsWithPaginator(request, page=page, apps=apps)
