@@ -105,7 +105,7 @@ def queryWithPaginator(request, *args, **kwargs):
         # Just query the obj information showed in the current page.
         if queryMethod:
             for info_list in objList:
-                result = queryMethod(request, app=info_list[0])
+                result = queryMethod(request, obj_param=info_list[0])
                 if result:
                     info_list.append(result)
         return objList

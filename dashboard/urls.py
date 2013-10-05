@@ -15,7 +15,13 @@ urlpatterns = patterns('',
 
     url(r'^watch-app/(?P<app_id>\d+)$', views.watchApp, name='watch_app'),
     url(r'^unwatch-listing/(?P<app_id>\d+)$', views.unwatchApp, name='unwatch_app'),
+    url(r'^watch-apps$', views.watchApps, name='watch_apps'),
 
     url(r'^watch-seller/(?P<user_id>\d+)$', views.watchSeller, name='watch_seller'),
     url(r'^unwatch-seller/(?P<user_id>\d+)$', views.unwatchSeller, name='unwatch_seller'),
+    url(r'^watch-sellers$', views.watchSellers, name='watch_sellers'),
+
+    url(r'^watch-category/(?P<category_id>\d+)$', views.watchCategory, name='watch_category'),
+    url(r'^unwatch-category/(?P<category_id>\d+)$', views.unwatchCategory, name='unwatch_category'),
+    url(r'^watch-categories$', views.watchCategories, name='watch_categories'),
 )

@@ -10,7 +10,7 @@
             {% ifequal msg_action 'send' %}
             <div class="message_header"><b>To:</b><span class="msg_header_content">{{ message.receiver.username }}</span></div>
             {% endifequal %}
-            <div class="message_header"><b>Received at:</b><span class="msg_header_content">{{ message.submit_date }}</span></div>
+            <div class="message_header"><b>Received at:</b><span class="msg_header_content">{{ message.submit_date|date:"Y-m-d H:i"|default:"N/A" }}</span></div>
             <div class="message_content">
                 <p>
                     {{ message.content }}

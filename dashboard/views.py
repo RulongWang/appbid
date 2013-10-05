@@ -29,16 +29,8 @@ def inbox(request, *args, **kwargs):
     initParam = {}
     page = request.GET.get('page', 1)
     user = get_object_or_404(User, pk=request.user.id, username=request.user.username)
-    page_range = common.getSystemParam(key='page_range', default=10)
-    messages = messageModels.Message.objects.filter(receiver=user).order_by('-submit_date')
-    paginator = Paginator(messages, page_range)
-    try:
-        message_list = paginator.page(page)
-    except PageNotAnInteger:
-        message_list = paginator.page(1)
-    except EmptyPage:
-        message_list = paginator.page(paginator.num_pages)
-    initParam['message_list'] = message_list
+    messages = messageModels.Message.objects.filter(receiver_id=user.id).order_by('-submit_date')
+    initParam['message_list'] = common.queryWithPaginator(request, page=page, obj=messages)
 
     return render_to_response("dashboard/activity.html", initParam, context_instance=RequestContext(request))
 
@@ -50,16 +42,8 @@ def sentMessages(request, *args, **kwargs):
     initParam = {}
     page = request.GET.get('page', 1)
     user = get_object_or_404(User, pk=request.user.id, username=request.user.username)
-    page_range = common.getSystemParam(key='page_range', default=10)
-    messages = messageModels.Message.objects.filter(sender=user).order_by('-submit_date')
-    paginator = Paginator(messages, page_range)
-    try:
-        message_list = paginator.page(page)
-    except PageNotAnInteger:
-        message_list = paginator.page(1)
-    except EmptyPage:
-        message_list = paginator.page(paginator.num_pages)
-    initParam['message_list'] = message_list
+    messages = messageModels.Message.objects.filter(sender_id=user.id).order_by('-submit_date')
+    initParam['message_list'] = common.queryWithPaginator(request, page=page, obj=messages)
 
     return render_to_response("dashboard/sent_messages.html", initParam, context_instance=RequestContext(request))
 
@@ -150,8 +134,8 @@ def myListing(request, *args, **kwargs):
 
 def queryAppServiceDetail(request, *args, **kwargs):
     """Return bid count."""
-    if kwargs.get('app'):
-        return kwargs.get('app').bidding_set.count()
+    if kwargs.get('obj_param'):
+        return kwargs.get('obj_param').bidding_set.count()
     return None
 
 
@@ -246,6 +230,29 @@ def unwatchApp(request, *args, **kwargs):
 
 
 @csrf_protect
+@login_required(login_url='/usersetting/home/')
+def watchApps(request, *args, **kwargs):
+    """Query user's watch apps in my watch apps page."""
+    initParam = {}
+    page = request.GET.get('page', 1)
+    user = get_object_or_404(User, pk=request.user.id, username=request.user.username)
+    watch_apps = models.WatchApp.objects.filter(buyer_id=user.id)
+    initParam['watch_apps'] = common.queryWithPaginator(request, page=page,
+                                                        obj=watch_apps, query_method=queryAppMaxPrice)
+
+    return render_to_response("dashboard/watched_apps.html", initParam, context_instance=RequestContext(request))
+
+
+def queryAppMaxPrice(request, *args, **kwargs):
+    """Return app max price."""
+    watchApp = kwargs.get('obj_param')
+    if watchApp:
+        max_price = watchApp.app.bidding_set.filter(status=1).aggregate(Max('price'))
+        return max_price.get('price__max')
+    return None
+
+
+@csrf_protect
 @transaction.commit_on_success
 @login_required(login_url='/usersetting/home/')
 def watchSeller(request, *args, **kwargs):
@@ -298,9 +305,56 @@ def unwatchSeller(request, *args, **kwargs):
     return HttpResponse(json.dumps(data), mimetype=u'application/json')
 
 
-def watched(request, *args, **kwargs):
-    return render_to_response("dashboard/watched.html",{"payment_accounts":'test'},
-                        context_instance=RequestContext(request))
+@csrf_protect
+@login_required(login_url='/usersetting/home/')
+def watchSellers(request, *args, **kwargs):
+    """Query user's watch sellers in my watch sellers page."""
+    initParam = {}
+    page = request.GET.get('page', 1)
+    user = get_object_or_404(User, pk=request.user.id, username=request.user.username)
+    watch_sellers = models.WatchSeller.objects.filter(buyer_id=user.id)
+    initParam['watch_sellers'] = common.queryWithPaginator(request, page=page,
+                                                        obj=watch_sellers, query_method=querySellerApps)
+    return render_to_response("dashboard/watched_sellers.html", initParam, context_instance=RequestContext(request))
+
+
+def querySellerApps(request, *args, **kwargs):
+    """Return The user's app count."""
+    watchSeller = kwargs.get('obj_param')
+    return  watchSeller.seller.app_set.count()
+    return None
+
+
+@csrf_protect
+@transaction.commit_on_success
+@login_required(login_url='/usersetting/home/')
+def watchCategory(request, *args, **kwargs):
+    data = {}
+    try:
+        dict = request.POST
+    except:
+        dict = request.GET
+    return HttpResponse(json.dumps(data), mimetype=u'application/json')
+
+
+@csrf_protect
+@transaction.commit_on_success
+@login_required(login_url='/usersetting/home/')
+def unwatchCategory(request, *args, **kwargs):
+    data = {}
+    try:
+        dict = request.POST
+    except:
+        dict = request.GET
+    return HttpResponse(json.dumps(data), mimetype=u'application/json')
+
+
+@csrf_protect
+@login_required(login_url='/usersetting/home/')
+def watchCategories(request, *args, **kwargs):
+    """Query user's watch categories in my watch categories page."""
+    initParam = {}
+    return render_to_response("dashboard/watched_categories.html", initParam, context_instance=RequestContext(request))
 
 
 def past_invoices(request, *args, **kwargs):

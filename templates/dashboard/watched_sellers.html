@@ -1,0 +1,30 @@
+{% extends "dashboard/activity.html" %}
+{% block dashboard_detail %}
+      <fieldset>
+        <legend>Watch Sellers</legend>
+          <ul class="inbox_list">
+
+            <li>
+               <div class="app_title">Seller</div>
+               <div class="app_title">App count</div>
+            </li>
+           {% for watch_seller in watch_sellers %}
+               <li>
+                   <div class="app_title">{{ watch_seller.0.seller.username }}</div>
+                   <div class="app_title"><a href="#">
+                       {{ watch_seller.1|default:0 }}
+                   </a></div>
+               </li>
+           {% empty %}
+               No watch seller.
+           {% endfor %}
+          </ul>
+           {% if watch_sellers %}
+             <div class="pagination" style="float: right">
+                {% if watch_sellers.has_previous %}<a href="?page={{ watch_sellers.previous_page_number }}">previous</a>{% endif %}
+                Page {{ watch_sellers.number }} of {{ watch_sellers.paginator.num_pages }}
+                {% if watch_sellers.has_next %}<a href="?page={{ watch_sellers.next_page_number }}">next</a>{% endif %}
+             </div>
+           {% endif %}
+       </fieldset>
+{% endblock %}

@@ -1,0 +1,34 @@
+{% extends "dashboard/activity.html" %}
+{% block dashboard_detail %}
+      <fieldset>
+        <legend>Watch Apps</legend>
+          <ul class="inbox_list">
+
+            <li>
+               <div class="app_title">App Name</div>
+               <div class="app_title">Ending Date</div>
+               <div class="app_title">Current Price</div>
+            </li>
+           {% for watch_app in watch_apps %}
+               <li>
+                   <div class="app_title">
+                       <a href="{% url 'query:app_detail' watch_app.0.app.id %}">{{ watch_app.0.app.app_name }}</a>
+                   </div>
+                   <div class="app_title">{{ watch_app.0.app.end_date|date:"Y-m-d H:i"|default:"N/A" }}</div>
+                   <div class="app_title"><a href="{% url 'bid:bid_list' watch_app.0.app.id %}">
+                       {{ watch_app.1|floatformat:"-2"|default:0 }} {{ watch_app.0.app.currency.currency }}
+                   </a></div>
+               </li>
+           {% empty %}
+               No watch app.
+           {% endfor %}
+          </ul>
+           {% if watch_apps %}
+             <div class="pagination" style="float: right">
+                {% if watch_apps.has_previous %}<a href="?page={{ watch_apps.previous_page_number }}">previous</a>{% endif %}
+                Page {{ watch_apps.number }} of {{ watch_apps.paginator.num_pages }}
+                {% if watch_apps.has_next %}<a href="?page={{ watch_apps.next_page_number }}">next</a>{% endif %}
+             </div>
+           {% endif %}
+       </fieldset>
+{% endblock %}

@@ -14,12 +14,12 @@
                    <div class="app_title">
                        <a href="{% url 'query:app_detail' app.0 %}">{{ app.2 }}</a>
                    </div>
-                   <div class="app_title">{{ app.3|date:"Y-m-d G:i"|default:"N/A" }}</div>
+                   <div class="app_title">{{ app.3|date:"Y-m-d H:i"|default:"N/A" }}</div>
                    <div class="app_title">
-                       <a href="{% url 'bid:bid_list' app.0 %}">{{ app.1 }}{{ app.5 }}</a>
+                       <a href="{% url 'bid:bid_list' app.0 %}">{{ app.1|floatformat:"-2"|default:0 }} {{ app.5 }}</a>
                    </div>
                    <div class="app_title">
-                       <a href="{% url 'bid:bid_list' app.0 %}">{{ app.4 }}{{ app.5 }}</a>
+                       <a href="{% url 'bid:bid_list' app.0 %}">{{ app.4|floatformat:"-2"|default:0 }} {{ app.5 }}</a>
                    </div>
                </li>
            {% empty %}

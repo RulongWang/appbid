@@ -21,17 +21,16 @@
 
            {% for message in message_list %}
                <li>
-               <a href="/dashboard/message-detail/send/{{ message.id }}?page={{ message_list.number }}">
+               <a href="/dashboard/message-detail/send/{{ message.0.id }}?page={{ message_list.number }}">
                <div class="inbox_from">
 
-                   {{ message.receiver.username }}
+                   {{ message.0.receiver.username }}
                </div>
                <div class="inbox_subject">
-                   {{ message.title }}
+                   {{ message.0.title }}
                </div>
                <div class="inbox_received_time">
-                   {{ message.submit_date|date:"d M Y" }}, {{ message.submit_date|time:"H:i"}}
-
+                   {{ message.0.submit_date|date:"Y-m-d H:i"|default:"N/A" }}
                </div>
                 </a>
                </li>
