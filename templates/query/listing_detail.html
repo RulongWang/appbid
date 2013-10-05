@@ -98,6 +98,17 @@
             <div class="detail_right">
                 <div class="widget">
                    <span class="widget_title">Seller</span>
+                   <div>
+                       {% if request.user.id != app.publisher.id %}
+                           {% ifequal request.user.is_authenticated True %}
+                               <span id="watch_seller" class="buyitnow">{% if watch_seller and watch_seller == True %}Unwatch{% else %}Watch{% endif %}</span>
+                           {% else %}
+                               <a href="/usersetting/home?next={{ request.path }}" style="text-decoration:none">
+                                   <span class="buyitnow">Watch</span>
+                               </a>
+                           {% endifequal %}
+                       {% endif %}
+                   </div>
                    <ul>
                        <li><span>{{ app.seller_name }}</span>
                            {% if app.publisher.username != request.user.username %}
@@ -197,5 +208,41 @@
     function reply(username) {
         $("#id_comment").text("@"+username+" ");
     }
+    $("#watch_seller").click(function() {
+        var value = $("#watch_seller").text();
+        if ("{{ request.user.is_authenticated }}" == "True" && "{{ app.publisher.id }}" != "{{ request.user.id }}") {
+            var id = '{{ app.publisher.id }}';
+            if (value == "Watch") {
+                $.ajax({
+                    type:"POST",
+                    url:"{% url 'dashboard:watch_seller' app.publisher.id %}",
+                    data:{
+                        user_id:id,
+                        csrfmiddlewaretoken: "{{ csrf_token }}"
+                    },
+                    success:function(data) {
+                        if(data.ok === 'true') {
+                            $("#watch_seller").text("Unwatch");
+                        }
+                    }
+                });
+            }
+            else {
+                $.ajax({
+                    type:"POST",
+                    url:"{% url 'dashboard:unwatch_seller' app.publisher.id %}",
+                    data:{
+                        user_id:id,
+                        csrfmiddlewaretoken: "{{ csrf_token }}"
+                    },
+                    success:function(data) {
+                        if(data.ok === 'true') {
+                            $("#watch_seller").text("Watch");
+                        }
+                    }
+                });
+            }
+        }
+    });
 </script>
 {% endblock %}

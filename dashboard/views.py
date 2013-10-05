@@ -203,7 +203,7 @@ def watchApp(request, *args, **kwargs):
         dict = request.GET
     try:
         apps = appModels.App.objects.filter(pk=dict.get('app_id'))
-        if apps:
+        if apps and apps[0].publisher.id != request.user.id:
             data['ok'] = 'true'
             count = models.WatchApp.objects.filter(app_id=apps[0].id, buyer_id=request.user.id).count()
             if count == 0:
@@ -230,7 +230,7 @@ def unwatchApp(request, *args, **kwargs):
         dict = request.GET
     try:
         apps = appModels.App.objects.filter(pk=dict.get('app_id'))
-        if apps:
+        if apps and apps[0].publisher.id != request.user.id:
             data['ok'] = 'true'
             watchApps = models.WatchApp.objects.filter(app_id=apps[0].id, buyer_id=request.user.id)
             if watchApps:
@@ -242,6 +242,59 @@ def unwatchApp(request, *args, **kwargs):
     except:
         data['ok'] = 'false'
         data['message'] = _('Unwatch app failed.')
+    return HttpResponse(json.dumps(data), mimetype=u'application/json')
+
+
+@csrf_protect
+@transaction.commit_on_success
+@login_required(login_url='/usersetting/home/')
+def watchSeller(request, *args, **kwargs):
+    data = {}
+    try:
+        dict = request.POST
+    except:
+        dict = request.GET
+    try:
+        users = User.objects.filter(pk=dict.get('user_id'))
+        if users and users[0].id != request.user.id:
+            data['ok'] = 'true'
+            count = models.WatchSeller.objects.filter(seller_id=users[0].id, buyer_id=request.user.id).count()
+            if count == 0:
+                watchSeller = models.WatchSeller()
+                watchSeller.seller = users[0]
+                watchSeller.buyer = request.user
+                watchSeller.save()
+        else:
+            raise
+    except:
+        data['ok'] = 'false'
+        data['message'] = _('Watch seller failed.')
+    return HttpResponse(json.dumps(data), mimetype=u'application/json')
+
+
+@csrf_protect
+@transaction.commit_on_success
+@login_required(login_url='/usersetting/home/')
+def unwatchSeller(request, *args, **kwargs):
+    data = {}
+    try:
+        dict = request.POST
+    except:
+        dict = request.GET
+    try:
+        users = User.objects.filter(pk=dict.get('user_id'))
+        if users and users[0].id != request.user.id:
+            data['ok'] = 'true'
+            watchSellers = models.WatchSeller.objects.filter(seller_id=users[0].id, buyer_id=request.user.id)
+            if watchSellers:
+                watchSellers[0].delete()
+            else:
+                raise
+        else:
+            raise
+    except:
+        data['ok'] = 'false'
+        data['message'] = _('Unwatch seller failed.')
     return HttpResponse(json.dumps(data), mimetype=u'application/json')
 
 

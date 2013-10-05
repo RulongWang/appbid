@@ -15,4 +15,7 @@ urlpatterns = patterns('',
 
     url(r'^watch-app/(?P<app_id>\d+)$', views.watchApp, name='watch_app'),
     url(r'^unwatch-listing/(?P<app_id>\d+)$', views.unwatchApp, name='unwatch_app'),
+
+    url(r'^watch-seller/(?P<user_id>\d+)$', views.watchSeller, name='watch_seller'),
+    url(r'^unwatch-seller/(?P<user_id>\d+)$', views.unwatchSeller, name='unwatch_seller'),
 )
