@@ -22,6 +22,11 @@
                           Beginning bid in:{% include "bid/remaintime.html" %}
                         </div>
                     {% endif %}
+                    {% if app.status == 3 %}
+                        <div style="color: red;">
+                          Closed in: {{ time_remaining.0|floatformat }} {{ time_remaining.1 }}{{ time_remaining.0|floatformat|pluralize }} {{ time_remaining.2 }}
+                        </div>
+                    {% endif %}
                 {% endif %}
                 <div style="margin-top: 10px;">
                     {% if request.user.id != app.publisher.id %}

@@ -171,16 +171,25 @@
                        {% for category, sub_list in category_map.items %}
                            <!--Category start-->
                            <li>
-                               <span><a href="/query/featured?category={{ category.apple_id }}">{{ category.name }}({{ sub_list.0 }})</a></span>
+                                <span><a href="/query/featured?category={{ category.apple_id }}">{{ category.name }}({{ sub_list.0 }})</a></span>
+                                <!-- watch start -->
+                                {% ifequal request.user.is_authenticated True %}
+                                    <span class="buyitnow" category_id="{{ category.apple_id }}" onclick="watchCategory(this)">{% if sub_list.1 == True %}Unwatch{% else %}Watch{% endif %}</span>
+                                {% else %}
+                                    <a href="/usersetting/home?next={{ request.path }}" style="text-decoration:none">
+                                        <span class="buyitnow">Watch</span>
+                                    </a>
+                                {% endifequal %}
+                                <!-- watch end -->
                            </li>
                            <!--Category end-->
 
                            <!--SubCategory start-->
-                           {% if sub_list|length > 1 %}
+                           {% if sub_list|length > 2 %}
                                <li>
                                    <ul>
                                    {% for subcategory in sub_list %}
-                                       {% if forloop.counter > 1 %}
+                                       {% if forloop.counter > 2 %}
                                            <li>
                                                <span><a href="/query/featured?subcategory={{ subcategory.0.apple_id }}">{{ subcategory.0.name }}({{ subcategory.1 }})</a></span>
                                            </li>
@@ -244,5 +253,41 @@
             }
         }
     });
+    function watchCategory(obj) {
+        var value = $(obj).text();
+        if ("{{ request.user.is_authenticated }}" == "True") {
+            var id = $(obj).attr("category_id");
+            if (value == "Watch") {
+                $.ajax({
+                    type:"POST",
+                    url:"/dashboard/watch-category/"+id,
+                    data:{
+                        category_id:id,
+                        csrfmiddlewaretoken: "{{ csrf_token }}"
+                    },
+                    success:function(data) {
+                        if(data.ok === 'true') {
+                            $(obj).text("Unwatch");
+                        }
+                    }
+                });
+            }
+            else {
+                $.ajax({
+                    type:"POST",
+                    url:"/dashboard/unwatch-category/"+id,
+                    data:{
+                        category_id:id,
+                        csrfmiddlewaretoken: "{{ csrf_token }}"
+                    },
+                    success:function(data) {
+                        if(data.ok === 'true') {
+                            $(obj).text("Watch");
+                        }
+                    }
+                });
+            }
+        }
+    }
 </script>
 {% endblock %}

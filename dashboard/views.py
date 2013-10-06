@@ -322,7 +322,7 @@ def querySellerApps(request, *args, **kwargs):
     """Return The user's app count."""
     watchSeller = kwargs.get('obj_param')
     if watchSeller:
-        return appModels.App.objects.filter(Q(status=2) | Q(status=3), publisher_id=watchSeller.seller.id).count()
+        return appModels.App.objects.exclude(status=1).filter(publisher_id=watchSeller.seller.id).count()
     return None
 
 
@@ -335,6 +335,21 @@ def watchCategory(request, *args, **kwargs):
         dict = request.POST
     except:
         dict = request.GET
+    try:
+        categories = appModels.Category.objects.filter(apple_id=dict.get('category_id'))
+        if categories:
+            data['ok'] = 'true'
+            count = models.WatchCategory.objects.filter(category_id=categories[0].id, buyer_id=request.user.id).count()
+            if count == 0:
+                watchCategory = models.WatchCategory()
+                watchCategory.category = categories[0]
+                watchCategory.buyer = request.user
+                watchCategory.save()
+        else:
+            raise
+    except:
+        data['ok'] = 'false'
+        data['message'] = _('Watch category failed.')
     return HttpResponse(json.dumps(data), mimetype=u'application/json')
 
 
@@ -347,6 +362,20 @@ def unwatchCategory(request, *args, **kwargs):
         dict = request.POST
     except:
         dict = request.GET
+    try:
+        categories = appModels.Category.objects.filter(apple_id=dict.get('category_id'))
+        if categories:
+            data['ok'] = 'true'
+            watchCategories = models.WatchCategory.objects.filter(category_id=categories[0].id, buyer_id=request.user.id)
+            if watchCategories:
+                watchCategories[0].delete()
+            else:
+                raise
+        else:
+            raise
+    except:
+        data['ok'] = 'false'
+        data['message'] = _('Unwatch category failed.')
     return HttpResponse(json.dumps(data), mimetype=u'application/json')
 
 

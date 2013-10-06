@@ -79,7 +79,7 @@ def registerApp(request, *args, **kwargs):
     #Initial data
     initParam['form'] = form
     initParam['attachmentForm'] = forms.AttachmentForm()
-    initParam['apps'] = appModels.App.objects.filter(publisher=request.user).order_by('-status', 'create_time')
+    initParam['apps'] = appModels.App.objects.filter(publisher=request.user).order_by('status', 'create_time')
     #For Payment
     initParam['serviceItems'] = orderModels.ServiceItem.objects.filter(end_date__gte=datetime.datetime.now())
     return render_to_response(kwargs.get('backPage'), initParam, context_instance=RequestContext(request))

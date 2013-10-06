@@ -7,7 +7,7 @@ from django.shortcuts import render_to_response, render, RequestContext, get_obj
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.utils.translation import ugettext as _
 from django.views.decorators.csrf import csrf_protect
-from django.db.models import Q, Max
+from django.db.models import Max
 from django.contrib.auth.models import User
 
 from appbid import models as appModels
@@ -70,16 +70,16 @@ def listFeatured(request, *args, **kwargs):
     initParam['currency'] = get_object_or_404(appModels.Currency, pk=currency_id)
 
     if revenue_min is None and category is None and subcategory is None and monetize is None:
-        apps = appModels.App.objects.filter(status=2)
+        apps = appModels.App.objects.exclude(status=1).order_by('status')
 
     #Revenue Part
     REVENUE_LIST = [2000, 1000, 500, 100, 0]
     initParam['revenue_list'] = []
     for i in range(len(REVENUE_LIST)):
         if i == 0:
-            temp_apps = appModels.App.objects.filter(status=2, revenue__gte=REVENUE_LIST[i])
+            temp_apps = appModels.App.objects.exclude(status=1).filter(revenue__gte=REVENUE_LIST[i]).order_by('status')
         else:
-            temp_apps = appModels.App.objects.filter(status=2, revenue__lt=REVENUE_LIST[i-1], revenue__gte=REVENUE_LIST[i])
+            temp_apps = appModels.App.objects.exclude(status=1).filter(revenue__lt=REVENUE_LIST[i-1], revenue__gte=REVENUE_LIST[i]).order_by('status')
         if revenue_min and string.atoi(revenue_min) == REVENUE_LIST[i]:
             apps = temp_apps
             title = _('Revenue(%(param)s/Month)') % {'param': initParam['currency'].currency}
@@ -93,11 +93,11 @@ def listFeatured(request, *args, **kwargs):
         monetizeModel = get_object_or_404(appModels.Monetize, pk=monetize)
     for temp_monetize in appModels.Monetize.objects.all():
         if monetize and monetizeModel == temp_monetize:
-            apps = monetizeModel.app_set.filter(status=2, monetize=monetizeModel)
+            apps = monetizeModel.app_set.exclude(status=1).filter(monetize=monetizeModel).order_by('status')
             initParam['monetize_list'].append([temp_monetize, len(apps)])
             initParam['query_tile'] = [_('Monetize'), temp_monetize.method, ''.join(['?monetize=', monetize])]
         else:
-            initParam['monetize_list'].append([temp_monetize, len(temp_monetize.app_set.filter(status=2))])
+            initParam['monetize_list'].append([temp_monetize, temp_monetize.app_set.exclude(status=1).count()])
 
     #Category Part
     initParam['category_list'] = []
@@ -105,23 +105,23 @@ def listFeatured(request, *args, **kwargs):
         categoryModel = get_object_or_404(appModels.Category, apple_id=category)
     for temp_category in appModels.Category.objects.all():
         if category and categoryModel == temp_category:
-            apps = appModels.App.objects.filter(status=2, category=categoryModel)
+            apps = appModels.App.objects.exclude(status=1).filter(category=categoryModel).order_by('status')
             initParam['category_list'].append([temp_category, len(apps)])
             initParam['query_tile'] = [_('Category'), temp_category.name, ''.join(['?category=', category])]
         else:
-            initParam['category_list'].append([temp_category, len(temp_category.app_set.filter(status=2))])
+            initParam['category_list'].append([temp_category, temp_category.app_set.exclude(status=1).count()])
     common.sortWithIndexLie(initParam['category_list'], 1, order='desc')
 
     #SubCategory Part from app detail page.
     if subcategory:
         subcategoryModel = get_object_or_404(appModels.SubCategory, apple_id=subcategory)
-        apps = appModels.App.objects.filter(status=2, subcategory=subcategoryModel)
+        apps = appModels.App.objects.exclude(status=1).filter(subcategory=subcategoryModel).order_by('status')
         initParam['query_tile'] = ['SubCategory', subcategoryModel.name, ''.join(['?subcategory=', subcategory])]
 
     #Seller part from watch sellers page.
     if seller:
         sellerModel = get_object_or_404(User, pk=seller)
-        apps = appModels.App.objects.filter(Q(status=2) | Q(status=3), publisher_id=sellerModel.id)
+        apps = appModels.App.objects.exclude(status=1).filter(publisher_id=sellerModel.id).order_by('status')
         initParam['query_tile'] = ['Seller', sellerModel.username, ''.join(['?seller=', seller])]
 
     #Query data
@@ -144,17 +144,22 @@ def getDetail(request, *args, **kwargs):
 
         category_map = {}
         for category in app.category.all():
-            # Map key:category, Map value list[0]:the app number of category
-            category_map[category] = [len(category.app_set.all())]
+            #Check if user watch the category, if user is login.
+            if request.user.is_authenticated() and dashboardModels.WatchCategory.objects.filter(category_id=category.id, buyer_id=request.user.id).count():
+                # Map key:category, Map value list[0]:the app number of category, Map value list[1]:watch category
+                category_map[category] = [category.app_set.exclude(status=1).count(), True]
+            else:
+                # Map key:category, Map value list[0]:the app number of category, Map value list[1]:unwatch category
+                category_map[category] = [category.app_set.exclude(status=1).count(), False]
         for subcategory in app.subcategory.all():
             if category_map.get(subcategory.category):
-                # Map value list[1]:subcategory, Map value list[2]:the app number of subcategory
-                category_map.get(subcategory.category).append([subcategory, len(subcategory.app_set.all())])
+                # Map value list[2]:subcategory, Map value list[3]:the app number of subcategory
+                category_map.get(subcategory.category).append([subcategory, subcategory.app_set.exclude(status=1).count()])
         initParam['category_map'] = category_map
 
         initBidInfo(request, app=app, initParam=initParam)
 
-        #Check if user watch the app, if user is login.
+        #Check if user watch the app/seller, if user is login.
         if request.user.is_authenticated():
             if dashboardModels.WatchApp.objects.filter(app_id=app.id, buyer_id=request.user.id).count():
                 initParam['watch_app'] = True
@@ -182,12 +187,14 @@ def initBidInfo(request, *args, **kwargs):
         initParam['bid_price'] = app.minimum_bid
     initParam['begin_bid'] = False
     current_date = datetime.datetime.combine(datetime.date.today(), datetime.time())
-    if app.begin_date and app.end_date:
+    if app.status == 2 and app.begin_date and app.end_date:
         if current_date >= app.begin_date:
             initParam['begin_bid'] = True
             initParam['time_remaining'] = time.mktime(time.strptime(str(app.end_date), '%Y-%m-%d %H:%M:%S'))
         else:
             initParam['time_remaining'] = time.mktime(time.strptime(str(app.begin_date), '%Y-%m-%d %H:%M:%S'))
+    elif app.status == 3:
+        initParam['time_remaining'] = common.dateBefore(app.end_date)
 
 
 def queryAppsWithPaginator(request, *args, **kwargs):
