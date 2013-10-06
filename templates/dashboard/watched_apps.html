@@ -8,6 +8,7 @@
                <div class="app_title">App Name</div>
                <div class="app_title">Ending Date</div>
                <div class="app_title">Current Price</div>
+               <div class="app_title">Unwatch</div>
             </li>
            {% for watch_app in watch_apps %}
                <li>
@@ -18,6 +19,9 @@
                    <div class="app_title"><a href="{% url 'bid:bid_list' watch_app.0.app.id %}">
                        {{ watch_app.1|floatformat:"-2"|default:0 }} {{ watch_app.0.app.currency.currency }}
                    </a></div>
+                   <div class="app_title">
+                       <span class="buyitnow" onclick="unwatchApp(this)" app_id="{{ watch_app.0.app.id }}">Unwatch</span>
+                   </div>
                </li>
            {% empty %}
                No watch app.
@@ -31,4 +35,22 @@
              </div>
            {% endif %}
        </fieldset>
+<script type="text/javascript" language="javascript">
+    function unwatchApp(obj) {
+        var id = $(obj).attr("app_id");
+        $.ajax({
+            type:"POST",
+            url:"/dashboard/unwatch-app/"+id,
+            data:{
+                app_id:id,
+                csrfmiddlewaretoken: "{{ csrf_token }}"
+            },
+            success:function(data) {
+                if(data.ok === 'true') {
+                    location.reload();
+                }
+            }
+        });
+    }
+</script>
 {% endblock %}

@@ -6,7 +6,8 @@
 
             <li>
                <div class="app_title">Seller</div>
-               <div class="app_title">App count</div>
+               <div class="app_title">App Count</div>
+               <div class="app_title">Unwatch</div>
             </li>
            {% for watch_seller in watch_sellers %}
                <li>
@@ -14,6 +15,9 @@
                    <div class="app_title"><a href="/query/featured?seller={{ watch_seller.0.seller.id }}">
                        {{ watch_seller.1|default:0 }}
                    </a></div>
+                   <div class="app_title">
+                       <span class="buyitnow" onclick="unwatchSeller(this)" seller_id="{{ watch_seller.0.seller.id }}">Unwatch</span>
+                   </div>
                </li>
            {% empty %}
                No watch seller.
@@ -27,4 +31,22 @@
              </div>
            {% endif %}
        </fieldset>
+<script type="text/javascript" language="javascript">
+    function unwatchSeller(obj) {
+        var id = $(obj).attr("seller_id");
+        $.ajax({
+            type:"POST",
+            url:"/dashboard/unwatch-seller/"+id,
+            data:{
+                user_id:id,
+                csrfmiddlewaretoken: "{{ csrf_token }}"
+            },
+            success:function(data) {
+                if(data.ok === 'true') {
+                    location.reload();
+                }
+            }
+        });
+    }
+</script>
 {% endblock %}
