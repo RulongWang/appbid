@@ -1,4 +1,52 @@
 {% extends "dashboard/activity.html" %}
 {% block dashboard_detail %}
-    categories
+      <fieldset>
+        <legend>Watch Categories</legend>
+          <ul class="inbox_list">
+
+            <li>
+               <div class="app_title">Category</div>
+               <div class="app_title">App Count</div>
+               <div class="app_title">Unwatch</div>
+            </li>
+           {% for watch_category in watch_categories %}
+               <li>
+                   <div class="app_title">{{ watch_category.0.category.name }}</div>
+                   <div class="app_title"><a href="/query/featured?category={{ watch_category.0.category.apple_id }}">
+                       {{ watch_category.1|default:0 }}
+                   </a></div>
+                   <div class="app_title">
+                       <span class="buyitnow" onclick="unwatchCategory(this)" category_id="{{  watch_category.0.category.apple_id }}">Unwatch</span>
+                   </div>
+               </li>
+           {% empty %}
+               No watch category.
+           {% endfor %}
+          </ul>
+           {% if watch_categories %}
+             <div class="pagination" style="float: right">
+                {% if watch_categories.has_previous %}<a href="?page={{ watch_categories.previous_page_number }}">previous</a>{% endif %}
+                Page {{ watch_categories.number }} of {{ watch_categories.paginator.num_pages }}
+                {% if watch_categories.has_next %}<a href="?page={{ watch_categories.next_page_number }}">next</a>{% endif %}
+             </div>
+           {% endif %}
+       </fieldset>
+<script type="text/javascript" language="javascript">
+    function unwatchCategory(obj) {
+        var id = $(obj).attr("category_id");
+        $.ajax({
+            type:"POST",
+            url:"/dashboard/unwatch-category/"+id,
+            data:{
+                category_id:id,
+                csrfmiddlewaretoken: "{{ csrf_token }}"
+            },
+            success:function(data) {
+                if(data.ok === 'true') {
+                    location.reload();
+                }
+            }
+        });
+    }
+</script>
 {% endblock %}

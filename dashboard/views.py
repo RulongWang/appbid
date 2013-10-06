@@ -384,7 +384,20 @@ def unwatchCategory(request, *args, **kwargs):
 def watchCategories(request, *args, **kwargs):
     """Query user's watch categories in my watch categories page."""
     initParam = {}
+    page = request.GET.get('page', 1)
+    user = get_object_or_404(User, pk=request.user.id, username=request.user.username)
+    watch_categories = models.WatchCategory.objects.filter(buyer_id=user.id)
+    initParam['watch_categories'] = common.queryWithPaginator(request, page=page,
+                                                           obj=watch_categories, query_method=queryCategoryApps)
     return render_to_response("dashboard/watched_categories.html", initParam, context_instance=RequestContext(request))
+
+
+def queryCategoryApps(request, *args, **kwargs):
+    """Return The category's app count."""
+    watchCategory = kwargs.get('obj_param')
+    if watchCategory:
+        return watchCategory.category.app_set.exclude(status=1).count()
+    return None
 
 
 def past_invoices(request, *args, **kwargs):
