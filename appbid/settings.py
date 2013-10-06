@@ -150,6 +150,7 @@ INSTALLED_APPS = (
     'credit',
     'dashboard',
     'transaction',
+    'paypal',
 )
 
 # A sample logging configuration. The only tangible logging
@@ -199,3 +200,10 @@ EMAIL_HOST_PASSWORD = '20130101' #your email passowrd
 # CRONJOBS = [
 #     ('*/1 * * * *', 'utilities.job.jobTest')
 # ]
+
+
+#paypal setting
+PAYPAL_USER = 'me_api1.rulong.org'
+PAYPAL_PASSWORD = '1380869543'
+PAYPAL_SIGNATURE = 'A2vypYAyoKWCr5HKJHXEzqAil0rBANhDLrGYeKZ-H8Wjmb.OShNvkwhY'
+PAYPAL_DEBUG = True # for sandbox. False for real environment.

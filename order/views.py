@@ -45,10 +45,13 @@ def checkout(request, *args, **kwargs):
             service_expiry_date = string.atoi(common.getSystemParam(key='service_expiry_date', default=31))
             if serviceDetail.is_payed:
                 initParam['order_error'] = _('The payment is paid.')
+
             elif (initParam['begin_date'] and form.cleaned_data['start_date'] < initParam['begin_date']) or days != service_expiry_date:
                 initParam['order_error'] = _('Service date is not correct.')
+
             else:
                 #Invoke payment method - payment for service detail
+                initParam['amount'] = '30.0'#test amount for paypal payment
                 payment = paymentViews.payment(request, initParam=initParam)
                 if payment == 'success':
                     form.save(commit=False)
