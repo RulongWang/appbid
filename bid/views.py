@@ -1,7 +1,7 @@
 __author__ = 'Jarvis'
 
 from django.http import Http404
-from django.shortcuts import render_to_response, RequestContext, HttpResponseRedirect, get_object_or_404
+from django.shortcuts import render_to_response, RequestContext, redirect, get_object_or_404
 from django.views.decorators.csrf import csrf_protect
 from django.contrib.auth.decorators import login_required
 from django.db import transaction
@@ -48,12 +48,12 @@ def createBid(request, *args, **kwargs):
                         send_message = request.POST.get('send_message')
                         if send_message and send_message == 'yes':
                             if sendMessage(request, initParam=initParam):
-                                return HttpResponseRedirect(reverse('bid:bid_list', kwargs={'pk': app.id}))
+                                return redirect(reverse('bid:bid_list', kwargs={'pk': app.id}))
                             else:
                                 initParam['biddingForm'] = biddingForm
                                 initParam['bid_error'] = initParam['message_error']
                         else:
-                            return HttpResponseRedirect(reverse('bid:bid_list', kwargs={'pk': app.id}))
+                            return redirect(reverse('bid:bid_list', kwargs={'pk': app.id}))
                     else:
                         initParam['biddingForm'] = biddingForm
                         initParam['bid_error'] = _('The new bid has been submitted.')

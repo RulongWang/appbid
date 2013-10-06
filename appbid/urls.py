@@ -10,6 +10,7 @@ import bid.urls
 import dashboard.urls
 import payment.urls
 import order.urls
+import transaction.urls
 
 
 # Uncomment the next two lines to enable the admin:
@@ -32,6 +33,7 @@ urlpatterns = patterns('',
     url(r'^dashboard/', include(dashboard.urls, namespace='dashboard')),
     url(r'^order/', include(order.urls, namespace='order')),
     url(r'^payment/', include(payment.urls, namespace='payment')),
+    url(r'^transaction/', include(transaction.urls, namespace='transaction')),
 )
 
 if settings.DEBUG:

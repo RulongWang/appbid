@@ -40,7 +40,9 @@
             </div>
             {% if forloop.counter == 1 and app.publisher.username == request.user.username %}
             <div>
-                <span><a href="#"><input id="id_trade" type="button" value="Trade Now" /></a></span>
+                <span><a href="{% url 'transaction:trade_now' app.id bid_info.0.buyer.id bid_info.0.id %}">
+                    <input id="id_trade" type="button" value="Trade Now" />
+                </a></span>
             </div>
             {% endif %}
         </div>

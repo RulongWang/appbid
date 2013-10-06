@@ -13,6 +13,7 @@ from django.contrib.auth.models import User
 from appbid import models as appModels
 from order import models, forms
 from payment import views as paymentViews
+from transaction import views as transactionViews
 from utilities import common
 
 
@@ -68,6 +69,8 @@ def checkout(request, *args, **kwargs):
                     else:
                         app.end_date = form.cleaned_data['end_date']
                     app.save()
+                    #Init transaction model data
+                    transactionViews.initTransaction(request, app=app)
                     return render_to_response(initParam['success_url'], initParam, context_instance=RequestContext(request))
                 else:
                     initParam['order_error'] = _('Payment failed.')

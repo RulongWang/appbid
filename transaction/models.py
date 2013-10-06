@@ -14,9 +14,9 @@ class Transaction(models.Model):
     )
     app = models.OneToOneField(appModels.App)
     status = models.IntegerField(choices=STATUS, default=1)
-    seller = models.ForeignKey(User, related_name='txn_seller')
-    buyer = models.ForeignKey(User, related_name='txn_buyer')
-    price = models.FloatField()
+    seller = models.ForeignKey(User, null=True, related_name='txn_seller')
+    buyer = models.ForeignKey(User, null=True, related_name='txn_buyer')
+    price = models.FloatField(null=True)
     end_time = models.DateTimeField(null=True)
 
 
@@ -39,5 +39,5 @@ class CreditRating(models.Model):
     rator = models.ForeignKey(User, related_name='credit_rating_rator')
     target = models.ForeignKey(User, related_name='credit_rating_target')
     level = models.IntegerField(default=5)
-    content = models.TextField()
+    content = models.TextField(null=True)
     create_time = models.DateTimeField(auto_now_add=True)

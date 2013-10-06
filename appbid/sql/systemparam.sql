@@ -9,3 +9,5 @@ insert into system_systemparam(`key`,`value`,`description`) values('page_range',
 insert into system_systemparam(`key`,`value`,`description`) values('currency','2','The default currency is 2 - USD.');
 insert into system_systemparam(`key`,`value`,`description`) values('monetize','4','The default monetize is 4 - Free.');
 insert into system_systemparam(`key`,`value`,`description`) values('credit_point','100','The default credit point is 100.');
+insert into system_systemparam(`key`,`value`,`description`) values('paid_expiry_date','7','The expiry date of buyer paid is 7 days.');
+insert into system_systemparam(`key`,`value`,`description`) values('txn_expiry_date','15','The expiry date of app transaction is 15 days.');
