@@ -57,7 +57,16 @@
                        <a href="{% url 'bid:bid_list' txn.0.app.id %}">{{ txn.0.price }}</a>
                    </div>
                    <div class="app_title">
-                       <a href="{% url 'transaction:trade_action' 'buy' txn.0.app.id txn.0.buyer.id %}">Action</a>
+                       {% ifequal txn.0.status 2 %}
+                           <!-- TODO: will change to pay url for buyer. -->
+                           <a href="{% url 'transaction:trade_action' 'buy' txn.0.app.id txn.0.buyer.id %}">
+                               <input id="id_action" type="button" value="Pay now" />
+                           </a>
+                       {% else %}
+                           <a href="{% url 'transaction:trade_action' 'buy' txn.0.app.id txn.0.buyer.id %}">
+                               <input id="id_action" type="button" value="Action" />
+                           </a>
+                       {% endifequal %}
                    </div>
                    <div class="app_title">{{ txn.1 }}</div>
                </li>

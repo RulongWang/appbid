@@ -1,5 +1,6 @@
 __author__ = 'Jarvis'
 
+import time
 import datetime
 import string
 
@@ -91,12 +92,17 @@ def tradeNow(request, *args, **kwargs):
 def tradeAction(request, *args, **kwargs):
     """Query trade status."""
     initParam = {}
-    if 'sell' == kwargs.get('action'):
-        transaction = get_object_or_404(models.Transaction, app_id=kwargs.get('app_id'), seller_id=kwargs.get('user_id'))
-    elif 'buy' == kwargs.get('action'):
-        transaction = get_object_or_404(models.Transaction, app_id=kwargs.get('app_id'), buyer_id=kwargs.get('user_id'))
+    user_id = string.atoi(kwargs.get('user_id'))
+    action = kwargs.get('action')
+    if 'sell' == action and user_id == request.user.id:
+        transaction = get_object_or_404(models.Transaction, app_id=kwargs.get('app_id'), seller_id=user_id)
+    elif 'buy' == action and user_id == request.user.id:
+        transaction = get_object_or_404(models.Transaction, app_id=kwargs.get('app_id'), buyer_id=user_id)
     else:
         raise Http404
 
+    initParam['action'] = action
     initParam['transaction'] = transaction
+    initParam['time_remaining'] = time.mktime(time.strptime(str(transaction.end_time), '%Y-%m-%d %H:%M:%S'))
+
     return render_to_response('transaction/trade_action.html', initParam, context_instance=RequestContext(request))

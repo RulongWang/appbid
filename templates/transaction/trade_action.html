@@ -1,7 +1,52 @@
 {% extends "index.html" %}
 {% block mainContent %}
 {% load staticfiles %}
+<div>
     <div>
-        trade action.
+        <div>App Name: <a href="{% url 'query:app_detail' transaction.app.id %}">{{ transaction.app.app_name }}</a></div>
+        <div>Trade Price: {{ transaction.price }} {{ transaction.app.currency.currency }}</div>
+        <div>Buyer: {{ transaction.buyer.username }}</div>
+        {% if transaction.status == 2 %}
+            <div>
+                Buyer has {% include "bid/remaintime.html" %} to pay.
+            </div>
+            {% if transaction.buyer.id == request.user.id %}
+                <div>
+                    <!-- TODO: will change to pay url for buyer. -->
+                    <a href="">
+                        <input id="id_pay" type="button" value="pay">
+                    </a>
+                </div>
+            {% elif transaction.seller.id == request.user.id %}
+                <div>You can send email to ask buyer to pay ASAP.</div>
+                <div>
+                    <a href="">
+                        <input id="id_pay" type="button" value="Send Email">
+                    </a>
+                </div>
+            {% endif %}
+        {% elif transaction.status == 3 %}
+            <div>
+                The app transaction has {% include "bid/remaintime.html" %} to close.
+            </div>
+            {% if transaction.buyer.id == request.user.id %}
+                <div>
+                    <!-- TODO: will do it later. -->
+                    <a href="">
+                        <input id="id_pay" type="button" value="Finished Trade">
+                    </a>
+                </div>
+{#            {% elif transaction.seller.id == request.user.id %}#}
+{#                <div>You can send email to ask buyer to pay ASAP.</div>#}
+{#                <div>#}
+{#                    <a href="">#}
+{#                        <input id="id_pay" type="button" value="Send Email">#}
+{#                    </a>#}
+{#                </div>#}
+            {% endif %}
+        {% elif transaction.status == 4 %}
+            <!-- TODO: Comment the transaction for seller or buyer. -->
+        {% endif %}
     </div>
+</div>
 {% endblock %}
