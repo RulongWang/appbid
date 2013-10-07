@@ -28,7 +28,7 @@ def payment(request, *args, **kwargs):
     amount = initParam['amount']
     #Call PayPal api of payment
     p = PayPal()
-    result = p.SetExpressCheckout(amount, "USD", "http://beta.appswalk.com/paypal_return", "http://beta.appswalk.com/paypal_cancel")
+    result = p.SetExpressCheckout(amount, "USD", "http://beta.appswalk.com/payment/paypal_return", "http://beta.appswalk.com/payment/paypal_cancel")
     if result:
         redirect_url = p.paypal_url()
         print('success_excute_setExpressCheckout')

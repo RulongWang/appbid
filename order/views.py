@@ -53,28 +53,29 @@ def checkout(request, *args, **kwargs):
             else:
                 #Invoke payment method - payment for service detail
                 initParam['amount'] = '30.0'#test amount for paypal payment
-                payment = paymentViews.payment(request, initParam=initParam)
-                if payment == 'success':
-                    form.save(commit=False)
-                    serviceDetail.start_date = form.cleaned_data['start_date']
-                    serviceDetail.end_date = form.cleaned_data['end_date']
-                    serviceDetail.is_payed = True
-                    serviceDetail.save()
-                    # If app is draft or has been closed, change app to published after payment,.
-                    if app.status == 1 or app.status == 3:
-                        app.status = 2
-                        app.publish_date = form.cleaned_data['start_date']
-                        app.begin_date = form.cleaned_data['start_date']
-                        app.end_date = form.cleaned_data['end_date']
-                    else:
-                        app.end_date = form.cleaned_data['end_date']
-                    app.save()
-                    #Init transaction model data
-                    transactionViews.initTransaction(request, app=app)
-                    return render_to_response(initParam['success_url'], initParam, context_instance=RequestContext(request))
-                else:
-                    initParam['order_error'] = _('Payment failed.')
-                    return render_to_response(initParam['failed_url'], initParam, context_instance=RequestContext(request))
+                return paymentViews.payment(request, initParam=initParam)
+
+                # if payment == 'success':
+                #     form.save(commit=False)
+                #     serviceDetail.start_date = form.cleaned_data['start_date']
+                #     serviceDetail.end_date = form.cleaned_data['end_date']
+                #     serviceDetail.is_payed = True
+                #     serviceDetail.save()
+                #     # If app is draft or has been closed, change app to published after payment,.
+                #     if app.status == 1 or app.status == 3:
+                #         app.status = 2
+                #         app.publish_date = form.cleaned_data['start_date']
+                #         app.begin_date = form.cleaned_data['start_date']
+                #         app.end_date = form.cleaned_data['end_date']
+                #     else:
+                #         app.end_date = form.cleaned_data['end_date']
+                #     app.save()
+                #     #Init transaction model data
+                #     transactionViews.initTransaction(request, app=app)
+                #     return render_to_response(initParam['success_url'], initParam, context_instance=RequestContext(request))
+                # else:
+                #     initParam['order_error'] = _('Payment failed.')
+                #     return render_to_response(initParam['failed_url'], initParam, context_instance=RequestContext(request))
 
     #Init data
     initParam['form'] = forms.ServiceDetailForm(instance=serviceDetail)

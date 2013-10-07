@@ -13,3 +13,6 @@ username: me_api1.rulong.org
 API Password: 1380869543
 Signature:A2vypYAyoKWCr5HKJHXEzqAil0rBANhDLrGYeKZ-H8Wjmb.OShNvkwhY
 
+
+
+nohup uwsgi --ini appbid.ini&
