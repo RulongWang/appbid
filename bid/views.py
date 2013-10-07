@@ -11,6 +11,7 @@ from django.core.urlresolvers import reverse
 
 from appbid import models as appModels
 from usersetting import models as userSettingModels
+from transaction import models as txnModels
 from bid import forms
 from query.views import initBidInfo
 from message.views import sendMessage
@@ -68,17 +69,15 @@ def createBid(request, *args, **kwargs):
 
 
 @csrf_protect
-def getBids(request, *args, **kwargs):
+@login_required(login_url='/usersetting/home/')
+def bidList(request, *args, **kwargs):
     if kwargs.get('pk'):
         initParam = {}
         app = get_object_or_404(appModels.App, pk=kwargs.get('pk'))
         initParam['app'] = app
         initParam['appInfo'] = app.appinfo
         initBidInfo(request, app=app, initParam=initParam)
-        if request.user.id and request.user.username:
-            bids = app.bidding_set.filter(Q(status=1) | Q(buyer=request.user)).order_by('-price', '-bid_time')
-        else:
-            bids = app.bidding_set.filter(status=1).order_by('-price', '-bid_time')
+        bids = app.bidding_set.filter(Q(status=1) | Q(buyer=request.user)).order_by('-price', '-bid_time')
         buyer_map = {}
         bid_info_list = []
         for bid in bids:
@@ -93,5 +92,12 @@ def getBids(request, *args, **kwargs):
             info_list.extend(buyer_map.get(buyer.id))
             bid_info_list.append(info_list)
         initParam['bid_info_list'] = bid_info_list
+
+        if bids:
+            #Show app transaction status to buyer or seller
+            transactions = txnModels.Transaction.objects.filter(app_id=app.id, seller_id=app.publisher.id).exclude(status=1)
+            if transactions:
+                initParam['transaction'] = transactions[0]
+
         return render_to_response('bid/bid_list.html', initParam, context_instance=RequestContext(request))
     raise Http404

@@ -131,7 +131,7 @@ def listFeatured(request, *args, **kwargs):
 
 
 @csrf_protect
-def getDetail(request, *args, **kwargs):
+def getAppDetail(request, *args, **kwargs):
     """Get app detail info."""
     if kwargs.get('pk'):
         initParam = {}

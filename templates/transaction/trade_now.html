@@ -3,13 +3,16 @@
 {% load staticfiles %}
     <div>
         <div>
-            <div>App Name: <a href="{% url 'query:app_detail' app.0 %}">{{ app.1 }}</a></div>
+            <div>App Name: <a href="{% url 'query:app_detail' app.id %}">{{ app.app_name }}</a></div>
             <div>Trade Price: {{ bid.price }}</div>
-            <div>Buyer: {{ user.1 }}</div>
+            <div>Buyer: {{ user.username }}</div>
         </div>
         <div>
             <form action="" method="post">
                 {% csrf_token %}
+                <div>
+                    You can click 'Trade' button to begin to trade. Buyer will receiver the pay email.
+                </div>
                 <input id="submit" type="submit" name="submit" value="Trade"/>
             </form>
         </div>

@@ -9,27 +9,31 @@
                <div class="app_title">My Max Price</div>
                <div class="app_title">Current Price</div>
            </li>
-           {% for app in joined_apps %}
+           {% for app in joined_bids %}
                <li>
                    <div class="app_title">
-                       <a href="{% url 'query:app_detail' app.0 %}">{{ app.2 }}</a>
+                       <a href="{% url 'query:app_detail' app.0.0 %}">{{ app.1.0 }}</a>
                    </div>
-                   <div class="app_title">{{ app.3|date:"Y-m-d H:i"|default:"N/A" }}</div>
+                   <div class="app_title">{{ app.1.1|date:"Y-m-d H:i"|default:"N/A" }}</div>
                    <div class="app_title">
-                       <a href="{% url 'bid:bid_list' app.0 %}">{{ app.1|floatformat:"-2"|default:0 }} {{ app.5 }}</a>
+                       <a href="{% url 'bid:bid_list' app.0.0 %}">{{ app.0.1|floatformat:"-2"|default:0 }} {{ app.1.3 }}</a>
                    </div>
                    <div class="app_title">
-                       <a href="{% url 'bid:bid_list' app.0 %}">{{ app.4|floatformat:"-2"|default:0 }} {{ app.5 }}</a>
+                       <a href="{% url 'bid:bid_list' app.0.0 %}">{{ app.1.2|floatformat:"-2"|default:0 }} {{ app.1.3 }}</a>
                    </div>
                </li>
            {% empty %}
                No joined bidding.
            {% endfor %}
-           {% if joined_apps %}
+           {% if joined_bids %}
              <div class="pagination" style="float: right">
-                {% if joined_apps.has_previous %}<a href="?joined_page={{ joined_apps.previous_page_number }}">previous</a>{% endif %}
-                Page {{ joined_apps.number }} of {{ joined_apps.paginator.num_pages }}
-                {% if joined_apps.has_next %}<a href="?joined_page={{ joined_apps.next_page_number }}">next</a>{% endif %}
+                {% if joined_bids.has_previous %}
+                    <a href="?joined_page={{ joined_bids.previous_page_number }}&won_page={{ won_page }}">previous</a>
+                {% endif %}
+                Page {{ joined_bids.number }} of {{ joined_bids.paginator.num_pages }}
+                {% if joined_bids.has_next %}
+                    <a href="?joined_page={{ joined_bids.next_page_number }}&won_page={{ won_page }}">next</a>
+                {% endif %}
              </div>
            {% endif %}
            </ul>
@@ -44,25 +48,31 @@
                <div class="app_title">Action</div>
                <div class="app_title">Status</div>
            </li>
-           {% for app in won_apps %}
+           {% for txn in transactions %}
                <li>
                    <div class="app_title">
-                       <a href="{% url 'query:app_detail' app.0.id %}">{{ app.0.title }}</a>
+                       <a href="{% url 'query:app_detail' txn.0.app.id %}">{{ txn.0.app.app_name }}</a>
                    </div>
-                   <div class="app_title">{{ app.1.0.start_date }}</div>
-                   <div class="app_title">{{ app.1.0.end_date }}</div>
                    <div class="app_title">
-                       <a href="{% url 'dashboard:bidding_list' app.0.id %}">Bid List</a>
+                       <a href="{% url 'bid:bid_list' txn.0.app.id %}">{{ txn.0.price }}</a>
                    </div>
+                   <div class="app_title">
+                       <a href="{% url 'transaction:trade_action' 'buy' txn.0.app.id txn.0.buyer.id %}">Action</a>
+                   </div>
+                   <div class="app_title">{{ txn.1 }}</div>
                </li>
            {% empty %}
                No won bidding.
            {% endfor %}
-           {% if won_apps %}
+           {% if transactions %}
              <div class="pagination" style="float: right">
-                {% if won_apps.has_previous %}<a href="?won_page={{ won_apps.previous_page_number }}">previous</a>{% endif %}
-                Page {{ won_apps.number }} of {{ won_apps.paginator.num_pages }}
-                {% if won_apps.has_next %}<a href="?won_page={{ won_apps.next_page_number }}">next</a>{% endif %}
+                {% if transactions.has_previous %}
+                    <a href="?joined_page={{ joined_page }}&won_page={{ transactions.previous_page_number }}">previous</a>
+                {% endif %}
+                Page {{ transactions.number }} of {{ transactions.paginator.num_pages }}
+                {% if transactions.has_next %}
+                    <a href="?joined_page={{ joined_page }}&won_page={{ transactions.next_page_number }}">next</a>
+                {% endif %}
              </div>
            {% endif %}
            </ul>

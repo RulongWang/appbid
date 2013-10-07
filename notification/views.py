@@ -50,3 +50,27 @@ def sendSecurityVerificationEmail(request, *args, **kwargs):
         template = templates[0].template.replace('{username}', user.username).replace('{active_link}', active_link)
         recipient_list = [user.email]
         email.EmailThread(subject=subject, message=template, recipient_list=recipient_list).start()
+
+
+def sendCommonEmail(request, *args, **kwargs):
+    """Send common email by param setting."""
+    temp_name = kwargs.get('temp_name')
+    sub_params = kwargs.get('sub_params')
+    temp_params = kwargs.get('temp_params')
+    recipient_list = kwargs.get('recipient_list')
+    templates = models.NotificationTemplate.objects.filter(name=temp_name)
+
+    if templates:
+        subject = templates[0].subject
+        for i in range(len(sub_params)):
+            param = ''.join(['{param', str(i+1), '}'])
+            subject = subject.replace(param, sub_params[i])
+
+        template = templates[0].template
+        for i in range(len(temp_params)):
+            param = ''.join(['{param', str(i+1), '}'])
+            template = template.replace(param, temp_params[i])
+        email.EmailThread(subject=subject, message=template, recipient_list=recipient_list).start()
+    else:
+        #TODO: Log error
+        print 'No template'

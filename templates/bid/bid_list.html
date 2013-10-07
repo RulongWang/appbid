@@ -6,24 +6,19 @@
     <div class="clear"></div>
     <div class="bidding_list">
     <div class="bidlisting_item">
-            <div class="bidder">
-
-                <h1>Bidder Name</h1>
-
-            </div>
-             <div class="bidder_price">
-                 <h1>Bid Price({{ app.currency.currency }})</h1>
-            </div>
-
-            <div class="bidder_times">
-                <h1>Bid Time</h1>
-            </div>
-
+        <div class="bidder">
+            <h1>Bidder Name</h1>
         </div>
+         <div class="bidder_price">
+             <h1>Bid Price({{ app.currency.currency }})</h1>
+        </div>
+        <div class="bidder_times">
+            <h1>Bid Time</h1>
+        </div>
+    </div>
     {% for bid_info in bid_info_list %}
         <div class="bidlisting_item">
             <div class="bidder">
-
                 Bidder {{ bid_info.1 }}
                 {% ifequal bid_info.0.buyer.id request.user.id %}
                 - {{ bid_info.0.buyer.username }}
@@ -34,16 +29,52 @@
                 {% ifequal bid_info.0.status 2 %} - rejected{% endifequal %}
                 {% ifequal bid_info.0.status 3 %} - pending{% endifequal %}
             </div>
-
             <div class="bidder_times">
                 {{ bid_info.0.bid_time }}
             </div>
-            {% if forloop.counter == 1 and app.publisher.username == request.user.username %}
-            <div>
-                <span><a href="{% url 'transaction:trade_now' app.id bid_info.0.buyer.id bid_info.0.id %}">
-                    <input id="id_trade" type="button" value="Trade Now" />
-                </a></span>
-            </div>
+            {% if app.publisher.id == request.user.id %}
+                {% ifequal forloop.counter 1 %}
+                <div>
+                    {% if transaction %}
+                        <span>
+                            <a href="{% url 'transaction:trade_action' 'sell' app.id request.user.id %}">
+                                <input id="id_trade" type="button" value="Action" />
+                            </a>
+                        </span>
+                    {% else %}
+                        <span>
+                            <a href="{% url 'transaction:trade_now' app.id bid_info.0.buyer.id bid_info.0.id %}">
+                                <input id="id_trade" type="button" value="Trade Now" />
+                            </a>
+                        </span>
+                    {% endif %}
+                </div>
+                {% endifequal %}
+            {% else %}
+                {% if transaction and bid_info.0.buyer.id == transaction.buyer.id and transaction.price == bid_info.0.price %}
+                    <div>
+                        {% ifequal request.user.id transaction.buyer.id %}
+                            {% ifequal transaction.status 2 %}
+                                <span>
+                                    <!-- TODO: will change to pay url for buyer. -->
+                                    <a href="{% url 'transaction:trade_action' 'buy' app.id request.user.id %}">
+                                        <input id="id_trade" type="button" value="Pay now" />
+                                    </a>
+                                </span>
+                            {% else %}
+                                <span>
+                                    <a href="{% url 'transaction:trade_action' 'buy' app.id request.user.id %}">
+                                        <input id="id_trade" type="button" value="Action" />
+                                    </a>
+                                </span>
+                            {% endifequal %}
+                        {% else %}
+                            <span style="color:white; background-color: green;">
+                                {% ifequal transaction.status 4 %}Traded{% else %}Trading{% endifequal %}
+                            </span>
+                        {% endifequal %}
+                    </div>
+                {% endif %}
             {% endif %}
         </div>
     {% endfor %}

@@ -3,7 +3,7 @@ from django.conf.urls import patterns, url
 from query import views
 
 urlpatterns = patterns('',
-    url(r'^app-detail/(?P<pk>\d*)$', views.getDetail, name='app_detail'),
+    url(r'^app-detail/(?P<pk>\d*)$', views.getAppDetail, name='app_detail'),
     url(r'^bid-info/(?P<pk>\d*)$', views.getBidInfo, name='bid_info'),
     url(r'^app-list/$', views.list_latest, name='app_list'),
     url(r'^most_active/$', views.most_active, name='most_active'),

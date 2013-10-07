@@ -17,6 +17,7 @@ from django.contrib.auth.models import User
 from message import models as messageModels
 from appbid import models as appModels
 from bid import models as bidModels
+from transaction import models as txnModels
 from dashboard import models
 from utilities import common
 from message.views import sendMessage
@@ -113,21 +114,26 @@ def createMessage(request, *args, **kwargs):
 def myListing(request, *args, **kwargs):
     """Query user's app in my listing page."""
     initParam = {}
+    page_range = 5
+    user = get_object_or_404(User, pk=request.user.id, username=request.user.username)
+
     draft_page = request.GET.get('draft_page', 1)
     published_page = request.GET.get('published_page', 1)
     traded_page = request.GET.get('traded_page', 1)
-    user = get_object_or_404(User, pk=request.user.id, username=request.user.username)
+    initParam['draft_page'] = draft_page
+    initParam['published_page'] = published_page
+    initParam['traded_page'] = traded_page
 
     draft_apps = appModels.App.objects.filter(publisher_id=user, status=1)
-    initParam['draft_apps'] = common.queryWithPaginator(request, page_range=5, page=draft_page, obj=draft_apps)
+    initParam['draft_apps'] = common.queryWithPaginator(request, page_range=page_range, page=draft_page, obj=draft_apps)
 
     published_apps = appModels.App.objects.filter(publisher_id=user, status=2)
-    initParam['published_apps'] = common.queryWithPaginator(request, page_range=5, page=published_page,
+    initParam['published_apps'] = common.queryWithPaginator(request, page_range=page_range, page=published_page,
                                                             obj=published_apps, query_method=queryAppServiceDetail)
 
     traded_apps = appModels.App.objects.filter(publisher_id=user, status=3)
-    initParam['traded_apps'] = common.queryWithPaginator(request, page_range=5, page=traded_page,
-                                                         obj=traded_apps, query_method=queryAppServiceDetail)
+    initParam['traded_apps'] = common.queryWithPaginator(request, page_range=page_range, page=traded_page,
+                                                         obj=traded_apps, query_method=queryAppTxnInfo)
 
     return render_to_response("dashboard/my_listing.html", initParam, context_instance=RequestContext(request))
 
@@ -139,14 +145,42 @@ def queryAppServiceDetail(request, *args, **kwargs):
     return None
 
 
+def queryAppTxnInfo(request, *args, **kwargs):
+    """
+        Return app max price / transaction price, transaction status_id, status.
+        If no trade now, then return bid info.
+    """
+    app = kwargs.get('obj_param')
+    if app:
+        transactions = txnModels.Transaction.objects.filter(app_id=app.id)
+        if transactions:
+            status_id = app.transaction.status
+            status = txnModels.Transaction.STATUS[status_id-1][1]
+            price = app.transaction.price
+        else:
+            status_id = 1
+            status = txnModels.Transaction.STATUS[0][1]
+            bids = app.bidding_set.filter(status=1).order_by('-price')
+            if bids:
+                return [bids[0].price, status_id, status, bids[0]]
+            else:
+                price = 0
+        return [price, status_id, status]
+    return None
+
+
 @csrf_protect
 @login_required(login_url='/usersetting/home/')
 def myBidding(request, *args, **kwargs):
     """Query user's bidding in my bidding page."""
     initParam = {}
+    page_range = 5
+    user = get_object_or_404(User, pk=request.user.id, username=request.user.username)
+
     joined_page = request.GET.get('joined_page', 1)
     won_page = request.GET.get('won_page', 1)
-    user = get_object_or_404(User, pk=request.user.id, username=request.user.username)
+    initParam['joined_page'] = joined_page
+    initParam['won_page'] = won_page
 
     #For joined bidding
     info_list = []
@@ -154,26 +188,35 @@ def myBidding(request, *args, **kwargs):
     for bidInfo in bidInfo_map:
         #list[0]: app_id; list[1]:my max price.
         info_list.append([bidInfo.get('app_id'), bidInfo.get('max_price')])
-    paginator = Paginator(info_list, 5)
-    try:
-        initParam['joined_apps'] = paginator.page(joined_page)
-    except PageNotAnInteger:
-        initParam['joined_apps'] = paginator.page(1)
-    except EmptyPage:
-        initParam['joined_apps'] = paginator.page(paginator.num_pages)
-    for info in initParam['joined_apps']:
-        app = appModels.App.objects.get(pk=info[0])
-        maxPrice = bidModels.Bidding.objects.filter(app_id=app.id, status=1).aggregate(Max('price'))
-        #list[2]:app name; list[3]:end date; list[4]:app max price; list[5]:currency.
-        info.extend([app.app_name, app.end_date, maxPrice.get('price__max'), app.currency.currency])
+    initParam['joined_bids'] = common.queryWithPaginator(request, page_range=page_range, page=joined_page,
+                                                         obj=info_list, query_method=queryJoinedBidInfo)
 
+    #For won bidding
+    transactions = txnModels.Transaction.objects.filter(buyer_id=user.id).exclude(status=1)
+    print len(transactions)
+    initParam['transactions'] = common.queryWithPaginator(request, page_range=page_range, page=won_page,
+                                                          obj=transactions, query_method=queryTxnInfo)
 
-    # published_apps = appModels.App.objects.filter(publisher_id=user, status=2)
-    # initParam['published_apps'] = common.queryWithPaginator(request, page_range=5, page=joined_page,
-    #                                                         obj=published_apps, query_method=queryAppServiceDetail)
-
-    won_apps = ''
     return render_to_response("dashboard/my_bidding.html", initParam, context_instance=RequestContext(request))
+
+
+def queryJoinedBidInfo(request, *args, **kwargs):
+    """Return app bid info."""
+    obj = kwargs.get('obj_param')
+    if obj:
+        app = appModels.App.objects.get(pk=obj[0])
+        maxPrice = bidModels.Bidding.objects.filter(app_id=app.id, status=1).aggregate(Max('price'))
+        #list[0]:app name; list[1]:end date; list[2]:app max price; list[3]:currency.
+        return [app.app_name, app.end_date, maxPrice.get('price__max'), app.currency.currency]
+    return None
+
+
+def queryTxnInfo(request, *args, **kwargs):
+    """Return transaction status."""
+    transaction = kwargs.get('obj_param')
+    if transaction:
+        return txnModels.Transaction.STATUS[transaction.status-1][1]
+    return None
 
 
 @csrf_protect
@@ -238,13 +281,13 @@ def watchApps(request, *args, **kwargs):
     user = get_object_or_404(User, pk=request.user.id, username=request.user.username)
     watch_apps = models.WatchApp.objects.filter(buyer_id=user.id)
     initParam['watch_apps'] = common.queryWithPaginator(request, page=page,
-                                                        obj=watch_apps, query_method=queryAppMaxPrice)
+                                                        obj=watch_apps, query_method=queryWatchAppMaxPrice)
 
     return render_to_response("dashboard/watched_apps.html", initParam, context_instance=RequestContext(request))
 
 
-def queryAppMaxPrice(request, *args, **kwargs):
-    """Return app max price."""
+def queryWatchAppMaxPrice(request, *args, **kwargs):
+    """Return watch app max price."""
     watchApp = kwargs.get('obj_param')
     if watchApp:
         max_price = watchApp.app.bidding_set.filter(status=1).aggregate(Max('price'))
