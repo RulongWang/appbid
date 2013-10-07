@@ -41,9 +41,9 @@ class PayPal(object):
 
         # First step is to get the correct credientials.
         if debug or getattr(settings, "PAYPAL_DEBUG", False):
-            self.username  = "seller_1261519973_biz_api1.akinon.com"
-            self.password  = "1261519978"
-            self.sign = "A1.OnfcjaBVTgV6Yt.oT2VavxcyOA5FGVe-MrNf.1R1zNVAD6.MDOKZO"
+            self.username  = "me_api1.rulong.org"
+            self.password  = "1380869543"
+            self.sign = "A2vypYAyoKWCr5HKJHXEzqAil0rBANhDLrGYeKZ-H8Wjmb.OShNvkwhY"
         else:
             self.username  = getattr(settings, "PAYPAL_USER", None)
             self.password  = getattr(settings, "PAYPAL_PASSWORD", None)
