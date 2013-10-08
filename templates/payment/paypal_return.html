@@ -4,7 +4,7 @@
     {{ token }}
     display order confirmation info here
 
-    <form action="payment/paypal_checkout" method="get">
+    <form action="/payment/paypal_checkout" method="get">
         <input type=text name = "PayerID" value="{{ payerid }}"/>
         <input type=text name = "token" value="{{ token }}" />
         <input type= submit value="checkout"/>

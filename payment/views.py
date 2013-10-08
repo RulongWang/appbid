@@ -48,6 +48,7 @@ def paypalreturn(request, *args, **kwargs):
     """Payment operation."""
 
     token = request.GET.get('token')
+    payerid = request.GET.get('PayerID')
 
     if token is None:
         error = "Token is missing"
@@ -60,9 +61,10 @@ def paypalreturn(request, *args, **kwargs):
             error = p._get_value_from_qs(res_dict, "L_SHORTMESSAGE0")
             return render_to_response("payment/paypal_error.html", {"token":token,"error":error}, context_instance=RequestContext(request))
 
-        payerid = p._get_value_from_qs(res_dict,"PayerID")
+        # payerid = p._get_value_from_qs(res_dict,"PayerID")
 
-        return render_to_response("payment/paypal_return.html", {"token":token,"payerid":payerid}, context_instance=RequestContext(request))
+
+        return render_to_response("payment/paypal_return.html", {"token":token,"payerid":payerid,"res_dict":res_dict}, context_instance=RequestContext(request))
 
 
 
@@ -91,8 +93,9 @@ def paypal_docheckout(request, *args, **kwargs):
             #request.user.message_set.create(message = _("Amount %s has been successfully charged, your transaction id is '%s'" % (amount, response.trans_id)))
 
 
+            return render_to_response("paypal_failed.html", context_instance = RequestContext(request))
+        else:
             return render_to_response("paypal_success.html", context_instance = RequestContext(request))
-
 
 
 @csrf_protect
