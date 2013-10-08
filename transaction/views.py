@@ -103,6 +103,17 @@ def tradeAction(request, *args, **kwargs):
 
     initParam['action'] = action
     initParam['transaction'] = transaction
-    initParam['time_remaining'] = time.mktime(time.strptime(str(transaction.end_time), '%Y-%m-%d %H:%M:%S'))
+    if transaction.status == 2 or transaction.status == 3:
+        initParam['time_remaining'] = time.mktime(time.strptime(str(transaction.end_time), '%Y-%m-%d %H:%M:%S'))
+    elif transaction.status == 4:
+        initParam['time_remaining'] = common.dateBefore(transaction.end_time)
 
     return render_to_response('transaction/trade_action.html', initParam, context_instance=RequestContext(request))
+
+
+@csrf_protect
+@transaction.commit_on_success
+@login_required(login_url='/usersetting/home/')
+def closedTransaction(request, *args, **kwargs):
+    """Need update end_time to now."""
+    return None

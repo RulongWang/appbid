@@ -11,10 +11,21 @@ def checkServiceDateForApps(*args, **kwargs):
     return None
 
 
+def sendMailForRemind(*args, **kwargs):
+    """
+        The task will be done in at schedule time, such as: every hour.
+        1. The paid_expiry_date set in system-param table is 7 days.
+           If buyer does not pay, will send email to buyer in remain 4, 2, 1 days.
+        2. The txn_expiry_date set in system-param table is 15 days.
+           If buyer does not finish trade, will send email to buyer in remain 7, 4, 2, 1 days.
+    """
+    return None
+
+
 def taskForBuyUnpaid(*args, **kwargs):
     """
         The task will be done in at schedule time, such as: every hour.
-        Do something, if buy unpaid on time after 7 days of paid_expiry_date set in system-param table.
+        Do something, if buy still unpaid after 7 days of paid_expiry_date set in system-param table.
         1. Buyer will be subtracted 50 credit point, and put into blacklist.
         2. Buyer's all bidding status is changed from approved to rejected.(Note: All bidding for this buyer.)
         3. For transaction data, status be changed from Unpaid to Unsold, and set buyer, price, end_time to None.
@@ -24,5 +35,14 @@ def taskForBuyUnpaid(*args, **kwargs):
                                             2.The unpaid buyer has been put into blacklist.)
         6. Send email to new buyer bidding with second max price. (The email: 1. He is the max bidding one now;
                                             2. Seller will trade with you later.)
+    """
+    return None
+
+
+def taskForTradeFinished(*args, **kwargs):
+    """
+        The task will be done in at schedule time, such as: every hour.
+        Do something, if buyer still click finish trade button on time after 15 days of txn_expiry_date set in system-param table.
+        1.
     """
     return None

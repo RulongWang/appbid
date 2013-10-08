@@ -5,20 +5,27 @@
     <div>
         <div>App Name: <a href="{% url 'query:app_detail' transaction.app.id %}">{{ transaction.app.app_name }}</a></div>
         <div>Trade Price: {{ transaction.price }} {{ transaction.app.currency.currency }}</div>
-        <div>Buyer: {{ transaction.buyer.username }}</div>
+        {% if transaction.buyer.id == request.user.id %}
+            <div>Seller: {{ transaction.seller.username }}</div>
+        {% elif transaction.seller.id == request.user.id %}
+            <div>Buyer: {{ transaction.buyer.username }}</div>
+        {% endif %}
         {% if transaction.status == 2 %}
-            <div>
-                Buyer has {% include "bid/remaintime.html" %} to pay.
-            </div>
             {% if transaction.buyer.id == request.user.id %}
+                <div>
+                    You has {% include "bid/remaintime.html" %} to pay.
+                </div>
                 <div>
                     <!-- TODO: will change to pay url for buyer. -->
                     <a href="">
-                        <input id="id_pay" type="button" value="pay">
+                        <input id="id_pay" type="button" value="pay now">
                     </a>
                 </div>
             {% elif transaction.seller.id == request.user.id %}
-                <div>You can send email to ask buyer to pay ASAP.</div>
+                <div>
+                    Buyer has {% include "bid/remaintime.html" %} to pay.
+                </div>
+                <div>If buyer still does not pay some days later, you can send email to ask buyer to pay ASAP.</div>
                 <div>
                     <a href="">
                         <input id="id_pay" type="button" value="Send Email">
@@ -26,26 +33,62 @@
                 </div>
             {% endif %}
         {% elif transaction.status == 3 %}
-            <div>
-                The app transaction has {% include "bid/remaintime.html" %} to close.
-            </div>
             {% if transaction.buyer.id == request.user.id %}
                 <div>
-                    <!-- TODO: will do it later. -->
+                    The app transaction has {% include "bid/remaintime.html" %} to close.
+                </div>
+                <div>
                     <a href="">
                         <input id="id_pay" type="button" value="Finished Trade">
                     </a>
                 </div>
-{#            {% elif transaction.seller.id == request.user.id %}#}
-{#                <div>You can send email to ask buyer to pay ASAP.</div>#}
-{#                <div>#}
-{#                    <a href="">#}
-{#                        <input id="id_pay" type="button" value="Send Email">#}
-{#                    </a>#}
-{#                </div>#}
+                <div>
+                    You can complain seller, if he is not honest.
+                </div>
+                <div>
+                    <a href="">
+                        <input id="id_complain" type="button" value="Complain Seller">
+                    </a>
+                </div>
+            {% elif transaction.seller.id == request.user.id %}
+                <div>
+                    The app transaction has {% include "bid/remaintime.html" %} to close.
+                </div>
+                <div>
+                    The buyer will click finished trade, after trade finish.
+                </div>
+                <div>
+                    You can complain buyer, if he is not honest.
+                </div>
+                <div>
+                    <a href="">
+                        <input id="id_complain" type="button" value="Complain Buyer">
+                    </a>
+                </div>
             {% endif %}
         {% elif transaction.status == 4 %}
+            <div>
+                The transaction has finished.
+            </div>
+            <div>
+                Closed in: {{ time_remaining.0|floatformat }} {{ time_remaining.1 }}{{ time_remaining.0|floatformat|pluralize }} {{ time_remaining.2 }}
+            </div>
             <!-- TODO: Comment the transaction for seller or buyer. -->
+{#            {% if transaction.buyer.id == request.user.id %}#}
+{#                <div>You can comment the transaction.</div>#}
+{#                <div>#}
+{#                    <a href="">#}
+{#                        <input id="id_comment" type="button" value="comment">#}
+{#                    </a>#}
+{#                </div>#}
+{#            {% elif transaction.seller.id == request.user.id %}#}
+{#                <div>You can comment the transaction.</div>#}
+{#                <div>#}
+{#                    <a href="">#}
+{#                        <input id="id_comment" type="button" value="comment">#}
+{#                    </a>#}
+{#                </div>#}
+{#            {% endif %}#}
         {% endif %}
     </div>
 </div>

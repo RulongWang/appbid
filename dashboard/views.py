@@ -148,7 +148,7 @@ def queryAppServiceDetail(request, *args, **kwargs):
 def queryAppTxnInfo(request, *args, **kwargs):
     """
         Return app max price / transaction price, transaction status_id, status.
-        If no trade now, then return bid info.
+        If no trade now, then return max price of bid.
     """
     app = kwargs.get('obj_param')
     if app:
@@ -162,7 +162,7 @@ def queryAppTxnInfo(request, *args, **kwargs):
             status = txnModels.Transaction.STATUS[0][1]
             bids = app.bidding_set.filter(status=1).order_by('-price')
             if bids:
-                return [bids[0].price, status_id, status, bids[0]]
+                price = bids[0].price
             else:
                 price = 0
         return [price, status_id, status]
