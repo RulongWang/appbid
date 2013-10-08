@@ -65,11 +65,12 @@ def listFeatured(request, *args, **kwargs):
     category = request.GET.get('category', None)
     subcategory = request.GET.get('subcategory', None)
     monetize = request.GET.get('monetize', None)
+    device = request.GET.get('device', None)
     seller = request.GET.get('seller', None)
     currency_id = common.getSystemParam(key='currency', default=2)
     initParam['currency'] = get_object_or_404(appModels.Currency, pk=currency_id)
 
-    if revenue_min is None and category is None and subcategory is None and monetize is None:
+    if revenue_min is None and category is None and subcategory is None and monetize is None and device is None and seller is None:
         apps = appModels.App.objects.exclude(status=1).order_by('status')
 
     #Revenue Part
@@ -93,11 +94,23 @@ def listFeatured(request, *args, **kwargs):
         monetizeModel = get_object_or_404(appModels.Monetize, pk=monetize)
     for temp_monetize in appModels.Monetize.objects.all():
         if monetize and monetizeModel == temp_monetize:
-            apps = monetizeModel.app_set.exclude(status=1).filter(monetize=monetizeModel).order_by('status')
+            apps = monetizeModel.app_set.exclude(status=1).order_by('status')
             initParam['monetize_list'].append([temp_monetize, len(apps)])
             initParam['query_tile'] = [_('Monetize'), temp_monetize.method, ''.join(['?monetize=', monetize])]
         else:
             initParam['monetize_list'].append([temp_monetize, temp_monetize.app_set.exclude(status=1).count()])
+
+    #Device Part
+    initParam['device_list'] = []
+    if device:
+        deviceModel = get_object_or_404(appModels.Device, pk=device)
+    for tem_device in appModels.Device.objects.all():
+        if device and deviceModel == tem_device:
+            apps = deviceModel.app_set.exclude(status=1).order_by('status')
+            initParam['device_list'].append([tem_device, len(apps)])
+            initParam['query_tile'] = [_('Device'), tem_device.device, ''.join(['?device=', device])]
+        else:
+            initParam['device_list'].append([tem_device, tem_device.app_set.exclude(status=1).count()])
 
     #Category Part
     initParam['category_list'] = []
@@ -105,7 +118,7 @@ def listFeatured(request, *args, **kwargs):
         categoryModel = get_object_or_404(appModels.Category, apple_id=category)
     for temp_category in appModels.Category.objects.all():
         if category and categoryModel == temp_category:
-            apps = appModels.App.objects.exclude(status=1).filter(category=categoryModel).order_by('status')
+            apps = categoryModel.app_set.exclude(status=1).order_by('status')
             initParam['category_list'].append([temp_category, len(apps)])
             initParam['query_tile'] = [_('Category'), temp_category.name, ''.join(['?category=', category])]
         else:
@@ -115,13 +128,13 @@ def listFeatured(request, *args, **kwargs):
     #SubCategory Part from app detail page.
     if subcategory:
         subcategoryModel = get_object_or_404(appModels.SubCategory, apple_id=subcategory)
-        apps = appModels.App.objects.exclude(status=1).filter(subcategory=subcategoryModel).order_by('status')
+        apps = subcategoryModel.app_set.exclude(status=1).order_by('status')
         initParam['query_tile'] = ['SubCategory', subcategoryModel.name, ''.join(['?subcategory=', subcategory])]
 
     #Seller part from watch sellers page.
     if seller:
         sellerModel = get_object_or_404(User, pk=seller)
-        apps = appModels.App.objects.exclude(status=1).filter(publisher_id=sellerModel.id).order_by('status')
+        apps = sellerModel.app_set.exclude(status=1).order_by('status')
         initParam['query_tile'] = ['Seller', sellerModel.username, ''.join(['?seller=', seller])]
 
     #Query data

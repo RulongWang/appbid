@@ -61,6 +61,14 @@
                         </ul>
                     </div>
                     <div class="search_criteria">
+                        <h1>Device </h1>
+                        <ul>
+                            {% for device in device_list %}
+                                <li><a href="?device={{ device.0.id }}"><span class="">{{ device.0.device }}</span><span class="right">{{ device.1 }}</span></a></li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    <div class="search_criteria">
                         <h1>Category </h1>
                         <ul>
                             {% for category in category_list %}
