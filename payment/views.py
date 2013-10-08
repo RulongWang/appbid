@@ -96,9 +96,9 @@ def paypal_docheckout(request, *args, **kwargs):
             #request.user.message_set.create(message = _("Amount %s has been successfully charged, your transaction id is '%s'" % (amount, response.trans_id)))
 
 
-            return render_to_response("paypal_failed.html", context_instance = RequestContext(request))
+            return render_to_response("payment/paypal_failed.html", context_instance = RequestContext(request))
         else:
-            return render_to_response("paypal_success.html", context_instance = RequestContext(request))
+            return render_to_response("payment/paypal_success.html", context_instance = RequestContext(request))
 
 
 @csrf_protect
