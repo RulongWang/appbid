@@ -16,3 +16,6 @@ Signature:A2vypYAyoKWCr5HKJHXEzqAil0rBANhDLrGYeKZ-H8Wjmb.OShNvkwhY
 
 
 nohup uwsgi --ini appbid.ini&
+
+Kill -INT PID
+

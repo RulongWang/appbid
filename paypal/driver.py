@@ -301,3 +301,30 @@ class PayPal(object):
     def GetRefundResponse(self):
         return self.refund_response
 
+#add new method to return details info
+    def GetExpressCheckoutDetailsInfo(self, return_url, cancel_url, token = None):
+        """
+        This method performs the NVP API method that is responsible from getting the payment details.
+        This returns True if successfully fetch the checkout details, otherwise returns False.
+        All of the parameters are REQUIRED.
+
+        @returns bool
+        """
+        token = self.token if token is None else token
+        if token is None:
+            self.getexpresscheckoutdetails = TOKEN_NOT_FOUND_ERROR
+            return False
+
+        parameters = {
+            'METHOD' : "GetExpressCheckoutDetails",
+            'RETURNURL' : return_url,
+            'CANCELURL' : cancel_url,
+            'TOKEN' : token,
+        }
+        query_string = self.signature + urllib.urlencode(parameters)
+        response = urllib.urlopen(self.NVP_API_ENDPOINT, query_string).read()
+        response_dict = parse_qs(response)
+        self.api_response = response_dict
+        state = self._get_value_from_qs(response_dict, "ACK")
+        return response_dict
+
