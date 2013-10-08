@@ -85,12 +85,3 @@ def checkout(request, *args, **kwargs):
         initParam['acceptGateway'] = acceptGateways[0]
 
     return render_to_response("order/checkout.html", initParam, context_instance=RequestContext(request))
-
-
-@csrf_protect
-@transaction.commit_on_success
-@login_required(login_url='/usersetting/home/')
-def buyerPay(request, *args, **kwargs):
-    """Buyer pay page."""
-    initParam = {}
-    return render_to_response("order/buyer_pay.html", initParam, context_instance=RequestContext(request))

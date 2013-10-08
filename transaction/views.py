@@ -14,6 +14,7 @@ from django.contrib.auth.models import User
 from appbid import models as appModels
 from transaction import models
 from bid import models as bidModels
+from credit import models as creditModels
 from utilities import common
 from notification import views as notificationViews
 
@@ -67,6 +68,15 @@ def tradeNow(request, *args, **kwargs):
         paid_expiry_date = string.atoi(common.getSystemParam(key='paid_expiry_date', default=7))
         transaction.end_time = datetime.datetime.now() + datetime.timedelta(days=paid_expiry_date)
         transaction.save()
+        #Log transaction
+        transactionsLog = models.TransactionLog()
+        transactionsLog.app = app
+        transactionsLog.status = 1
+        transactionsLog.seller = request.user
+        transactionsLog.buyer = user
+        transactionsLog.price = bid.price
+        transactionsLog.save()
+
         if app.status == 2:
             app.status = 3
             app.end_date = datetime.datetime.now()
@@ -116,4 +126,94 @@ def tradeAction(request, *args, **kwargs):
 @login_required(login_url='/usersetting/home/')
 def closedTransaction(request, *args, **kwargs):
     """Need update end_time to now."""
+    return None
+
+
+@csrf_protect
+@transaction.commit_on_success
+@login_required(login_url='/usersetting/home/')
+def onePriceBuy(request, *args, **kwargs):
+    """
+        Buyer pay by clicking button 'Buy It Now with 10 USD' in app detail page.
+        Note: url include app_id, and publisher_id, because of preventing user to cheat.
+    """
+    initParam = {}
+    app_id = kwargs.get('app_id')
+    publisher_id = kwargs.get('publisher_id')
+    app = get_object_or_404(appModels.App, pk=app_id, publisher_id=publisher_id, status=2)
+
+    if request.method == 'POST':
+        #TODO: credit point < 50 can not buy.
+        #TODO:invoke pay method
+        #Maybe read the table of pay result.
+        result = 'success'
+        if result:
+            transactions = models.Transaction.objects.filter(app_id=app.id, seller_id=publisher_id, status=1)
+            if transactions:
+                transaction = transactions[0]
+            else:
+                transaction = models.Transaction()
+                transaction.app = app
+                transaction.seller = request.user
+            transaction.status = 3
+            transaction.buyer = request.user
+            transaction.price = app.one_price
+            txn_expiry_date = string.atoi(common.getSystemParam(key='txn_expiry_date', default=15))
+            transaction.end_time = datetime.datetime.now() + datetime.timedelta(days=txn_expiry_date)
+            transaction.save()
+            #Log transaction
+            transactionsLog = models.TransactionLog()
+            transactionsLog.app = app
+            transactionsLog.status = 2
+            transactionsLog.buyer = request.user
+            transactionsLog.price = app.one_price
+            transactionsLog.save()
+
+            #Send email to seller
+            temp_name = 'buyer_one_price_tell_seller'
+            sub_params = [transaction.buyer.username, transaction.app.app_name]
+            temp_params = [request.user.username, transaction.buyer.username, transaction.app.app_name]
+            recipient_list = [transaction.app.publisher.username]
+            notificationViews.sendCommonEmail(request, temp_name=temp_name, sub_params=sub_params,
+                                              temp_params=temp_params, recipient_list=recipient_list)
+        else:
+            print "Log error message"
+    return render_to_response('transaction/one_price_buy.html', initParam, context_instance=RequestContext(request))
+
+
+@csrf_protect
+@transaction.commit_on_success
+@login_required(login_url='/usersetting/home/')
+def buyerPay(request, *args, **kwargs):
+    """Buyer pay, after seller begin to trade.."""
+    app_id = kwargs.get('app_id')
+    txn_id = kwargs.get('txn_id')
+    #TODO:Can use or verify it later.
+    token_id = kwargs.get('token')
+    transaction = get_object_or_404(models.Transaction, pk=txn_id, app_id=app_id, buyer_id=request.user.id, status=2)
+
+    #TODO:invoke pay method
+    result = 'success'
+    if result:
+        transaction.status = 3
+        txn_expiry_date = string.atoi(common.getSystemParam(key='txn_expiry_date', default=15))
+        transaction.end_time = datetime.datetime.now() + datetime.timedelta(days=txn_expiry_date)
+        transaction.save()
+        #Log transaction
+        transactionsLog = models.TransactionLog()
+        transactionsLog.app = transaction.app
+        transactionsLog.status = 2
+        transactionsLog.buyer = request.user
+        transactionsLog.price = transaction.price
+        transactionsLog.save()
+
+        #Send email to seller
+        temp_name = 'buyer_paid_tell_seller'
+        sub_params = [transaction.app.app_name]
+        temp_params = [transaction.app.app_name, transaction.buyer.username]
+        recipient_list = [transaction.app.publisher.username]
+        notificationViews.sendCommonEmail(request, temp_name=temp_name, sub_params=sub_params,
+                                          temp_params=temp_params, recipient_list=recipient_list)
+    else:
+        print "Log error message"
     return None
