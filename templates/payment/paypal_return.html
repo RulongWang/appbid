@@ -1,13 +1,39 @@
 {% extends "index.html" %}
 {% block mainContent %}
 {% load staticfiles %}
-    {{ token }}
-    display order confirmation info here
+
+    <div class="order_items">
+        <div class="order_summary">Your order summary</div>
+        <ul class="items_list">
+            <li>
+                <div class="item_detail">
+                    <div class="item_name"></div>
+                    <div class="item_desc"></div>
+                    <div class="item_num"></div>
+                </div>
+                <div class="item_amount">
+                    400$
+                </div>
+            </li>
+            <li>
+                <div class="item_detail">
+                    <div></div>
+                </div>
+                <div class="item_amount">
+                    400$
+                </div>
+            </li>
+        </ul>
+        <div class="item_summary">
+
+        </div>
+    </div>
+
 
     <form action="/payment/paypal_checkout" method="get">
-        <input type=text name = "PayerID" value="{{ payerid }}"/>
-        <input type=text name = "token" value="{{ token }}" />
-        <input type= submit value="checkout"/>
+        <input type=hidden name = "PayerID" value="{{ payerid }}"/>
+        <input type=hidden name = "token" value="{{ token }}" />
+        <input type= submit value="checkout" class="newbutton"/>
 
     </form>
 {% endblock %}

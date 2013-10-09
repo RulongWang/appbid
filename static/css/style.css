@@ -2104,3 +2104,28 @@ input[type="radio"]:checked:after {
     height:30px;
     border-radius: 3px;
 }
+
+
+/******************payment*********************************/
+.order_items{
+    margin:0 auto;
+    margin-top:20px;
+
+    padding: 10px;
+    width:600px;
+    background: #dddddd;
+
+}
+
+.items_list{
+    list-style: none;
+
+}
+
+.items_list li{
+    display: block;
+    width:580px;
+    height:80px;
+    border-bottom: 1px dashed white;
+
+}
