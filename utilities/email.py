@@ -62,8 +62,11 @@ class EmailThread(threading.Thread):
 
     def run(self):
         try:
-            sentEmail(subject=self.subject, message=self.message, recipient_list=self.recipient_list,
-                      from_email=self.from_email, fail_silently=self.fail_silently)
+            #subject or message can not be filled.
+            if isinstance(self.recipient_list, list) and len(self.recipient_list) > 0:
+                send_mail(self.subject, self.message, self.from_email, self.recipient_list, self.fail_silently)
+            else:
+                print 'do it later, log error info.'
         except:
             #TODO:log the error message.
             print 'Send email failed.'
@@ -71,18 +74,16 @@ class EmailThread(threading.Thread):
 
 class MassEmailThread(threading.Thread):
     """The new thread to send the email."""
-    def __init__(self, subject, message, recipient_list, from_email=settings.EMAIL_HOST_USER, fail_silently=False):
-        self.subject = subject
-        self.message = message
-        self.from_email = from_email
-        self.recipient_list = recipient_list
+    def __init__(self, fail_silently=False):
         self.fail_silently = fail_silently
+        self.dataTuple = []
         threading.Thread.__init__(self)
 
+    def addEmailData(self, subject, message, recipient_list, from_email=settings.EMAIL_HOST_USER):
+        if isinstance(recipient_list, list) and len(recipient_list) > 0:
+            self.dataTuple.append((subject, message, from_email, recipient_list))
+
     def run(self):
+        if len(self.dataTuple) > 0:
+            send_mass_mail(self.dataTuple, self.fail_silently)
         print 'Send mass mail.'#TODO:to do it later.
-        # send_mass_mail(subject=self.subject, message=self.message, recipient_list=self.recipient_list,
-        #           from_email=self.from_email, fail_silently=self.fail_silently)
-
-
-

@@ -79,7 +79,22 @@ def tradeNowInformBuyerPayEmail(request, *args, **kwargs):
 
 def closedTradeInform(request, *args, **kwargs):
     """After buyer close trade, send email to seller that trade is closed."""
-
+    transaction = kwargs.get('transaction')
+    if transaction:
+        massEmailThread = email.MassEmailThread()
+        templates = models.NotificationTemplate.objects.filter(name='')
+        if templates:
+            subject = ''
+            message = ''
+            recipient_list = [transaction.seller.email]
+            massEmailThread.addEmailData(subject=subject, message=message, recipient_list=recipient_list)
+        templates = models.NotificationTemplate.objects.filter(name='')
+        if templates:
+            subject = ''
+            message = ''
+            recipient_list = [transaction.seller.email]
+            massEmailThread.addEmailData(subject=subject, message=message, recipient_list=recipient_list)
+        massEmailThread.start()
     return None
 
 
