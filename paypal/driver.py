@@ -119,11 +119,11 @@ class PayPal(object):
          - SetExpressCheckout(10.00, US, http://www.test.com/cancel/, http://www.test.com/return/, **{'SHIPTOSTREET': 'T Street', 'SHIPTOSTATE': 'T State'})
         """
         parameters = {
-            'METHOD' : 'SetExpressCheckout',
-            'NOSHIPPING' : 1,
-            'PAYMENTACTION' : 'Sale',
-            'RETURNURL' : return_url,
-            'CANCELURL' : cancel_url,
+            'METHOD': 'SetExpressCheckout',
+            'NOSHIPPING': 1,
+            'PAYMENTACTION': 'Sale',
+            'RETURNURL': return_url,
+            'CANCELURL': cancel_url,
             # 'AMT' : amount,
             # 'CURRENCYCODE' : currency,
             # 'ALLOWNOTE':1,
@@ -137,7 +137,7 @@ class PayPal(object):
             # &PAYMENTREQUEST_0_HANDLINGAMT=2.99
             # &PAYMENTREQUEST_0_SHIPDISCAMT=-3.00
             # &PAYMENTREQUEST_0_INSURANCEAMT=1.00
-            'PAYMENTREQUEST_0_AMT':105.87,
+            'PAYMENTREQUEST_0_AMT': 105.87,
             'PAYMENTREQUEST_0_CURRENCYCODE':currency,
         }
         
@@ -145,6 +145,7 @@ class PayPal(object):
         query_string = self.signature + urllib.urlencode(parameters)
         response = urllib.urlopen(self.NVP_API_ENDPOINT, query_string).read()
         response_dict = parse_qs(response)
+        print(response)
         self.api_response = response_dict
         state = self._get_value_from_qs(response_dict, "ACK")
         if state in ["Success", "SuccessWithWarning"]:
