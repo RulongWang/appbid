@@ -4,12 +4,21 @@
 
     <div class="order_items">
         <div class="order_summary">Your order summary</div>
+        <div class="item_header">
+                <div class="item_detail_header">
+                    Service
+                </div>
+                <div class="item_amount_header">
+                    Amount
+                </div>
+        </div>
         <ul class="items_list">
+
             <li>
                 <div class="item_detail">
-                    <div class="item_name"></div>
-                    <div class="item_desc"></div>
-                    <div class="item_num"></div>
+                    <div class="item_name">Item1</div>
+                    <div class="item_desc">Featured listing fee</div>
+                    <div class="item_num">2</div>
                 </div>
                 <div class="item_amount">
                     400$
@@ -17,7 +26,39 @@
             </li>
             <li>
                 <div class="item_detail">
-                    <div></div>
+                    <div class="item_name">Item1</div>
+                    <div class="item_desc">Featured listing fee</div>
+                    <div class="item_num">2</div>
+                </div>
+                <div class="item_amount">
+                    400$
+                </div>
+            </li>
+            <li>
+                <div class="item_detail">
+                    <div class="item_name">Item1</div>
+                    <div class="item_desc">Featured listing fee</div>
+                    <div class="item_num">2</div>
+                </div>
+                <div class="item_amount">
+                    400$
+                </div>
+            </li>
+            <li>
+                <div class="item_detail">
+                    <div class="item_name">Item1</div>
+                    <div class="item_desc">Featured listing fee</div>
+                    <div class="item_num">2</div>
+                </div>
+                <div class="item_amount">
+                    400$
+                </div>
+            </li>
+            <li>
+                <div class="item_detail">
+                    <div class="item_name">Item1</div>
+                    <div class="item_desc">Featured listing fee</div>
+                    <div class="item_num">2</div>
                 </div>
                 <div class="item_amount">
                     400$
@@ -25,15 +66,19 @@
             </li>
         </ul>
         <div class="item_summary">
-
+            <div class="item_detail_header">
+            </div>
+            <div class="item_amount_header">
+                  Total:400${{ total }}
+            </div>
         </div>
     </div>
 
+            <form action="/payment/paypal_checkout" method="get">
+            <input type=hidden name = "PayerID" value="{{ payerid }}"/>
+            <input type=hidden name = "token" value="{{ token }}" />
+            <input type= submit value="checkout" class="newbutton"/>
+            </form>
 
-    <form action="/payment/paypal_checkout" method="get">
-        <input type=hidden name = "PayerID" value="{{ payerid }}"/>
-        <input type=hidden name = "token" value="{{ token }}" />
-        <input type= submit value="checkout" class="newbutton"/>
 
-    </form>
 {% endblock %}
