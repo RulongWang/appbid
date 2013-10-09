@@ -132,7 +132,7 @@ class PayPal(object):
             'L_PAYMENTREQUEST_0_NUMBER0': 10001,
             'L_PAYMENTREQUEST_0_DESC0':'Appswalk service fee from 10.1 to 11.1',
             'L_PAYMENTREQUEST_0_AMT0':30,
-            'PAYMENTREQUEST_0_ITEMAMT':30,
+            'PAYMENTREQUEST_0_ITEMAMT':40,
             # &PAYMENTREQUEST_0_SHIPPINGAMT=3.00
             # &PAYMENTREQUEST_0_HANDLINGAMT=2.99
             # &PAYMENTREQUEST_0_SHIPDISCAMT=-3.00

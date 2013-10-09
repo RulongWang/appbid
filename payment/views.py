@@ -38,6 +38,8 @@ def payment(request, *args, **kwargs):
         print('success_excute_setExpressCheckout')
         print(redirect_url)
         return HttpResponseRedirect(redirect_url)
+    else:
+        return HttpResponseRedirect('/payment/paypal_cancel')
 
     # initParam['success_url'] = 'payment/payment.html'
     # return 'success'
