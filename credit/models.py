@@ -15,3 +15,4 @@ class CreditLog(models.Model):
     credit_point = models.ForeignKey(CreditPoint)
     change_reason = models.TextField(null=True,blank=True)
     points = models.IntegerField()
+    create_time = models.DateTimeField(auto_now_add=True)

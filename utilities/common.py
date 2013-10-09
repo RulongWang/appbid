@@ -4,6 +4,8 @@ import json
 import urllib2
 import re
 import datetime
+import random
+import string
 
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from system import models as systemModels
@@ -161,3 +163,21 @@ def dateBefore(date=datetime.datetime.now()):
                     break
             return [str(count), unit, 'ago']
     return [0, 'second', 'ago']
+
+
+def getHttpHeader(request):
+    """Get HTTP url path, such as: http://127.0.0.1:8000, https://127.0.0.1:8000"""
+    if request.is_secure():
+        return ''.join(['https://', request.META.get('HTTP_HOST')])
+    else:
+        return ''.join(['http://', request.META.get('HTTP_HOST')])
+
+
+def getToken(*args, **kwargs):
+    """Get token."""
+    key = kwargs.get('key')
+    default = kwargs.get('default', 30)
+    if key:
+        length = getSystemParam(key=key, default=default)
+        return ''.join(random.sample(string.ascii_letters+string.digits, string.atoi(length)))
+    return None

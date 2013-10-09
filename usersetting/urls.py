@@ -43,7 +43,7 @@ urlpatterns = patterns('',
 
     url(r'^security-setting-email$', views.securitySettingEmail, name='security_setting_email'),
     url(r'^security-setting-email-update$', views.securitySettingEmailUpdate, name='security_setting_email_update'),
-    url(r'^(?P<username>\S+)/emails/(?P<pk>\d+)/email_security_verification/(?P<confirm_token>\w+)$',
+    url(r'^(?P<username>\S+)/emails/(?P<pk>\d+)/email-security-verification/(?P<confirm_token>\w+)$',
         views.securitySettingEmailConfirm, name='security_setting_email_confirm'),
     url(r'^security-setting-phone$', views.securitySettingPhone, name='security_setting_phone'),
 

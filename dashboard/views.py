@@ -193,7 +193,6 @@ def myBidding(request, *args, **kwargs):
 
     #For won bidding
     transactions = txnModels.Transaction.objects.filter(buyer_id=user.id).exclude(status=1)
-    print len(transactions)
     initParam['transactions'] = common.queryWithPaginator(request, page_range=page_range, page=won_page,
                                                           obj=transactions, query_method=queryTxnInfo)
 

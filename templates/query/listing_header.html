@@ -62,7 +62,9 @@
                         <div id="price_msg"></div>
                         <div style="text-align: center;">
                         {% if app.one_price %}
-                            <input id="buyitnow" type="button" value="Buy It Now with {{ app.one_price }}{{ app.currency.currency }}" class="buyitnow"/>
+                            <a href="{% url 'transaction:one_price_buy' app.id app.publisher.id %}">
+                                <input id="buyitnow" type="button" value="Buy It Now with {{ app.one_price }}{{ app.currency.currency }}" class="buyitnow"/>
+                            </a>
                         {% endif %}
                         </div>
                     {% endif %}

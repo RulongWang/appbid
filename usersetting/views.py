@@ -2,8 +2,6 @@ __author__ = 'rulongwang'
 
 import json
 import os
-import random
-import string
 
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
@@ -138,21 +136,19 @@ def registerActiveConfirm(request, *args, **kwargs):
     """Active the account by user clicking the active link."""
     initParam = {}
     username = kwargs.get('username')
+    #TODO:Will use it later.
     confirm_token = kwargs.get('confirm_token')
-    if username and confirm_token and len(confirm_token) == 30:
-        users = models.User.objects.filter(username=username)
-        if users:
-            users[0].is_active = True
-            users[0].save()
-            securityVerification = models.SecurityVerification()
-            securityVerification.user_id = users[0].id
-            securityVerification.vtype = 1
-            securityVerification.value = users[0].email
-            securityVerification.is_verified = True
-            securityVerification.save()
-            initParam['account_msg'] = _('The account active successfully.')
-        else:
-            initParam['account_error'] = _('The active link is not correct.')
+    users = models.User.objects.filter(username=username)
+    if users:
+        users[0].is_active = True
+        users[0].save()
+        securityVerification = models.SecurityVerification()
+        securityVerification.user_id = users[0].id
+        securityVerification.vtype = 1
+        securityVerification.value = users[0].email
+        securityVerification.is_verified = True
+        securityVerification.save()
+        initParam['account_msg'] = _('The account active successfully.')
     else:
         initParam['account_error'] = _('The active link is not correct.')
     return render_to_response("usersetting/register_active_confirm.html", initParam, context_instance=RequestContext(request))
