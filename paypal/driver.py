@@ -120,24 +120,14 @@ class PayPal(object):
         """
         parameters = {
             'METHOD': 'SetExpressCheckout',
-            'NOSHIPPING': 1,
+            'NOSHIPPING': 0,#no need shipping address
             'PAYMENTACTION': 'Sale',
             'RETURNURL': return_url,
             'CANCELURL': cancel_url,
-            'PAYMENTREQUEST_0_AMT ': amount,
-            'PAYMENTREQUEST_0_CURRENCYCODE':currency,
-            # 'CURRENCYCODE' : currency,
-            # 'ALLOWNOTE':1,
-            # 'SOLUTIONTYPE'=Sole
-            # 'order':'Appswalk service fee',
-            # 'L_PAYMENTREQUEST_0_NUMBER0': 10001,
-            'PAYMENTREQUEST_0_DESC ':'Appswalk service fee from 10.1 to 11.1',
-            # 'L_PAYMENTREQUEST_0_AMT0':30,
-            # 'PAYMENTREQUEST_0_ITEMAMT':40,
-            # &PAYMENTREQUEST_0_SHIPPINGAMT=3.00
-            # &PAYMENTREQUEST_0_HANDLINGAMT=2.99
-            # &PAYMENTREQUEST_0_SHIPDISCAMT=-3.00
-            # &PAYMENTREQUEST_0_INSURANCEAMT=1.00
+            'AMT': amount,
+            'CURRENCYCODE':currency,
+            'DESC':'Appswalk service fee from 10.1 to 11.1',
+            # 'INVNUM':'1000'  #invoice number
         }
         
         parameters.update(kwargs)
