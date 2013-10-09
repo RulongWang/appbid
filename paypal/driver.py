@@ -125,7 +125,7 @@ class PayPal(object):
             'PAYMENTACTION':'Sale',
             'RETURNURL': return_url,
             'CANCELURL': cancel_url,
-            'AMT': 404,#amount,
+            'AMT': 400,#amount,
             # 'PAYMENTREQUEST_0_AMT': amount,
             'CURRENCYCODE':currency,
             'DESC':'Appswalk service fee from 10.1 to 11.1',
