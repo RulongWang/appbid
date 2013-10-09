@@ -122,13 +122,13 @@ class PayPal(object):
             'METHOD': 'SetExpressCheckout',
             'NOSHIPPING': 0,#no need shipping address
             # 'PAYMENTACTION': 'Sale',
-            'PAYMENTREQUEST_0_PAYMENTACTION':'Sale',
+            'PAYMENTACTION':'Sale',
             'RETURNURL': return_url,
             'CANCELURL': cancel_url,
-            # 'AMT': amount,
-            'PAYMENTREQUEST_0_AMT': amount,
+            'AMT': 404,#amount,
+            # 'PAYMENTREQUEST_0_AMT': amount,
             'CURRENCYCODE':currency,
-            'PAYMENTREQUEST_0_DESC':'Appswalk service fee from 10.1 to 11.1',
+            'DESC':'Appswalk service fee from 10.1 to 11.1',
             # 'INVNUM':'1000'  #invoice number
             # 'CURRENCYCODE' : currency,
             # 'ALLOWNOTE':1,
@@ -137,15 +137,14 @@ class PayPal(object):
             # 'L_PAYMENTREQUEST_0_NUMBER0': 10001,
             'PAYMENTREQUEST_0_DESC ':'test desc',
             # 'L_PAYMENTREQUEST_0_AMT0':30,
-            'PAYMENTREQUEST_0_AMT': 404,
-            'PAYMENTREQUEST_0_CURRENCYCODE': 400,
+            'ITEMAMT': 400,
 
             # &PAYMENTREQUEST_0_SHIPPINGAMT=3.00
-            'PAYMENTREQUEST_0_HANDLINGAMT':4.0,
-            'L_PAYMENTREQUEST_0_DESC0':'Item1',
-            'L_PAYMENTREQUEST_0_AMT0':400,
-            'L_PAYMENTREQUEST_0_NUMBER0':'10100',
-            'L_PAYMENTREQUEST_0_QTY0':1,
+            'L_NAME0':'Item1 name',
+            'L_DESC0':'Item1',
+            'L_AMT0':400,
+            # 'L_PAYMENTREQUEST_0_NUMBER0':'10100',
+            'L_QTY0':1,
             'L_PAYMENTREQUEST_0_ITEMCATEGORY0':'Digital',
             # &PAYMENTREQUEST_0_SHIPDISCAMT=-3.00
             # &PAYMENTREQUEST_0_INSURANCEAMT=1.00
