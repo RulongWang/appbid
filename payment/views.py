@@ -32,6 +32,7 @@ def payment(request, *args, **kwargs):
     #Call PayPal api of payment
     p = PayPal()
     result = p.SetExpressCheckout(amount, "USD",sandbox_return_url , sandbox_cancel_url)
+
     if result:
         redirect_url = p.paypal_url()
         print('success_excute_setExpressCheckout')
@@ -43,6 +44,15 @@ def payment(request, *args, **kwargs):
     # initParam['failed_url'] = 'payment/payment.html'
     # return 'failed'
 
+
+
+        #error message from paypal
+        # ACK=notSuccess&TIMESTAMP=date/timeOfResponse&
+        # CORRELATIONID=debuggingToken&VERSION=VersionNo&
+        # BUILD=buildNumber&L_ERRORCODE0=errorCode&
+        # L_SHORTMESSAGE0=shortMessage&
+        # L_LONGMESSAGE0=longMessage&
+        # L_SEVERITYCODE0=severityCode
 
 @csrf_protect
 @transaction.commit_on_success

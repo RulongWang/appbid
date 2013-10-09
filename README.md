@@ -19,3 +19,5 @@ nohup uwsgi --ini appbid.ini&
 
 Kill -INT PID
 
+$ mysqladmin -u root -p'oldpassword' password newpass
+

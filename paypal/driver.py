@@ -124,8 +124,21 @@ class PayPal(object):
             'PAYMENTACTION' : 'Sale',
             'RETURNURL' : return_url,
             'CANCELURL' : cancel_url,
-            'AMT' : amount,
-            'CURRENCYCODE' : currency,
+            # 'AMT' : amount,
+            # 'CURRENCYCODE' : currency,
+            # 'ALLOWNOTE':1,
+            # 'SOLUTIONTYPE'=Sole
+            'L_PAYMENTREQUEST_0_NAME0':'Appswalk service fee',
+            'L_PAYMENTREQUEST_0_NUMBER0': 10001,
+            'L_PAYMENTREQUEST_0_DESC0':'Appswalk service fee from 10.1 to 11.1',
+            'L_PAYMENTREQUEST_0_AMT0':30,
+            'PAYMENTREQUEST_0_ITEMAMT':30,
+            # &PAYMENTREQUEST_0_SHIPPINGAMT=3.00
+            # &PAYMENTREQUEST_0_HANDLINGAMT=2.99
+            # &PAYMENTREQUEST_0_SHIPDISCAMT=-3.00
+            # &PAYMENTREQUEST_0_INSURANCEAMT=1.00
+            'PAYMENTREQUEST_0_AMT':105.87,
+            'PAYMENTREQUEST_0_CURRENCYCODE':currency,
         }
         
         parameters.update(kwargs)

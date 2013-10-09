@@ -1,0 +1,1 @@
+nohup uwsgi --ini appbid.ini&
