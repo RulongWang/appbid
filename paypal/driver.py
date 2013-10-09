@@ -125,9 +125,10 @@ class PayPal(object):
             'PAYMENTREQUEST_0_PAYMENTACTION':'Sale',
             'RETURNURL': return_url,
             'CANCELURL': cancel_url,
-            'AMT': amount,
+            # 'AMT': amount,
+            'PAYMENTREQUEST_0_AMT': amount,
             'CURRENCYCODE':currency,
-            'DESC':'Appswalk service fee from 10.1 to 11.1',
+            'PAYMENTREQUEST_0_DESC':'Appswalk service fee from 10.1 to 11.1',
             # 'INVNUM':'1000'  #invoice number
             # 'CURRENCYCODE' : currency,
             # 'ALLOWNOTE':1,
