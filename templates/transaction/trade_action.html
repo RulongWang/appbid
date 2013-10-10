@@ -38,7 +38,7 @@
                     The app transaction has {% include "bid/remaintime.html" %} to close.
                 </div>
                 <div>
-                    <a href="">
+                    <a href="{% url 'transaction:closed_trade' transaction.id transaction.buyer.id %}">
                         <input id="id_pay" type="button" value="Closed Trade">
                     </a>
                 </div>

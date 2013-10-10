@@ -12,3 +12,18 @@ values('buyer_paid_inform_seller',1,1,'Your app {param1} from AppsWalk','Hi {par
 
 insert into notification_notificationtemplate(`name`,`language`,`type`,`subject`,`template`,`description`,`version`,`create_time`,`last_modify`,`modifier_id`)
 values('buyer_one_price_inform_seller',1,1,'{param1} has bought your app {param2} from AppsWalk','Hi {param1},\n\r User {param2} has bought your app {param3}. You can begin to delivery your content to buyer now.','Tell seller after buyer paid..','1.0',now(),now(),1);
+
+insert into notification_notificationtemplate(`name`,`language`,`type`,`subject`,`template`,`description`,`version`,`create_time`,`last_modify`,`modifier_id`)
+values('closed_trade_inform_buyer',1,1,'{param1} has bought your app {param2} from AppsWalk','Hi {param1},\n\r User {param2} has bought your app {param3}. You can begin to delivery your content to buyer now.','Tell seller after buyer paid..','1.0',now(),now(),1);
+
+insert into notification_notificationtemplate(`name`,`language`,`type`,`subject`,`template`,`description`,`version`,`create_time`,`last_modify`,`modifier_id`)
+values('closed_trade_inform_seller',1,1,'{param1} has bought your app {param2} from AppsWalk','Hi {param1},\n\r User {param2} has bought your app {param3}. You can begin to delivery your content to buyer now.','Tell seller after buyer paid..','1.0',now(),now(),1);
+
+insert into notification_notificationtemplate(`name`,`language`,`type`,`subject`,`template`,`description`,`version`,`create_time`,`last_modify`,`modifier_id`)
+values('verified_app_success_inform_seller',1,1,'{param1} has bought your app {param2} from AppsWalk','Hi {param1},\n\r User {param2} has bought your app {param3}. You can begin to delivery your content to buyer now.','Tell seller after buyer paid..','1.0',now(),now(),1);
+
+insert into notification_notificationtemplate(`name`,`language`,`type`,`subject`,`template`,`description`,`version`,`create_time`,`last_modify`,`modifier_id`)
+values('verified_app_failed_inform_seller',1,1,'{param1} has bought your app {param2} from AppsWalk','Hi {param1},\n\r User {param2} has bought your app {param3}. You can begin to delivery your content to buyer now.','Tell seller after buyer paid..','1.0',now(),now(),1);
+
+insert into notification_notificationtemplate(`name`,`language`,`type`,`subject`,`template`,`description`,`version`,`create_time`,`last_modify`,`modifier_id`)
+values('service_end_inform_seller',1,1,'{param1} has bought your app {param2} from AppsWalk','Hi {param1},\n\r User {param2} has bought your app {param3}. You can begin to delivery your content to buyer now.','Tell seller after buyer paid..','1.0',now(),now(),1);

@@ -1,5 +1,9 @@
 __author__ = 'Jarvis'
 
+import time
+import datetime
+import string
+
 from django.http import Http404
 from django.shortcuts import render_to_response, RequestContext, redirect, get_object_or_404
 from django.views.decorators.csrf import csrf_protect
@@ -15,6 +19,8 @@ from transaction import models as txnModels
 from bid import forms
 from query.views import initBidInfo
 from message.views import sendMessage
+from credit import views as creditViews
+from utilities import common
 
 
 @csrf_protect
@@ -29,38 +35,45 @@ def createBid(request, *args, **kwargs):
         initBidInfo(request, app=app, initParam=initParam)#For below code using the value
         if request.method == "POST":
             biddingForm = forms.BiddingForm(request.POST)
-            if biddingForm.is_valid():
-                #From bid_create.html
-                if 'yes' == request.POST.get('bid_create'):
-                    bid = biddingForm.save(commit=False)
-                    if bid.price >= initParam.get('bid_price'):
-                        bid.app = app
-                        bid.buyer = request.user
-                        bid.status = 1
-                        # userPrivateItem = userSettingModels.UserPrivateItem.objects.filter(key='is_bid_approved')
-                        # if userPrivateItem:
-                        #     is_bid_approved = userSettingModels.UserPrivateSetting.objects.filter(user_id=app.publisher.id, user_private_item_id=userPrivateItem[0])
-                        #     #Need be verified by app publisher.
-                        #     if is_bid_approved and is_bid_approved[0].value == 'True':
-                        #         bid.status = 3
-                        bid.save()
+            #Buyer credit point judge for bidding.
+            min_cp = common.getSystemParam(key='min_cp_for_bid', default=50)
+            cp = creditViews.getUserCreditPoint(user=request.user)
+            if cp == -1 or cp < string.atoi(min_cp):
+                initParam['biddingForm'] = biddingForm
+                initParam['bid_error'] = _('You can not bid, because your credit point is too low. You can pay credit point, after our verification.')
+            else:
+                if biddingForm.is_valid():
+                    #From bid_create.html
+                    if 'yes' == request.POST.get('bid_create'):
+                        bid = biddingForm.save(commit=False)
+                        if bid.price >= initParam.get('bid_price'):
+                            bid.app = app
+                            bid.buyer = request.user
+                            bid.status = 1
+                            # userPrivateItem = userSettingModels.UserPrivateItem.objects.filter(key='is_bid_approved')
+                            # if userPrivateItem:
+                            #     is_bid_approved = userSettingModels.UserPrivateSetting.objects.filter(user_id=app.publisher.id, user_private_item_id=userPrivateItem[0])
+                            #     #Need be verified by app publisher.
+                            #     if is_bid_approved and is_bid_approved[0].value == 'True':
+                            #         bid.status = 3
+                            bid.save()
 
-                        #Send the message to app publisher
-                        send_message = request.POST.get('send_message')
-                        if send_message and send_message == 'yes':
-                            if sendMessage(request, initParam=initParam):
-                                return redirect(reverse('bid:bid_list', kwargs={'pk': app.id}))
+                            #Send the message to app publisher
+                            send_message = request.POST.get('send_message')
+                            if send_message and send_message == 'yes':
+                                if sendMessage(request, initParam=initParam):
+                                    return redirect(reverse('bid:bid_list', kwargs={'pk': app.id}))
+                                else:
+                                    initParam['biddingForm'] = biddingForm
+                                    initParam['bid_error'] = initParam['message_error']
                             else:
-                                initParam['biddingForm'] = biddingForm
-                                initParam['bid_error'] = initParam['message_error']
+                                return redirect(reverse('bid:bid_list', kwargs={'pk': app.id}))
                         else:
-                            return redirect(reverse('bid:bid_list', kwargs={'pk': app.id}))
+                            initParam['biddingForm'] = biddingForm
+                            initParam['bid_error'] = _('The new bid has been submitted.')
+                    #From list_detail.html
                     else:
                         initParam['biddingForm'] = biddingForm
-                        initParam['bid_error'] = _('The new bid has been submitted.')
-                #From list_detail.html
-                else:
-                    initParam['biddingForm'] = biddingForm
         initParam['sender'] = request.user
         initParam['receiver'] = app.publisher
         sendMessage(request, initParam=initParam)
@@ -98,6 +111,14 @@ def bidList(request, *args, **kwargs):
             transactions = txnModels.Transaction.objects.filter(app_id=app.id, seller_id=app.publisher.id).exclude(status=1)
             if transactions:
                 initParam['transaction'] = transactions[0]
+            else:
+                transactions = txnModels.Transaction.objects.filter(app_id=app.id, seller_id=app.publisher.id, status=1)
+                if transactions and app.status == 3 and transactions[0].end_time:
+                    if transactions[0].end_time > datetime.datetime.now():
+                        initParam['time_remaining_new'] = time.mktime(time.strptime(str(transactions[0].end_time), '%Y-%m-%d %H:%M:%S'))
+                        initParam['is_expiry_date'] = False
+                    else:
+                        initParam['is_expiry_date'] = True
 
         return render_to_response('bid/bid_list.html', initParam, context_instance=RequestContext(request))
     raise Http404

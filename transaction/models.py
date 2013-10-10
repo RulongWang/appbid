@@ -22,9 +22,10 @@ class Transaction(models.Model):
 
 class TransactionLog(models.Model):
     STATUS = (
-        (1, 'trade'),
-        (2, 'paid'),
-        (3, 'closed'),
+        (1, 'unsell'),
+        (2, 'trade'),
+        (3, 'paid'),
+        (4, 'closed'),
     )
     app = models.ForeignKey(appModels.App)
     status = models.IntegerField(choices=STATUS)

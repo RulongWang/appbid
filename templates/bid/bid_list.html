@@ -4,6 +4,19 @@
 
     {% include "query/listing_header.html" %}
     <div class="clear"></div>
+    {% if app.publisher.id == request.user.id and app.status == 3 %}
+        {% if is_expiry_date and is_expiry_date == False %}
+            {% with time_remaining_new as time_remaining %}
+            <div>
+                You have {% include "bid/remaintime.html" %} to trade. You can choose not trade, but your credit points will be decreased 50.
+            </div>
+            {% endwith %}
+        {% elif is_expiry_date and is_expiry_date == True %}
+            <div>
+                You chose not trade, Your credit points have been decreased 50. You can still continue to trade. After trade is finished, your credit points will be increased 50.
+            </div>
+        {% endif %}
+    {% endif %}
     <div class="bidding_list">
     <div class="bidlisting_item">
         <div class="bidder">

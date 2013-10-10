@@ -82,16 +82,17 @@ def closedTradeInform(request, *args, **kwargs):
     transaction = kwargs.get('transaction')
     if transaction:
         massEmailThread = email.MassEmailThread()
-        templates = models.NotificationTemplate.objects.filter(name='')
+        templates = models.NotificationTemplate.objects.filter(name='closed_trade_inform_seller')
         if templates:
-            subject = ''
-            message = ''
+            #TODO:will do it by template
+            subject = 'The email to seller.'
+            message = 'The email to seller..'
             recipient_list = [transaction.seller.email]
             massEmailThread.addEmailData(subject=subject, message=message, recipient_list=recipient_list)
-        templates = models.NotificationTemplate.objects.filter(name='')
+        templates = models.NotificationTemplate.objects.filter(name='closed_trade_inform_buyer')
         if templates:
-            subject = ''
-            message = ''
+            subject = 'The email to buyer.'
+            message = 'The email to buyer....'
             recipient_list = [transaction.seller.email]
             massEmailThread.addEmailData(subject=subject, message=message, recipient_list=recipient_list)
         massEmailThread.start()

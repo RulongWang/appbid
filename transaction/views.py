@@ -72,7 +72,7 @@ def tradeNow(request, *args, **kwargs):
         #Log transaction
         transactionsLog = models.TransactionLog()
         transactionsLog.app = app
-        transactionsLog.status = 1
+        transactionsLog.status = 2
         transactionsLog.seller = request.user
         transactionsLog.buyer = user
         transactionsLog.price = bid.price
@@ -122,14 +122,14 @@ def tradeAction(request, *args, **kwargs):
 def closedTrade(request, *args, **kwargs):
     """Need update end_time to now."""
     initParam = {}
-    transaction = get_object_or_404(models.Transaction, pk=kwargs.get('txn_id'), seller_id=kwargs.get('buyer_id'))
+    transaction = get_object_or_404(models.Transaction, pk=kwargs.get('txn_id'), buyer_id=kwargs.get('buyer_id'))
     transaction.status = 4
     transaction.end_date = datetime.datetime.now()
     transaction.save()
     #Log transaction
     transactionsLog = models.TransactionLog()
     transactionsLog.app = transaction.app
-    transactionsLog.status = 3
+    transactionsLog.status = 4
     transactionsLog.buyer = request.user
     transactionsLog.save()
     #Increase seller and buyer credit point
@@ -137,7 +137,9 @@ def closedTrade(request, *args, **kwargs):
     creditViews.increaseCreditPoint(user=transaction.buyer, point=point)
     creditViews.increaseCreditPoint(user=transaction.seller, point=point)
     #Send email to seller and buyer
+    notificationViews.closedTradeInform(request, transaction=transaction)
 
+    initParam['transaction'] = transaction
     return render_to_response('transaction/trade_action.html', initParam, context_instance=RequestContext(request))
 
 
@@ -159,7 +161,7 @@ def onePriceBuy(request, *args, **kwargs):
         #Buyer credit point judge for bidding.
         min_cp = common.getSystemParam(key='min_cp_for_bid', default=50)
         cp = creditViews.getUserCreditPoint(user=request.user)
-        if cp == -1 or cp < min_cp:
+        if cp == -1 or cp < string.atoi(min_cp):
             initParam['error_msg'] = _('You can not buy, because your credit point is too low. You can pay credit point, after our verification.')
         else:
             #TODO:invoke pay method
@@ -182,7 +184,7 @@ def onePriceBuy(request, *args, **kwargs):
                 #Log transaction
                 transactionsLog = models.TransactionLog()
                 transactionsLog.app = app
-                transactionsLog.status = 2
+                transactionsLog.status = 3
                 transactionsLog.buyer = request.user
                 transactionsLog.price = app.one_price
                 transactionsLog.save()
@@ -215,7 +217,7 @@ def buyerPay(request, *args, **kwargs):
         #Log transaction
         transactionsLog = models.TransactionLog()
         transactionsLog.app = transaction.app
-        transactionsLog.status = 2
+        transactionsLog.status = 3
         transactionsLog.buyer = request.user
         transactionsLog.price = transaction.price
         transactionsLog.save()

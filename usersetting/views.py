@@ -19,6 +19,7 @@ from usersetting import models
 from payment import models as paymentModels
 from usersetting import forms
 from notification import views as notificationViews
+from credit import views as creditViews
 from utilities import common
 
 
@@ -76,6 +77,8 @@ def register(request, *args, **kwargs):
                 if user is not None:
                     user.is_active = False
                     user.save()
+                    #Init user credit point
+                    creditViews.initCreditPoint(user=user)
                     #Init some setting for the user
                     # privateSet = models.UserPrivateSetting()
                     # privateSet.user = user
