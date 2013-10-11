@@ -95,6 +95,9 @@ def paypal_docheckout(request, *args, **kwargs):
         payerid = request.GET.get("PayerID")
 
         # charge from PayPal
+
+        # get the order id by token
+
         result, response = process_payment_request('40', 'USD', token, payerid)
         # process the result
         if not result:

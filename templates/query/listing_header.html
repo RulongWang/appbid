@@ -6,39 +6,43 @@
               <div class="app_bid_info">
                 <h1><a href="{% url 'query:app_detail' app.id %}">{{ app.app_name }}</a></h1>
                 <div style="font-size: 15px;margin-top: 5px;">{{ app.title }}</div>
-                <div class="margin10px"> <a target="_blank" href="{{ app.app_store_link }}" title="{{ app.app_name }}"><img src="{% static "images/appstore.png" %}"/></a> </div>
+                <div class="margin10px">
+                    <div style="width:100px;float: left;">
+                        <a target="_blank" href="{{ app.app_store_link }}" title="{{ app.app_name }}"><img src="{% static "images/appstore.png" %}"/></a>
+                    </div>
+                    <div style="margin-top:10px;width:150px;float: right;">
+                        {% if request.user.id != app.publisher.id %}
+                            {% ifequal request.user.is_authenticated True %}
+                                <span id="watch_app" class="watch">{% if watch_app and watch_app == True %}Unwatch{% else %}Watch This App{% endif %}</span>
+                            {% else %}
+                                <a href="/usersetting/home?next={{ request.path }}" style="text-decoration:none">
+                                    <span class="watch">Watch This App</span>
+                                </a>
+                            {% endifequal %}
+                        {% endif %}
+                    </div>
+                </div>
                 {% if app.status == 2 and app.reserve_price and app.reserve_price <= current_price %}
-                  <div>
+                  <div class="clear">
                     Auction has reached the reserve price.
                   </div>
                 {% endif %}
                 {% if app.status == 2 and begin_bid == True %}
-                  <div>
+                  <div class="clear">
                     Listing closes in:{% include "bid/remaintime.html" %}
                   </div>
                 {% else %}
                     {% if app.status == 2 and app.begin_date %}
-                        <div>
+                        <div class="clear">
                           Beginning bid in:{% include "bid/remaintime.html" %}
                         </div>
                     {% endif %}
                     {% if app.status == 3 %}
-                        <div style="color: red;">
+                        <div style="color: red;" class="clear">
                           Closed in: {{ time_remaining.0|floatformat }} {{ time_remaining.1 }}{{ time_remaining.0|floatformat|pluralize }} {{ time_remaining.2 }}
                         </div>
                     {% endif %}
                 {% endif %}
-                <div style="margin-top: 10px;">
-                    {% if request.user.id != app.publisher.id %}
-                        {% ifequal request.user.is_authenticated True %}
-                            <span id="watch_app" class="buyitnow">{% if watch_app and watch_app == True %}Unwatch{% else %}Watch{% endif %}</span>
-                        {% else %}
-                            <a href="/usersetting/home?next={{ request.path }}" style="text-decoration:none">
-                                <span class="buyitnow">Watch</span>
-                            </a>
-                        {% endifequal %}
-                    {% endif %}
-                </div>
               </div>
               <div class="bidding_box right">
                 <div class="bidding_status" >
@@ -119,7 +123,7 @@
         var value = $("#watch_app").text();
         if ("{{ request.user.is_authenticated }}" == "True" && "{{ app.publisher.id }}" != "{{ request.user.id }}") {
             var id = '{{ app.id }}';
-            if (value == "Watch") {
+            if (value == "Watch This App") {
                 $.ajax({
                     type:"POST",
                     url:"{% url 'dashboard:watch_app' app.id %}",
@@ -144,7 +148,7 @@
                     },
                     success:function(data) {
                         if(data.ok === 'true') {
-                            $("#watch_app").text("Watch");
+                            $("#watch_app").text("Watch This App");
                         }
                     }
                 });

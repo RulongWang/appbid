@@ -620,10 +620,11 @@ box-shadow: inset 0 0 1px #ffbfbf;
   margin:0 auto;
   margin-top:1px;
   opacity: 0.5;
-  border-right: 10px solid transparent;
+  border-right: 10px solid orange;
   border-top: 10px solid #679b08;
   border-left: 10px solid #679b08;
   border-bottom: 10px solid #679b08;
+
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
   border-bottom-left-radius: 10px;
@@ -671,7 +672,15 @@ box-shadow: inset 0 0 1px #ffbfbf;
 
 .more_block{
     height:120px;
+    text-align: center;
+}
 
+.more_block a,.more_block a:link,.more_block a:visited {
+    display: block;
+    height:30px;
+    font-size: 15px;
+    font-weight: bold;
+    color: orange;
 }
 /*.normal_list{*/
     /*clear:both;*/
@@ -1163,6 +1172,18 @@ fieldset {
     border-radius: 3px;
     padding:3px 5px;
 }
+
+.watch{
+    margin-right:10px;
+    background-color: #ffa500;
+    color:white;
+    border:0;
+    height:18px;
+    border-radius: 3px ;
+
+    padding:0px 4px;
+    /*float: right;*/
+}
 .button_block{
     margin: 10px 0px 20px 169px;
     text-align: center;
@@ -1514,6 +1535,10 @@ fieldset {
     padding: 3px;
     border:1px solid #eee;
 
+}
+
+.sendmsg{
+    background:url("../images/msg.png") no-repeat top center;
 }
 
 #id_content{
@@ -1906,6 +1931,7 @@ fieldset {
 }
 
 .widget{
+    clear: both;
     margin:20px 0;
     width:280px;
 
@@ -1929,6 +1955,12 @@ fieldset {
 .widget ul li{
     margin-top:5px;
     padding:3px;
+    border-bottom: 1px dashed #ddd;
+}
+.widget ul li:last-child{
+     border-bottom: none;
+}
+.widget ul li ul li:last-child{
     border-bottom: 1px dashed #ddd;
 }
 .document_icon{

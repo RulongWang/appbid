@@ -125,16 +125,19 @@
                                            </div>
 
                                            <div class="bidding_info">
-                                               <div style="text-align: center;">
+                                                <div class="clock_wrapper">
+
+                                                    <div class="clock1" title="Ending: {{ app.4.0|floatformat }} {{ app.4.1 }}{{ app.4.0|floatformat|pluralize }}">
+
+                                                    </div>
+                                                </div>
+                                               <div style="text-align: center;margin-bottom: 10px;">
                                                    {{ app.1|floatformat:"-2"|default:0 }} {{ app.0.currency.currency }}
                                                </div>
-                                               <div class="bid_button">
+                                               <div class="bid_button" style="margin:0 auto;">
                                                    <a href="{% url 'bid:bid_list' app.0.id %}">
                                                        {{ app.2|floatformat|default:0 }} bid{{ app.2|floatformat|pluralize }}
                                                    </a>
-                                               </div>
-                                               <div>
-                                                   Ending: {{ app.4.0|floatformat }} {{ app.4.1 }}{{ app.4.0|floatformat|pluralize }}
                                                </div>
                                            </div>
                                        </div>

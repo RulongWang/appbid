@@ -17,9 +17,9 @@
             </div>
             <div class="feature_block">
                 <ul class="feature_list">
-                    <li><span class="li_title">Price</span></li>
+                    <li><span class="li_title">Price/Company</span></li>
                     <li><span>Price in App Store:</span><span class="right margin_right_20" >{{ appInfo.price|floatformat|default:0 }}{{ app.currency.currency }}</span></li>
-
+                    <li><span>Seller:</span><span class="right margin_right_20" >{{ app.seller_name }}</span></li>
                 </ul>
             </div>
             <div class="feature_block">
@@ -96,31 +96,39 @@
                 </div>
              </div>
             <div class="detail_right">
-                <div class="widget">
+                <div class="widget" style="height:80px;">
                    <span class="widget_title">Seller</span>
-                   <div>
-                       {% if request.user.id != app.publisher.id %}
+                   <div class="clear" style=";margin:10px 0px 30px 10px;height:100px;">
+                        <div style="padding: 2px;border:1px solid #ddd;height:50px;width:50px;float:left;">
+                           <img src="{% static "images/darwin.jpg" %}" style="width:50px;height:50px;"/>
+                        </div>
+
+
+                        <div style="margin-left:10px;width:100px;float: left;">
+                           {{ app.publisher.username }}
+                        </div>
+                        {% if app.publisher.username != request.user.username %}
+                           <div style="margin-left:10px;width:100px;float: left;">
+                               <a href="/dashboard/create-message/reply/{{ app.publisher.username }}/{{ app.publisher.id }}?next={{ request.path }}" title="Send private message to seller" >
+                               <img src="{% static "images/email.png" %}"/>
+                               </a>
+                           </div>
+                        {% endif %}
+                        <div style="margin-left:10px;width:130px;float:left;">
+                        {% if request.user.id != app.publisher.id %}
                            {% ifequal request.user.is_authenticated True %}
-                               <span id="watch_seller" class="buyitnow">{% if watch_seller and watch_seller == True %}Unwatch{% else %}Watch{% endif %}</span>
+                               <span id="watch_seller" class="watch" title="Watch This User">{% if watch_seller and watch_seller == True %}Unwatch{% else %}Watch{% endif %}</span>
                            {% else %}
                                <a href="/usersetting/home?next={{ request.path }}" style="text-decoration:none">
-                                   <span class="buyitnow">Watch</span>
+                                   <span class="watch" title="Watch This User">Watch</span>
                                </a>
                            {% endifequal %}
                        {% endif %}
+                       </div>
                    </div>
-                   <ul>
-                       <li><span>{{ app.publisher.username }}</span>
-                           {% if app.publisher.username != request.user.username %}
-                           <span><a href="/dashboard/create-message/reply/{{ app.publisher.username }}/{{ app.publisher.id }}?next={{ request.path }}">
-                               <b>Send Message</b><!--TODO:It is better to use image.-->
-                           </a></span>
-                           {% endif %}
-                       </li>
-                   </ul>
 
                 </div>
-                <div class="widget">
+                <div class="widget clear">
                    <span class="widget_title">Claimed App Age</span>
                    <ul>
                        <li><span>App Established</span><span class="right">{{ appInfo.release_date|date:"jS M, Y" }}</span></li>
@@ -174,10 +182,10 @@
                                 <span><a href="/query/featured?category={{ category.apple_id }}">{{ category.name }}({{ sub_list.0 }})</a></span>
                                 <!-- watch start -->
                                 {% ifequal request.user.is_authenticated True %}
-                                    <span class="buyitnow" category_id="{{ category.apple_id }}" onclick="watchCategory(this)">{% if sub_list.1 == True %}Unwatch{% else %}Watch{% endif %}</span>
+                                    <span class="watch" category_id="{{ category.apple_id }}" onclick="watchCategory(this)">{% if sub_list.1 == True %}Unwatch{% else %}Watch{% endif %}</span>
                                 {% else %}
                                     <a href="/usersetting/home?next={{ request.path }}" style="text-decoration:none">
-                                        <span class="buyitnow">Watch</span>
+                                        <span class="watch">Watch</span>
                                     </a>
                                 {% endifequal %}
                                 <!-- watch end -->
