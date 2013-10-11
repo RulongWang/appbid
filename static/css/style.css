@@ -1508,7 +1508,7 @@ fieldset {
     margin-right:20px;
     padding:10px 0px;
     line-height: 1.7em;
-    background: #fbfbfb;
+    background: #eee;
     min-height: 100px;
     border-radius: 5px;
 }
@@ -1529,7 +1529,7 @@ fieldset {
 
 }
 #message_subject{
-    margin-left:48px;
+    margin-left:28px;
     height:20px;
     width:200px;
     padding: 3px;
@@ -2221,4 +2221,13 @@ input[type="radio"]:checked:after {
     height:30px;
     text-align: center;
     border-bottom: 1px dashed #ddd;
+}
+
+
+/****************message_block***************/
+.errormsg_block{
+    width:960px;
+    height: 80px;
+    opacity: 0.3;
+    background: #ffa500;
 }
