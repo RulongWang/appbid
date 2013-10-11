@@ -160,7 +160,15 @@ INSTALLED_APPS = (
 # more details on how to customize your logging configuration.
 LOGGING = {
     'version': 1,
-    'disable_existing_loggers': False,
+    'disable_existing_loggers': True,
+    'formatters': {
+        'simple': {
+            'format': '%(levelname)s %(message)s'
+        },
+        'standard': {
+            'format': '%(asctime)s [%(threadName)s:%(thread)d] [%(pathname)s:%(lineno)d-%(funcName)s] [%(levelname)s] - %(message)s'
+        }
+    },
     'filters': {
         'require_debug_false': {
             '()': 'django.utils.log.RequireDebugFalse'
@@ -171,6 +179,19 @@ LOGGING = {
             'level': 'ERROR',
             'filters': ['require_debug_false'],
             'class': 'django.utils.log.AdminEmailHandler'
+        },
+        'default': {
+            'level': 'INFO',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': os.path.join(os.path.dirname(__file__), '..', '..', 'logs', 'app.log').replace('\\', '/'),
+            'maxBytes': 1024*1024*5,
+            'backupCount': 5,
+            'formatter': 'standard'
+        },
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'formatter': 'standard'
         }
     },
     'loggers': {
@@ -179,6 +200,11 @@ LOGGING = {
             'level': 'ERROR',
             'propagate': True,
         },
+        'appbid': {
+            'handlers': ['default', 'console'],
+            'level': 'INFO',
+            'propagate': True,
+        }
     }
 }
 
@@ -189,8 +215,8 @@ DEFAULT_CHARSET = 'utf-8'
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 
 #Set email config
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'#Send the mail actually
-# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'#Show by console
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'#Send the mail actually
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'#Show by console
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.live.com'
 EMAIL_PORT = '25'
