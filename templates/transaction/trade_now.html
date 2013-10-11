@@ -2,19 +2,35 @@
 {% block mainContent %}
 {% load staticfiles %}
     <div>
+        <div>{{ error_msg }}</div>
+        {% if is_expiry_date == False %}
+            <div>
+                Bidding price is more than your reserve price, you have {% include "bid/remaintime.html" %} to trade. You can choose not trade, but your credit points will be decreased 50.
+                <a href="#">Trade policy<a/><!--TODO:link to the page of trade policy.-->
+            </div>
+        {% elif is_expiry_date == True %}
+            <div>
+                After 7 days, you did not trade, your credit points have been decreased 50. You can still continue to trade. After trade is finished, your credit points will be increased 50.
+                <a href="#">Trade policy<a/><!--TODO:link to the page of trade policy.-->
+            </div>
+        {% endif %}
         <div>
             <div>App Name: <a href="{% url 'query:app_detail' app.id %}">{{ app.app_name }}</a></div>
             <div>Trade Price: {{ bid.price }}</div>
             <div>Buyer: {{ user.username }}</div>
         </div>
         <div>
-            <form action="" method="post">
-                {% csrf_token %}
-                <div>
-                    You can click 'Trade' button to begin to trade. Buyer will receiver the pay email.
-                </div>
-                <input id="submit" type="submit" name="submit" value="Trade"/>
-            </form>
+            {% if transaction and transaction.status != 1 %}
+                <div>You has clicked button 'Trade'.</div>
+            {% else %}
+                <form action="" method="post">
+                    {% csrf_token %}
+                    <div>
+                        You can click 'Trade' button to begin to trade. Buyer will receiver the pay email.
+                    </div>
+                    <input id="submit" type="submit" name="submit" value="Trade"/>
+                </form>
+            {% endif %}
         </div>
     </div>
 {% endblock %}

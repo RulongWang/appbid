@@ -111,14 +111,6 @@ def bidList(request, *args, **kwargs):
             transactions = txnModels.Transaction.objects.filter(app_id=app.id, seller_id=app.publisher.id).exclude(status=1)
             if transactions:
                 initParam['transaction'] = transactions[0]
-            else:
-                transactions = txnModels.Transaction.objects.filter(app_id=app.id, seller_id=app.publisher.id, status=1)
-                if transactions and app.status == 3 and transactions[0].end_time:
-                    if transactions[0].end_time > datetime.datetime.now():
-                        initParam['time_remaining_new'] = time.mktime(time.strptime(str(transactions[0].end_time), '%Y-%m-%d %H:%M:%S'))
-                        initParam['is_expiry_date'] = False
-                    else:
-                        initParam['is_expiry_date'] = True
 
         return render_to_response('bid/bid_list.html', initParam, context_instance=RequestContext(request))
     raise Http404

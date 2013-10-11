@@ -3,10 +3,13 @@ __author__ = 'Jarvis'
 import string
 import datetime
 
+from django.db.models import Max
+
 from appbid import models as appModels
 from notification import models as notificationModels
 from transaction import models as txnModels
 from utilities import common, email
+from credit import views as creditViews
 
 
 def verificationAppForSeller(*args, **kwargs):
@@ -59,9 +62,12 @@ def checkServiceDateForApps(*args, **kwargs):
         app.status = 3
         app.save()
         transaction = app.transaction
-        if transaction.status == 1:
+        max_price = app.bidding_set.filter(status=1).aggregate(Max('price'))
+        current_price = max_price.get('price__max', 0)
+        #If bidding price is more than max price, seller has 7 days to trade or else seller can not trade it.
+        if transaction.status == 1 and app.reserve_price <= current_price:
             paid_expiry_date = string.atoi(common.getSystemParam(key='sell_expiry_date', default=7))
-            transaction.end_time = datetime.datetime.now() + datetime.timedelta(days=paid_expiry_date)
+            transaction.end_time = app.end_date + datetime.timedelta(days=paid_expiry_date)
             transaction.save()
             #Log transaction
             transactionsLog = txnModels.TransactionLog()
@@ -79,8 +85,21 @@ def checkServiceDateForApps(*args, **kwargs):
 
 def checkIfSellApp(*args, **kwargs):
     """
-
+        The task will be done every night at midnight.
+        When service stop, if bidding price is more than max price, seller has 7 days to trade now. Then seller did not
+        trade app in 7 days, seller's credit points will be decreased.
     """
+    transactions = txnModels.Transaction.objects.filter(status=1, end_time__isnull=False)
+    massEmailThread = email.MassEmailThread()
+    for transaction in transactions:
+        #Decrease seller's credit points
+        creditViews.decreaseCreditPoint(user=transaction.seller)
+        templates = notificationModels.NotificationTemplate.objects.filter(name='unsold_end_inform_seller')
+        if templates:
+            subject = ''
+            message = ''
+            massEmailThread.addEmailData(subject=subject, message=message, recipient_list=[transaction.seller.email])
+    massEmailThread.start()
     return None
 
 

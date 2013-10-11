@@ -39,7 +39,7 @@ def initTransaction(request, *args, **kwargs):
             transaction.seller = request.user
         transaction.status = 1
         transaction.save()
-    return None
+    return transaction
 
 
 @csrf_protect
@@ -54,39 +54,51 @@ def tradeNow(request, *args, **kwargs):
     initParam['app'] = app
     initParam['user'] = user
     initParam['bid'] = bid
+    transaction = None
+    transactions = models.Transaction.objects.filter(app_id=app.id, seller_id=request.user.id)
+    if transactions:
+        transaction = transactions[0]
+        initParam['transaction'] = transaction
+        #Remind that seller has 7 days to trade now, if bid price is more than reserve price.
+        if app.status == 3 and bid.price >= app.reserve_price and transaction.status == 1 and transaction.end_time:
+            if transaction.end_time > datetime.datetime.now():
+                initParam['time_remaining'] = time.mktime(time.strptime(str(transaction.end_time), '%Y-%m-%d %H:%M:%S'))
+                initParam['is_expiry_date'] = False
+            else:
+                initParam['is_expiry_date'] = True
 
     if request.method == 'POST':
-        transactions = models.Transaction.objects.filter(app_id=app.id, seller_id=request.user.id)
-        if transactions:
-            transaction = transactions[0]
+        if transaction and transaction.status != 1:
+            initParam['error_msg'] = _('You have traded with buyer %(param)s, can not trade again.') % {'param': user.username}
         else:
-            transaction = models.Transaction()
-            transaction.app = app
-            transaction.seller = request.user
-        transaction.status = 2
-        transaction.buyer = user
-        transaction.price = bid.price
-        paid_expiry_date = string.atoi(common.getSystemParam(key='paid_expiry_date', default=7))
-        transaction.end_time = datetime.datetime.now() + datetime.timedelta(days=paid_expiry_date)
-        transaction.save()
-        #Log transaction
-        transactionsLog = models.TransactionLog()
-        transactionsLog.app = app
-        transactionsLog.status = 2
-        transactionsLog.seller = request.user
-        transactionsLog.buyer = user
-        transactionsLog.price = bid.price
-        transactionsLog.save()
-        #Update app status and end_date
-        if app.status == 2:
-            app.status = 3
-            app.end_date = datetime.datetime.now()
-            app.save()
-        #Send the email of pay to buyer
-        notificationViews.tradeNowInformBuyerPayEmail(request, app=app, user=user)
+            if transaction is None:
+                transaction = models.Transaction()
+                transaction.app = app
+                transaction.seller = request.user
+            transaction.status = 2
+            transaction.buyer = user
+            transaction.price = bid.price
+            paid_expiry_date = string.atoi(common.getSystemParam(key='paid_expiry_date', default=7))
+            transaction.end_time = datetime.datetime.now() + datetime.timedelta(days=paid_expiry_date)
+            transaction.save()
+            #Log transaction
+            transactionsLog = models.TransactionLog()
+            transactionsLog.app = app
+            transactionsLog.status = 2
+            transactionsLog.seller = request.user
+            transactionsLog.buyer = user
+            transactionsLog.price = bid.price
+            transactionsLog.save()
+            #Update app status and end_date
+            if app.status == 2:
+                app.status = 3
+                app.end_date = datetime.datetime.now()
+                app.save()
+            #Send the email of pay to buyer
+            notificationViews.tradeNowInformBuyerPayEmail(request, app=app, user=user)
 
-        return redirect(reverse('transaction:trade_action',
-                                kwargs={'action': 'sell', 'app_id': app.id, 'user_id': request.user.id}))
+            return redirect(reverse('transaction:trade_action',
+                                    kwargs={'action': 'sell', 'app_id': app.id, 'user_id': request.user.id}))
 
     return render_to_response('transaction/trade_now.html', initParam, context_instance=RequestContext(request))
 

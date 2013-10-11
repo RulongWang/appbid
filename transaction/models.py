@@ -22,7 +22,7 @@ class Transaction(models.Model):
 
 class TransactionLog(models.Model):
     STATUS = (
-        (1, 'unsell'),
+        (1, 'unsold'),
         (2, 'trade'),
         (3, 'paid'),
         (4, 'closed'),
