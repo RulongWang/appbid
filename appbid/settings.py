@@ -1,5 +1,6 @@
 # Django settings for appbid project.
 import os
+import datetime
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
@@ -158,6 +159,7 @@ INSTALLED_APPS = (
 # the site admins on every HTTP 500 error when DEBUG=False.
 # See http://docs.djangoproject.com/en/dev/topics/logging for
 # more details on how to customize your logging configuration.
+LOGGING_ROOT = os.path.join(os.path.dirname(__file__), '..', '..', 'logs/').replace('\\', '/')
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': True,
@@ -166,7 +168,8 @@ LOGGING = {
             'format': '%(levelname)s %(message)s'
         },
         'standard': {
-            'format': '%(asctime)s [%(threadName)s:%(thread)d] [%(pathname)s:%(lineno)d-%(funcName)s] [%(levelname)s] - %(message)s'
+            'format': '[%(asctime)s][%(threadName)s:%(thread)d][%(levelname)s][%(name)s/%(filename)s:%(lineno)d-%(funcName)s] - %(message)s',
+            'datefmt': '%Y-%m-%d %H:%M:%S'
         }
     },
     'filters': {
@@ -178,15 +181,25 @@ LOGGING = {
         'mail_admins': {
             'level': 'ERROR',
             'filters': ['require_debug_false'],
-            'class': 'django.utils.log.AdminEmailHandler'
+            'class': 'django.utils.log.AdminEmailHandler',
+            'include_html': True,
         },
+        # 'file': {
+        #     'level': 'INFO',
+        #     'class': 'logging.handlers.RotatingFileHandler',
+        #     'filename': ''.join([LOGGING_ROOT, 'app.log.']),
+        #     'maxBytes': 1024*1024*5,
+        #     'backupCount': 5,
+        #     'formatter': 'standard'
+        # },
         'default': {
             'level': 'INFO',
-            'class': 'logging.handlers.RotatingFileHandler',
-            'filename': os.path.join(os.path.dirname(__file__), '..', '..', 'logs', 'app.log').replace('\\', '/'),
-            'maxBytes': 1024*1024*5,
-            'backupCount': 5,
-            'formatter': 'standard'
+            'class': 'logging.handlers.TimedRotatingFileHandler',
+            'filename': ''.join([LOGGING_ROOT, 'daily.log.', datetime.datetime.now().strftime('%Y-%m-%d-%H-%M')]),
+            'when': 'M',#S M H D W midnight
+            'interval': 1,
+            'backupCount': 31,
+            'formatter': 'standard',
         },
         'console': {
             'level': 'DEBUG',
@@ -215,8 +228,8 @@ DEFAULT_CHARSET = 'utf-8'
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 
 #Set email config
-# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'#Send the mail actually
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'#Show by console
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'#Send the mail actually
+# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'#Show by console
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.live.com'
 EMAIL_PORT = '25'
