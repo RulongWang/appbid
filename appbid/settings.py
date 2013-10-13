@@ -195,10 +195,19 @@ LOGGING = {
         'default': {
             'level': 'INFO',
             'class': 'logging.handlers.TimedRotatingFileHandler',
-            'filename': ''.join([LOGGING_ROOT, 'daily.log.', datetime.datetime.now().strftime('%Y-%m-%d-%H-%M')]),
-            'when': 'M',#S M H D W midnight
+            'filename': ''.join([LOGGING_ROOT, 'appbid.log.', datetime.datetime.now().strftime('%Y-%m-%d-%H-%M')]),
+            'when': 'midnight',#S M H D W midnight
             'interval': 1,
-            'backupCount': 31,
+            'backupCount': 5,
+            'formatter': 'standard',
+        },
+        'email': {
+            'level': 'ERROR',
+            'class': 'logging.handlers.TimedRotatingFileHandler',
+            'filename': ''.join([LOGGING_ROOT, 'email.log.', datetime.datetime.now().strftime('%Y-%m-%d-%H-%M')]),
+            'when': 'midnight',#S M H D W midnight
+            'interval': 1,
+            'backupCount': 5,
             'formatter': 'standard',
         },
         'console': {
@@ -217,7 +226,12 @@ LOGGING = {
             'handlers': ['default', 'console'],
             'level': 'INFO',
             'propagate': True,
-        }
+        },
+        'email': {
+            'handlers': ['default', 'email', 'console'],
+            'level': 'INFO',
+            'propagate': True,
+        },
     }
 }
 

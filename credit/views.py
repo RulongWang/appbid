@@ -11,7 +11,7 @@ def initCreditPoint(*args, **kwargs):
     if user:
         creditPoint = models.CreditPoint()
         creditPoint.user = user
-        creditPoint.points = common.getSystemParam()(key='cp_init_number', default=100)
+        creditPoint.points = common.getSystemParam(key='cp_init_number', default=100)
         creditPoint.save()
         #Log Credit Point Change
         creditLog = models.CreditLog()

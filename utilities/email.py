@@ -1,9 +1,12 @@
 __author__ = 'Jarvis'
 
 import threading
+import logging
 
 from django.core.mail import send_mail, send_mass_mail
 from appbid import settings
+
+log = logging.getLogger('email')
 
 
 class EmailThread(threading.Thread):
@@ -21,11 +24,14 @@ class EmailThread(threading.Thread):
             #subject or message can not be filled.
             if isinstance(self.recipient_list, list) and len(self.recipient_list) > 0:
                 send_mail(self.subject, self.message, self.from_email, self.recipient_list, self.fail_silently)
+                email_str = ''
+                for email in self.recipient_list:
+                    email_str += email + ' '
+                log.info('Send email successfully. [' + ','.join(self.recipient_list) + '] ' + self.subject)
             else:
-                print 'do it later, log error info.'
-        except:
-            #TODO:log the error message.
-            print 'Send email failed.'
+                log.error('Email recipient_list is not correct.')
+        except Exception, e:
+            log.error('Send email failed. '+e.message)
 
 
 class MassEmailThread(threading.Thread):
@@ -39,10 +45,14 @@ class MassEmailThread(threading.Thread):
         if isinstance(recipient_list, list) and len(recipient_list) > 0:
             self.dataTuple.append((subject, message, from_email, recipient_list))
         else:
-            print 'email data is not correct.'
+            log.error('Email recipient_list is not correct.')
 
     def run(self):
         if len(self.dataTuple) > 0:
-            send_mass_mail(self.dataTuple, self.fail_silently)
+            try:
+                send_mass_mail(self.dataTuple, self.fail_silently)
+                log.info('Send mass email successfully.')
+            except Exception, e:
+                log.error('Send mass email failed. '+e.message)
         else:
-            print 'no email data.'#TODO:to do it later.
+            log.error('No email data.')

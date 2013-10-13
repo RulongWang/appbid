@@ -2,6 +2,7 @@ __author__ = 'rulongwang'
 
 import json
 import os
+import logging
 
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
@@ -22,6 +23,8 @@ from notification import views as notificationViews
 from credit import views as creditViews
 from utilities import common
 
+log = logging.getLogger('appbid')
+
 
 @csrf_protect
 def loginView(request, *args, **kwargs):
@@ -36,6 +39,7 @@ def loginView(request, *args, **kwargs):
     if user:
         if user.is_active:
             login(request, user)
+            log.info('%(name)s login.' % {'name': user.username})
             return redirect(redirect_to)
         else:
             initParam['login_error'] = _('%(name)s is not active. Please active it by %(email)s.') % {'name': user.username, 'email': common.hiddenEmail(user.email)}
@@ -48,6 +52,7 @@ def loginView(request, *args, **kwargs):
 @csrf_protect
 def logoutView(request, *args, **kwargs):
     logout(request)
+    log.info('%(name)s logout.' % {'name': request.user.username})
     redirect_to = '/'
     return render_to_response('usersetting/login.html', {"redirect_to": redirect_to}, context_instance=RequestContext(request))
 

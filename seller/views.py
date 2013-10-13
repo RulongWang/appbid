@@ -5,6 +5,7 @@ import random
 import string
 import re
 import os
+import logging
 
 from django.http import HttpResponse
 from django.shortcuts import render_to_response, RequestContext, redirect, get_object_or_404
@@ -20,6 +21,8 @@ from appbid import models as appModels
 from order import models as orderModels
 from seller import forms
 from utilities import common
+
+log = logging.getLogger('appbid')
 
 
 @csrf_protect
@@ -104,8 +107,9 @@ def saveAppStoreLink(request, form, model, *args, **kwargs):
         if result is None:
             raise
     except Exception, e:
-        #print e #TODO:log the error message
-        initParam['app_store_link_error'] = _('The app store link is not correct.')
+        initParam['app_store_link_error'] = _('The app store link %(param)s is not correct.') % {'param': ''}
+        log.error(_('The app store link %(param)s is not correct.') % {'param': match.group(1)})
+        log.error(e.message)
         return None
 
     #Save app data
@@ -161,8 +165,9 @@ def saveAppStoreLink(request, form, model, *args, **kwargs):
         elif result.get('artworkUrl60', None):
             urllib.urlretrieve(result.get('artworkUrl60', None), path)
     except Exception, e:
-        #print e #TODO:log the error message
-        initParam['app_store_link_error'] = _('The app store link is not correct.')
+        initParam['app_store_link_error'] = _('The app store link %(param)s is not correct.') % {'param': ''}
+        log.error(_('The app store link %(param)s is not correct.') % {'param': match.group(1)})
+        log.error(e.message)
         return None
     appInfo.icon = '/'.join([str(model.publisher.id), str(model.id), 'Icon.jpg'])
     appInfo.save()
