@@ -42,7 +42,7 @@ class UserDetailAdmin(admin.ModelAdmin):
 
 def content_file_name(instance, filename):
     """The path of saving attachment file. The pattern is user_id/filename"""
-    return '/'.join([str(instance.user.id), filename])
+    return '/'.join([str(instance.user.id), 'avatar.jpg'])
 
 
 class UserPublicProfile(models.Model):

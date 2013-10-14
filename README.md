@@ -6,7 +6,7 @@ Prerequisites
 Django 1.5
 mysql5.0
 yum install MySQL-python
-
+install PIL, download URL:http://www.pythonware.com/products/pil/
 
 //sanbox paypal testing account
 username: me_api1.rulong.org

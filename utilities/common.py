@@ -6,7 +6,9 @@ import re
 import datetime
 import random
 import string
+import os
 
+from PIL import Image
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from system import models as systemModels
 
@@ -181,3 +183,48 @@ def getToken(*args, **kwargs):
         length = getSystemParam(key=key, default=default)
         return ''.join(random.sample(string.ascii_letters+string.digits, string.atoi(length)))
     return None
+
+
+def imageThumbnail(*args, **kwargs):
+    """
+        Image thumbnail, just shrink image, can not enlarge image. But the method is more quick than imageResize,
+        The image can not be stretched to transformation.
+    """
+    path = kwargs.get('path')
+    size = kwargs.get('size')
+    new_path = kwargs.get('new_path')
+    is_delete = kwargs.get('is_delete')
+    if path and os.path.exists(path):
+        image = Image.open(path)
+        if size and isinstance(size, tuple) and image.size[0] >= size[0] and image.size[1] >= size[1]:
+            image.thumbnail(size)
+        if new_path:
+            image.save(new_path)
+        else:
+            image.save(path)
+        if new_path and path.lower() != new_path.lower() and is_delete:
+            os.remove(path)
+        return 0
+    return 1
+
+
+def imageResize(*args, **kwargs):
+    """Image resize, can enlarge or shrink image."""
+    path = kwargs.get('path')
+    size = kwargs.get('size')
+    new_path = kwargs.get('new_path')
+    is_delete = kwargs.get('is_delete')
+    if path and os.path.exists(path):
+        image = Image.open(path)
+        if size and isinstance(size, tuple):
+            new_image = image.resize(size)
+        else:
+            new_image = image
+        if new_path:
+            new_image.save(new_path)
+        else:
+            new_image.save(path)
+        if new_path and path.lower() != new_path.lower() and is_delete:
+            os.remove(path)
+        return 0
+    return 1
