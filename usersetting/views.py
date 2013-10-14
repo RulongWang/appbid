@@ -226,7 +226,7 @@ def userPublicProfile(request, *args, **kwargs):
                 userPublicProfile.thumbnail = thumbnail
                 userPublicProfileForm = forms.UserPublicProfileForm(instance=userPublicProfile)
             userPublicProfile.save()
-            if userPublicProfile.thumbnail:
+            if thumbnail:
                 #Shrink image to (50*50) for user thumbnail.
                 common.imageThumbnail(path=path, size=(50, 50))
             initParam['account_msg'] = _('The public profile has been updated.')
