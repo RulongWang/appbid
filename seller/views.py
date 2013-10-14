@@ -282,14 +282,21 @@ def saveAdditionalInfo(request, form, model, *args, **kwargs):
         for path in pathList:
             attachment = appModels.Attachment(path=path)
             attachment.name = path.name
-            if path.content_type.find('image') != -1:
+            if path.name.endswith('.txt') and path.content_type == 'text/plain':
                 attachment.type = 1
-            elif path.content_type == 'application/pdf':
+            elif path.content_type.startswith('image'):
+                attachment.type = 2
+            elif path.name.endswith('.pdf') and path.content_type == 'application/pdf':
                 attachment.type = 3
-            elif path.content_type.find('application') != -1:
-                attachment.type = 4
+            # elif path.name.endswith('.doc') and path.content_type == 'application/msword':
+            #     attachment.type = 4
+            # elif path.name.endswith('.xls') and path.content_type == 'application/vnd.ms-excel':
+            #     attachment.type = 4
+            # elif path.name.endswith('.ppt') and path.content_type == 'application/vnd.ms-powerpoint':
+            #     attachment.type = 4
             else:
-                attachment.type = 4
+                initParam['attachmentError'] = _('The file type of %(param)s does not supported.') % {'param': path.name}
+                return None
             if path.size > string.atof(attachmentSize):
                 initParam['attachmentError'] = _('The file can not be more than 50M.')
                 return None

@@ -114,10 +114,10 @@ def content_file_name(instance, filename):
 
 
 class Attachment(models.Model):
-    """Attachment table info, type value:1 top images, 2 ICON, 3 PDF, 4 DOC"""
+    """Attachment table info, type value:1 txt, 2 image, 3 pdf, 4 doc"""
     ATTACHMENT_TYPE = (
-        (1, "topImage"),
-        (2, "icon"),
+        (1, "txt"),
+        (2, "image"),
         (3, "pdf"),
         (4, "doc"),
     )

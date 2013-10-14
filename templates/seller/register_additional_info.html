@@ -42,10 +42,6 @@ tinymce.init({
         {% endif %}
     </div>
 
-    {% if attachments != None or attachmentForm %}
-
-    {% endif %}
-
     {% if attachments != None %}
         {% for attachment in attachments %}
         <div>
@@ -66,7 +62,7 @@ tinymce.init({
     {% if app_status != 3 %}
     <div id="attachment">
          <div>
-            <label for="attachment">Attachment</label>
+            <label for="attachment">Attachment</label> (*Just support <b>txt/pdf/image</b> type)
         </div>
         {{ attachmentError }}
         {% if attachmentForm %}
