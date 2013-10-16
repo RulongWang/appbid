@@ -34,6 +34,7 @@ urlpatterns = patterns('',
     url(r'^order/', include(order.urls, namespace='order')),
     url(r'^payment/', include(payment.urls, namespace='payment')),
     url(r'^transaction/', include(transaction.urls, namespace='transaction')),
+    url(r'^social-auth/', include('social_auth.urls', namespace='social_auth')),
 )
 
 if settings.DEBUG:
