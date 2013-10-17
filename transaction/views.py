@@ -18,6 +18,7 @@ from bid import models as bidModels
 from utilities import common
 from notification import views as notificationViews
 from credit import views as creditViews
+from payment import views as paymentViews
 
 
 @csrf_protect
@@ -177,34 +178,36 @@ def onePriceBuy(request, *args, **kwargs):
             initParam['error_msg'] = _('You can not buy, because your credit point is too low. You can pay credit point, after our verification.')
         else:
             #TODO:invoke pay method
+            result = paymentViews.start_paypal_ap(request)
+
             #Maybe read the table of pay result.
-            result = 'success'
-            if result:
-                transactions = models.Transaction.objects.filter(app_id=app.id, seller_id=publisher_id, status=1)
-                if transactions:
-                    transaction = transactions[0]
-                else:
-                    transaction = models.Transaction()
-                    transaction.app = app
-                    transaction.seller = request.user
-                transaction.status = 3
-                transaction.buyer = request.user
-                transaction.price = app.one_price
-                txn_expiry_date = string.atoi(common.getSystemParam(key='txn_expiry_date', default=15))
-                transaction.end_time = datetime.datetime.now() + datetime.timedelta(days=txn_expiry_date)
-                transaction.save()
-                #Log transaction
-                transactionsLog = models.TransactionLog()
-                transactionsLog.app = app
-                transactionsLog.status = 3
-                transactionsLog.buyer = request.user
-                transactionsLog.price = app.one_price
-                transactionsLog.save()
-                #Send email to seller
-                notificationViews.onePriceBuyInformSellerEmail(request, transaction=transaction)
-                # TODO: return 'return to result page'
-            else:
-                print "Log error message"
+# following infomation should be updated in payment success part  So comment here
+            # if result:
+            #     transactions = models.Transaction.objects.filter(app_id=app.id, seller_id=publisher_id, status=1)
+            #     if transactions:
+            #         transaction = transactions[0]
+            #     else:
+            #         transaction = models.Transaction()
+            #         transaction.app = app
+            #         transaction.seller = request.user
+            #     transaction.status = 3
+            #     transaction.buyer = request.user
+            #     transaction.price = app.one_price
+            #     txn_expiry_date = string.atoi(common.getSystemParam(key='txn_expiry_date', default=15))
+            #     transaction.end_time = datetime.datetime.now() + datetime.timedelta(days=txn_expiry_date)
+            #     transaction.save()
+            #     #Log transaction
+            #     transactionsLog = models.TransactionLog()
+            #     transactionsLog.app = app
+            #     transactionsLog.status = 3
+            #     transactionsLog.buyer = request.user
+            #     transactionsLog.price = app.one_price
+            #     transactionsLog.save()
+            #     #Send email to seller
+            #     notificationViews.onePriceBuyInformSellerEmail(request, transaction=transaction)
+            #     # TODO: return 'return to result page'
+            # else:
+            #     print "Log error message"
     return render_to_response('transaction/one_price_buy.html', initParam, context_instance=RequestContext(request))
 
 

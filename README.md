@@ -23,3 +23,16 @@ Kill -INT PID
 
 $ mysqladmin -u root -p'oldpassword' password newpass
 
+
+Adaptive payment application ID:
+
+Sandbox ID:APP-80W284485P519543T
+Live App ID:APP-5RW64647DB339963H
+
+Adaptive Payments
+JSON, NVP, SOAP, XML
+AppID	https://svcs.paypal.com/AdaptivePayments/{API_operation}
+https://svcs.sandbox.paypal.com/AdaptivePayments/{API_operation}
+
+redirect to confirm page:
+https://www.sandbox.paypal.com/cgi-bin/webscr?cmd=_ap-payment&paykey=AP-1HL82102R3357810C

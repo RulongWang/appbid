@@ -12,6 +12,9 @@
 import urllib, md5, datetime
 from cgi import parse_qs
 from django.conf import settings
+import urlparse
+import collections
+import httplib
 
 # Exception messages
 
@@ -351,3 +354,68 @@ class PayPal(object):
         state = self._get_value_from_qs(response_dict, "ACK")
         return response_dict
 
+
+#method to handle adaptive payment
+    def setAPCall(self,retur_url,cancel_url,action_type):
+
+    #Set our headers
+
+        headers = {
+            'X-PAYPAL-SECURITY-USERID': 'me_api1.rulong.org',
+            'X-PAYPAL-SECURITY-PASSWORD': '1380869543',
+            'X-PAYPAL-SECURITY-SIGNATURE': 'A2vypYAyoKWCr5HKJHXEzqAil0rBANhDLrGYeKZ-H8Wjmb.OShNvkwhY',
+            'X-PAYPAL-APPLICATION-ID': 'APP-80W284485P519543T',
+            'X-PAYPAL-SERVICE-VERSION':'1.1.0',
+            'X-PAYPAL-REQUEST-DATA-FORMAT':'NV',
+            'X-PAYPAL-RESPONSE-DATA-FORMAT':'NV'
+        }
+
+        ###################################################################
+        # In the above $headers declaration, the USERID, PASSWORD and
+        # SIGNATURE need to be replaced with your own.
+        ###################################################################
+
+        #Set our POST Parameters
+        params = collections.OrderedDict()
+        params['requestEnvelope.errorLanguage'] = 'en_US';
+        params['requestEnvelope.detailLevel'] = 'ReturnAll';
+        # params['reverseAllParallelPaymentsOnError'] = 'true';
+        params['returnUrl'] = 'https://beta.appswalk.com/payment/paypal_ap_return'
+        params['cancelUrl'] = 'https://beta.appswalk.com/payment/paypal_cancel'
+        params['actionType'] = 'PAY'
+        params['currencyCode'] = 'USD'
+        params['feesPayer'] = 'EACHRECEIVER'
+        params['receiverList.receiver(0).email'] = 'me@rulong.org'
+        params['receiverList.receiver(0).amount'] = '100.00'
+        # params['receiverList.receiver(0).primary'] = 'true'
+
+        params['receiverList.receiver(1).email'] = 'javacc@163.com'
+        params['receiverList.receiver(1).amount'] = '30.00'
+
+        #Add Client Details
+
+        params['clientDetails.ipAddress'] = '127.0.0.1'
+        params['clientDetails.deviceId'] = 'mydevice'
+        params['clientDetails.applicationId'] = 'PayNvpDemo'
+
+
+        enc_params = urllib.urlencode(params)
+        print ("*****************")
+        print (enc_params)
+        print ("*****************")
+
+        #Connect to sand box and POST.
+        conn = httplib.HTTPSConnection("svcs.sandbox.paypal.com")
+        conn.request("POST", "/AdaptivePayments/Pay/", enc_params, headers)
+
+        print ("*****************")
+        #Check the response - should be 200 OK.
+        response = conn.getresponse()
+        print (response.status, response.reason)
+        print ("*****************")
+
+        #Get the reply and print it out.
+        data = response.read()
+        print (urlparse.parse_qs(data))
+        reposne_dic = urlparse.parse_qs(data)
+        return reposne_dic['responseEnvelope.ack']

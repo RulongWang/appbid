@@ -13,8 +13,17 @@ from paypal.models import PayPalResponse
 from paypal.utils import process_payment_request, process_refund_request
 
 
-sandbox_return_url = "http://beta.appswalk.com/payment/paypal_return"
-sandbox_cancel_url = "http://beta.appswalk.com/payment/paypal_cancel"
+
+
+ec_sandbox_return_url = "http://beta.appswalk.com/payment/paypal_return"
+ec_sandbox_cancel_url = "http://beta.appswalk.com/payment/paypal_cancel"
+
+ap_sandbox_return_url = ""
+ap_sandbox_cancel_url = " "
+ap_sandbox_pay_url = "https://svcs.paypal.com/AdaptivePayments/"
+ap_sandbox_redirect_url = "https://www.sandbox.paypal.com/cgi-bin/webscr?cmd=_ap-payment&paykey=AP-1HL82102R3357810C"
+ap_production_pay_url = ""
+
 
 @csrf_protect
 @transaction.commit_on_success
@@ -31,7 +40,7 @@ def payment(request, *args, **kwargs):
     amount = initParam['amount']
     #Call PayPal api of payment
     p = PayPal()
-    result = p.SetExpressCheckout(amount, "USD",sandbox_return_url , sandbox_cancel_url)
+    result = p.SetExpressCheckout(amount, "USD",ec_sandbox_return_url , ec_sandbox_cancel_url)
 
     if result:
         redirect_url = p.paypal_url()
@@ -69,7 +78,7 @@ def paypalreturn(request, *args, **kwargs):
         error = "Token is missing"
     else:
         p = PayPal()
-        res_dict = p.GetExpressCheckoutDetailsInfo(sandbox_return_url, sandbox_cancel_url,token)
+        res_dict = p.GetExpressCheckoutDetailsInfo(ec_sandbox_return_url, ec_sandbox_cancel_url,token)
         state = p._get_value_from_qs(res_dict,"ACK")
 
         if not state in ["Success", "SuccessWithWarning"]:
@@ -81,6 +90,39 @@ def paypalreturn(request, *args, **kwargs):
 
         return render_to_response("payment/paypal_return.html", {"token":token,"payerid":payerid,"res_dict":res_dict}, context_instance=RequestContext(request))
 
+
+@csrf_protect
+@transaction.commit_on_success
+@login_required(login_url='/usersetting/home/')
+def start_paypal_ap(request, *args, **kwargs):
+    """Payment operation."""
+    p = PayPal()
+    reuslt = p.setAPCall('returnUrl','cancelUrl','pay')
+    paykey = request.GET.get('Paykey')
+
+    if paykey is None:
+        error = "paykey is missing"
+    else:
+        p = PayPal()
+        return render_to_response("payment/paypal_return.html", {"token":paykey}, context_instance=RequestContext(request))
+
+
+
+
+
+@csrf_protect
+@transaction.commit_on_success
+@login_required(login_url='/usersetting/home/')
+def paypal_ap_return(request, *args, **kwargs):
+    """Payment operation."""
+
+    paykey = request.GET.get('Paykey')
+
+    if paykey is None:
+        error = "paykey is missing"
+    else:
+        p = PayPal()
+        return render_to_response("payment/paypal_return.html", {"token":paykey}, context_instance=RequestContext(request))
 
 
 
