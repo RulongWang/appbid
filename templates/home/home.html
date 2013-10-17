@@ -2,12 +2,6 @@
 {% block mainContent %}
 {% load staticfiles %}
 {% include "home/promotion.html" %}
-    {{ social_auth }}
-    {% for name in social_auth.backends.oauth2 %}
-        <div>
-        <a href="{% url 'social_auth:socialauth_begin' name %}">{{ name|title }}</a>
-        </div>
-    {% endfor %}
      <div class="listing_block_home">
          <div class="home_listing_title">
              <span style="float:left;"><h1>Recommendation</h1></span>
