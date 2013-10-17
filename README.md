@@ -28,6 +28,9 @@ Adaptive payment application ID:
 
 Sandbox ID:APP-80W284485P519543T
 Live App ID:APP-5RW64647DB339963H
+/*************************************
+development api
+https://developer.paypal.com/webapps/developer/docs/classic/adaptive-payments/gs_AdaptivePayments/
 
 Adaptive Payments
 JSON, NVP, SOAP, XML
