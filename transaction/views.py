@@ -175,7 +175,7 @@ def onePriceBuy(request, *args, **kwargs):
         min_cp = common.getSystemParam(key='min_cp_for_bid', default=50)
         cp = creditViews.getUserCreditPoint(user=request.user)
         if cp == -1 or cp < string.atoi(min_cp):
-            initParam['error_msg'] = _('You can not buy, because your credit point is too low. You can pay credit point, after our verification.')
+            initParam['error_msg'] = _('You are allowed to buy, because your credit points is too low.')
         else:
             #TODO:invoke pay method
             result = paymentViews.start_paypal_ap(request)

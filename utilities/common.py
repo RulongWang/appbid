@@ -196,12 +196,14 @@ def imageThumbnail(*args, **kwargs):
     is_delete = kwargs.get('is_delete')
     if path and os.path.exists(path):
         image = Image.open(path)
+        print(path)
         if size and isinstance(size, tuple) and image.size[0] >= size[0] and image.size[1] >= size[1]:
             image.thumbnail(size)
-        if new_path:
-            image.save(new_path)
-        else:
-            image.save(path)
+            print(size)
+        # if new_path:
+        #     # image.save(new_path)
+        # else:
+        #     image.save(path)
         if new_path and path.lower() != new_path.lower() and is_delete:
             os.remove(path)
         return 0

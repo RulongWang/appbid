@@ -15,6 +15,7 @@ username: me_api1.rulong.org
 API Password: 1380869543
 Signature:A2vypYAyoKWCr5HKJHXEzqAil0rBANhDLrGYeKZ-H8Wjmb.OShNvkwhY
 
+sudo easy_install pip
 
 
 nohup uwsgi --ini appbid.ini&
@@ -38,4 +39,4 @@ AppID	https://svcs.paypal.com/AdaptivePayments/{API_operation}
 https://svcs.sandbox.paypal.com/AdaptivePayments/{API_operation}
 
 redirect to confirm page:
-https://www.sandbox.paypal.com/cgi-bin/webscr?cmd=_ap-payment&paykey=AP-1HL82102R3357810C
+https://www.sandbox.paypal.com/cgi-bin/webscr?cmd=_ap-payment&paykey=AP-2US53783SG376864S
