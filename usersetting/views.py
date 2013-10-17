@@ -212,11 +212,11 @@ def userPublicProfile(request, *args, **kwargs):
     userPublicProfileForm = forms.UserPublicProfileForm(instance=userPublicProfile)
     if request.method == "POST":
         userPublicProfileForm = forms.UserPublicProfileForm(request.POST, instance=userPublicProfile)
-        path = '/'.join([settings.MEDIA_ROOT, str(user.id)])
         if userPublicProfileForm.is_valid():
             userPublicProfile = userPublicProfileForm.save(commit=False)
             thumbnail = request.FILES.get('thumbnail')
             if thumbnail:
+                path = '/'.join([settings.MEDIA_ROOT, str(user.id)])
                 if os.path.exists(path) is False:
                     os.makedirs(path)
                 if userPublicProfile.thumbnail:
@@ -228,6 +228,7 @@ def userPublicProfile(request, *args, **kwargs):
             userPublicProfile.save()
             if thumbnail:
                 #Shrink image to (50*50) for user thumbnail.
+                path = '/'.join([settings.MEDIA_ROOT, str(userPublicProfile.thumbnail)])
                 common.imageThumbnail(path=path, size=(50, 50))
             initParam['account_msg'] = _('The public profile has been updated.')
     initParam['form'] = userPublicProfileForm
