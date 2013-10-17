@@ -156,26 +156,26 @@ INSTALLED_APPS = (
 
 # Authentication Backends for social_auth
 AUTHENTICATION_BACKENDS = (
-    # 'social_auth.backends.twitter.TwitterBackend',
-    # 'social_auth.backends.facebook.FacebookBackend',
+    'social_auth.backends.twitter.TwitterBackend',
+    'social_auth.backends.facebook.FacebookBackend',
     'social_auth.backends.contrib.github.GithubBackend',
     'django.contrib.auth.backends.ModelBackend',
 )
 
-SOCIAL_AUTH_ENABLED_BACKENDS = ('github',)# 'twitter', 'facebook',)
-SOCIAL_AUTH_DEFAULT_USERNAME = 'new_social_auth_user'
-# SOCIAL_AUTH_COMPLETE_URL_NAME = 'socialauth_complete'
+SOCIAL_AUTH_ENABLED_BACKENDS = ('github', 'twitter', 'facebook',)
+SOCIAL_AUTH_DEFAULT_USERNAME = 'socialauth_user'
+SOCIAL_AUTH_COMPLETE_URL_NAME = 'socialauth_complete'
 
 # Setup needed OAuth keys for social_auth
-# TWITTER_CONSUMER_KEY = 'WlY7Ru0sK6BiaQJtp1A5wg'
-# TWITTER_CONSUMER_SECRET = 'teBiVEi6fWC1fewH36hPp1IHJ0N9SUMumJaAEaDA'
-# FACEBOOK_APP_ID = ''
-# FACEBOOK_API_SECRET = ''
+TWITTER_CONSUMER_KEY = 'kP4jieowJbvgo27YEkv51w'
+TWITTER_CONSUMER_SECRET = 'T03Qu7sitdyW7FCYRXbEIYzfts57PkJPXnaMI6AaM'
+FACEBOOK_APP_ID = '224844337683823'
+FACEBOOK_API_SECRET = 'ecfcf5beadfb0e81061a5aa0d116c207'
 GITHUB_APP_ID = '0986cfea7a082b0228e0'
 GITHUB_API_SECRET = '94c125ea029d65dd1f029e721fc7c0a6574d9ede'
 
 LOGIN_URL = '/login/'
-LOGIN_REDIRECT_URL = '/private/'
+LOGIN_REDIRECT_URL = '/home/'
 LOGIN_ERROR_URL = '/login-error/'
 
 
