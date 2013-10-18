@@ -118,6 +118,11 @@ def paypal_ap_return(request, *args, **kwargs):
     print request.GET
     print '*****************'
     print request.POST
+    print args
+    print '============='
+    print kwargs
+    print 'xxxxxx'
+    print request
     # paykey = request.GET.get('Paykey')
     #
     # if paykey is None:
