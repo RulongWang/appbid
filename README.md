@@ -40,3 +40,7 @@ https://svcs.sandbox.paypal.com/AdaptivePayments/{API_operation}
 
 redirect to confirm page:
 https://www.sandbox.paypal.com/cgi-bin/webscr?cmd=_ap-payment&paykey=AP-2US53783SG376864S
+
+configure https:
+http://blog.creke.net/762.html
+
