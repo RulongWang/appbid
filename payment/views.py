@@ -116,14 +116,14 @@ def start_paypal_ap(request, *args, **kwargs):
 def paypal_ap_return(request, *args, **kwargs):
     """Payment operation."""
     print request.GET
-    paykey = request.GET.get('Paykey')
-
-    if paykey is None:
-        error = "paykey is missing"
-    else:
-        p = PayPal()
-
-        return render_to_response("payment/paypal_return.html", {"token":paykey}, context_instance=RequestContext(request))
+    # paykey = request.GET.get('Paykey')
+    #
+    # if paykey is None:
+    #     error = "paykey is missing"
+    # else:
+    #     p = PayPal()
+    #
+    return render_to_response("payment/paypal_return.html", {"token":'test'}, context_instance=RequestContext(request))
 
 
 
