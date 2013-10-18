@@ -116,6 +116,8 @@ def start_paypal_ap(request, *args, **kwargs):
 def paypal_ap_return(request, *args, **kwargs):
     """Payment operation."""
     print request.GET
+    print '*****************'
+    print request.POST
     # paykey = request.GET.get('Paykey')
     #
     # if paykey is None:
