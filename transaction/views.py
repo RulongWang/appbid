@@ -5,12 +5,14 @@ import datetime
 import string
 
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response, RequestContext, redirect, get_object_or_404, Http404
 from django.views.decorators.csrf import csrf_protect
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext as _
 from django.db import transaction
 from django.contrib.auth.models import User
+
 
 from appbid import models as appModels
 from transaction import models
@@ -19,7 +21,7 @@ from utilities import common
 from notification import views as notificationViews
 from credit import views as creditViews
 from payment import views as paymentViews
-
+from paypal import driver
 
 @csrf_protect
 @transaction.commit_on_success
@@ -178,7 +180,17 @@ def onePriceBuy(request, *args, **kwargs):
             initParam['error_msg'] = _('You are allowed to buy, because your credit points is too low.')
         else:
             #TODO:invoke pay method
-            result = paymentViews.start_paypal_ap(request)
+            p = driver.PayPal()
+            result = p.start_paypal_ap()
+
+            if result['responseEnvelope.ack'][0] =='Success':
+                print result['payKey'][0]
+                paykey = result['payKey'][0]
+                return_url = "https://www.sandbox.paypal.com/cgi-bin/webscr?cmd=_ap-payment&paykey=" + paykey
+                print return_url
+                print("Parallel Payment has been created!")
+                return HttpResponseRedirect(return_url)
+            # result = paymentViews.start_paypal_ap(request)
 
             #Maybe read the table of pay result.
 # following infomation should be updated in payment success part  So comment here
@@ -208,6 +220,9 @@ def onePriceBuy(request, *args, **kwargs):
             #     # TODO: return 'return to result page'
             # else:
             #     print "Log error message"
+            else:
+                # return render_to_response('transaction/one_price_buy.html', initParam, context_instance=RequestContext(request))
+                return HttpResponseRedirect('/payment/paypal_cancel')
     return render_to_response('transaction/one_price_buy.html', initParam, context_instance=RequestContext(request))
 
 

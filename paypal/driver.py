@@ -62,6 +62,7 @@ class PayPal(object):
         if debug or getattr(settings, "PAYPAL_DEBUG", False):
             self.NVP_API_ENDPOINT    = "https://api-3t.sandbox.paypal.com/nvp"
             self.PAYPAL_REDIRECT_URL = "https://www.sandbox.paypal.com/cgi-bin/webscr?cmd=_express-checkout&token="
+
         else:
             self.NVP_API_ENDPOINT    = "https://api-3t.paypal.com/nvp"
             self.PAYPAL_REDIRECT_URL = "https://www.paypal.com/cgi-bin/webscr?cmd=_express-checkout&token="
@@ -418,4 +419,13 @@ class PayPal(object):
         data = response.read()
         print (urlparse.parse_qs(data))
         reposne_dic = urlparse.parse_qs(data)
-        return reposne_dic['responseEnvelope.ack']
+        return reposne_dic
+
+
+    def start_paypal_ap(self):
+        """Payment operation."""
+        p = PayPal()
+        result = p.setAPCall('returnUrl','cancelUrl','pay')
+        print("______________________________________________________________________")
+        print(result)
+        return result

@@ -20,7 +20,7 @@ ec_sandbox_cancel_url = "http://beta.appswalk.com/payment/paypal_cancel"
 
 ap_sandbox_return_url = ""
 ap_sandbox_cancel_url = " "
-ap_sandbox_pay_url = "https://svcs.paypal.com/AdaptivePayments/"
+ap_sandbox_pay_url = "https://svcs.paypal.com/AdaptivePayments/Pay"
 ap_sandbox_redirect_url = "https://www.sandbox.paypal.com/cgi-bin/webscr?cmd=_ap-payment&paykey=AP-1HL82102R3357810C"
 ap_production_pay_url = ""
 
@@ -115,13 +115,14 @@ def start_paypal_ap(request, *args, **kwargs):
 @login_required(login_url='/usersetting/home/')
 def paypal_ap_return(request, *args, **kwargs):
     """Payment operation."""
-
+    print request.GET
     paykey = request.GET.get('Paykey')
 
     if paykey is None:
         error = "paykey is missing"
     else:
         p = PayPal()
+
         return render_to_response("payment/paypal_return.html", {"token":paykey}, context_instance=RequestContext(request))
 
 
