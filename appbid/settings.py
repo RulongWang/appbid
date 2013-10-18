@@ -138,6 +138,7 @@ INSTALLED_APPS = (
     'django.contrib.comments',
     # 'django_crontab',
     'social_auth',
+    #The package list
     'appbid',
     'bid',
     'home',
@@ -152,32 +153,13 @@ INSTALLED_APPS = (
     'dashboard',
     'transaction',
     'paypal',
+    'auth',
 )
 
-# Authentication Backends for social_auth
-AUTHENTICATION_BACKENDS = (
-    'social_auth.backends.twitter.TwitterBackend',
-    'social_auth.backends.facebook.FacebookBackend',
-    'social_auth.backends.contrib.github.GithubBackend',
-    'django.contrib.auth.backends.ModelBackend',
-)
-
-SOCIAL_AUTH_ENABLED_BACKENDS = ('github', 'twitter', 'facebook',)
-SOCIAL_AUTH_DEFAULT_USERNAME = 'socialauth_user'
-SOCIAL_AUTH_COMPLETE_URL_NAME = 'socialauth_complete'
-
-# Setup needed OAuth keys for social_auth
-TWITTER_CONSUMER_KEY = 'kP4jieowJbvgo27YEkv51w'
-TWITTER_CONSUMER_SECRET = 'T03Qu7sitdyW7FCYRXbEIYzfts57PkJPXnaMI6AaM'
-FACEBOOK_APP_ID = '224844337683823'
-FACEBOOK_API_SECRET = 'ecfcf5beadfb0e81061a5aa0d116c207'
-GITHUB_APP_ID = '0986cfea7a082b0228e0'
-GITHUB_API_SECRET = '94c125ea029d65dd1f029e721fc7c0a6574d9ede'
-
-LOGIN_URL = '/login/'
-LOGIN_REDIRECT_URL = '/home/'
-LOGIN_ERROR_URL = '/login-error/'
-
+try:
+    from auth.settings import *
+except Exception, e:
+    pass
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to
