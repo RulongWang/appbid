@@ -2,6 +2,7 @@ import json
 import time
 import datetime
 import string
+import urllib2
 
 from django.shortcuts import render_to_response, render, RequestContext, get_object_or_404, HttpResponse, Http404
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -178,6 +179,9 @@ def getAppDetail(request, *args, **kwargs):
                 initParam['watch_app'] = True
             if dashboardModels.WatchSeller.objects.filter(seller_id=app.publisher.id, buyer_id=request.user.id).count():
                 initParam['watch_seller'] = True
+
+        #For social auth function
+        urllib2.install_opener(urllib2.build_opener(common.HTTPSHandlerV3()))
 
         return render_to_response('query/listing_detail.html', initParam, context_instance=RequestContext(request))
     raise Http404
