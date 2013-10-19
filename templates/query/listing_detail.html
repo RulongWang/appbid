@@ -3,7 +3,11 @@
 {% load staticfiles %}
 {% load comments %}
         <div id="breadcrumb">
-            <span>Category: <a href="#">Category Parent</a> &gt <a href="#">Photography</a></span>
+            {% if query_tile %}
+            <span>{{ query_tile.0 }}-&gt <a href="{% url 'query:featured' %}{{ query_tile.2 }}">{{ query_tile.1 }}</a></span>
+            {% else %}
+                <span>&nbsp;</span>
+            {% endif %}
         </div>
         {% include "query/listing_header.html" %}
         <div class="app_feature">

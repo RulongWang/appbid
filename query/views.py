@@ -156,6 +156,12 @@ def getAppDetail(request, *args, **kwargs):
         initParam['attachments'] = app.attachment_set.all()
         initParam['cur_monetizes'] = app.monetize.all()
         initParam['all_monetizes'] = appModels.Monetize.objects.all()
+        q1 = request.GET.get('q1')
+        q2 = request.GET.get('q2')
+        q3 = request.GET.get('q3')
+        if q1 and q2 and q3:
+            initParam['query_tile'] = [q1, q2, q3]
+
         userPublicProfiles = userSettingModels.UserPublicProfile.objects.filter(user_id=app.publisher.id)
         if userPublicProfiles and userPublicProfiles[0].thumbnail:
             initParam['thumbnail'] = app.publisher.userpublicprofile.thumbnail
