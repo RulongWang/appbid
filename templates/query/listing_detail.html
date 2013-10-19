@@ -100,10 +100,8 @@
                    <span class="widget_title">Seller</span>
                    <div class="clear" style=";margin:10px 0px 30px 10px;height:100px;">
                         <div style="padding: 2px;border:1px solid #ddd;height:50px;width:50px;float:left;">
-                           <img src="{% static "images/darwin.jpg" %}" style="width:50px;height:50px;"/>
+                            <img src="{% if thumbnail %}{{ thumbnail.url }}{% else %}{% static "images/darwin.jpg" %}{% endif %}" style="width:50px;height:50px;"/>
                         </div>
-
-
                         <div style="margin-left:10px;width:100px;float: left;">
                            {{ app.publisher.username }}
                         </div>

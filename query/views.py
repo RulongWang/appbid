@@ -13,6 +13,7 @@ from django.contrib.auth.models import User
 
 from appbid import models as appModels
 from dashboard import models as dashboardModels
+from usersetting import models as userSettingModels
 from utilities import common
 
 
@@ -155,6 +156,9 @@ def getAppDetail(request, *args, **kwargs):
         initParam['attachments'] = app.attachment_set.all()
         initParam['cur_monetizes'] = app.monetize.all()
         initParam['all_monetizes'] = appModels.Monetize.objects.all()
+        userPublicProfiles = userSettingModels.UserPublicProfile.objects.filter(user_id=app.publisher.id)
+        if userPublicProfiles and userPublicProfiles[0].thumbnail:
+            initParam['thumbnail'] = app.publisher.userpublicprofile.thumbnail
 
         category_map = {}
         for category in app.category.all():
