@@ -2,6 +2,7 @@ import json
 import time
 import datetime
 import string
+import urllib2
 
 from django.shortcuts import render_to_response, render, RequestContext, get_object_or_404, HttpResponse, Http404
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -12,6 +13,7 @@ from django.contrib.auth.models import User
 
 from appbid import models as appModels
 from dashboard import models as dashboardModels
+from usersetting import models as userSettingModels
 from utilities import common
 
 
@@ -154,6 +156,15 @@ def getAppDetail(request, *args, **kwargs):
         initParam['attachments'] = app.attachment_set.all()
         initParam['cur_monetizes'] = app.monetize.all()
         initParam['all_monetizes'] = appModels.Monetize.objects.all()
+        q1 = request.GET.get('q1')
+        q2 = request.GET.get('q2')
+        q3 = request.GET.get('q3')
+        if q1 and q2 and q3:
+            initParam['query_tile'] = [q1, q2, q3]
+
+        userPublicProfiles = userSettingModels.UserPublicProfile.objects.filter(user_id=app.publisher.id)
+        if userPublicProfiles and userPublicProfiles[0].thumbnail:
+            initParam['thumbnail'] = app.publisher.userpublicprofile.thumbnail
 
         category_map = {}
         for category in app.category.all():
@@ -178,6 +189,9 @@ def getAppDetail(request, *args, **kwargs):
                 initParam['watch_app'] = True
             if dashboardModels.WatchSeller.objects.filter(seller_id=app.publisher.id, buyer_id=request.user.id).count():
                 initParam['watch_seller'] = True
+
+        #For social auth function
+        urllib2.install_opener(urllib2.build_opener(common.HTTPSHandlerV3()))
 
         return render_to_response('query/listing_detail.html', initParam, context_instance=RequestContext(request))
     raise Http404

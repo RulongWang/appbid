@@ -89,7 +89,7 @@
                             <li>
                                 <div class="app_wrapper">
                                        <div class="app_img">
-                                           <a href="{% url 'query:app_detail' app.0.id %}">
+                                           <a href="{% url 'query:app_detail' app.0.id %}?q1={{ query_tile.0 }}&q2={{ query_tile.1 }}&q3={{ query_tile.2 }}">
                                                <img class="img_140x140" src="{{ MEDIA_URL }}{{ app.0.appinfo.icon }}"/>
                                            </a>
                                        </div>
@@ -97,7 +97,8 @@
                                        <div class="app_attribute">
                                            <div class="info_detail">
                                             <div>
-                                                <h1><a href="{% url 'query:app_detail' app.0.id %}"> {{ app.0.app_name }}</a></h1>
+                                                <h1><a href="{% url 'query:app_detail' app.0.id %}?q1={{ query_tile.0 }}&q2={{ query_tile.1 }}&q3={{ query_tile.2 }}">
+                                                    {{ app.0.app_name }}</a></h1>
                                             </div>
                                             <div class="fontcolor_light_grey">
                                                <p>{{ app.0.title }}</p>
