@@ -20,6 +20,7 @@ AUTHENTICATION_BACKENDS = (
 #     'social_auth.backends.pipeline.user.update_user_details',
 # )
 
+USE_X_FORWARDED_HOST = True
 SOCIAL_AUTH_FORCE_POST_DISCONNECT = True
 # SOCIAL_AUTH_REDIRECT_IS_HTTPS = True
 SOCIAL_AUTH_URLOPEN_TIMEOUT = 60
