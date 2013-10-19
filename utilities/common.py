@@ -199,14 +199,12 @@ def imageThumbnail(*args, **kwargs):
     is_delete = kwargs.get('is_delete')
     if path and os.path.exists(path):
         image = Image.open(path)
-        print(path)
         if size and isinstance(size, tuple) and image.size[0] >= size[0] and image.size[1] >= size[1]:
             image.thumbnail(size)
-            print(size)
-        # if new_path:
-        #     # image.save(new_path)
-        # else:
-        #     image.save(path)
+        if new_path:
+            image.save(new_path)
+        else:
+            image.save(path)
         if new_path and path.lower() != new_path.lower() and is_delete:
             os.remove(path)
         return 0
@@ -248,14 +246,11 @@ class HTTPSConnectionV3(httplib.HTTPSConnection):
         try:
             self.sock = ssl.wrap_socket(sock, self.key_file, self.cert_file, ssl_version=ssl.PROTOCOL_SSLv3)
         except ssl.SSLError, e:
-            print("Trying SSLv3.")
             self.sock = ssl.wrap_socket(sock, self.key_file, self.cert_file, ssl_version=ssl.PROTOCOL_SSLv23)
 
 
 class HTTPSHandlerV3(urllib2.HTTPSHandler):
     def https_open(self, req):
-        print '------'
-        print req
         return self.do_open(HTTPSConnectionV3, req)
 
 # urllib2.install_opener(urllib2.build_opener(HTTPSHandlerV3()))
