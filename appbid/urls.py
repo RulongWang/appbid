@@ -36,6 +36,11 @@ urlpatterns = patterns('',
     url(r'^transaction/', include(transaction.urls, namespace='transaction')),
     url(r'^social-auth/', include('social_auth.urls')),
 )
+# urlpatterns += patterns('django.contrib.flatpages.views',
+#     url(r'^about-us/$', 'flatpage', {'url': '/about-us/'}, name='about'),
+#     url(r'^license/$', 'flatpage', {'url': '/license/'}, name='license'),
+# )
+
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

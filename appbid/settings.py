@@ -114,6 +114,7 @@ MIDDLEWARE_CLASSES = (
     # Uncomment the next line for simple clickjacking protection:
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.transaction.TransactionMiddleware',
+    'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware',
 )
 
 ROOT_URLCONF = 'appbid.urls'
@@ -132,7 +133,8 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     # Uncomment the next line to enable the admin:
-     'django.contrib.admin',
+    'django.contrib.admin',
+    'django.contrib.flatpages',
     # Uncomment the next line to enable admin documentation:
     'django.contrib.admindocs',
     'django.contrib.comments',
@@ -267,3 +269,8 @@ PAYPAL_USER = 'me_api1.rulong.org'
 PAYPAL_PASSWORD = '1380869543'
 PAYPAL_SIGNATURE = 'A2vypYAyoKWCr5HKJHXEzqAil0rBANhDLrGYeKZ-H8Wjmb.OShNvkwhY'
 PAYPAL_DEBUG = True # for sandbox. False for real environment.
+
+
+
+#flat page setting
+SITE_ID = 1
