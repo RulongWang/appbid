@@ -5,6 +5,7 @@ AUTHENTICATION_BACKENDS = (
     'social_auth.backends.twitter.TwitterBackend',
     'social_auth.backends.facebook.FacebookBackend',
     'social_auth.backends.contrib.github.GithubBackend',
+    'social_auth.backends.contrib.weibo.WeiboBackend',
     'django.contrib.auth.backends.ModelBackend',
 )
 
@@ -30,7 +31,7 @@ SOCIAL_AUTH_NONCE_SERVER_URL_LENGTH = 16
 SOCIAL_AUTH_ASSOCIATION_SERVER_URL_LENGTH = 16
 SOCIAL_AUTH_ASSOCIATION_HANDLE_LENGTH = 16
 
-SOCIAL_AUTH_ENABLED_BACKENDS = ('github', 'twitter', 'facebook',)
+SOCIAL_AUTH_ENABLED_BACKENDS = ('github', 'twitter', 'facebook', 'weibo',)
 SOCIAL_AUTH_DEFAULT_USERNAME = 'socialauth_user'
 SOCIAL_AUTH_COMPLETE_URL_NAME = 'socialauth_complete'
 SOCIAL_AUTH_ASSOCIATE_URL_NAME = 'socialauth_associate_complete'
@@ -42,8 +43,10 @@ FACEBOOK_APP_ID = '224844337683823'
 FACEBOOK_API_SECRET = 'ecfcf5beadfb0e81061a5aa0d116c207'
 GITHUB_APP_ID = '0986cfea7a082b0228e0'
 GITHUB_API_SECRET = 'b628aaaa81dc0c32767ad507fb90afaf1b019270'
+WEIBO_CLIENT_KEY = '2913621266'
+WEIBO_CLIENT_SECRET = '2649e7be854f444662400be63b8ee754'
 
 LOGIN_URL = '/login/'
-LOGIN_REDIRECT_URL = ''
+LOGIN_REDIRECT_URL = '/auth/auth-complete/'
 LOGIN_ERROR_URL = '/login-error/'
 # SOCIAL_AUTH_BACKEND_ERROR_URL = '/query/social_auth_error/'
