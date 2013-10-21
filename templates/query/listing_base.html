@@ -89,7 +89,7 @@
                             <li>
                                 <div class="app_wrapper">
                                        <div class="app_img">
-                                           <a href="{% url 'query:app_detail' app.0.id %}?q1={{ query_tile.0 }}&q2={{ query_tile.1 }}&q3={{ query_tile.2 }}">
+                                           <a href="{% url 'query:app_detail' app.0.id %}{% if query_tile %}?q1={{ query_tile.0 }}&q2={{ query_tile.1 }}&q3={{ query_tile.2 }}{% endif %}">
                                                <img class="img_140x140" src="{{ MEDIA_URL }}{{ app.0.appinfo.icon }}"/>
                                            </a>
                                        </div>
@@ -97,7 +97,7 @@
                                        <div class="app_attribute">
                                            <div class="info_detail">
                                             <div>
-                                                <h1><a href="{% url 'query:app_detail' app.0.id %}?q1={{ query_tile.0 }}&q2={{ query_tile.1 }}&q3={{ query_tile.2 }}">
+                                                <h1><a href="{% url 'query:app_detail' app.0.id %}{% if query_tile %}?q1={{ query_tile.0 }}&q2={{ query_tile.1 }}&q3={{ query_tile.2 }}{% endif %}">
                                                     {{ app.0.app_name }}</a></h1>
                                             </div>
                                             <div class="fontcolor_light_grey">

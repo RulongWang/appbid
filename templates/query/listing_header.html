@@ -45,22 +45,28 @@
                 {% endif %}
                 <div class="clear">
                     <div>
-                      <h3>Login using <a href="http://oauth.net/" title="OAuth">OAuth</a> from:</h3>
-                      <ul>
-                      {% for name in social_auth.backends.oauth %}
-                        <li><a rel="nofollow" href="{% url "socialauth_begin" name %}">{{ name|title }}</a></li>
-                      {% endfor %}
-                      </ul>
+                        <a id="id_twitter" href="{{ twitter_url }}">Twitter</a>
                     </div>
-
                     <div>
-                      <h3>Login using <a href="http://tools.ietf.org/html/draft-ietf-oauth-v2-10" title="OAuth2">OAuth2</a> from:</h3>
-                      <ul>
-                      {% for name in social_auth.backends.oauth2 %}
-                        <li><a rel="nofollow" href="{% url "socialauth_begin" name %}">{{ name|title }}</a></li>
-                      {% endfor %}
-                      </ul>
+                        <a id="id_facebook" href="{{ facebook_url }}">Facebook</a>
                     </div>
+{#                    <div>#}
+{#                      <h3>Login using <a href="http://oauth.net/" title="OAuth">OAuth</a> from:</h3>#}
+{#                      <ul>#}
+{#                      {% for name in social_auth.backends.oauth %}#}
+{#                        <li><a rel="nofollow" href="{% url "socialauth_begin" name %}">{{ name|title }}</a></li>#}
+{#                      {% endfor %}#}
+{#                      </ul>#}
+{#                    </div>#}
+{##}
+{#                    <div>#}
+{#                      <h3>Login using <a href="http://tools.ietf.org/html/draft-ietf-oauth-v2-10" title="OAuth2">OAuth2</a> from:</h3>#}
+{#                      <ul>#}
+{#                      {% for name in social_auth.backends.oauth2 %}#}
+{#                        <li><a rel="nofollow" href="{% url "socialauth_begin" name %}">{{ name|title }}</a></li>#}
+{#                      {% endfor %}#}
+{#                      </ul>#}
+{#                    </div>#}
                 </div>
               </div>
               <div class="bidding_box right">
@@ -173,5 +179,15 @@
                 });
             }
         }
+    });
+    $("#id_twitter").click(function(e) {
+        e.preventDefault();
+        window.open($(this).attr('href'), '_blank', 'height=200,width=800');
+        _gaq.push(['_trackEvent', 'Share', 'ClickThrough', 'twitter']);
+    });
+    $("#id_facebook").click(function(e) {
+        e.preventDefault();
+        window.open($(this).attr('href'), '_blank', 'height=320,width=640');
+        _gaq.push(['_trackEvent', 'Share', 'ClickThrough', 'facebook']);
     });
 </script>

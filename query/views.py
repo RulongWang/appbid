@@ -2,7 +2,7 @@ import json
 import time
 import datetime
 import string
-import urllib2
+import urllib
 
 from django.shortcuts import render_to_response, render, RequestContext, get_object_or_404, HttpResponse, Http404
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -191,7 +191,15 @@ def getAppDetail(request, *args, **kwargs):
                 initParam['watch_seller'] = True
 
         #For social auth function
-        urllib2.install_opener(urllib2.build_opener(common.HTTPSHandlerV3()))
+        # urllib2.install_opener(urllib2.build_opener(common.HTTPSHandlerV3()))
+
+        app_url = '/'.join([common.getHttpHeader(request), 'query/featured', str(app.id)])
+        twitter = 'http://twitter.com/intent/tweet?'
+        status = ''.join(['Check out App ', app.app_name, ' for sale from AppsWalk - ', app_url])
+        initParam['twitter_url'] = twitter + urllib.urlencode({'status': status})
+
+        facebook = 'http://www.facebook.com/sharer.php?'
+        initParam['facebook_url'] = facebook + urllib.urlencode({'u': status})
 
         return render_to_response('query/listing_detail.html', initParam, context_instance=RequestContext(request))
     raise Http404
