@@ -49,6 +49,15 @@
                     </div>
                     <div>
                         <a id="id_facebook" href="{{ facebook_url }}">Facebook</a>
+{#                        <a href="#"#}
+{#                          onclick="#}
+{#                            window.open(#}
+{#                              'https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(location.href),#}
+{#                              'facebook-share-dialog',#}
+{#                              'width=626,height=436');#}
+{#                            return false;">#}
+{#                          Share on Facebook#}
+{#                        </a>#}
                     </div>
 {#                    <div>#}
 {#                      <h3>Login using <a href="http://oauth.net/" title="OAuth">OAuth</a> from:</h3>#}
@@ -180,11 +189,11 @@
             }
         }
     });
-    $("#id_twitter").click(function(e) {
-        e.preventDefault();
-        window.open($(this).attr('href'), '_blank', 'height=200,width=800');
-        _gaq.push(['_trackEvent', 'Share', 'ClickThrough', 'twitter']);
-    });
+{#    $("#id_twitter").click(function(e) {#}
+{#        e.preventDefault();#}
+{#        window.open($(this).attr('href'), '_blank', 'height=200,width=800');#}
+{#        _gaq.push(['_trackEvent', 'Share', 'ClickThrough', 'twitter']);#}
+{#    });#}
     $("#id_facebook").click(function(e) {
         e.preventDefault();
         window.open($(this).attr('href'), '_blank', 'height=320,width=640');
