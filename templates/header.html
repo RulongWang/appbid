@@ -1,10 +1,18 @@
 {% load staticfiles %}
 <!DOCTYPE html>
-<html>
+<html prefix="og: http://ogp.me/ns#">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title>{{ title }}</title>
     {% if twitter_url %}
+    <!-- Facebook start -->
+    <meta property="og:title" content="App ({{ app.app_name }}) for Sale on AppsWalk" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="{{ request.get_full_path }}" />
+    <meta property="og:image" content="{{ icon_url }}" />
+    <meta name="description" content="{{ app.description|truncatewords_html:50 }}"/>
+    <!-- Facebook end -->
+    <!-- Twitter start -->
     <script type="text/javascript" src="https://platform.twitter.com/widgets.js"></script>
     <meta name="twitter:card" content="summary">
     <meta name="twitter:site" content="@jarvisjia">
@@ -12,6 +20,7 @@
     <meta name="twitter:title" content="App ({{ app.app_name }}) for Sale on AppsWalk">
     <meta name="twitter:description" content="{{ app.title }}">
     <meta name="twitter:image" content="{{ icon_url }}">
+    <!-- Twitter end -->
     {% endif %}
 
 <link href="{% static "css/style.css" %}" rel="stylesheet" type="text/css" media="screen" />
