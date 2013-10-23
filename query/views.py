@@ -195,7 +195,7 @@ def getAppDetail(request, *args, **kwargs):
         #For social auth function
         # urllib2.install_opener(urllib2.build_opener(common.HTTPSHandlerV3()))
 
-        app_url = '/'.join([common.getHttpHeader(request), 'query/featured', str(app.id)])
+        app_url = '/'.join([common.getHttpHeader(request), 'query/app-detail', str(app.id)])
         twitter = 'http://twitter.com/intent/tweet?'
         text = ''.join(['App (', app.app_name, ') for sale from AppsWalk - '])
         # initParam['twitter_url'] = twitter + urllib.urlencode({'status': status})
