@@ -11,6 +11,7 @@ from django.views.decorators.csrf import csrf_protect
 from django.db.models import Max
 from django.contrib.auth.models import User
 
+from appbid import settings
 from appbid import models as appModels
 from dashboard import models as dashboardModels
 from usersetting import models as userSettingModels
@@ -151,8 +152,9 @@ def getAppDetail(request, *args, **kwargs):
     if kwargs.get('pk'):
         initParam = {}
         app = get_object_or_404(appModels.App, pk=kwargs.get('pk'))
+        appInfo = app.appinfo
         initParam['app'] = app
-        initParam['appInfo'] = app.appinfo
+        initParam['appInfo'] = appInfo
         initParam['attachments'] = app.attachment_set.all()
         initParam['cur_monetizes'] = app.monetize.all()
         initParam['all_monetizes'] = appModels.Monetize.objects.all()
@@ -197,6 +199,7 @@ def getAppDetail(request, *args, **kwargs):
         twitter = 'http://twitter.com/intent/tweet?'
         status = ''.join(['Check out App ', app.app_name, ' for sale from AppsWalk - ', app_url])
         initParam['twitter_url'] = twitter + urllib.urlencode({'status': status})
+        initParam['icon_url'] = ''.join([common.getHttpHeader(request), settings.MEDIA_URL, appInfo.icon])
 
         facebook = 'http://www.facebook.com/sharer.php?'
         initParam['facebook_url'] = facebook + urllib.urlencode({'u': status})
