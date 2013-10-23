@@ -197,13 +197,13 @@ def getAppDetail(request, *args, **kwargs):
 
         app_url = '/'.join([common.getHttpHeader(request), 'query/app-detail', str(app.id)])
         twitter = 'http://twitter.com/intent/tweet?'
-        text = ''.join(['App (', app.app_name, ') for sale from AppsWalk - '])
+        text = ''.join(['App (', app.app_name, ') for sale from AppsWalk '])
         # initParam['twitter_url'] = twitter + urllib.urlencode({'status': status})
         initParam['twitter_url'] = twitter + urllib.urlencode({'url': app_url, 'text': text})
-        initParam['icon_url'] = ''.join([common.getHttpHeader(request), settings.MEDIA_URL, appInfo.icon])
+        initParam['http_header'] = common.getHttpHeader(request)
 
         facebook = 'http://www.facebook.com/sharer.php?'
-        initParam['facebook_url'] = facebook + urllib.urlencode({'u': ''.join([text, app_url])})
+        initParam['facebook_url'] = facebook + urllib.urlencode({'u': app_url, 't': text})
 
         return render_to_response('query/listing_detail.html', initParam, context_instance=RequestContext(request))
     raise Http404

@@ -8,10 +8,9 @@
     <!-- Facebook start -->
     <meta property="og:title" content="App ({{ app.app_name }}) for Sale on AppsWalk" />
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="http://beta.appswalk.com{{ request.get_full_path }}1" />
-    <meta property="og:image" content="{{ icon_url }}" />
-    <meta property="og:description" content="Yes, the app walk." />
-{#    <meta property="og:description" content="{{ app.description|truncatewords_html:50 }}" />#}
+    <meta property="og:url" content="{{ http_header }}{{ request.get_full_path }}" />
+    <meta property="og:image" content="{{ http_header }}{{ MEDIA_URL }}{{ appInfo.icon }}" />
+    <meta property="og:description" content="{{ app.description|truncatewords_html:50 }}" />
     <!-- Facebook end -->
     <!-- Twitter start -->
 {#    <script type="text/javascript" src="https://platform.twitter.com/widgets.js"></script>#}
@@ -20,7 +19,7 @@
     <meta name="twitter:creator" content="@jarvisjia">
     <meta name="twitter:title" content="App ({{ app.app_name }}) for Sale on AppsWalk">
     <meta name="twitter:description" content="{{ app.title }}">
-    <meta name="twitter:image" content="{{ icon_url }}">
+    <meta name="twitter:image" content="{{ http_header }}{{ MEDIA_URL }}{{ appInfo.icon }}">
     <!-- Twitter end -->
     {% endif %}
 
