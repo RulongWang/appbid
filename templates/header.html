@@ -1,6 +1,6 @@
 {% load staticfiles %}
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:og="http://ogp.me/ns#" xmlns:fb="https://www.facebook.com/2008/fbml">
+<!DOCTYPE html>
+<html prefix="og: http://ogp.me/ns#">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title>{{ title }}</title>
@@ -8,13 +8,13 @@
     <!-- Facebook start -->
     <meta property="og:title" content="App ({{ app.app_name }}) for Sale on AppsWalk" />
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="http://beta.appswalk111.com{{ request.get_full_path }}" />
+    <meta property="og:url" content="http://beta.appswalk.com{{ request.get_full_path }}1" />
     <meta property="og:image" content="{{ icon_url }}" />
     <meta property="og:description" content="Yes, the app walk." />
 {#    <meta property="og:description" content="{{ app.description|truncatewords_html:50 }}" />#}
     <!-- Facebook end -->
     <!-- Twitter start -->
-    <script type="text/javascript" src="https://platform.twitter.com/widgets.js"></script>
+{#    <script type="text/javascript" src="https://platform.twitter.com/widgets.js"></script>#}
     <meta name="twitter:card" content="summary">
     <meta name="twitter:site" content="@jarvisjia">
     <meta name="twitter:creator" content="@jarvisjia">
