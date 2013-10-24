@@ -70,12 +70,13 @@ class UserPublicProfileAdmin(admin.ModelAdmin):
 class SubscriptionItem(models.Model):
     """SubscriptionItem table info - email notification."""
     user = models.ManyToManyField(User)
+    key = models.CharField(max_length=255)
     item = models.CharField(max_length=255)
 
 
 class SubscriptionItemAdmin(admin.ModelAdmin):
     """The set of SubscriptionItem table displaying in admin page."""
-    list_display = ('id', 'item')
+    list_display = ('key', 'item')
 
 
 class SecurityVerification(models.Model):
