@@ -59,6 +59,12 @@
 {#                          Facebook#}
 {#                        </a>#}
                     </div>
+                    <div>
+                        <a id="id_weibo" href="{{ weibo_url }}">Weibo</a>
+                    </div>
+                    <div>
+                        <a id="id_qq_weibo" href="{{ qq_weibo_url }}">QQ Weibo</a>
+                    </div>
 {#                    <div>#}
 {#                      <h3>Login using <a href="http://oauth.net/" title="OAuth">OAuth</a> from:</h3>#}
 {#                      <ul>#}
@@ -198,5 +204,15 @@
         e.preventDefault();
         window.open($(this).attr('href'), '_blank', 'height=320,width=640');
         _gaq.push(['_trackEvent', 'Share', 'ClickThrough', 'facebook']);
+    });
+    $("#id_weibo").click(function(e) {
+        e.preventDefault();
+        window.open($(this).attr('href'), '_blank', 'height=520,width=640,top=0,left=0');
+        _gaq.push(['_trackEvent', 'Share', 'ClickThrough', 'weibo']);
+    });
+    $("#id_qq_weibo").click(function(e) {
+        e.preventDefault();
+        window.open($(this).attr('href'), '_blank', 'height=520,width=640,top=0,left=0');
+        _gaq.push(['_trackEvent', 'Share', 'ClickThrough', 'qq_weibo']);
     });
 </script>
