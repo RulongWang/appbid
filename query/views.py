@@ -213,7 +213,7 @@ def getAppDetail(request, *args, **kwargs):
 
         qq_weibo = 'http://v.t.qq.com/share/share.php?'
         initParam['qq_weibo_url'] = qq_weibo  + urllib.urlencode({'appkey': settings.QQ_WEIBO_API_KEY,
-                                                                  'title': title, 'pic': pic, 'url': app_url})
+                                                                  'title': text, 'pic': pic, 'url': app_url})
         initParam['title'] = text
 
         return render_to_response('query/listing_detail.html', initParam, context_instance=RequestContext(request))
