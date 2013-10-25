@@ -62,11 +62,11 @@
                     <div class="share_icon">
                         <a id="id_weibo" href="{{ weibo_url }}"><img src="{% static "images/weibo_32.png" %}" width=15px height= 15px title="Share to Weibo" /></a>
                     </div>
-                    <div id="id_weixin">Weixin</div>
+                    <div class="share_icon" id="id_weixin"><img src="{% static "images/weixin.jpg" %}" width=15px height= 15px title="Share to WeiChat" /></div>
                     <div id="weixin_win" style="display: none;">
                         <img src="{{ MEDIA_URL }}{{ appInfo.app_detail_code }}" style="width: 250px;height: 250px;" />
                         <div>
-                            打开微信，点击底部的“发现”，使用“扫一扫”，打开后点击右上角分享。
+                            Open WeChat->Discover->Scan QR Code->Share(on top right)
                         </div>
                     </div>
 {#                    <div>#}
@@ -216,7 +216,7 @@
     });
     var weixin_windows = {
         bgiframe:true,
-        title:'Share to friends in Weixin',
+        title:'Share to WeChat',
         height:350,
         width:290,
         draggable:false,
