@@ -10,6 +10,9 @@
                     <div style="width:100px;float: left;">
                         <a target="_blank" href="{{ app.app_store_link }}" title="{{ app.app_name }}"><img src="{% static "images/appstore.png" %}"/></a>
                     </div>
+                    <div class="scanner">
+                        <img src="{% static "images/scanner.png" %}" width=60px height= 40px title="Scan to install" />
+                    </div>
                     <div style="margin-top:10px;width:150px;float: right;">
                         {% if request.user.id != app.publisher.id %}
                             {% ifequal request.user.is_authenticated True %}
@@ -62,7 +65,7 @@
                     <div class="share_icon">
                         <a id="id_weibo" href="{{ weibo_url }}"><img src="{% static "images/weibo_32.png" %}" width=15px height= 15px title="Share to Weibo" /></a>
                     </div>
-                    <div class="share_icon" id="id_weixin"><img src="{% static "images/weixin.jpg" %}" width=15px height= 15px title="Share to WeiChat" /></div>
+                    <div class="share_icon" id="id_weixin"><img src="{% static "images/weixin.jpg" %}" width=15px height= 15px title="Share to WeChat" /></div>
                     <div id="weixin_win" style="display: none;">
                         <img src="{{ MEDIA_URL }}{{ appInfo.app_detail_code }}" style="width: 250px;height: 250px;" />
                         <div>

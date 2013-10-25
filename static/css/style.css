@@ -265,12 +265,12 @@ h1{
 
 }
 .search_button{
-    margin-top:16px;
+    margin-top:15px;
     /*background-color: white;*/
     font: right;
     border:0;
     width:100px;
-    height:29px;
+    height:31px;
     /*border-radius: 2px;*/
 }
 #header_search{
@@ -2245,5 +2245,11 @@ input[type="radio"]:checked:after {
 .share_icon{
     margin-top:10px;
     width:17px;
+    float:left;
+}
+
+.scanner{
+    margin-left:50px;
+    width:60px;
     float:left;
 }
