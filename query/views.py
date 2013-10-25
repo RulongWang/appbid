@@ -210,10 +210,6 @@ def getAppDetail(request, *args, **kwargs):
         pic = ''.join([common.getHttpHeader(request), settings.MEDIA_URL, appInfo.icon])
         initParam['weibo_url'] = weibo + urllib.urlencode({'appkey': settings.WEIBO_CLIENT_KEY,
                                                            'title': title, 'pic': pic, 'url': app_url})
-
-        qq_weibo = 'http://v.t.qq.com/share/share.php?'
-        initParam['qq_weibo_url'] = qq_weibo  + urllib.urlencode({'appkey': settings.QQ_WEIBO_API_KEY,
-                                                                  'title': text, 'pic': pic, 'url': app_url})
         initParam['title'] = text
 
         return render_to_response('query/listing_detail.html', initParam, context_instance=RequestContext(request))

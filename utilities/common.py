@@ -10,6 +10,7 @@ import os
 import httplib
 import ssl
 import socket
+import qrcode
 
 from PIL import Image
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -229,6 +230,27 @@ def imageResize(*args, **kwargs):
             new_image.save(path)
         if new_path and path.lower() != new_path.lower() and is_delete:
             os.remove(path)
+        return 0
+    return 1
+
+
+def makeTwoDimensionCode(*args, **kwargs):
+    """Make the image of two dimension code."""
+    #version is an integer from 1 to 40 that controls the size of the QR Code (the smallest, version 1, is a 21x21 matrix).
+    version = kwargs.get('version', 1)
+    data = kwargs.get('data')
+    path = kwargs.get('path')
+    if data and path:
+        qr = qrcode.QRCode(
+            version=version,
+            error_correction=qrcode.ERROR_CORRECT_M,
+            box_size=10,
+            border=4,
+        )
+        qr.add_data(data)
+        qr.make(fit=True)
+        image = qr.make_image()
+        image.save(path)
         return 0
     return 1
 

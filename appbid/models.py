@@ -158,6 +158,10 @@ class AppInfo(models.Model):
     price = models.FloatField(null=True, blank=True)
     icon = models.URLField(max_length=255, null=True, blank=True)
     release_date = models.DateTimeField(null=True, blank=True)
+    #The code is the image of two dimension code for app store link, filename:app_store_link_code.jpg
+    app_store_link_code = models.URLField(max_length=255, null=True, blank=True)
+    #The code is the image of two dimension code for app detail link, filename:app_detail_code.jpg
+    app_detail_code = models.URLField(max_length=255, null=True, blank=True)
 
 
 class AppHistory(models.Model):

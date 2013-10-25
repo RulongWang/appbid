@@ -140,6 +140,7 @@ INSTALLED_APPS = (
     'django.contrib.comments',
     # 'django_crontab',
     'social_auth',
+    'qrcode',
     #The package list
     'appbid',
     'bid',
