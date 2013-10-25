@@ -174,17 +174,19 @@ def saveAppStoreLink(request, form, model, *args, **kwargs):
     appInfo.icon = '/'.join([str(model.publisher.id), str(model.id), 'Icon.jpg'])
 
     #Make the image of two dimension code for app store link
-    app_store_link_code = '/'.join([str(model.publisher.id), str(model.id), 'app_store_link_code.jpg'])
-    path = '/'.join([settings.MEDIA_ROOT, app_store_link_code])
-    common.makeTwoDimensionCode(data=model.app_store_link, path=path)
-    appInfo.app_store_link_code = app_store_link_code
+    if appInfo.app_store_link_code is None:
+        app_store_link_code = '/'.join([str(model.publisher.id), str(model.id), 'app_store_link_code.jpg'])
+        path = '/'.join([settings.MEDIA_ROOT, app_store_link_code])
+        common.makeTwoDimensionCode(data=model.app_store_link, path=path)
+        appInfo.app_store_link_code = app_store_link_code
 
     #Make the image of two dimension code for app detail link
-    data = '/'.join([common.getHttpHeader(request), 'query/app-detail', str(model.id)])
-    app_detail_code = '/'.join([str(model.publisher.id), str(model.id), 'app_detail_code.jpg'])
-    path = '/'.join([settings.MEDIA_ROOT, app_detail_code])
-    common.makeTwoDimensionCode(data=data, path=path)
-    appInfo.app_detail_code = app_detail_code
+    if appInfo.app_detail_code is None:
+        data = '/'.join([common.getHttpHeader(request), 'query/app-detail', str(model.id)])
+        app_detail_code = '/'.join([str(model.publisher.id), str(model.id), 'app_detail_code.jpg'])
+        path = '/'.join([settings.MEDIA_ROOT, app_detail_code])
+        common.makeTwoDimensionCode(data=data, path=path)
+        appInfo.app_detail_code = app_detail_code
 
     appInfo.save()
 
