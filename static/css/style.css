@@ -2237,3 +2237,11 @@ input[type="radio"]:checked:after {
     opacity: 0.3;
     background: #ffa500;
 }
+
+
+/*************list header ********************/
+.share_icon{
+    margin-top:10px;
+    width:17px;
+    float:left;
+}

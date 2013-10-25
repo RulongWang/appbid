@@ -44,11 +44,11 @@
                     {% endif %}
                 {% endif %}
                 <div class="clear">
-                    <div>
-                        <a id="id_twitter" href="{{ twitter_url }}">Twitter</a>
+                    <div class="share_icon">
+                        <a id="id_twitter" href="{{ twitter_url }}"><img src="{% static "images/twitter_32.png" %}" width=15px height= 15px title="Share to Twitter" /></a>
                     </div>
-                    <div>
-                        <a id="id_facebook" href="{{ facebook_url }}">Facebook</a>
+                    <div class="share_icon">
+                        <a id="id_facebook" href="{{ facebook_url }}"><img src="{% static "images/facebook_32.png" %}" width=15px height= 15px title="Share to Facebook" /></a>
 {#                        <a href="#"#}
 {#                          onclick="#}
 {#                            window.open(#}
@@ -59,12 +59,12 @@
 {#                          Facebook#}
 {#                        </a>#}
                     </div>
-                    <div>
-                        <a id="id_weibo" href="{{ weibo_url }}">Weibo</a>
+                    <div class="share_icon">
+                        <a id="id_weibo" href="{{ weibo_url }}"><img src="{% static "images/weibo_32.png" %}" width=15px height= 15px title="Share to Weibo" /></a>
                     </div>
-                    <div>
-                        <a id="id_qq_weibo" href="{{ qq_weibo_url }}">QQ Weibo</a>
-                    </div>
+{#                    <div class="share_icon">#}
+{#                        <a id="id_qq_weibo" href="{{ qq_weibo_url }}">QQ</a>#}
+{#                    </div>#}
 {#                    <div>#}
 {#                      <h3>Login using <a href="http://oauth.net/" title="OAuth">OAuth</a> from:</h3>#}
 {#                      <ul>#}

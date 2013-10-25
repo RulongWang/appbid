@@ -273,4 +273,4 @@ PAYPAL_DEBUG = True # for sandbox. False for real environment.
 
 
 #flat page setting
-SITE_ID = 1
+SITE_ID = 2
