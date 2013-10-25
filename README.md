@@ -51,3 +51,5 @@ http://blog.creke.net/762.html
 
 #installed     'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware',
 need run command: python manage.py migrate
+
+

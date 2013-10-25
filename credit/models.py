@@ -2,6 +2,8 @@ __author__ = 'rulongwang'
 
 from django.db import models
 from django.contrib.auth.models import User
+from django.contrib import admin
+
 
 
 class CreditPoint(models.Model):
@@ -16,3 +18,7 @@ class CreditLog(models.Model):
     change_reason = models.TextField(null=True,blank=True)
     points = models.IntegerField()
     create_time = models.DateTimeField(auto_now_add=True)
+
+
+admin.site.register(CreditPoint)
+admin.site.register(CreditLog)
