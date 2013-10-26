@@ -11,7 +11,10 @@
                         <a target="_blank" href="{{ app.app_store_link }}" title="{{ app.app_name }}"><img src="{% static "images/appstore.png" %}"/></a>
                     </div>
                     <div class="scanner">
-                        <img src="{% static "images/scanner.png" %}" width=60px height= 40px title="Scan to install" />
+                        <img id="id_app_store_link_code" src="{% static "images/scanner.png" %}" width=60px height= 40px />
+                        <div id="id_appstore">
+                            <img src="{{ MEDIA_URL }}{{ appInfo.app_store_link_code }}" style="width: 250px;height: 250px;" />
+                        </div>
                     </div>
                     <div style="margin-top:10px;width:150px;float: right;">
                         {% if request.user.id != app.publisher.id %}
@@ -66,7 +69,7 @@
                         <a id="id_weibo" href="{{ weibo_url }}"><img src="{% static "images/weibo_32.png" %}" width=15px height= 15px title="Share to Weibo" /></a>
                     </div>
                     <div class="share_icon" id="id_weixin"><img src="{% static "images/weixin.jpg" %}" width=15px height= 15px title="Share to WeChat" /></div>
-                    <div id="weixin_win" style="display: none;">
+                    <div id="weixin_win">
                         <img src="{{ MEDIA_URL }}{{ appInfo.app_detail_code }}" style="width: 250px;height: 250px;" />
                         <div>
                             Open WeChat->Discover->Scan QR Code->Share(on top right)
@@ -217,19 +220,41 @@
         window.open($(this).attr('href'), '_blank', 'height=520,width=640,top=0,left=0');
         _gaq.push(['_trackEvent', 'Share', 'ClickThrough', 'weibo']);
     });
-    var weixin_windows = {
+    $("#weixin_win").dialog({
+        autoOpen:false,
         bgiframe:true,
         title:'Share to WeChat',
-        height:350,
-        width:290,
+        height:360,
+        width:300,
         draggable:false,
         resizable:false,
         position:'center',
         hide:'fade',
         show:'fade',
         closeOnEscpe:true
-    }
+    });
     $("#id_weixin").click(function(e) {
-        $("#weixin_win").dialog(weixin_windows);
+        $("#weixin_win").dialog("open");
+    });
+    var x = 0;
+    var y = 0;
+    $("#id_appstore").dialog({
+        autoOpen:false,
+        bgiframe:true,
+        title:'Scan to install the app',
+        height:315,
+        width:300,
+        draggable:false,
+        resizable:false,
+        hide:'fade',
+        show:'fade',
+        closeOnEscpe:true
+    });
+    $("#id_app_store_link_code").mouseover(function(e) {
+        $('#id_appstore').dialog('option','position',[e.clientX+30,e.clientY-150]);
+        $("#id_appstore").dialog("open");
+    });
+    $("#id_app_store_link_code").mouseout(function(e) {
+        $("#id_appstore").dialog("close");
     });
 </script>
