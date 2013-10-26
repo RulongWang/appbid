@@ -40,7 +40,7 @@ def payment(request, *args, **kwargs):
     amount = initParam['amount']
     #Call PayPal api of payment
     p = PayPal()
-    result = p.SetExpressCheckout(amount, "USD",ec_sandbox_return_url , ec_sandbox_cancel_url)
+    result = p.SetExpressCheckout(amount, "USD",ec_sandbox_return_url , ec_sandbox_cancel_url, kwargs=kwargs)
 
     if result:
         redirect_url = p.paypal_url()

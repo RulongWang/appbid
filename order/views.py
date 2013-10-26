@@ -52,7 +52,7 @@ def checkout(request, *args, **kwargs):
 
             else:
                 #Invoke payment method - payment for service detail
-                initParam['amount'] = '30.0'#test amount for paypal payment
+                initParam['amount'] = serviceDetail.actual_amount
                 return paymentViews.payment(request, initParam=initParam)
 
                 # if payment == 'success':
@@ -85,3 +85,7 @@ def checkout(request, *args, **kwargs):
         initParam['acceptGateway'] = acceptGateways[0]
 
     return render_to_response("order/checkout.html", initParam, context_instance=RequestContext(request))
+
+
+def executeCheckOut(request, *args, **kwargs):
+    return None
