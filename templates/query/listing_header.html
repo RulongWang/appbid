@@ -12,7 +12,7 @@
                     </div>
                     <div class="scanner">
                         <img id="id_app_store_link_code" src="{% static "images/scanner.png" %}" width=60px height= 40px />
-                        <div id="id_appstore">
+                        <div id="id_appstore" style="text-align: center;">
                             <img src="{{ MEDIA_URL }}{{ appInfo.app_store_link_code }}" style="width: 250px;height: 250px;" />
                         </div>
                     </div>
@@ -69,7 +69,7 @@
                         <a id="id_weibo" href="{{ weibo_url }}"><img src="{% static "images/weibo_32.png" %}" width=15px height= 15px title="Share to Weibo" /></a>
                     </div>
                     <div class="share_icon" id="id_weixin"><img src="{% static "images/weixin.jpg" %}" width=15px height= 15px title="Share to WeChat" /></div>
-                    <div id="weixin_win">
+                    <div id="weixin_win" style="text-align: center;">
                         <img src="{{ MEDIA_URL }}{{ appInfo.app_detail_code }}" style="width: 250px;height: 250px;" />
                         <div>
                             Open WeChat->Discover->Scan QR Code->Share(on top right)
@@ -225,7 +225,7 @@
         bgiframe:true,
         title:'Share to WeChat',
         height:360,
-        width:300,
+        width:310,
         draggable:false,
         resizable:false,
         position:'center',
@@ -240,13 +240,17 @@
         autoOpen:false,
         bgiframe:true,
         title:'Scan to install the app',
-        height:315,
+        height:310,
         width:300,
         draggable:false,
         resizable:false,
         hide:'fade',
         show:'fade',
-        closeOnEscpe:true
+        closeOnEscpe:true,
+        open: function(event, ui) {
+            //hide close button.
+            $(this).parent().children().children('.ui-dialog-titlebar-close').hide();
+        }
     });
     $("#id_app_store_link_code").mouseover(function(e) {
         $('#id_appstore').dialog('option','position',[e.clientX+30,e.clientY-150]);
