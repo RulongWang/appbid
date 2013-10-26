@@ -166,6 +166,7 @@ def onePriceBuy(request, *args, **kwargs):
         Buyer pay by clicking button 'Buy It Now with 10 USD' in app detail page.
         Note: url include app_id, and publisher_id, because of preventing user to cheat.
     """
+
     initParam = {}
     app_id = kwargs.get('app_id')
     publisher_id = kwargs.get('publisher_id')
@@ -186,10 +187,10 @@ def onePriceBuy(request, *args, **kwargs):
             if result['responseEnvelope.ack'][0] =='Success':
                 print result['payKey'][0]
                 paykey = result['payKey'][0]
-                return_url = "https://www.sandbox.paypal.com/cgi-bin/webscr?cmd=_ap-payment&paykey=" + paykey
-                print return_url
+                ap_redirect_url = p.AP_REDIRECTURL + paykey
+                print ap_redirect_url
                 print("Parallel Payment has been created!")
-                return HttpResponseRedirect(return_url)
+                return HttpResponseRedirect(ap_redirect_url)
             # result = paymentViews.start_paypal_ap(request)
 
             #Maybe read the table of pay result.

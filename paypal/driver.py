@@ -47,10 +47,19 @@ class PayPal(object):
             self.username  = "me_api1.rulong.org"
             self.password  = "1380869543"
             self.sign = "A2vypYAyoKWCr5HKJHXEzqAil0rBANhDLrGYeKZ-H8Wjmb.OShNvkwhY"
+            self.AP_RETURNURL    = "https://beta.appswalk.com/payment/paypal_ap_return"
+            self.AP_CANCELURL = "https://beta.appswalk.com/payment/paypal_cancel"
+
+            self.AP_REDIRECTURL = "https://www.sandbox.paypal.com/cgi-bin/webscr?cmd=_ap-payment&paykey="
+            self.AP_ENDPOINT = "svcs.sandbox.paypal.com"
         else:
             self.username  = getattr(settings, "PAYPAL_USER", None)
             self.password  = getattr(settings, "PAYPAL_PASSWORD", None)
             self.sign      = getattr(settings, "PAYPAL_SIGNATURE", None)
+            self.AP_RETURNURL    = "https://www.appswalk.com/payment/paypal_ap_return"
+            self.AP_CANCELURL = "https://www.appswalk.com/payment/paypal_cancel"
+            self.AP_REDIRECTURL = "https://www.paypal.com/webscr?cmd=_ap-payment&paykey="
+            self.AP_ENDPOINT = "svcs.paypal.com"
 
         self.credientials = {
             "USER" : self.username,
@@ -357,7 +366,7 @@ class PayPal(object):
 
 
 #method to handle adaptive payment
-    def setAPCall(self,retur_url,cancel_url,action_type):
+    def setAPCall(self,return_url, cancel_url, action_type):
 
     #Set our headers
 
@@ -381,8 +390,8 @@ class PayPal(object):
         params['requestEnvelope.errorLanguage'] = 'en_US';
         params['requestEnvelope.detailLevel'] = 'ReturnAll';
         # params['reverseAllParallelPaymentsOnError'] = 'true';
-        params['returnUrl'] = 'https://beta.appswalk.com/payment/paypal_ap_return'
-        params['cancelUrl'] = 'https://beta.appswalk.com/payment/paypal_cancel'
+        params['returnUrl'] = self.AP_RETURNURL
+        params['cancelUrl'] = self.AP_CANCELURL
         params['actionType'] = 'PAY'
         params['currencyCode'] = 'USD'
         params['feesPayer'] = 'EACHRECEIVER'
@@ -406,7 +415,7 @@ class PayPal(object):
         print ("*****************")
 
         #Connect to sand box and POST.
-        conn = httplib.HTTPSConnection("svcs.sandbox.paypal.com")
+        conn = httplib.HTTPSConnection(self.AP_ENDPOINT)
         conn.request("POST", "/AdaptivePayments/Pay/", enc_params, headers)
 
         print ("*****************")
@@ -418,14 +427,14 @@ class PayPal(object):
         #Get the reply and print it out.
         data = response.read()
         print (urlparse.parse_qs(data))
-        reposne_dic = urlparse.parse_qs(data)
-        return reposne_dic
+        response_dic = urlparse.parse_qs(data)
+        return response_dic
 
 
     def start_paypal_ap(self):
         """Payment operation."""
         p = PayPal()
-        result = p.setAPCall('returnUrl','cancelUrl','pay')
+        result = p.setAPCall(self.AP_RETURNURL,self.AP_CANCELURL,'pay')
         print("______________________________________________________________________")
         print(result)
         return result

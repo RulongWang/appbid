@@ -11,15 +11,31 @@ from payment import models
 from paypal.driver import PayPal
 from paypal.models import PayPalResponse
 from paypal.utils import process_payment_request, process_refund_request
+from django.conf import settings
 
+
+if  getattr(settings, "PAYPAL_DEBUG", False):
+    EC_RETURNURL    = "https://beta.appswalk.com/payment/paypal_return"
+    EC_CANCELURL = "https://beta.appswalk.com/payment/paypal_cancel"
+    AP_RETURNURL    = "https://beta.appswalk.com/payment/paypal_ap_return"
+    AP_CANCELURL = "https://beta.appswalk.com/payment/paypal_cancel"
+
+    AP_REDIRECTURL = "https://www.sandbox.paypal.com/cgi-bin/webscr?cmd=_ap-payment&paykey="
+
+
+else:
+    EC_RETURNURL    = "https://www.appswalk.com/payment/paypal_return"
+    EC_CANCELURL = "https://www.appswalk.com/payment/paypal_cancel"
+    AP_RETURNURL    = "https://www.appswalk.com/payment/paypal_ap_return"
+    AP_CANCELURL = "https://www.appswalk.com/payment/paypal_cancel"
+    AP_REDIRECTURL = "https://www.paypal.com/webscr?cmd=_ap-payment&paykey="
 
 
 
 ec_sandbox_return_url = "http://beta.appswalk.com/payment/paypal_return"
 ec_sandbox_cancel_url = "http://beta.appswalk.com/payment/paypal_cancel"
 
-ap_sandbox_return_url = ""
-ap_sandbox_cancel_url = " "
+
 ap_sandbox_pay_url = "https://svcs.paypal.com/AdaptivePayments/Pay"
 ap_sandbox_redirect_url = "https://www.sandbox.paypal.com/cgi-bin/webscr?cmd=_ap-payment&paykey=AP-1HL82102R3357810C"
 ap_production_pay_url = ""
@@ -40,7 +56,7 @@ def payment(request, *args, **kwargs):
     amount = initParam['amount']
     #Call PayPal api of payment
     p = PayPal()
-    result = p.SetExpressCheckout(amount, "USD",ec_sandbox_return_url , ec_sandbox_cancel_url, kwargs=kwargs)
+    result = p.SetExpressCheckout(amount, "USD",EC_RETURNURL , EC_CANCELURL, kwargs=kwargs)
 
     if result:
         redirect_url = p.paypal_url()
@@ -78,7 +94,7 @@ def paypalreturn(request, *args, **kwargs):
         error = "Token is missing"
     else:
         p = PayPal()
-        res_dict = p.GetExpressCheckoutDetailsInfo(ec_sandbox_return_url, ec_sandbox_cancel_url,token)
+        res_dict = p.GetExpressCheckoutDetailsInfo(EC_RETURNURL, EC_CANCELURL,token)
         state = p._get_value_from_qs(res_dict,"ACK")
 
         if not state in ["Success", "SuccessWithWarning"]:
@@ -97,7 +113,8 @@ def paypalreturn(request, *args, **kwargs):
 def start_paypal_ap(request, *args, **kwargs):
     """Payment operation."""
     p = PayPal()
-    reuslt = p.setAPCall('returnUrl','cancelUrl','pay')
+    result = p.setAPCall(AP_RETURNURL, AP_CANCELURL, 'pay')
+
     paykey = request.GET.get('Paykey')
 
     if paykey is None:
