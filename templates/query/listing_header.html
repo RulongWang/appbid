@@ -105,27 +105,32 @@
                         </div>
                      {% endif %}
                      {% if app.status == 2 and begin_bid == True %}
-                        <div class="bid_form">
-                            <form action="{% url 'bid:bid_create' app.id %}" method="post">
-                            {% csrf_token %}
-                            <input id="price" name="price" type="text" />
-                            <input id="bid_now" type="submit" value="Bid Now"/>
-                        </form>
-                        </div>
-                        <div>(Enter <span id="bid_price">{{ bid_price|floatformat|default:0 }}</span>{{ app.currency.currency }} or more.)</div>
-                        <div id="price_msg"></div>
-                        <div style="text-align: center;">
-                        {% if app.one_price %}
-                            <a href="{% url 'transaction:one_price_buy' app.id app.publisher.id %}">
-                                <input id="buyitnow" type="button" value="Buy It Now with {{ app.one_price }}{{ app.currency.currency }}" class="buyitnow"/>
-                            </a>
-                        {% endif %}
+                        <div id="bid_part">
+                            <div class="bid_form">
+                                <form action="{% url 'bid:bid_create' app.id %}" method="post">
+                                {% csrf_token %}
+                                <input id="price" name="price" type="text" />
+                                <input id="bid_now" type="submit" value="Bid Now"/>
+                            </form>
+                            </div>
+                            <div>(Enter <span id="bid_price">{{ bid_price|floatformat|default:0 }}</span>{{ app.currency.currency }} or more.)</div>
+                            <div id="price_msg"></div>
+                            <div style="text-align: center;">
+                            {% if app.one_price %}
+                                <a href="{% url 'transaction:one_price_buy' app.id app.publisher.id %}">
+                                    <input id="buyitnow" type="button" value="Buy It Now with {{ app.one_price }}{{ app.currency.currency }}" class="buyitnow"/>
+                                </a>
+                            {% endif %}
+                            </div>
                         </div>
                     {% endif %}
                 </div>
               </div>
         </div>
 <script type="text/javascript" language="javascript">
+    function callbackMethod() {
+        $("#bid_part").hide();
+    }
     $("#price").click(function() {
         if ($("#price").val() ==="") {
             id = '{{ app.id }}';

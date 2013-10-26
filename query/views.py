@@ -184,6 +184,9 @@ def getAppDetail(request, *args, **kwargs):
         initParam['category_map'] = category_map
 
         initBidInfo(request, app=app, initParam=initParam)
+        #Do something, when the time is app end date.
+        if app.status == 2 and initParam['begin_bid']:
+            initParam['is_callback'] = True
 
         #Check if user watch the app/seller, if user is login.
         if request.user.is_authenticated():
@@ -232,10 +235,12 @@ def initBidInfo(request, *args, **kwargs):
     else:
         initParam['bid_price'] = app.minimum_bid
     initParam['begin_bid'] = False
-    current_date = datetime.datetime.combine(datetime.date.today(), datetime.time())
+    # current_date = datetime.datetime.combine(datetime.date.today(), datetime.time())
+    current_date = datetime.datetime.now()
     if app.status == 2 and app.begin_date and app.end_date:
         if current_date >= app.begin_date:
-            initParam['begin_bid'] = True
+            if current_date < app.end_date:
+                initParam['begin_bid'] = True
             initParam['time_remaining'] = time.mktime(time.strptime(str(app.end_date), '%Y-%m-%d %H:%M:%S'))
         else:
             initParam['time_remaining'] = time.mktime(time.strptime(str(app.begin_date), '%Y-%m-%d %H:%M:%S'))

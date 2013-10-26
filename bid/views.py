@@ -33,6 +33,9 @@ def createBid(request, *args, **kwargs):
         initParam['app'] = app
         initParam['appInfo'] = app.appinfo
         initBidInfo(request, app=app, initParam=initParam)#For below code using the value
+        #Do something, when the time is app end date.
+        if app.status == 2 and initParam['begin_bid']:
+            initParam['is_callback'] = True
         if request.method == "POST":
             biddingForm = forms.BiddingForm(request.POST)
             #Buyer credit point judge for bidding.
@@ -90,6 +93,10 @@ def bidList(request, *args, **kwargs):
         initParam['app'] = app
         initParam['appInfo'] = app.appinfo
         initBidInfo(request, app=app, initParam=initParam)
+        #Do something, when the time is app end date.
+        if app.status == 2 and initParam['begin_bid']:
+            initParam['is_callback'] = True
+
         bids = app.bidding_set.filter(Q(status=1) | Q(buyer=request.user)).order_by('-price', '-bid_time')
         buyer_map = {}
         bid_info_list = []
