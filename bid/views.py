@@ -49,7 +49,10 @@ def createBid(request, *args, **kwargs):
                     #From bid_create.html
                     if 'yes' == request.POST.get('bid_create'):
                         bid = biddingForm.save(commit=False)
-                        if bid.price >= initParam.get('bid_price'):
+                        if datetime.datetime.now() > app.end_date:
+                            initParam['biddingForm'] = biddingForm
+                            initParam['bid_error'] = _('The bidding is closed, you can not bid.')
+                        elif bid.price >= initParam.get('bid_price'):
                             bid.app = app
                             bid.buyer = request.user
                             bid.status = 1

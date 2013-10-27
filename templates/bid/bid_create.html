@@ -3,7 +3,6 @@
 {% load staticfiles %}
     {% include "query/listing_header.html" %}
     <div class="bidding_create">
-    {% if app.status == 2 and begin_bid == True %}
         <form action="" method="post">
             {% csrf_token %}
             <div>
@@ -18,11 +17,10 @@
                  </div>
             </div>
             <div id="price_msg_new">{{ bid_error }}</div>
-
             <div id="bid_agreement">
-            <input id="agreement" name="agreement" type="checkbox"/>I have read the Bidding Terms and Conditions and I agree to them
-
+            <input id="agreement" name="agreement" type="checkbox"/>I have read <a href="#">the Bidding Terms and Conditions</a> and I agree to them.
             </div>
+        {% if app.status == 2 and begin_bid == True %}
             <input id="insert_comment" name="Add Comment" value="Add Comment"  type="button" class="newbutton"/>
             <input type="hidden" id="bid_create" name="bid_create" value="yes"/>
             <input id="save" class="newbutton" type="submit" name="save" value="Save"/>
@@ -37,8 +35,8 @@
                     </div>
                 </div>
             </div>
+        {% endif %}
         </form>
-    {% endif %}
     </div>
 <script type="text/javascript" language="javascript">
     $("#save").click(function() {
@@ -56,7 +54,6 @@
         }
         if (parseFloat($("#id_price").val()) < parseFloat($("#bid_price_new").text())) {
             $("#price_msg_new").text("The price must bid at least the minimum bid.");
-
             return false;
         }
         if ($("#agreement").is(':checked') == false) {

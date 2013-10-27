@@ -11,6 +11,9 @@ class CreditPoint(models.Model):
     user = models.OneToOneField(User)
     points = models.IntegerField(default=100)
 
+    def __unicode__(self):
+        return ' '.join([self.user.username, ':', str(self.points)])
+
 
 class CreditLog(models.Model):
     user = models.ForeignKey(User)
@@ -19,6 +22,8 @@ class CreditLog(models.Model):
     points = models.IntegerField()
     create_time = models.DateTimeField(auto_now_add=True)
 
+    def __unicode__(self):
+        return ' '.join([self.user.username, ':', str(self.points), self.change_reason, str(self.create_time)])
 
 admin.site.register(CreditPoint)
 admin.site.register(CreditLog)

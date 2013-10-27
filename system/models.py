@@ -11,7 +11,7 @@ class SystemParam(models.Model):
     description = models.TextField(null=True, blank=True)
 
     def __unicode__(self):
-        return ''.join([self.key, ':', self.value])
+        return ' '.join([self.key, ':', self.value, '', self.description])
 
 
 class Job(models.Model):
