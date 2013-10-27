@@ -2,6 +2,7 @@ __author__ = 'Jarvis'
 
 import datetime
 import string
+import logging
 
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render_to_response, HttpResponse, RequestContext, get_object_or_404, Http404, redirect
@@ -15,6 +16,8 @@ from order import models, forms
 from payment import views as paymentViews
 from transaction import views as transactionViews
 from utilities import common
+
+log = logging.getLogger('appbid')
 
 
 @csrf_protect
@@ -54,29 +57,6 @@ def checkout(request, *args, **kwargs):
                 #Invoke payment method - payment for service detail
                 initParam['amount'] = serviceDetail.actual_amount
                 return paymentViews.payment(request, initParam=initParam)
-
-                # if payment == 'success':
-                #     form.save(commit=False)
-                #     serviceDetail.start_date = form.cleaned_data['start_date']
-                #     serviceDetail.end_date = form.cleaned_data['end_date']
-                #     serviceDetail.is_payed = True
-                #     serviceDetail.save()
-                #     # If app is draft or has been closed, change app to published after payment,.
-                #     if app.status == 1 or app.status == 3:
-                #         app.status = 2
-                #         app.publish_date = form.cleaned_data['start_date']
-                #         app.begin_date = form.cleaned_data['start_date']
-                #         app.end_date = form.cleaned_data['end_date']
-                #     else:
-                #         app.end_date = form.cleaned_data['end_date']
-                #     app.save()
-                #     #Init transaction model data
-                #     transactionViews.initTransaction(request, app=app)
-                #     return render_to_response(initParam['success_url'], initParam, context_instance=RequestContext(request))
-                # else:
-                #     initParam['order_error'] = _('Payment failed.')
-                #     return render_to_response(initParam['failed_url'], initParam, context_instance=RequestContext(request))
-
     #Init data
     initParam['form'] = forms.ServiceDetailForm(instance=serviceDetail)
     initParam['service_expiry_date'] = common.getSystemParam(key='service_expiry_date', default=1)
@@ -88,4 +68,39 @@ def checkout(request, *args, **kwargs):
 
 
 def executeCheckOut(request, *args, **kwargs):
+    """The operation after user payment successfully."""
+    business_id = kwargs.get('business_id')
+    if business_id:
+        serviceDetails = models.ServiceDetail.objects.filter(pk=business_id, is_payed=False)
+        if serviceDetails:
+            serviceDetail = serviceDetails[0]
+            app = serviceDetail.app
+            if app.publisher == request.user:
+                service_expiry_date = string.atoi(common.getSystemParam(key='service_expiry_date', default=31))
+                if serviceDetail.start_date < datetime.datetime.now():
+                    serviceDetail.start_date = datetime.datetime.now()
+                    serviceDetail.end_date = datetime.datetime.now() + datetime.timedelta(days=service_expiry_date)
+                serviceDetail.is_payed = True
+                serviceDetail.save()
+                # If app is draft or has been closed, change app to published after payment,.
+                if app.status == 1 or app.status == 3:
+                    app.status = 2
+                    app.publish_date = serviceDetail.start_date
+                    app.begin_date = serviceDetail.start_date
+                    app.end_date = serviceDetail.end_date
+                else:
+                    app.end_date = serviceDetail.end_date
+                app.save()
+                #Init transaction model data
+                transactionViews.initTransaction(request, app=app)
+                log.error(_('The ServiceDetail with %(param1)s is payed with %(param2)s.')
+                          % {'param1': business_id, 'param2': request.user.username})
+                return serviceDetail
+            else:
+                log.error(_('The ServiceDetail with %(param1)s do not belong the user %(param2)s.')
+                          % {'param1': business_id, 'param2': request.user.username})
+        else:
+            log.error(_('The ServiceDetail with %(param)s does not exist.') % {'param': business_id})
+    else:
+        log.error('The business_id is None.')
     return None
