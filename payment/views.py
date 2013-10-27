@@ -32,13 +32,6 @@ else:
 
 
 
-ec_sandbox_return_url = "http://beta.appswalk.com/payment/paypal_return"
-ec_sandbox_cancel_url = "http://beta.appswalk.com/payment/paypal_cancel"
-
-
-ap_sandbox_pay_url = "https://svcs.paypal.com/AdaptivePayments/Pay"
-ap_sandbox_redirect_url = "https://www.sandbox.paypal.com/cgi-bin/webscr?cmd=_ap-payment&paykey=AP-1HL82102R3357810C"
-ap_production_pay_url = ""
 
 
 @csrf_protect
@@ -56,6 +49,7 @@ def payment(request, *args, **kwargs):
     amount = initParam['amount']
     #Call PayPal api of payment
     p = PayPal()
+    #Parameters needed:  1, amount  2, currency  ,3 EC_RETURNRUL 4, EC_CANCELURL 5,
     result = p.SetExpressCheckout(amount, "USD",EC_RETURNURL , EC_CANCELURL, kwargs=kwargs)
 
     if result:
