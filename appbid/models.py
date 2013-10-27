@@ -167,8 +167,8 @@ class AppInfo(models.Model):
 class AppHistory(models.Model):
     """Log app changed history."""
     app = models.ForeignKey(App)
-    modified = models.DateTimeField()
     content = models.TextField()
+    modified = models.DateTimeField(auto_now_add=True)
 
 
 class OwnerShip_Scan(models.Model):

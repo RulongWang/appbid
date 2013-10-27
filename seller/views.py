@@ -32,6 +32,7 @@ def registerApp(request, *args, **kwargs):
     app = None
     # initParam maybe save error message, when validate failed.
     initParam = kwargs.copy()
+    flag = kwargs.get('flag')
     form = forms.AppForm()
 
     #Initial data
@@ -41,36 +42,42 @@ def registerApp(request, *args, **kwargs):
         initParam['app_id'] = app.id
         initParam['app_status'] = app.status
         #For Additional Info
-        initParam['attachments'] = appModels.Attachment.objects.filter(app_id=app.id)
+        if flag == 3:
+            initParam['attachments'] = appModels.Attachment.objects.filter(app_id=app.id)
         #For App Verification
-        initParam['verify_token'] = app.verify_token
+        if flag == 7:
+            initParam['verify_token'] = app.verify_token
         #For App Attributes
-        appInfos = appModels.AppInfo.objects.filter(app_id=app.id)
-        if appInfos:
-            initParam['appInfoForm'] = forms.AppInfoForm(instance=appInfos[0])
+        if flag == 1.2:
+            appInfos = appModels.AppInfo.objects.filter(app_id=app.id)
+            if appInfos:
+                initParam['appInfoForm'] = forms.AppInfoForm(instance=appInfos[0])
         #For Payment
-        serviceDetails = orderModels.ServiceDetail.objects.filter(app_id=app.id).order_by('-pk')
-        initParam['serviceDetails'] = serviceDetails
-        sn = kwargs.get('sn', None)
-        if sn and sn != 'new':
-            #For query service detail by sn.
-            serviceDetail = get_object_or_404(orderModels.ServiceDetail, app_id=app.id, sn=sn)
-            initParam['selectItems'] = serviceDetail.serviceitem.all()
-            initParam['serviceDetail'] = serviceDetail
-            initParam['amount'] = serviceDetail.amount
-        elif (sn is None or sn == '') and serviceDetails:
-            #For query the latest payment. The rule: Publisher just has one unpaid payment.
-            initParam['selectItems'] = serviceDetails[0].serviceitem.all()
-            initParam['serviceDetail'] = serviceDetails[0]
-            initParam['amount'] = serviceDetails[0].amount
-        else:
-            #Create the new payment.
-            amount = 0
-            serviceItems = orderModels.ServiceItem.objects.filter(is_basic_service=True, end_date__gte=datetime.datetime.now())
-            for serviceItem in serviceItems:
-                amount += serviceItem.price
-            initParam['amount'] = amount
+        if flag == 6:
+            initParam['serviceItems'] = orderModels.ServiceItem.objects.filter(end_date__gte=datetime.datetime.now())
+            serviceDetails = orderModels.ServiceDetail.objects.filter(app_id=app.id).order_by('-pk')
+            initParam['serviceDetails'] = serviceDetails
+            sn = kwargs.get('sn', None)
+            if sn and sn != 'new':
+                #For query service detail by sn.
+                serviceDetail = get_object_or_404(orderModels.ServiceDetail, app_id=app.id, sn=sn)
+                initParam['selectItems'] = serviceDetail.serviceitem.all()
+                initParam['serviceDetail'] = serviceDetail
+                initParam['amount'] = serviceDetail.amount
+            elif (sn is None or sn == '') and serviceDetails:
+                #For query the latest payment. The rule: Publisher just has one unpaid payment.
+                initParam['selectItems'] = serviceDetails[0].serviceitem.all()
+                initParam['serviceDetail'] = serviceDetails[0]
+                initParam['amount'] = serviceDetails[0].amount
+            else:
+                #Create the new payment.
+                amount = 0
+                serviceItems = orderModels.ServiceItem.objects.filter(is_basic_service=True, end_date__gte=datetime.datetime.now())
+                for serviceItem in serviceItems:
+                    amount += serviceItem.price
+                initParam['amount'] = amount
 
+    #Create or update app.
     if request.method == "POST":
         form = forms.AppForm(request.POST)
         saveMethod = kwargs.pop('saveMethod', None)
@@ -81,10 +88,10 @@ def registerApp(request, *args, **kwargs):
 
     #Initial data
     initParam['form'] = form
-    initParam['attachmentForm'] = forms.AttachmentForm()
-    initParam['apps'] = appModels.App.objects.filter(publisher=request.user).order_by('status', 'create_time')
-    #For Payment
-    initParam['serviceItems'] = orderModels.ServiceItem.objects.filter(end_date__gte=datetime.datetime.now())
+    if flag == 3:
+        initParam['attachmentForm'] = forms.AttachmentForm()
+    if flag == 1.1:
+        initParam['apps'] = appModels.App.objects.filter(publisher=request.user).order_by('status', 'create_time')
     return render_to_response(kwargs.get('backPage'), initParam, context_instance=RequestContext(request))
 
 
@@ -356,6 +363,12 @@ def saveDelivery(request, form, model, *args, **kwargs):
         model.delivery_detail = form.cleaned_data['delivery_detail'].strip()
         model.web_site = form.cleaned_data['web_site']
         model.save()
+        #Save the app updating.
+        appHistory = appModels.AppHistory()
+        appHistory.app = model
+        appHistory.content = ''.join(['unique_sell:', str(model.unique_sell), '; source_code:', str(model.source_code),
+                                     '; delivery_detail:', model.delivery_detail, ' web_site:', model.web_site])
+        appHistory.save()
     return redirect('/'.join([initParam.get('nextPage'), str(model.id), kwargs.get('sn', '')]))
 
 
