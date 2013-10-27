@@ -109,6 +109,9 @@ def paypalreturn(request, *args, **kwargs):
             result = executeMethod(request, kwargs=kwargs)
             if result:
                 print result
+            else:
+                #business id is not correct. or return error page.
+                print 'the payment is not correct. Please check your operation or contact customer service.'
 
         return render_to_response("payment/paypal_return.html", {"token":token,"payerid":payerid,"res_dict":res_dict}, context_instance=RequestContext(request))
 
@@ -153,6 +156,17 @@ def paypal_ap_return(request, *args, **kwargs):
     # else:
     #     p = PayPal()
     #
+
+    #Do something after user payed.
+    executeMethod = kwargs.pop('executeMethod', None)
+    if executeMethod:
+        result = executeMethod(request, kwargs=kwargs)
+        if result:
+            print result
+        else:
+            #transaction is not correct. or return error page.
+            print 'the pay is not correct. Please check your operation or contact customer service.'
+
     return render_to_response("payment/paypal_return.html", {"token":'test'}, context_instance=RequestContext(request))
 
 

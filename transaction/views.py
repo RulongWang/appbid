@@ -3,6 +3,7 @@ __author__ = 'Jarvis'
 import time
 import datetime
 import string
+import logging
 
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
@@ -22,6 +23,9 @@ from notification import views as notificationViews
 from credit import views as creditViews
 from payment import views as paymentViews
 from paypal import driver
+
+log = logging.getLogger('appbid')
+
 
 @csrf_protect
 @transaction.commit_on_success
@@ -166,7 +170,6 @@ def onePriceBuy(request, *args, **kwargs):
         Buyer pay by clicking button 'Buy It Now with 10 USD' in app detail page.
         Note: url include app_id, and publisher_id, because of preventing user to cheat.
     """
-
     initParam = {}
     app_id = kwargs.get('app_id')
     publisher_id = kwargs.get('publisher_id')
@@ -180,6 +183,25 @@ def onePriceBuy(request, *args, **kwargs):
         if cp == -1 or cp < string.atoi(min_cp):
             initParam['error_msg'] = _('You are allowed to buy, because your credit points is too low.')
         else:
+            transactions = models.Transaction.objects.filter(app_id=app.id, seller_id=publisher_id, status=1)
+            if transactions:
+                transaction = transactions[0]
+            else:
+                transaction = models.Transaction()
+                transaction.app = app
+                transaction.seller = request.user
+            transaction.buyer = request.user
+            transaction.price = app.one_price
+            transaction.save()
+
+            #Log transaction
+            transactionsLog = models.TransactionLog()
+            transactionsLog.app = app
+            transactionsLog.status = 1
+            transactionsLog.buyer = request.user
+            transactionsLog.price = app.one_price
+            transactionsLog.save()
+
             #TODO:invoke pay method
             p = driver.PayPal()
             result = p.start_paypal_ap()
@@ -192,35 +214,6 @@ def onePriceBuy(request, *args, **kwargs):
                 print("Parallel Payment has been created!")
                 return HttpResponseRedirect(ap_redirect_url)
             # result = paymentViews.start_paypal_ap(request)
-
-            #Maybe read the table of pay result.
-# following infomation should be updated in payment success part  So comment here
-            # if result:
-            #     transactions = models.Transaction.objects.filter(app_id=app.id, seller_id=publisher_id, status=1)
-            #     if transactions:
-            #         transaction = transactions[0]
-            #     else:
-            #         transaction = models.Transaction()
-            #         transaction.app = app
-            #         transaction.seller = request.user
-            #     transaction.status = 3
-            #     transaction.buyer = request.user
-            #     transaction.price = app.one_price
-            #     txn_expiry_date = string.atoi(common.getSystemParam(key='txn_expiry_date', default=15))
-            #     transaction.end_time = datetime.datetime.now() + datetime.timedelta(days=txn_expiry_date)
-            #     transaction.save()
-            #     #Log transaction
-            #     transactionsLog = models.TransactionLog()
-            #     transactionsLog.app = app
-            #     transactionsLog.status = 3
-            #     transactionsLog.buyer = request.user
-            #     transactionsLog.price = app.one_price
-            #     transactionsLog.save()
-            #     #Send email to seller
-            #     notificationViews.onePriceBuyInformSellerEmail(request, transaction=transaction)
-            #     # TODO: return 'return to result page'
-            # else:
-            #     print "Log error message"
             else:
                 # return render_to_response('transaction/one_price_buy.html', initParam, context_instance=RequestContext(request))
                 return HttpResponseRedirect('/payment/paypal_cancel')
@@ -239,12 +232,45 @@ def buyerPay(request, *args, **kwargs):
     transaction = get_object_or_404(models.Transaction, pk=txn_id, app_id=app_id, buyer_id=request.user.id, status=2)
 
     #TODO:invoke pay method
-    result = 'success'
-    if result:
+    return None
+
+
+def executePay(request, *args, **kwargs):
+    """The operation after buyer payed successfully."""
+    business_id = kwargs.get('business_id')
+    if business_id:
+        transactions = models.Transaction.objects.filter(pk=business_id)
+        if transactions:
+            transaction = transactions[0]
+            if transaction.buyer == request.user:
+                if transaction.status == 1:
+                    kwargs['transaction'] = transaction
+                    return executeOnePriceBuy(request, kwargs=kwargs)
+                elif transaction.status == 2:
+                    kwargs['transaction'] = transaction
+                    return executeBuyerPay(request, kwargs=kwargs)
+                else:
+                    log.error(_('The transaction with id %(param1)s status %(param2)s should be payed.')
+                              % {'param1': business_id, 'param1': transaction.status})
+            else:
+                log.error(_('The transaction with id %(param1)s do not belong the buyer %(param2)s.')
+                          % {'param1': business_id, 'param2': request.user.username})
+        else:
+            log.error(_('The transaction with id %(param)s does not exist.') % {'param': business_id})
+    else:
+        log.error('The business_id is None.')
+    return None
+
+
+def executeOnePriceBuy(request, *args, **kwargs):
+    """The operation of one price buy, after buyer payed successfully."""
+    transaction = kwargs.get('transaction')
+    if transaction:
         transaction.status = 3
         txn_expiry_date = string.atoi(common.getSystemParam(key='txn_expiry_date', default=15))
         transaction.end_time = datetime.datetime.now() + datetime.timedelta(days=txn_expiry_date)
         transaction.save()
+
         #Log transaction
         transactionsLog = models.TransactionLog()
         transactionsLog.app = transaction.app
@@ -252,8 +278,37 @@ def buyerPay(request, *args, **kwargs):
         transactionsLog.buyer = request.user
         transactionsLog.price = transaction.price
         transactionsLog.save()
+
         #Send email to seller
         notificationViews.onePriceBuyInformSellerEmail(request, transaction=transaction)
-    else:
-        print "Log error message"
+
+        log.info(_('The transaction of one price buy with id %(param1)s is payed by %(param2)s.')
+                 % {'param1': transaction.id, 'param2': request.user.username})
+        return transaction
+    return None
+
+
+def executeBuyerPay(request, *args, **kwargs):
+    """The operation, after buyer payed successfully."""
+    transaction = kwargs.get('transaction')
+    if transaction:
+        transaction.status = 3
+        txn_expiry_date = string.atoi(common.getSystemParam(key='txn_expiry_date', default=15))
+        transaction.end_time = datetime.datetime.now() + datetime.timedelta(days=txn_expiry_date)
+        transaction.save()
+
+        #Log transaction
+        transactionsLog = models.TransactionLog()
+        transactionsLog.app = transaction.app
+        transactionsLog.status = 3
+        transactionsLog.buyer = request.user
+        transactionsLog.price = transaction.price
+        transactionsLog.save()
+
+        #Send email to seller
+        notificationViews.buyerPayInformSellerEmail(request, transaction=transaction)
+
+        log.info(_('The transaction with id %(param1)s is payed by %(param2)s.')
+                 % {'param1': transaction.id, 'param2': request.user.username})
+        return transaction
     return None

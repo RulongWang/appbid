@@ -91,16 +91,18 @@ def executeCheckOut(request, *args, **kwargs):
                 else:
                     app.end_date = serviceDetail.end_date
                 app.save()
+
                 #Init transaction model data
                 transactionViews.initTransaction(request, app=app)
-                log.error(_('The ServiceDetail with %(param1)s is payed with %(param2)s.')
+
+                log.info(_('The ServiceDetail with id %(param1)s is payed by %(param2)s.')
                           % {'param1': business_id, 'param2': request.user.username})
                 return serviceDetail
             else:
-                log.error(_('The ServiceDetail with %(param1)s do not belong the user %(param2)s.')
+                log.error(_('The ServiceDetail with id %(param1)s do not belong the user %(param2)s.')
                           % {'param1': business_id, 'param2': request.user.username})
         else:
-            log.error(_('The ServiceDetail with %(param)s does not exist.') % {'param': business_id})
+            log.error(_('The ServiceDetail with id %(param)s does not exist.') % {'param': business_id})
     else:
         log.error('The business_id is None.')
     return None
