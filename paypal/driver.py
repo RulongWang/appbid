@@ -438,3 +438,49 @@ class PayPal(object):
         print("______________________________________________________________________")
         print(result)
         return result
+
+    def check_ap_payment_status(self,paykey):
+        headers = {
+            'X-PAYPAL-SECURITY-USERID': 'me_api1.rulong.org',
+            'X-PAYPAL-SECURITY-PASSWORD': '1380869543',
+            'X-PAYPAL-SECURITY-SIGNATURE': 'A2vypYAyoKWCr5HKJHXEzqAil0rBANhDLrGYeKZ-H8Wjmb.OShNvkwhY',
+            'X-PAYPAL-APPLICATION-ID': 'APP-80W284485P519543T',
+            'X-PAYPAL-SERVICE-VERSION':'1.1.0',
+            'X-PAYPAL-REQUEST-DATA-FORMAT':'NV',
+            'X-PAYPAL-RESPONSE-DATA-FORMAT':'NV'
+        }
+
+        ###################################################################
+        # In the above $headers declaration, the USERID, PASSWORD and
+        # SIGNATURE need to be replaced with your own.
+        ###################################################################
+
+        #Set our POST Parameters
+        params = collections.OrderedDict()
+        params['payKey'] = paykey
+        params['requestEnvelope.errorLanguage'] = 'en_US';
+
+        enc_params = urllib.urlencode(params)
+        print ("get Payment result")
+        print (enc_params)
+        print ("*****************")
+
+        #Connect to sand box and POST.
+        conn = httplib.HTTPSConnection(self.AP_ENDPOINT)
+        conn.request("POST", "/AdaptivePayments/PaymentDetails/", enc_params, headers)
+
+        print ("*****************")
+        #Check the response - should be 200 OK.
+        response = conn.getresponse()
+        print (response.status, response.reason)
+        print ("*****************")
+
+        #Get the reply and print it out.
+        data = response.read()
+        print (urlparse.parse_qs(data))
+        response_dic = urlparse.parse_qs(data)
+        print response_dic
+        result = response_dic
+        print result;
+        return result
+

@@ -135,20 +135,15 @@ def start_paypal_ap(request, *args, **kwargs):
 @login_required(login_url='/usersetting/home/')
 def paypal_ap_return(request, *args, **kwargs):
     """Payment operation."""
-    print request.GET
-    print '*****************'
-    print request.POST
-    print args
-    print '============='
-    print kwargs
-    print 'xxxxxx'
-    print request
     # paykey = request.GET.get('Paykey')
     #
     # if paykey is None:
     #     error = "paykey is missing"
     # else:
-    #     p = PayPal()
+    p = PayPal()
+    result = p.check_ap_payment_status('AP-6WN52515K6610334Y')
+    if result['status'][0] == 'COMPLETED':
+       print('success')
     #
 
     #Do something after user payed.
@@ -161,7 +156,7 @@ def paypal_ap_return(request, *args, **kwargs):
             #transaction is not correct. or return error page.
             print 'the pay is not correct. Please check your operation or contact customer service.'
 
-    return render_to_response("payment/paypal_return.html", {"token":'test'}, context_instance=RequestContext(request))
+    return render_to_response("payment/paypal_ap_return.html", {"token":'test'}, context_instance=RequestContext(request))
 
 
 
