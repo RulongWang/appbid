@@ -145,7 +145,7 @@ def paypal_ap_return(request, *args, **kwargs):
     #     error = "paykey is missing"
     # else:
     p = PayPal()
-    result = p.check_ap_payment_status('AP-6WN52515K6610334Y')
+    result = p.check_ap_payment_status('AP-6WN52515K6610334Y')# need to search the paykey from transaction table
     if result['status'][0] == 'COMPLETED':
        print('success')
     #
