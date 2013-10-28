@@ -178,7 +178,7 @@ LOGGING = {
             'format': '%(levelname)s %(message)s'
         },
         'standard': {
-            'format': '[%(asctime)s][%(threadName)s:%(thread)d][%(levelname)s][%(name)s/%(filename)s:%(lineno)d-%(funcName)s] - %(message)s',
+            'format': '[%(asctime)s][%(threadName)s:%(thread)d][%(levelname)s][%(pathname)s/%(filename)s:%(lineno)d-%(funcName)s] - %(message)s',
             'datefmt': '%Y-%m-%d %H:%M:%S'
         }
     },
@@ -205,7 +205,7 @@ LOGGING = {
         'default': {
             'level': 'INFO',
             'class': 'logging.handlers.TimedRotatingFileHandler',
-            'filename': ''.join([LOGGING_ROOT, 'appbid.log.', datetime.datetime.now().strftime('%Y-%m-%d-%H-%M')]),
+            'filename': ''.join([LOGGING_ROOT, 'appbid.log.', datetime.datetime.now().strftime('%Y-%m-%d')]),#%Y-%m-%d-%H-%M
             'when': 'midnight',#S M H D W midnight
             'interval': 1,
             'backupCount': 5,
@@ -214,7 +214,7 @@ LOGGING = {
         'email': {
             'level': 'ERROR',
             'class': 'logging.handlers.TimedRotatingFileHandler',
-            'filename': ''.join([LOGGING_ROOT, 'email.log.', datetime.datetime.now().strftime('%Y-%m-%d-%H-%M')]),
+            'filename': ''.join([LOGGING_ROOT, 'email.log.', datetime.datetime.now().strftime('%Y-%m-%d')]),#%Y-%m-%d-%H-%M
             'when': 'midnight',#S M H D W midnight
             'interval': 1,
             'backupCount': 5,

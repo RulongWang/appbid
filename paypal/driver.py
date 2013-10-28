@@ -133,8 +133,6 @@ class PayPal(object):
          - SetExpressCheckout(10.00, US, http://www.test.com/cancel/, http://www.test.com/return/, **{'SHIPTOSTREET': 'T Street', 'SHIPTOSTATE': 'T State'})
         """
         initParam = kwargs.get('initParam')
-        itemAMT = initParam.get('ITEMAMT')
-
         parameters = {
             'METHOD': 'SetExpressCheckout',
             'NOSHIPPING': 0,#no need shipping address
@@ -145,23 +143,23 @@ class PayPal(object):
             'AMT': amount,
             # 'PAYMENTREQUEST_0_AMT': amount,
             'CURRENCYCODE':currency,
-            'DESC':initParam.get('desc', 'Appswalk service fee from 10.1 to 11.1'),
+            'DESC':initParam.get('DESC', ''),
             # 'INVNUM':'1000'  #invoice number
             # 'CURRENCYCODE' : currency,
             # 'ALLOWNOTE':1,
             # 'SOLUTIONTYPE'=Sole
             # 'order':'Appswalk service fee',
             # 'L_PAYMENTREQUEST_0_NUMBER0': 10001,
-            'PAYMENTREQUEST_0_DESC ':initParam.get('PAYMENTREQUEST_0_DESC', 'test desc'),
+            'PAYMENTREQUEST_0_DESC ':initParam.get('PAYMENTREQUEST_0_DESC', ''),
             # 'L_PAYMENTREQUEST_0_AMT0':30,
-            'ITEMAMT': 400,
+            'ITEMAMT': initParam.get('ITEMAMT', amount),
 
             # &PAYMENTREQUEST_0_SHIPPINGAMT=3.00
-            'L_NAME0':'Item1 name',
-            'L_DESC0':'Item1',
-            'L_AMT0':400,
+            'L_NAME0':initParam.get('L_NAME0', ''),
+            'L_DESC0':initParam.get('L_DESC0', ''),
+            'L_AMT0':initParam.get('L_AMT0', amount),
             # 'L_PAYMENTREQUEST_0_NUMBER0':'10100',
-            'L_QTY0':1,
+            'L_QTY0':initParam.get('L_QTY0', '1'),
             'L_PAYMENTREQUEST_0_ITEMCATEGORY0':'Digital',
             # &PAYMENTREQUEST_0_SHIPDISCAMT=-3.00
             # &PAYMENTREQUEST_0_INSURANCEAMT=1.00

@@ -1,5 +1,7 @@
 __author__ = 'Jarvis'
 
+import logging
+
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 
@@ -13,6 +15,7 @@ from paypal.models import PayPalResponse
 from paypal.utils import process_payment_request, process_refund_request
 from django.conf import settings
 
+log = logging.getLogger('appbid')
 
 if  getattr(settings, "PAYPAL_DEBUG", False):
     EC_RETURNURL    = "https://beta.appswalk.com/payment/paypal_return"
@@ -32,37 +35,42 @@ else:
 
 
 
-
-
 @csrf_protect
 @transaction.commit_on_success
 @login_required(login_url='/usersetting/home/')
 def payment(request, *args, **kwargs):
-    """Payment operation.
-    :param request:
-    :param args:
-    :param kwargs:
-    """
-
+    """Payment operation."""
     #For saving the redirect url of the success or failed page, after payment done.
     initParam = kwargs.get('initParam')
+    back_page = initParam.pop('back_page')
     amount = initParam.get('amount')
-    amount = 400
-    #Call PayPal api of payment
-    p = PayPal()
-    #Parameters needed:  1, amount  2, currency  ,3 EC_RETURNRUL 4, EC_CANCELURL 5,
-    result = p.SetExpressCheckout(amount, "USD", EC_RETURNURL, EC_CANCELURL, initParam=kwargs)
+    currency = initParam.get('currency')
+    if amount and currency:
+        p = PayPal()
+        #Parameters needed:  1, amount  2, currency  ,3 EC_RETURNRUL 4, EC_CANCELURL 5,
+        result = p.SetExpressCheckout(amount, currency, EC_RETURNURL, EC_CANCELURL, initParam=initParam)
+        if result:
+            #The needed operation for verification later when payment return token..
+            executeMethod = kwargs.pop('executeMethod', None)
+            if executeMethod:
+                initParam['token'] = p.token
+                if executeMethod(request, initParam=initParam):
+                    redirect_url = p.paypal_url()
+                    print('success_excute_setExpressCheckout')
+                    print(redirect_url)
+                    return HttpResponseRedirect(redirect_url)
 
-    if result:
-        redirect_url = p.paypal_url()
-        print('success_excute_setExpressCheckout')
-        print(redirect_url)
-        print p.token
-        return HttpResponseRedirect(redirect_url)
+        log.error(''.join(['ServiceDetail ID:', str(initParam.get('serviceDetail_id')), ', Error: ', p.apierror]))
+        log.error(''.join(['Message:', p.setexpresscheckouterror]))
+        error_msg = p.setexpresscheckouterror
     else:
-        print p.apierror
-        print p.setexpresscheckouterror
-        return HttpResponseRedirect('/payment/paypal_cancel')
+        log.error(''.join(['ServiceDetail ID:', str(initParam.get('serviceDetail_id')), ', Error: Amount or currency is not correct.']))
+        error_msg = "The payment is not correct. Please payment again."
+
+    return render_to_response("payment/paypal_failed.html",
+            {"error_msg": error_msg, 'back_page': back_page}, context_instance=RequestContext(request))
+
+    # return HttpResponseRedirect('/payment/paypal_cancel')
 
     # initParam['success_url'] = 'payment/payment.html'
     # return 'success'
@@ -84,7 +92,6 @@ def payment(request, *args, **kwargs):
 @login_required(login_url='/usersetting/home/')
 def paypalreturn(request, *args, **kwargs):
     """Payment operation."""
-
     token = request.GET.get('token')
     payerid = request.GET.get('PayerID')
 
@@ -100,16 +107,6 @@ def paypalreturn(request, *args, **kwargs):
             return render_to_response("payment/paypal_error.html", {"token":token,"error":error}, context_instance=RequestContext(request))
 
         # payerid = p._get_value_from_qs(res_dict,"PayerID")
-
-        #Do something after payment.
-        executeMethod = kwargs.pop('executeMethod', None)
-        if executeMethod:
-            result = executeMethod(request, kwargs=kwargs)
-            if result:
-                print result
-            else:
-                #business id is not correct. or return error page.
-                print 'the payment is not correct. Please check your operation or contact customer service.'
 
         return render_to_response("payment/paypal_return.html", {"token":token,"payerid":payerid,"res_dict":res_dict}, context_instance=RequestContext(request))
 
@@ -193,6 +190,15 @@ def paypal_docheckout(request, *args, **kwargs):
 
             return render_to_response("payment/paypal_failed.html", context_instance = RequestContext(request))
         else:
+            #Do something after payment.
+            executeMethod = kwargs.pop('executeMethod', None)
+            if executeMethod:
+                result = executeMethod(request, kwargs=kwargs)
+                if result:
+                    print result
+                else:
+                    #business id is not correct. or return error page.
+                    print 'the payment is not correct. Please check your operation or contact customer service.'
             return render_to_response("payment/paypal_success.html", context_instance = RequestContext(request))
 
 

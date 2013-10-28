@@ -34,13 +34,17 @@ def checkout(request, *args, **kwargs):
     serviceDetail = get_object_or_404(models.ServiceDetail, pk=service_id, app_id=app_id, sn=service_sn)
     acceptGateways = user.acceptgateway_set.filter(is_active=True, is_default=True)
     serviceDetails = models.ServiceDetail.objects.filter(app_id=app_id, is_payed=True,
-                                                         end_date__gte=datetime.datetime.now().strftime('%Y-%m-%d')).order_by('-pk')
+                            end_date__gte=datetime.datetime.now().strftime('%Y-%m-%d')).order_by('-pk')
     #Init data
     if serviceDetails:
         initParam['begin_date'] = serviceDetails[0].end_date
         serviceDetail.start_date = serviceDetails[0].end_date
     else:
         serviceDetail.start_date = datetime.datetime.now()
+    initParam['service_expiry_date'] = common.getSystemParam(key='service_expiry_date', default=1)
+    initParam['currency'] = app.currency.currency
+    if acceptGateways:
+        initParam['acceptGateway'] = acceptGateways[0]
 
     if request.method == "POST":
         form = forms.ServiceDetailForm(request.POST)
@@ -49,26 +53,47 @@ def checkout(request, *args, **kwargs):
             service_expiry_date = string.atoi(common.getSystemParam(key='service_expiry_date', default=31))
             if serviceDetail.is_payed:
                 initParam['order_error'] = _('The payment is paid.')
+            elif len(acceptGateways) == 0:
+                initParam['order_error'] = _('The gateway is required.Please choice gateway.')
             elif (initParam['begin_date'] and form.cleaned_data['start_date'] < initParam['begin_date']) or days != service_expiry_date:
                 initParam['order_error'] = _('Service date is not correct.')
             else:
                 form.save(commit=False)
                 serviceDetail.start_date = form.cleaned_data['start_date']
                 serviceDetail.end_date = form.cleaned_data['end_date']
+                serviceDetail.acceptgateway = acceptGateways[0]
                 serviceDetail.save()
 
                 #Invoke payment method - payment for service detail
+                initParam['serviceDetail_id'] = serviceDetail.id
                 initParam['amount'] = serviceDetail.actual_amount
+                initParam['DESC'] = 'Service fee on AppsWalk.'
+                initParam['PAYMENTREQUEST_0_DESC'] = 'Service fee for App %(param1)s of user %(param2)s on AppsWalk.' % {'param1':app.app_name, 'param2':user.username}
+                initParam['ITEMAMT'] = serviceDetail.actual_amount
+                initParam['L_NAME0'] = 'Service fee on AppsWalk'
+                initParam['L_DESC0'] = 'Service fee for App %(param)s' % {'param':app.app_name}
+                initParam['L_AMT0'] = serviceDetail.actual_amount
+                initParam['L_QTY0'] = 2
+                initParam['back_page'] = '/'.join([common.getHttpHeader(request), 'seller/payment', str(app.id)])
                 return paymentViews.payment(request, initParam=initParam)
 
     #Init data
     initParam['form'] = forms.ServiceDetailForm(instance=serviceDetail)
-    initParam['service_expiry_date'] = common.getSystemParam(key='service_expiry_date', default=1)
-    initParam['currency'] = app.currency.currency
-    if acceptGateways:
-        initParam['acceptGateway'] = acceptGateways[0]
 
     return render_to_response("order/checkout.html", initParam, context_instance=RequestContext(request))
+
+
+def updateServiceDetail(request, *args, **kwargs):
+    """Insert token into serviceDetail table for verification later, when payment return token."""
+    serviceDetail_id = kwargs.get('serviceDetail_id')
+    token = kwargs.get('token')
+    if serviceDetail_id and token:
+        serviceDetails = models.ServiceDetail.objects.filter(pk=1)
+        if serviceDetails:
+            serviceDetails[0].pay_token = token
+            serviceDetails[0].save()
+            return True
+    return False
 
 
 def executeCheckOut(request, *args, **kwargs):
