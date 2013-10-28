@@ -30,12 +30,12 @@
 
         <div class="account_details">
                {% block dashboard_detail %}
-                   <fieldset>
-                   <legend>Inbox</legend>
+
+                   <div class="dash_title">Inbox</div>
                    <ul class="inbox_list">
 
 
-                       <li>
+                       <li class="highlight_li">
                             <div class="inbox_from" style="font-weight: bold;">From</div>
                             <div class="inbox_subject" style="font-weight: bold;">Message Subject</div>
                             <div class="inbox_received_time" style="font-weight: bold;">Received Time</div>
@@ -54,10 +54,10 @@
                            </li>
                        {% empty %}
 
-                           <div style="margin:0 auto; text-align: center">No received message.</div>
+                           <div class="no_message">No received message.</div>
                        {% endfor %}
                    </ul>
-                   </fieldset>
+
 
                      {% if message_list %}
                      <div class="pagination" style="float: right">

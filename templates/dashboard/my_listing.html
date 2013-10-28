@@ -1,9 +1,8 @@
 {% extends "dashboard/activity.html" %}
 {% block dashboard_detail %}
-       <fieldset>
-        <legend>Draft Apps</legend>
+          <div class="dash_title">Draft Apps</div>
           <ul class="inbox_list">
-            <li>
+            <li class="highlight_li">
                <div class="app_title">App Name</div>
                <div class="app_title">Last Modify</div>
                <div class="app_title">Is Verified</div>
@@ -11,20 +10,20 @@
             </li>
            {% for app in draft_apps %}
                <li>
-                   <div class="app_title">
+                   <div class="app_list">
                        <a href="{% url 'query:app_detail' app.0.id %}">{{ app.0.app_name }}</a>
                    </div>
-                   <div class="app_title">{{ app.0.last_modify|date:"Y-m-d H:i"|default:"N/A" }}</div>
+                   <div class="app_list">{{ app.0.last_modify|date:"Y-m-d H:i"|default:"N/A" }}</div>
                    {% ifequal app.0.is_verified True %}
-                       <div class="app_title">{{ app.0.is_verified }}</div>
-                       <div class="app_title"><a href="{% url 'seller:payment' app.0.id '' %}">Payment</a></div>
+                       <div class="app_list">{{ app.0.is_verified }}</div>
+                       <div class="app_list"><a href="{% url 'seller:payment' app.0.id '' %}">Payment</a></div>
                    {% else %}
-                       <div class="app_title"><a href="{% url 'seller:verification' app.0.id %}">Verification</a></div>
-                       <div class="app_title" style="color: red;">Payment after verified.</div>
+                       <div class="app_list"><a href="{% url 'seller:verification' app.0.id %}">Verification</a></div>
+                       <div class="app_list" style="color: red;">Payment after verified.</div>
                    {% endifequal %}
                </li>
            {% empty %}
-               No draft app.
+               <div class="no_message">No draft app.</div>
            {% endfor %}
           </ul>
            {% if draft_apps %}
@@ -38,12 +37,10 @@
                 {% endif %}
              </div>
            {% endif %}
-       </fieldset>
 
-        <fieldset>
-        <legend>Published Apps</legend>
+          <div class="dash_title">Published Apps</div>
          <ul class="inbox_list">
-           <li>
+           <li class="highlight_li">
                <div class="app_title">App Name</div>
                <div class="app_title">Auction Beginning</div>
                <div class="app_title">Auction Ending</div>
@@ -51,21 +48,21 @@
            </li>
            {% for app in published_apps %}
                 <li>
-                   <div class="app_title">
+                   <div class="app_list">
                        <a href="{% url 'query:app_detail' app.0.id %}">{{ app.0.app_name }}</a>
                    </div>
-                   <div class="app_title">
+                   <div class="app_list">
                        {{ app.0.begin_date|date:"Y-m-d H:i"|default:"N/A" }}
                    </div>
-                   <div class="app_title">
+                   <div class="app_list">
                        {{ app.0.end_date|date:"Y-m-d H:i"|default:"N/A" }}
                    </div>
-                   <div class="app_title">
+                   <div class="app_list">
                        <a href="{% url 'bid:bid_list' app.0.id %}">{{ app.1|floatformat|default:0 }} bid{{ app.1|floatformat|pluralize }}</a>
                    </div>
                </li>
            {% empty %}
-               No published app.
+                <div class="no_message">No published app.</div>
            {% endfor %}
            {% if published_apps %}
              <div class="pagination" style="float: right">
@@ -79,12 +76,10 @@
              </div>
            {% endif %}
            </ul>
-       </fieldset>
 
-       <fieldset>
-        <legend>Sold/Closed Apps</legend>
+          <div class="dash_title">Sold/Closed Apps</div>
            <ul class="inbox_list">
-           <li>
+           <li class="highlight_li">
                <div class="app_title">App Name</div>
                <div class="app_title">Sold Price</div>
                <div class="app_title">Action</div>
@@ -92,13 +87,13 @@
            </li>
            {% for app in traded_apps %}
                <li>
-                   <div class="app_title">
+                   <div class="app_list">
                        <a href="{% url 'query:app_detail' app.0.id %}">{{ app.0.app_name }}</a>
                    </div>
-                   <div class="app_title">
+                   <div class="app_list">
                        <a href="{% url 'bid:bid_list' app.0.id %}">{{ app.1.0|default:0 }} {{ app.0.currency.currency }}</a>
                    </div>
-                   <div class="app_title">
+                   <div class="app_list">
                        {% if app.1.1 == 1 %}
                            <a href="{% url 'bid:bid_list' app.0.id %}">
                                <input id="id_trade" type="button" value="Trade Now" />
@@ -109,12 +104,10 @@
                            </a>
                        {% endif %}
                    </div>
-                   <div class="app_title">{{ app.1.2 }}</div>
+                   <div class="app_list">{{ app.1.2 }}</div>
                </li>
            {% empty %}
-              <div style="text-align: center;padding-top:20px;">
-                No sold/closed app.
-              </div>
+                           <div class="no_message">No sold/closed app.</div>
            {% endfor %}
            {% if traded_apps %}
              <div class="pagination" style="float: right">
@@ -128,5 +121,4 @@
              </div>
            {% endif %}
            </ul>
-       </fieldset>
 {% endblock %}

@@ -9,10 +9,9 @@
             {% endfor %}
             </ul>
         {% endif %}
-       <fieldset>
-        <legend>Sent Messages</legend>
+        <div class="dash_title">Outbox</div>
         <ul class="inbox_list">
-           <li>
+           <li class="highlight_li">
            <div class="inbox_from" style="font-weight: bold;">To</div>
            <div class="inbox_subject" style="font-weight: bold;">Message Subject</div>
            <div class="inbox_received_time" style="font-weight: bold;">Received Time</div>
@@ -35,9 +34,9 @@
                 </a>
                </li>
            {% empty %}
-               No sent message.
+               <div class="no_message">No received message.</div>
            {% endfor %}
-       </fieldset>
+
          {% if message_list %}
          <div class="pagination" style="float: right">
             {% if message_list.has_previous %}<a href="?page={{ message_list.previous_page_number }}">previous</a>{% endif %}

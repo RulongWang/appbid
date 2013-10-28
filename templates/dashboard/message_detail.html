@@ -1,7 +1,6 @@
 {% extends "dashboard/activity.html" %}
 {% block dashboard_detail %}
-       <fieldset>
-        <legend>Message Detail</legend>
+           <div class="dash_title">Inbox</div>
            {% if message %}
             <div class="message_header"><b>Subject:</b><span class="msg_header_content">{{ message.title }}</span></div>
             {% ifequal msg_action 'reply' %}
@@ -43,5 +42,4 @@
                  </span>
              {% endifequal %}
             </div>
-       </fieldset>
 {% endblock %}

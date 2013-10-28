@@ -1,9 +1,8 @@
 {% extends "dashboard/activity.html" %}
 {% block dashboard_detail %}
-        <fieldset>
-        <legend>Joined Bidding</legend>
+        <div class="dash_title">My Bidding</div>
            <ul class="inbox_list">
-            <li>
+            <li class="highlight_li">
                <div class="app_title">App Name</div>
                <div class="app_title">Bid End Time</div>
                <div class="app_title">My Max Price</div>
@@ -11,19 +10,19 @@
            </li>
            {% for app in joined_bids %}
                <li>
-                   <div class="app_title">
+                   <div class="app_list">
                        <a href="{% url 'query:app_detail' app.0.0 %}">{{ app.1.0 }}</a>
                    </div>
-                   <div class="app_title">{{ app.1.1|date:"Y-m-d H:i"|default:"N/A" }}</div>
-                   <div class="app_title">
+                   <div class="app_list">{{ app.1.1|date:"Y-m-d H:i"|default:"N/A" }}</div>
+                   <div class="app_list">
                        <a href="{% url 'bid:bid_list' app.0.0 %}">{{ app.0.1|floatformat:"-2"|default:0 }} {{ app.1.3 }}</a>
                    </div>
-                   <div class="app_title">
+                   <div class="app_list">
                        <a href="{% url 'bid:bid_list' app.0.0 %}">{{ app.1.2|floatformat:"-2"|default:0 }} {{ app.1.3 }}</a>
                    </div>
                </li>
            {% empty %}
-               No joined bidding.
+                <div class="no_message">No bidding happen.</div>
            {% endfor %}
            {% if joined_bids %}
              <div class="pagination" style="float: right">
@@ -37,12 +36,10 @@
              </div>
            {% endif %}
            </ul>
-       </fieldset>
 
-       <fieldset>
-        <legend>Won Bidding</legend>
+        <div class="dash_title">My Won Bidding</div>
            <ul class="inbox_list">
-           <li>
+           <li class="highlight_li">
                <div class="app_title">App Name</div>
                <div class="app_title">My win Price</div>
                <div class="app_title">Action</div>
@@ -50,13 +47,13 @@
            </li>
            {% for txn in transactions %}
                <li>
-                   <div class="app_title">
+                   <div class="app_list">
                        <a href="{% url 'query:app_detail' txn.0.app.id %}">{{ txn.0.app.app_name }}</a>
                    </div>
-                   <div class="app_title">
+                   <div class="app_list">
                        <a href="{% url 'bid:bid_list' txn.0.app.id %}">{{ txn.0.price }}</a>
                    </div>
-                   <div class="app_title">
+                   <div class="app_list">
                        {% ifequal txn.0.status 2 %}
                            <!-- TODO: will change to pay url for buyer. -->
                            <a href="{% url 'transaction:trade_action' 'buy' txn.0.app.id txn.0.buyer.id %}">
@@ -68,10 +65,10 @@
                            </a>
                        {% endifequal %}
                    </div>
-                   <div class="app_title">{{ txn.1 }}</div>
+                   <div class="app_list">{{ txn.1 }}</div>
                </li>
            {% empty %}
-               No won bidding.
+                <div class="no_message">No won bidding exist.</div>
            {% endfor %}
            {% if transactions %}
              <div class="pagination" style="float: right">
@@ -85,5 +82,4 @@
              </div>
            {% endif %}
            </ul>
-       </fieldset>
 {% endblock %}

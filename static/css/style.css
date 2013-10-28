@@ -1460,7 +1460,9 @@ fieldset {
 
 /**********************dashboard*******************/
 .inbox_list{
+    margin-bottom: 30px;
     list-style:none;
+
 
 }
 
@@ -1482,6 +1484,17 @@ fieldset {
     text-align: center;
     text-overflow:ellipsis;
 
+}
+.no_message{
+
+    margin:0 auto;
+    margin-top:20px;
+    margin-bottom: 20px;
+    font-weight: bold;
+    text-align: center
+}
+.highlight_li{
+    background: #fafafa;
 }
 .inbox_subject{
     width:350px;
@@ -1566,6 +1579,18 @@ fieldset {
     text-align: center;
     overflow: hidden;
     text-wrap: none;
+    font-weight: bold;
+}
+
+
+.app_list{
+    font-size: 12px;
+    width:150px;
+    float:left;
+    text-align: center;
+    overflow: hidden;
+    text-wrap: none;
+    /*font-weight: bold;*/
 }
 .app_title_long{
     width:200px;
@@ -2252,4 +2277,18 @@ input[type="radio"]:checked:after {
     margin-left:50px;
     width:60px;
     float:left;
+}
+
+.dash_title{
+    margin-top:10px;
+    padding:5px 10px;
+    height:20px;
+    font-size: 15px;
+    background: #efefef;
+    text-align: center;
+    vertical-align: middle;
+    border:1px solid #ddd;
+    background:linear-gradient(top,#ffffff,#efefef);
+    background:-moz-linear-gradient(top,#ffffff,#efefef);
+    background:-webkit-linear-gradient(top,#ffffff,#efefef);
 }

@@ -1,10 +1,9 @@
 {% extends "dashboard/activity.html" %}
 {% block dashboard_detail %}
-      <fieldset>
-        <legend>Watch Apps</legend>
+           <div class="dash_title">Watching Apps</div>
           <ul class="inbox_list">
 
-            <li>
+            <li class="highlight_li">
                <div class="app_title">App Name</div>
                <div class="app_title">Ending Date</div>
                <div class="app_title">Current Price</div>
@@ -24,7 +23,7 @@
                    </div>
                </li>
            {% empty %}
-               No watch app.
+               <div class="no_message">No watching apps.</div>
            {% endfor %}
           </ul>
            {% if watch_apps %}
@@ -34,7 +33,6 @@
                 {% if watch_apps.has_next %}<a href="?page={{ watch_apps.next_page_number }}">next</a>{% endif %}
              </div>
            {% endif %}
-       </fieldset>
 <script type="text/javascript" language="javascript">
     function unwatchApp(obj) {
         var id = $(obj).attr("app_id");
