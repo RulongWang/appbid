@@ -1460,10 +1460,14 @@ fieldset {
 
 /**********************dashboard*******************/
 .inbox_list{
-    margin-bottom: 30px;
+    margin-bottom: 10px;
     list-style:none;
 
 
+}
+.pagination{
+    text-align: right;
+    margin-bottom: 20px;
 }
 
 .inbox_list li{
@@ -1497,6 +1501,7 @@ fieldset {
     background: #fafafa;
 }
 .inbox_subject{
+
     width:350px;
     height:20px;
     float:left;
@@ -1511,9 +1516,6 @@ fieldset {
 }
 
 .inbox_list li a{
-    display:block;
-    height:30px;
-    padding: 10px 0px;
 }
 
 .message_header{
@@ -1584,6 +1586,18 @@ fieldset {
 
 
 .app_list{
+    font-size: 12px;
+    width:150px;
+    float:left;
+
+    text-align: center;
+    overflow: hidden;
+    text-wrap: none;
+    /*font-weight: bold;*/
+}
+.app_name{
+    padding:5px 0px;
+    height:20px;
     font-size: 12px;
     width:150px;
     float:left;
@@ -1687,19 +1701,27 @@ fieldset {
 }
 
 .account_nav_title{
+    background-image:url("../images/tm22x22.png");
+    background-position: top left;
+    background-repeat: no-repeat ;
     margin-top:10px;
-    text-align: center;
-    height:20px;
-    border-radius: 3px;
-    background:#679b08;
-    width:196px;
-    color: white;
     margin-left: 25px;
-    padding:5px;
+    padding:5px 0px 5px 30px;
+    width:196px;
+    height:20px;
+    font-weight:bold;
+
+    /*border-radius: 3px;*/
+    /*background:#679b08;*/
+    /*color: white;*/
+    /*background:linear-gradient(top,#448b00,#679b08);*/
+    /*background:-moz-linear-gradient(top,#448b00,#679b08);*/
+    /*background:-webkit-linear-gradient(top,#448b00,#679b08);*/
+
 }
 /*****begin of account********/
 .account_nav{
-    margin-top:10px;
+    margin-top:5px;
     margin-left:25px;
 
 
@@ -1709,38 +1731,24 @@ fieldset {
 
 .account_nav li{
 
-    margin-top:13px;
-    height:20px;
-    padding:5px 5px 5px 15px;
-    background:#Fafafa;
-    border:1px solid #f1f1f1;
-    border-left:4px solid #ddd;
-    border-right:4px solid #ddd;
+    margin-top:10px;
+    padding:5px 5px 5px 27px;
+    /*background:#Fafafa;*/
+    /*border:1px solid #f1f1f1;*/
+    /*border-left:4px solid #ddd;*/
+    /*border-right:4px solid #ddd;*/
 
-    border-radius: 3px;
-}
-.account_nav li:hover{
-    /*transform:rotate(5deg);*/
-    /*-ms-transform:rotate(5deg); *//* IE 9 */
-    /*-webkit-transform:rotate(5deg); *//* Safari and Chrome */
-    color: white;
-    margin-top:13px;
-    height:20px;
-    padding:5px 5px 5px 15px;
-    background:#679b08;
-    border:1px solid #f1f1f1;
-
+    /*border-radius: 3px;*/
 }
 
 .account_nav li a,.account_nav li a:link,.account_nav li a:visited{
     display: block;
-    height:20px;
+    height:5px;
     padding: 3px;
 
 }
 .account_nav li a:hover,.account_nav li a:active{
-    color:white;
-    text-decoration: none;
+    text-decoration: underline;
 }
 
 
@@ -2292,3 +2300,5 @@ input[type="radio"]:checked:after {
     background:-moz-linear-gradient(top,#ffffff,#efefef);
     background:-webkit-linear-gradient(top,#ffffff,#efefef);
 }
+
+

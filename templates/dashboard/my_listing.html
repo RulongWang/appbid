@@ -27,7 +27,7 @@
            {% endfor %}
           </ul>
            {% if draft_apps %}
-             <div class="pagination" style="float: right">
+             <div class="pagination" >
                 {% if draft_apps.has_previous %}
                     <a href="?draft_page={{ draft_apps.previous_page_number }}&published_page={{ published_page }}&traded_page={{ traded_page }}">previous</a>
                 {% endif %}
@@ -64,8 +64,9 @@
            {% empty %}
                 <div class="no_message">No published app.</div>
            {% endfor %}
+           </ul>
            {% if published_apps %}
-             <div class="pagination" style="float: right">
+             <div class="pagination" >
                 {% if published_apps.has_previous %}
                     <a href="?draft_page={{ draft_page }}&published_page={{ published_apps.previous_page_number }}&traded_page={{ traded_page }}">previous</a>
                 {% endif %}
@@ -75,8 +76,6 @@
                 {% endif %}
              </div>
            {% endif %}
-           </ul>
-
           <div class="dash_title">Sold/Closed Apps</div>
            <ul class="inbox_list">
            <li class="highlight_li">
@@ -109,8 +108,10 @@
            {% empty %}
                            <div class="no_message">No sold/closed app.</div>
            {% endfor %}
-           {% if traded_apps %}
-             <div class="pagination" style="float: right">
+
+           </ul>
+    {% if traded_apps %}
+             <div class="pagination" >
                 {% if traded_apps.has_previous %}
                     <a href="?draft_page={{ draft_page }}&published_page={{ published_page }}&traded_page={{ traded_apps.previous_page_number }}">previous</a>
                 {% endif %}
@@ -120,5 +121,4 @@
                 {% endif %}
              </div>
            {% endif %}
-           </ul>
 {% endblock %}

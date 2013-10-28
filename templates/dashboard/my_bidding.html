@@ -25,7 +25,7 @@
                 <div class="no_message">No bidding happen.</div>
            {% endfor %}
            {% if joined_bids %}
-             <div class="pagination" style="float: right">
+             <div class="pagination" >
                 {% if joined_bids.has_previous %}
                     <a href="?joined_page={{ joined_bids.previous_page_number }}&won_page={{ won_page }}">previous</a>
                 {% endif %}
@@ -71,7 +71,7 @@
                 <div class="no_message">No won bidding exist.</div>
            {% endfor %}
            {% if transactions %}
-             <div class="pagination" style="float: right">
+             <div class="pagination" >
                 {% if transactions.has_previous %}
                     <a href="?joined_page={{ joined_page }}&won_page={{ transactions.previous_page_number }}">previous</a>
                 {% endif %}

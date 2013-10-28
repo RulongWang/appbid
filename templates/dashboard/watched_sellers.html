@@ -5,16 +5,16 @@
 
             <li class="highlight_li">
                <div class="app_title">Seller</div>
-               <div class="app_title">App Count</div>
-               <div class="app_title">Unwatch</div>
+               <div class="app_title">Owned Apps</div>
+               <div class="app_title">Operation</div>
             </li>
            {% for watch_seller in watch_sellers %}
                <li>
-                   <div class="app_title">{{ watch_seller.0.seller.username }}</div>
-                   <div class="app_title"><a href="/query/featured?seller={{ watch_seller.0.seller.id }}">
+                   <div class="app_list">{{ watch_seller.0.seller.username }}</div>
+                   <div class="app_list"><a href="/query/featured?seller={{ watch_seller.0.seller.id }}">
                        {{ watch_seller.1|default:0 }}
                    </a></div>
-                   <div class="app_title">
+                   <div class="app_list">
                        <span class="buyitnow" onclick="unwatchSeller(this)" seller_id="{{ watch_seller.0.seller.id }}">Unwatch</span>
                    </div>
                </li>
@@ -23,7 +23,7 @@
            {% endfor %}
           </ul>
            {% if watch_sellers %}
-             <div class="pagination" style="float: right">
+             <div class="pagination" >
                 {% if watch_sellers.has_previous %}<a href="?page={{ watch_sellers.previous_page_number }}">previous</a>{% endif %}
                 Page {{ watch_sellers.number }} of {{ watch_sellers.paginator.num_pages }}
                 {% if watch_sellers.has_next %}<a href="?page={{ watch_sellers.next_page_number }}">next</a>{% endif %}

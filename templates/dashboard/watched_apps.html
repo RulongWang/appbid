@@ -11,14 +11,14 @@
             </li>
            {% for watch_app in watch_apps %}
                <li>
-                   <div class="app_title">
+                   <div class="app_list">
                        <a href="{% url 'query:app_detail' watch_app.0.app.id %}">{{ watch_app.0.app.app_name }}</a>
                    </div>
-                   <div class="app_title">{{ watch_app.0.app.end_date|date:"Y-m-d H:i"|default:"N/A" }}</div>
-                   <div class="app_title"><a href="{% url 'bid:bid_list' watch_app.0.app.id %}">
+                   <div class="app_list">{{ watch_app.0.app.end_date|date:"Y-m-d H:i"|default:"N/A" }}</div>
+                   <div class="app_list"><a href="{% url 'bid:bid_list' watch_app.0.app.id %}">
                        {{ watch_app.1|floatformat:"-2"|default:0 }} {{ watch_app.0.app.currency.currency }}
                    </a></div>
-                   <div class="app_title">
+                   <div class="app_list">
                        <span class="buyitnow" onclick="unwatchApp(this)" app_id="{{ watch_app.0.app.id }}">Unwatch</span>
                    </div>
                </li>

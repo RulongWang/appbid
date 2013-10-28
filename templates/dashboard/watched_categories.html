@@ -10,11 +10,11 @@
             </li>
            {% for watch_category in watch_categories %}
                <li>
-                   <div class="app_title">{{ watch_category.0.category.name }}</div>
-                   <div class="app_title"><a href="/query/featured?category={{ watch_category.0.category.apple_id }}">
+                   <div class="app_list">{{ watch_category.0.category.name }}</div>
+                   <div class="app_list"><a href="/query/featured?category={{ watch_category.0.category.apple_id }}">
                        {{ watch_category.1|default:0 }}
                    </a></div>
-                   <div class="app_title">
+                   <div class="app_list">
                        <span class="buyitnow" onclick="unwatchCategory(this)" category_id="{{  watch_category.0.category.apple_id }}">Unwatch</span>
                    </div>
                </li>
@@ -23,7 +23,7 @@
            {% endfor %}
           </ul>
            {% if watch_categories %}
-             <div class="pagination" style="float: right">
+             <div class="pagination" >
                 {% if watch_categories.has_previous %}<a href="?page={{ watch_categories.previous_page_number }}">previous</a>{% endif %}
                 Page {{ watch_categories.number }} of {{ watch_categories.paginator.num_pages }}
                 {% if watch_categories.has_next %}<a href="?page={{ watch_categories.next_page_number }}">next</a>{% endif %}
