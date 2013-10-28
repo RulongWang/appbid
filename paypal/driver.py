@@ -48,6 +48,7 @@ class PayPal(object):
             self.sign = "A2vypYAyoKWCr5HKJHXEzqAil0rBANhDLrGYeKZ-H8Wjmb.OShNvkwhY"
             self.AP_RETURNURL    = "https://beta.appswalk.com/payment/paypal_ap_return"
             self.AP_CANCELURL = "https://beta.appswalk.com/payment/paypal_cancel"
+            self.AP_APPLICATION_ID = "APP-80W284485P519543T"
 
             self.AP_REDIRECTURL = "https://www.sandbox.paypal.com/cgi-bin/webscr?cmd=_ap-payment&paykey="
             self.AP_ENDPOINT = "svcs.sandbox.paypal.com"
@@ -55,6 +56,7 @@ class PayPal(object):
             self.username  = getattr(settings, "PAYPAL_USER", None)
             self.password  = getattr(settings, "PAYPAL_PASSWORD", None)
             self.sign      = getattr(settings, "PAYPAL_SIGNATURE", None)
+            self.AP_APPLICATION_ID = getattr(settings, "PAYPAL_AP_APPLICATION_ID", None)
             self.AP_RETURNURL    = "https://www.appswalk.com/payment/paypal_ap_return"
             self.AP_CANCELURL = "https://www.appswalk.com/payment/paypal_cancel"
             self.AP_REDIRECTURL = "https://www.paypal.com/webscr?cmd=_ap-payment&paykey="
@@ -369,15 +371,15 @@ class PayPal(object):
 
 
 #method to handle adaptive payment
-    def setAPCall(self,return_url, cancel_url, action_type):
+    def setAPCall(self, return_url, cancel_url, action_type):
 
     #Set our headers
 
         headers = {
-            'X-PAYPAL-SECURITY-USERID': 'me_api1.rulong.org',
-            'X-PAYPAL-SECURITY-PASSWORD': '1380869543',
-            'X-PAYPAL-SECURITY-SIGNATURE': 'A2vypYAyoKWCr5HKJHXEzqAil0rBANhDLrGYeKZ-H8Wjmb.OShNvkwhY',
-            'X-PAYPAL-APPLICATION-ID': 'APP-80W284485P519543T',
+            'X-PAYPAL-SECURITY-USERID':self.username,
+            'X-PAYPAL-SECURITY-PASSWORD':self.password,
+            'X-PAYPAL-SECURITY-SIGNATURE':self.sign,
+            'X-PAYPAL-APPLICATION-ID':self.AP_APPLICATION_ID,
             'X-PAYPAL-SERVICE-VERSION':'1.1.0',
             'X-PAYPAL-REQUEST-DATA-FORMAT':'NV',
             'X-PAYPAL-RESPONSE-DATA-FORMAT':'NV'
@@ -413,23 +415,16 @@ class PayPal(object):
 
 
         enc_params = urllib.urlencode(params)
-        print ("*****************")
         print (enc_params)
-        print ("*****************")
 
         #Connect to sand box and POST.
         conn = httplib.HTTPSConnection(self.AP_ENDPOINT)
         conn.request("POST", "/AdaptivePayments/Pay/", enc_params, headers)
-
-        print ("*****************")
         #Check the response - should be 200 OK.
         response = conn.getresponse()
         print (response.status, response.reason)
-        print ("*****************")
-
         #Get the reply and print it out.
         data = response.read()
-        print (urlparse.parse_qs(data))
         response_dic = urlparse.parse_qs(data)
         return response_dic
 
@@ -444,10 +439,10 @@ class PayPal(object):
 
     def check_ap_payment_status(self,paykey):
         headers = {
-            'X-PAYPAL-SECURITY-USERID': 'me_api1.rulong.org',
-            'X-PAYPAL-SECURITY-PASSWORD': '1380869543',
-            'X-PAYPAL-SECURITY-SIGNATURE': 'A2vypYAyoKWCr5HKJHXEzqAil0rBANhDLrGYeKZ-H8Wjmb.OShNvkwhY',
-            'X-PAYPAL-APPLICATION-ID': 'APP-80W284485P519543T',
+            'X-PAYPAL-SECURITY-USERID':self.username,
+            'X-PAYPAL-SECURITY-PASSWORD':self.password,
+            'X-PAYPAL-SECURITY-SIGNATURE':self.sign,
+            'X-PAYPAL-APPLICATION-ID':self.AP_APPLICATION_ID,
             'X-PAYPAL-SERVICE-VERSION':'1.1.0',
             'X-PAYPAL-REQUEST-DATA-FORMAT':'NV',
             'X-PAYPAL-RESPONSE-DATA-FORMAT':'NV'
@@ -466,24 +461,17 @@ class PayPal(object):
         enc_params = urllib.urlencode(params)
         print ("get Payment result")
         print (enc_params)
-        print ("*****************")
-
         #Connect to sand box and POST.
         conn = httplib.HTTPSConnection(self.AP_ENDPOINT)
         conn.request("POST", "/AdaptivePayments/PaymentDetails/", enc_params, headers)
-
-        print ("*****************")
         #Check the response - should be 200 OK.
         response = conn.getresponse()
         print (response.status, response.reason)
-        print ("*****************")
-
         #Get the reply and print it out.
         data = response.read()
-        print (urlparse.parse_qs(data))
         response_dic = urlparse.parse_qs(data)
         print response_dic
         result = response_dic
-        print result;
+        print result
         return result
 
