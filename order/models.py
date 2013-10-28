@@ -4,6 +4,7 @@ from django.db import models
 from django.contrib import admin
 
 from appbid import models as appModels
+from payment import models as paymentModels
 
 
 class ServiceItem(models.Model):
@@ -35,5 +36,10 @@ class ServiceDetail(models.Model):
     amount = models.FloatField(null=True, blank=True)
     is_payed = models.BooleanField(default=False, blank=True)
     serviceitem = models.ManyToManyField(ServiceItem, null=True)
+
+    #For user payment.
+    acceptgateway = models.ForeignKey(paymentModels.AcceptGateway, null=True, blank=True)
+    pay_token = models.CharField(max_length=255,null=True, blank=True)
+
 
 admin.site.register(ServiceItem)

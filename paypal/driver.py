@@ -10,7 +10,6 @@
 
 
 import urllib, md5, datetime
-from cgi import parse_qs
 from django.conf import settings
 import urlparse
 import collections
@@ -131,6 +130,9 @@ class PayPal(object):
         If you want to add extra parameters, you can define them in **kwargs dict. For instance:
          - SetExpressCheckout(10.00, US, http://www.test.com/cancel/, http://www.test.com/return/, **{'SHIPTOSTREET': 'T Street', 'SHIPTOSTATE': 'T State'})
         """
+        initParam = kwargs.get('initParam')
+        itemAMT = initParam.get('ITEMAMT')
+
         parameters = {
             'METHOD': 'SetExpressCheckout',
             'NOSHIPPING': 0,#no need shipping address
@@ -138,17 +140,17 @@ class PayPal(object):
             'PAYMENTACTION':'Sale',
             'RETURNURL': return_url,
             'CANCELURL': cancel_url,
-            'AMT': 400,#amount,
+            'AMT': amount,
             # 'PAYMENTREQUEST_0_AMT': amount,
             'CURRENCYCODE':currency,
-            'DESC':'Appswalk service fee from 10.1 to 11.1',
+            'DESC':initParam.get('desc', 'Appswalk service fee from 10.1 to 11.1'),
             # 'INVNUM':'1000'  #invoice number
             # 'CURRENCYCODE' : currency,
             # 'ALLOWNOTE':1,
             # 'SOLUTIONTYPE'=Sole
             # 'order':'Appswalk service fee',
             # 'L_PAYMENTREQUEST_0_NUMBER0': 10001,
-            'PAYMENTREQUEST_0_DESC ':'test desc',
+            'PAYMENTREQUEST_0_DESC ':initParam.get('PAYMENTREQUEST_0_DESC', 'test desc'),
             # 'L_PAYMENTREQUEST_0_AMT0':30,
             'ITEMAMT': 400,
 
@@ -166,8 +168,9 @@ class PayPal(object):
         parameters.update(kwargs)
         query_string = self.signature + urllib.urlencode(parameters)
         response = urllib.urlopen(self.NVP_API_ENDPOINT, query_string).read()
-        response_dict = parse_qs(response)
+        response_dict = urlparse.parse_qs(response)
         print(response)
+        print response_dict
         self.api_response = response_dict
         state = self._get_value_from_qs(response_dict, "ACK")
         if state in ["Success", "SuccessWithWarning"]:
@@ -214,7 +217,7 @@ class PayPal(object):
         }
         query_string = self.signature + urllib.urlencode(parameters)
         response = urllib.urlopen(self.NVP_API_ENDPOINT, query_string).read()
-        response_dict = parse_qs(response)
+        response_dict = urlparse.parse_qs(response)
         self.api_response = response_dict
         state = self._get_value_from_qs(response_dict, "ACK")
         if not state in ["Success", "SuccessWithWarning"]:
@@ -359,7 +362,7 @@ class PayPal(object):
         }
         query_string = self.signature + urllib.urlencode(parameters)
         response = urllib.urlopen(self.NVP_API_ENDPOINT, query_string).read()
-        response_dict = parse_qs(response)
+        response_dict = urlparse.parse_qs(response)
         self.api_response = response_dict
         state = self._get_value_from_qs(response_dict, "ACK")
         return response_dict

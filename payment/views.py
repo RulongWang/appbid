@@ -46,18 +46,22 @@ def payment(request, *args, **kwargs):
 
     #For saving the redirect url of the success or failed page, after payment done.
     initParam = kwargs.get('initParam')
-    amount = initParam['amount']
+    amount = initParam.get('amount')
+    amount = 400
     #Call PayPal api of payment
     p = PayPal()
     #Parameters needed:  1, amount  2, currency  ,3 EC_RETURNRUL 4, EC_CANCELURL 5,
-    result = p.SetExpressCheckout(amount, "USD",EC_RETURNURL , EC_CANCELURL, kwargs=kwargs)
+    result = p.SetExpressCheckout(amount, "USD", EC_RETURNURL, EC_CANCELURL, initParam=kwargs)
 
     if result:
         redirect_url = p.paypal_url()
         print('success_excute_setExpressCheckout')
         print(redirect_url)
+        print p.token
         return HttpResponseRedirect(redirect_url)
     else:
+        print p.apierror
+        print p.setexpresscheckouterror
         return HttpResponseRedirect('/payment/paypal_cancel')
 
     # initParam['success_url'] = 'payment/payment.html'
