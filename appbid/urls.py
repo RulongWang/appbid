@@ -2,16 +2,6 @@ from django.conf.urls import patterns, include, url
 from django.contrib import admin
 from django.conf import settings
 from django.conf.urls.static import static
-from home.tests import test
-import seller.urls
-import usersetting.urls
-import query.urls
-import bid.urls
-import dashboard.urls
-import payment.urls
-import order.urls
-import transaction.urls
-
 
 # Uncomment the next two lines to enable the admin:
 # from django.contrib import admin
