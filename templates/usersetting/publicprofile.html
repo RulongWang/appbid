@@ -3,12 +3,11 @@
     <div id="account_msg" style="color: green">
         {{ account_msg }}
     </div>
-    <fieldset>
-        <legend>Public Profile</legend>
+    <div class="dash_title">Public Profile</div>
     <form action=""  method="post" enctype="multipart/form-data">
     {% csrf_token %}
             <ul class="account_detail_items">
-                    <li>
+                    <li >
                     <div class="fieldWrapper" style="display: none;">
                         {{ form.user.errors }}
                         <div class="field_label" >{{ form.user.label_tag }}</div>
@@ -19,12 +18,14 @@
                     </div>
                     </li>
                     <li>
-                    <div class="fieldWrapper">
+                    <div class="thumnailWrapper" >
                         {{ form.thumbnail.errors }}
-                        <div class="field_label" >{{ form.thumbnail.label_tag }}</div>
-                        <div class="field_value" >
+                        <div class="field_label" >My Picture</div>
+                        <div class="thumnail_layout" >
                             {% if form.thumbnail.value %}
+                                <div style="width:50px;padding: 5px;float:left;">
                                 <img style="width: 40px;height: 40px" src="{{ form.thumbnail.value.url }}" />
+                                </div>
                                 <input id="id_thumbnail" name="thumbnail" type="file" />
                             {% else %}
                                 {{ form.thumbnail }}
@@ -35,37 +36,37 @@
                     <li>
                     <div class="fieldWrapper">
                         {{ form.gender.errors }}
-                        <div class="field_label" >{{ form.gender.label_tag }}</div><div class="field_value" > {{ form.gender }}</div>
+                        <div class="field_label" >Gender</div><div class="field_value" > {{ form.gender }}</div>
                     </div>
                     </li>
                     <li>
                     <div class="fieldWrapper">
                         {{ form.homepage.errors }}
-                        <div class="field_label" >{{ form.homepage.label_tag }}</div><div class="field_value" > {{ form.homepage }}</div>
+                        <div class="field_label" >My Homepage</div><div class="field_value" > {{ form.homepage }}</div>
                     </div>
                     </li>
                     <li>
                     <div class="fieldWrapper">
                         {{ form.twitter_account.errors }}
-                        <div class="field_label" >{{ form.twitter_account.label_tag }}</div><div class="field_value" > {{ form.twitter_account }}</div>
+                        <div class="field_label" >Twitter Account</div><div class="field_value" > {{ form.twitter_account }}</div>
                     </div>
                     </li>
                     <li>
                     <div class="fieldWrapper">
                         {{ form.facebook_account.errors }}
-                        <div class="field_label" >{{ form.facebook_account.label_tag }}</div><div class="field_value" > {{ form.facebook_account }}</div>
+                        <div class="field_label" >Facebook Account</div><div class="field_value" > {{ form.facebook_account }}</div>
                     </div>
                     </li>
                     <li>
                     <div class="fieldWrapper">
                         {{ form.weibo_account.errors }}
-                        <div class="field_label" >{{ form.weibo_account.label_tag }}</div><div class="field_value" > {{ form.weibo_account }}</div>
+                        <div class="field_label" >Weibo Account</div><div class="field_value" > {{ form.weibo_account }}</div>
                     </div>
                     </li>
                     <li>
                     <div class="fieldWrapper">
                         {{ form.weixin_account.errors }}
-                        <div class="field_label" >{{ form.weixin_account.label_tag }}</div><div class="field_value" > {{ form.weixin_account }}</div>
+                        <div class="field_label" >WeChat Account</div><div class="field_value" > {{ form.weixin_account }}</div>
                     </div>
                     </li>
                     <li>
@@ -73,6 +74,5 @@
                 </ul>
                  <div><input type="submit" value="Submit"  class="newbutton"/></div>
     </form>
-</fieldset>
 
 {% endblock %}

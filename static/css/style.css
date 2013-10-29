@@ -65,7 +65,7 @@ a:link,a:visited{
     text-decoration: none;
 }
 a:hover,a:active{
-    color: #0070ff;
+    color: #00b0b0;
     text-decoration:underline;
 
 }
@@ -116,7 +116,7 @@ h1{
     color:#999;
 }
 .user_bar_menu  a:hover,.user_bar_menu  a:active{
-    color:#0070ff;
+    color:#00b0b0;
     text-decoration: none;
 }
 
@@ -124,7 +124,7 @@ h1{
     color:#999;
 }
 .user_bar_menu_link  a:hover,.user_bar_menu_link  a:active{
-    color:#0070ff;
+    color:#00b0b0;
     text-decoration: none;
 }
 
@@ -1494,7 +1494,7 @@ fieldset {
     margin:0 auto;
     margin-top:20px;
     margin-bottom: 20px;
-    font-weight: bold;
+    font-weight: 500;
     text-align: center
 }
 .highlight_li{
@@ -1576,18 +1576,18 @@ fieldset {
 }
 
 .app_title{
-    width:150px;
+    width:167px;
     float:left;
     text-align: center;
     overflow: hidden;
     text-wrap: none;
-    font-weight: bold;
+    font-weight:500;
 }
 
 
 .app_list{
     font-size: 12px;
-    width:150px;
+    width:167px;
     float:left;
 
     text-align: center;
@@ -1701,15 +1701,16 @@ fieldset {
 }
 
 .account_nav_title{
-    background-image:url("../images/tm22x22.png");
-    background-position: top left;
-    background-repeat: no-repeat ;
-    margin-top:10px;
+    /*background-image:url("../images/act25x25.png");*/
+    /*background-position: top left;*/
+    /*background-repeat: no-repeat ;*/
     margin-left: 25px;
     padding:5px 0px 5px 30px;
-    width:196px;
+    width:170px;
     height:20px;
     font-weight:bold;
+    border-bottom: 2px solid #00b0b0;
+
 
     /*border-radius: 3px;*/
     /*background:#679b08;*/
@@ -1719,20 +1720,48 @@ fieldset {
     /*background:-webkit-linear-gradient(top,#448b00,#679b08);*/
 
 }
-/*****begin of account********/
-.account_nav{
-    margin-top:5px;
-    margin-left:25px;
 
-
+.act_icon{
+    background-image:url("../images/act25x25.png");
+    background-position: top left;
+    background-repeat: no-repeat ;
 }
 
-
+.apps_icon{
+    background-image:url("../images/apps25x25.png");
+    background-position: top left;
+    background-repeat: no-repeat ;
+}
+.people_icon{
+    background-image:url("../images/people25x25.png");
+    background-position: top left;
+    background-repeat: no-repeat ;
+}
+.watch_icon{
+    background-image:url("../images/watch25x25.png");
+    background-position: top left;
+    background-repeat: no-repeat ;
+}
+.setting_icon{
+    background-image:url("../images/settings25x25.png");
+    background-position: top left;
+    background-repeat: no-repeat ;
+}
+.payment_icon{
+    background-image:url("../images/payment25x25.png");
+    background-position: top left;
+    background-repeat: no-repeat ;
+}
+/*****begin of account********/
+.account_nav{
+    margin-left:25px;
+}
 
 .account_nav li{
-
-    margin-top:10px;
-    padding:5px 5px 5px 27px;
+    margin-left:27px;
+    width: 170px;
+    padding:10px 0px 10px 0px;
+    border-bottom: 1px dashed #ccc;
     /*background:#Fafafa;*/
     /*border:1px solid #f1f1f1;*/
     /*border-left:4px solid #ddd;*/
@@ -1740,6 +1769,10 @@ fieldset {
 
     /*border-radius: 3px;*/
 }
+.account_nav li:last-child{
+    margin-bottom: 10px;
+}
+
 
 .account_nav li a,.account_nav li a:link,.account_nav li a:visited{
     display: block;
@@ -1826,13 +1859,17 @@ fieldset {
     width:200px;
     float:left;
 }
-.field_value{
+.thumnail_layout{
     margin-left: 5px;
-    width:300px;
-    float:right;
+    width:400px;
+    float:left;
 }
 
-
+.thumnailWrapper{
+    height:50px;
+    padding-left:20px;
+    border-bottom: 1px dashed #ddd;
+}
 /****************************logon **************************************/
 .logon_input{
     -webkit-box-shadow: inset 0 1px 0.25em #d9d9d9;
@@ -2041,6 +2078,9 @@ fieldset {
 /*******margin* Padding**********/
 .margin10px{
     margin-top: 10px;
+}
+.margin10pxbt{
+    margin-bottom: 10px;
 }
 
 

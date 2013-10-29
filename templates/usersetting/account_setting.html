@@ -16,7 +16,7 @@
 
        <div id="account_wrapper">
         <div class="pannel_nav">
-            <div class="account_nav_title">Personal Setting</div>
+            <div class="account_nav_title setting_icon">Personal Setting</div>
             <ul class="account_nav">
 
                 <li ><a href="{% url 'usersetting:user_detail' %}">Account Details</a></li>
@@ -25,7 +25,7 @@
                 <li><a href="{% url 'usersetting:security_setting' %}">Security Settings</a></li>
             </ul>
 
-            <div class="account_nav_title">Payment Setting</div>
+            <div class="account_nav_title payment_icon">Payment Setting</div>
             <ul class="account_nav">
                 <li><a href="{% url 'usersetting:payment_setting' '' %}">Payment Account</a></li>
             </ul>
@@ -36,8 +36,7 @@
                    <div id="account_msg" style="color: green">
                         {{ account_msg }}
                    </div>
-                   <fieldset>
-                    <legend>Account Details</legend>
+                   <div class="dash_title">Account Details</div>
                     <form action=""  method="post">
                     {% csrf_token %}
                             <ul class="account_detail_items">
@@ -98,7 +97,6 @@
                                 </ul>
                                  <div><input id="submit" type="submit" value="Submit"  class="newbutton"/></div>
                     </form>
-                </fieldset>
                {% endblock %}
         </div>
        </div>

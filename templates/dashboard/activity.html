@@ -4,23 +4,23 @@
        <div class="clear"></div>
        <div id="account_wrapper">
         <div class="pannel_nav">
-        <div class="account_nav_title">Activity Overview</div>
+        <div class="account_nav_title act_icon">Activity Overview</div>
            <ul class="account_nav">
 			<li><a href="{% url 'dashboard:inbox' %}">Inbox</a></li>
-			<li><a href="{% url 'dashboard:sent_messages' %}">Sent Messages</a></li>
+			<li class="margin10pxbt"><a href="{% url 'dashboard:sent_messages' %}">Sent Messages</a></li>
           </ul>
-        <div class="account_nav_title">My Apps</div>
+        <div class="account_nav_title apps_icon">My Apps</div>
             <ul class="account_nav">
 			<li><a href="{% url 'dashboard:my_listing' %}">My Listing </a></li>
-			<li><a href="{% url 'dashboard:my_bidding' %}">My Bidding </a></li>
+			<li class="margin10pxbt"><a href="{% url 'dashboard:my_bidding' %}">My Bidding </a></li>
           </ul>
-        <div class="account_nav_title">Watch List</div>
+        <div class="account_nav_title watch_icon">Watch List</div>
             <ul class="account_nav">
 			<li><a href="{% url 'dashboard:watch_apps' %}">Watched Apps</a></li>
 			<li><a href="{% url 'dashboard:watch_sellers' %}">Watched Sellers</a></li>
-			<li><a href="{% url 'dashboard:watch_categories' %}">Watched Categories</a></li>
+			<li class="margin10pxbt"><a href="{% url 'dashboard:watch_categories' %}">Watched Categories</a></li>
             </ul>
-        <div class="account_nav_title">Your Account</div>
+        <div class="account_nav_title people_icon">Your Account</div>
             <ul class="account_nav">
 			<li><a href="#">Past invoices</a></li>
 			<li><a href="#">Unpaid Succession Fee </a></li>
@@ -36,9 +36,9 @@
 
 
                        <li class="highlight_li">
-                            <div class="inbox_from" style="font-weight: bold;">From</div>
-                            <div class="inbox_subject" style="font-weight: bold;">Message Subject</div>
-                            <div class="inbox_received_time" style="font-weight: bold;">Received Time</div>
+                            <div class="inbox_from">From</div>
+                            <div class="inbox_subject" >Message Subject</div>
+                            <div class="inbox_received_time">Received Time</div>
 
                         </li>
                        {% for message in message_list %}
