@@ -8,9 +8,8 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response, HttpResponse, RequestContext, get_object_or_404, Http404, redirect
 from django.views.decorators.csrf import csrf_protect
 from django.db import transaction
-from paypal.driver import PayPal
 from payment import models
-from paypal.driver import PayPal
+from paypal import driver
 from paypal.models import PayPalResponse
 from paypal.utils import process_payment_request, process_refund_request
 from django.conf import settings
@@ -43,15 +42,16 @@ def payment(request, *args, **kwargs):
     #For saving the redirect url of the success or failed page, after payment done.
     initParam = kwargs.get('initParam')
     back_page = initParam.pop('back_page')
-    amount = initParam.get('amount')
-    currency = initParam.get('currency')
+    executeMethod = initParam.pop('executeMethod', None)
+    amount = initParam.pop('amount')
+    currency = initParam.pop('currency')
+    id = initParam.get('serviceDetail_id')
     if amount and currency:
-        p = PayPal()
+        p = driver.PayPal()
         #Parameters needed:  1, amount  2, currency  ,3 EC_RETURNRUL 4, EC_CANCELURL 5,
         result = p.SetExpressCheckout(amount, currency, EC_RETURNURL, EC_CANCELURL, initParam=initParam)
         if result:
             #The needed operation for verification later when payment return token..
-            executeMethod = kwargs.pop('executeMethod', None)
             if executeMethod:
                 initParam['token'] = p.token
                 if executeMethod(request, initParam=initParam):
@@ -59,13 +59,16 @@ def payment(request, *args, **kwargs):
                     print('success_excute_setExpressCheckout')
                     print(redirect_url)
                     return HttpResponseRedirect(redirect_url)
-
-        log.error(''.join(['ServiceDetail ID:', str(initParam.get('serviceDetail_id')), ', Error: ', p.apierror]))
-        log.error(''.join(['Message:', p.setexpresscheckouterror]))
-        error_msg = p.setexpresscheckouterror
+                else:
+                    log.error(' '.join(['ServiceDetail ID:', str(id), '- Execute method', executeMethod.__name__, 'failed.']))
+            else:
+                log.error(' '.join(['ServiceDetail ID:', str(id), '- ExecuteMethod does not exist.']))
+        else:
+            log.error(' '.join(['ServiceDetail ID:', str(id), '-', str(p.apierror)]))
     else:
-        log.error(''.join(['ServiceDetail ID:', str(initParam.get('serviceDetail_id')), ', Error: Amount or currency is not correct.']))
-        error_msg = "The payment is not correct. Please payment again."
+        log.error(' '.join(['ServiceDetail ID:', str(id), '- Amount or currency is not correct.']))
+
+    error_msg = driver.GENERIC_PAYPAL_ERROR
 
     return render_to_response("payment/paypal_failed.html",
             {"error_msg": error_msg, 'back_page': back_page}, context_instance=RequestContext(request))
@@ -98,7 +101,7 @@ def paypalreturn(request, *args, **kwargs):
     if token is None:
         error = "Token is missing"
     else:
-        p = PayPal()
+        p = driver.PayPal()
         res_dict = p.GetExpressCheckoutDetailsInfo(EC_RETURNURL, EC_CANCELURL,token)
         state = p._get_value_from_qs(res_dict,"ACK")
 
@@ -116,7 +119,7 @@ def paypalreturn(request, *args, **kwargs):
 @login_required(login_url='/usersetting/home/')
 def start_paypal_ap(request, *args, **kwargs):
     """Payment operation."""
-    p = PayPal()
+    p = driver.PayPal()
     result = p.setAPCall(AP_RETURNURL, AP_CANCELURL, 'pay')
 
     paykey = request.GET.get('Paykey')
@@ -124,7 +127,7 @@ def start_paypal_ap(request, *args, **kwargs):
     if paykey is None:
         error = "paykey is missing"
     else:
-        p = PayPal()
+        p = driver.PayPal()
         return render_to_response("payment/paypal_return.html", {"token":paykey}, context_instance=RequestContext(request))
 
 
@@ -141,7 +144,7 @@ def paypal_ap_return(request, *args, **kwargs):
     # if paykey is None:
     #     error = "paykey is missing"
     # else:
-    p = PayPal()
+    p = driver.PayPal()
     result = p.check_ap_payment_status('AP-6WN52515K6610334Y')# need to search the paykey from transaction table
     if result['status'][0] == 'COMPLETED':
        print('success')

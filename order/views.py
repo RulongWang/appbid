@@ -73,10 +73,12 @@ def checkout(request, *args, **kwargs):
                 initParam['L_NAME0'] = 'Service fee on AppsWalk'
                 initParam['L_DESC0'] = 'Service fee for App %(param)s' % {'param':app.app_name}
                 initParam['L_AMT0'] = serviceDetail.actual_amount
-                initParam['L_QTY0'] = 2
+                initParam['L_QTY0'] = 1
+                #The needed operation method in payment.
+                initParam['executeMethod'] = kwargs.get('executeMethod')
+                #The back page, when payment has error.
                 initParam['back_page'] = '/'.join([common.getHttpHeader(request), 'seller/payment', str(app.id)])
                 return paymentViews.payment(request, initParam=initParam)
-
     #Init data
     initParam['form'] = forms.ServiceDetailForm(instance=serviceDetail)
 
@@ -85,8 +87,9 @@ def checkout(request, *args, **kwargs):
 
 def updateServiceDetail(request, *args, **kwargs):
     """Insert token into serviceDetail table for verification later, when payment return token."""
-    serviceDetail_id = kwargs.get('serviceDetail_id')
-    token = kwargs.get('token')
+    initParam = kwargs.get('initParam')
+    serviceDetail_id = initParam.get('serviceDetail_id')
+    token = initParam.get('token')
     if serviceDetail_id and token:
         serviceDetails = models.ServiceDetail.objects.filter(pk=1)
         if serviceDetails:
