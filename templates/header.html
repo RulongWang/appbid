@@ -47,17 +47,17 @@
 <div id="user_bar">
     <div id="row">
         <ul class="user_bar_menu">
-            <li><a href="/" class=""><img src="{% static "images/home.gif" %}" title="Home" /></a></li>
+            <li><a href="/" class=""><img src="{% static "images/home18x18.png" %}" title="Home" /></a></li>
             <li><a href="/query/featured">Buy Apps</a></li>
             <li><a href="/seller/app-store-link">Sell Apps</a></li>
         </ul>
         <ul class="user_bar_menu_link">
             {% if request.user.is_authenticated  %}
-            <li><a href="/" class="">Welcome: {{ request.user }}</a></li>
-            <li><a href="{% url 'usersetting:user_detail' %}" class="">Account</a></li>
-            <li><a href="{% url 'dashboard:inbox' %}" class="">Activity</a></li>
+            <li><a href="/" class=""><img src="{% static "images/login18x18.png" %}" title="Welcome {{ request.user }}" /> </a></li>
+            <li><a href="{% url 'usersetting:user_detail' %}" class=""><img src="{% static "images/account18x18.png" %}" title="Account Setting" /></a></li>
+            <li><a href="{% url 'dashboard:inbox' %}" class=""><img src="{% static "images/act18x18.png" %}" title="Activity" /></a></li>
 {#            <li><a href="/" class="">Watchlist</a></li>#}
-            <li><a href="{% url 'usersetting:logout_view' %}" class="">Logout</a></li>
+            <li><a href="{% url 'usersetting:logout_view' %}" class=""><img src="{% static "images/logout18x18.png" %}" title="Logout" /></a></li>
             {% else %}
             <li><a href="/usersetting/home/?next={{ request.path }}" class="">Login</a></li>
             <li><a href="/usersetting/register/?next={{ request.path }}" class="">Sign Up</a></li>

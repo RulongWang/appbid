@@ -1,8 +1,7 @@
 {% extends "usersetting/account_setting.html" %}
 {% block account_detail %}
 {% load staticfiles %}
-<fieldset>
-    <legend>Payment Account Setting</legend>
+    <div class="dash_title">Payment Account Setting</div>
     <div id="account_msg">{{ account_msg }}</div>
     <form action="" method="post">
         {% csrf_token %}
@@ -31,7 +30,6 @@
             </div>
         </div>
     </form>
-</fieldset>
 <script type="text/javascript" language="javascript">
     $("#submit").click(function() {
         if ($("#payment_account").val().trim() == "") {
