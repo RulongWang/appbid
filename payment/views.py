@@ -97,21 +97,38 @@ def paypalreturn(request, *args, **kwargs):
     """Payment operation."""
     token = request.GET.get('token')
     payerid = request.GET.get('PayerID')
-
-    if token is None:
-        error = "Token is missing"
-    else:
+    if token and payerid:
         p = driver.PayPal()
-        res_dict = p.GetExpressCheckoutDetailsInfo(EC_RETURNURL, EC_CANCELURL,token)
+        res_dict = p.GetExpressCheckoutDetailsInfo(EC_RETURNURL, EC_CANCELURL, token)
         state = p._get_value_from_qs(res_dict,"ACK")
-
         if not state in ["Success", "SuccessWithWarning"]:
-            error = p._get_value_from_qs(res_dict, "L_SHORTMESSAGE0")
-            return render_to_response("payment/paypal_error.html", {"token":token,"error":error}, context_instance=RequestContext(request))
+            error_msg = p._get_value_from_qs(res_dict, "L_SHORTMESSAGE0")
+            return render_to_response("payment/paypal_error.html",
+                    {"back_page": token, "error_msg": error_msg}, context_instance=RequestContext(request))
+        else:
+            return render_to_response("payment/paypal_return.html",
+                    {"token": token, "payerid": payerid, "res_dict":res_dict}, context_instance=RequestContext(request))
+    else:
+        log.error('Token is missing.')
+        error_msg = ' '.join([driver.GENERIC_PAYPAL_ERROR, 'Please payment again.'])
+        return render_to_response("payment/paypal_error.html",
+                                  {"error_msg": error_msg}, context_instance=RequestContext(request))
 
-        # payerid = p._get_value_from_qs(res_dict,"PayerID")
 
-        return render_to_response("payment/paypal_return.html", {"token":token,"payerid":payerid,"res_dict":res_dict}, context_instance=RequestContext(request))
+    # if token is None:
+    #     error = "Token is missing"
+    # else:
+    #     p = driver.PayPal()
+    #     res_dict = p.GetExpressCheckoutDetailsInfo(EC_RETURNURL, EC_CANCELURL,token)
+    #     state = p._get_value_from_qs(res_dict,"ACK")
+    #
+    #     if not state in ["Success", "SuccessWithWarning"]:
+    #         error = p._get_value_from_qs(res_dict, "L_SHORTMESSAGE0")
+    #         return render_to_response("payment/paypal_error.html", {"token":token,"error":error}, context_instance=RequestContext(request))
+    #
+    #     # payerid = p._get_value_from_qs(res_dict,"PayerID")
+    #
+    #     return render_to_response("payment/paypal_return.html", {"token":token,"payerid":payerid,"res_dict":res_dict}, context_instance=RequestContext(request))
 
 
 @csrf_protect
