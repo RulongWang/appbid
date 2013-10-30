@@ -12,6 +12,7 @@ from django.db import transaction
 from django.contrib.auth.models import User
 
 from appbid import models as appModels
+from payment import models as paymentModels
 from order import models, forms
 from payment import views as paymentViews
 from transaction import views as transactionViews
@@ -90,7 +91,7 @@ def checkout(request, *args, **kwargs):
     #Init data
     initParam['form'] = forms.ServiceDetailForm(instance=serviceDetail)
 
-    return render_to_response("order/checkout.html", initParam, context_instance=RequestContext(request))
+    return render_to_response('order/checkout.html', initParam, context_instance=RequestContext(request))
 
 
 def updateServiceDetail(request, *args, **kwargs):
@@ -105,6 +106,24 @@ def updateServiceDetail(request, *args, **kwargs):
             serviceDetails[0].save()
             return True
     return False
+
+
+def getServiceDetail(request, *args, **kwargs):
+    """Show the list of service detail to user."""
+    initParam = kwargs.get('initParam')
+    token = initParam.get('token')
+    gateway = initParam.get('gateway')
+    if token and gateway:
+        gateways = paymentModels.Gateway.objects.filter(name__iexact=gateway)
+        if gateways:
+            acceptGateways = paymentModels.AcceptGateway.objects.filter(user_id=request.user.id,
+                                                                        type_id=gateways[0].id, is_active=True)
+            if acceptGateways:
+                serviceDetails = models.ServiceDetail.objects.filter(pay_token=token, is_payed=False,
+                                                                     acceptgateway_id=acceptGateways[0].id)
+                if serviceDetails:
+                    return serviceDetails[0]
+    return None
 
 
 def executeCheckOut(request, *args, **kwargs):
@@ -136,7 +155,7 @@ def executeCheckOut(request, *args, **kwargs):
                 transactionViews.initTransaction(request, app=app)
 
                 log.info(_('The ServiceDetail with id %(param1)s is payed by %(param2)s.')
-                          % {'param1': business_id, 'param2': request.user.username})
+                         % {'param1': business_id, 'param2': request.user.username})
                 return serviceDetail
             else:
                 log.error(_('The ServiceDetail with id %(param1)s do not belong the user %(param2)s.')
