@@ -114,6 +114,7 @@ def getServiceDetail(request, *args, **kwargs):
     token = initParam.get('token')
     gateway = initParam.get('gateway')
     if token and gateway:
+        discount_rate = common.getSystemParam(key='discount_rate', default=1)
         gateways = paymentModels.Gateway.objects.filter(name__iexact=gateway)
         if gateways:
             acceptGateways = paymentModels.AcceptGateway.objects.filter(user_id=request.user.id,
@@ -123,7 +124,7 @@ def getServiceDetail(request, *args, **kwargs):
                                                                      acceptgateway_id=acceptGateways[0].id)
                 if serviceDetails:
                     serviceItems = serviceDetails[0].serviceitem.all()
-                    return serviceDetails[0], serviceItems
+                    return serviceDetails[0], serviceItems, discount_rate
     return None
 
 

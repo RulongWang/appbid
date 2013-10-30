@@ -404,7 +404,7 @@ def saveService(request, form, model, *args, **kwargs):
         except orderModels.ServiceItem.DoesNotExist:
             return None
     #Update amount value
-    discount_rate = common.getSystemParam(key='discount_rate', default=0)
+    discount_rate = common.getSystemParam(key='discount_rate', default=1)
     serviceDetail.actual_amount = string.atof(discount_rate) * amount
     serviceDetail.amount = amount
     serviceDetail.save()
