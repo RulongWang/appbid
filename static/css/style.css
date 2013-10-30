@@ -1118,13 +1118,10 @@ fieldset {
 
 
 .field_block_selected{
-    /*margin-top:20px;*/
-    padding-left: 10px;
-    padding-top:20px;
+    padding:10px 10px;
     width:500px;
     height:60px;
     border-bottom:1px dashed #ddd;
-    vertical-align: middle;
 }
 .register_icon{
     margin-top:15px;
