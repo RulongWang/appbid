@@ -117,8 +117,8 @@ def updateServiceDetail(request, *args, **kwargs):
     return None
 
 
-def getServiceDetail(request, *args, **kwargs):
-    """Show the list of service detail to user."""
+def getServiceInfo(request, *args, **kwargs):
+    """#Show service information to user."""
     initParam = kwargs.get('initParam')
     token = initParam.get('token')
     gateway = initParam.get('gateway')
@@ -144,6 +144,23 @@ def getServiceDetail(request, *args, **kwargs):
             log.error(_('Gateway %(param1)s no exists.') % {'param1': gateway})
     else:
         log.error(_('Token or Gateway no exists.'))
+    return None
+
+
+def checkServiceDetail(request, *args, **kwargs):
+    """Check and get service detail information."""
+    initParam = kwargs.get('initParam')
+    id = initParam.get('id')
+    token = initParam.get('token')
+    if id and token:
+        serviceDetails = models.ServiceDetail.objects.filter(pk=id, pay_token=token, is_payed=False)
+        if serviceDetails:
+            return serviceDetails[0]
+        else:
+            log.error(_('User:%(param1)s, ServiceDetail with pay_token %(param2)s no exists.')
+                      % {'param1': request.user.username, 'param2': token})
+    else:
+        log.error(_('Token or ServiceDetail ID no exists.'))
     return None
 
 

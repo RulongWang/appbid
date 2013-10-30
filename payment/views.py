@@ -126,33 +126,48 @@ def payPalReturn(request, *args, **kwargs):
 def payPalDoCheckOut(request, *args, **kwargs):
     """The PayPal method to charge the money, after all verification passed."""
     initParam = {}
+    id = request.GET.get("id")
     token = request.GET.get("token")
     payerID = request.GET.get("PayerID")
+    initParam['id'] = id
     initParam['token'] = token
     initParam['payerid'] = payerID
     initParam['gateway'] = 'paypal'
-    if token and payerID:
-        result, response = utils.process_payment_request('40', 'USD', token, payerID)
-        if result:
-            #Do something after payment success.
-            executeMethod = kwargs.pop('executeMethod', None)
-            if executeMethod:
-                if executeMethod(request, initParam=initParam):
-                    back_page = request.session.get('back_page', None)
-                    if back_page:
-                        del request.session['back_page']
-                        initParam['back_page'] = back_page
-                        initParam['msg'] = _('The payment success. Please check your paypal account.')
-                    return render_to_response("payment/paypal_success.html", initParam, context_instance=RequestContext(request))
+    if token and payerID and id:
+         #Check and get Service detail information
+        checkMethod = kwargs.pop('checkMethod', None)
+        if checkMethod:
+            serviceDetail = checkMethod(request, initParam=initParam)
+            if serviceDetail:
+                amount = serviceDetail.actual_amount
+                currency = serviceDetail.app.currency.currency
+                result, response = utils.process_payment_request(amount, currency, token, payerID)
+                if result:
+                    #Do something after payment success.
+                    executeMethod = kwargs.pop('executeMethod', None)
+                    if executeMethod:
+                        if executeMethod(request, initParam=initParam):
+                            back_page = request.session.get('back_page', None)
+                            if back_page:
+                                del request.session['back_page']
+                                initParam['back_page'] = back_page
+                                initParam['msg'] = _('The payment success. Please check your paypal account.')
+                            return render_to_response("payment/paypal_success.html", initParam, context_instance=RequestContext(request))
+                        else:
+                            log.error(_('Token %(param1)s, PayerID: %(param2)s, Execute method %(param3)s failed.')
+                                      % {'param1': token, 'param2': payerID, 'param3': executeMethod.__name__})
+                    else:
+                        log.error(_('Token %(param1)s, PayerID: %(param2)s, ExecuteMethod does not exist.')
+                                  % {'param1': token, 'param2': payerID})
                 else:
-                    log.error(_('Token %(param1)s, PayerID: %(param2)s, Execute method %(param3)s failed.')
-                              % {'param1': token, 'param2': payerID, 'param3': executeMethod.__name__})
+                    log.error(_('Token %(param1)s, PayerID: %(param2)s, %(param3)s : %(param4)s.')
+                              % {'param1': token, 'param2': payerID, 'param3': response.error, 'param4': response.error_msg})
             else:
-                log.error(_('Token %(param1)s, PayerID: %(param2)s, ExecuteMethod does not exist.')
-                          % {'param1': token, 'param2': payerID})
+                log.error(_('Token %(param1)s, PayerID: %(param2)s, Execute method %(param3)s failed.')
+                          % {'param1': token, 'param2': payerID, 'param3': checkMethod.__name__})
         else:
-            log.error(_('Token %(param1)s, PayerID: %(param2)s, %(param3)s : %(param4)s.')
-                      % {'param1': token, 'param2': payerID, 'param3': response.error, 'param4': response.error_msg})
+            log.error(_('Token %(param1)s, PayerID: %(param2)s, CheckMethod does not exist.')
+                      % {'param1': token, 'param2': payerID})
     else:
         log.error(_('Token or PayerID no exists.'))
 
