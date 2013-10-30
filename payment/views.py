@@ -7,11 +7,11 @@ from django.http import HttpResponseRedirect
 
 from django.shortcuts import render_to_response, HttpResponse, RequestContext, get_object_or_404, Http404, redirect
 from django.views.decorators.csrf import csrf_protect
+from django.utils.translation import ugettext as _
 from django.db import transaction
 from payment import models
-from paypal import driver
+from paypal import driver, utils
 from paypal.models import PayPalResponse
-from paypal.utils import process_payment_request, process_refund_request
 from django.conf import settings
 
 log = logging.getLogger('appbid')
@@ -34,17 +34,14 @@ else:
 @transaction.commit_on_success
 @login_required(login_url='/usersetting/home/')
 def payment(request, *args, **kwargs):
-    """Payment operation."""
-    #For saving the redirect url of the success or failed page, after payment done.
+    """Begin payment operation."""
     initParam = kwargs.get('initParam')
-    back_page = initParam.pop('back_page')
     executeMethod = initParam.pop('executeMethod', None)
     amount = initParam.pop('amount')
     currency = initParam.pop('currency')
     id = initParam.get('serviceDetail_id')
     if amount and currency:
         p = driver.PayPal()
-        #Parameters needed:  1, amount  2, currency  ,3 EC_RETURNRUL 4, EC_CANCELURL 5,
         result = p.SetExpressCheckout(amount, currency, EC_RETURNURL, EC_CANCELURL, initParam=initParam)
         if result:
             #The needed operation for verification later when payment return token..
@@ -56,52 +53,41 @@ def payment(request, *args, **kwargs):
                     print(redirect_url)
                     return HttpResponseRedirect(redirect_url)
                 else:
-                    log.error(' '.join(['ServiceDetail ID:', str(id), '- Execute method', executeMethod.__name__, 'failed.']))
+                    log.error(_('ServiceDetail with id %(param1)s. Execute method %(param2)s failed.')
+                              % {'param1': id, 'param2': executeMethod.__name__})
             else:
-                log.error(' '.join(['ServiceDetail ID:', str(id), '- ExecuteMethod does not exist.']))
+                log.error(_('ServiceDetail with id %(param1)s. ExecuteMethod does not exist.') % {'param1': id})
         else:
-            log.error(' '.join(['ServiceDetail ID:', str(id), '-', str(p.apierror)]))
+            log.error(_('ServiceDetail with id %(param1)s. %(param2)s') % {'param1': id, 'param2': str(p.apierror)})
     else:
-        log.error(' '.join(['ServiceDetail ID:', str(id), '- Amount or currency is not correct.']))
+        log.error(_('ServiceDetail with id %(param1)s. Amount or Currency no exists.') % {'param1': id})
 
-    error_msg = driver.GENERIC_PAYPAL_ERROR
+    back_page = request.session.get('back_page', None)
+    if back_page:
+        error_msg = driver.GENERIC_PAYPAL_ERROR
+        return render_to_response('payment/paypal_failed.html',
+                                  {'error_msg': error_msg, 'back_page': back_page}, context_instance=RequestContext(request))
+    else:
+        error_msg = _('%(param1)s Please payment again.') % {'param1': driver.GENERIC_PAYPAL_ERROR}
+        return render_to_response('payment/paypal_error.html',
+                                  {"error_msg": error_msg}, context_instance=RequestContext(request))
 
-    return render_to_response('payment/paypal_failed.html',
-            {'error_msg': error_msg, 'back_page': back_page}, context_instance=RequestContext(request))
-
-    # return HttpResponseRedirect('/payment/paypal_cancel')
-
-    # initParam['success_url'] = 'payment/payment.html'
-    # return 'success'
-    # initParam['failed_url'] = 'payment/payment.html'
-    # return 'failed'
-
-
-
-        #error message from paypal
-        # ACK=notSuccess&TIMESTAMP=date/timeOfResponse&
-        # CORRELATIONID=debuggingToken&VERSION=VersionNo&
-        # BUILD=buildNumber&L_ERRORCODE0=errorCode&
-        # L_SHORTMESSAGE0=shortMessage&
-        # L_LONGMESSAGE0=longMessage&
-        # L_SEVERITYCODE0=severityCode
 
 @csrf_protect
 @transaction.commit_on_success
 @login_required(login_url='/usersetting/home/')
-def paypalreturn(request, *args, **kwargs):
-    """The paypal method for payment verification."""
+def payPalReturn(request, *args, **kwargs):
+    """The PayPal method for payment verification."""
     initParam = {}
     token = request.GET.get('token')
-    payerid = request.GET.get('PayerID')
+    payerID = request.GET.get('PayerID')
     initParam['token'] = token
-    initParam['payerid'] = payerid
+    initParam['payerid'] = payerID
     initParam['gateway'] = 'paypal'
-    if token and payerid:
+    if token and payerID:
         p = driver.PayPal()
         res_dict = p.GetExpressCheckoutDetailsInfo(EC_RETURNURL, EC_CANCELURL, token)
         state = p._get_value_from_qs(res_dict, 'ACK')
-
         if state in ["Success", "SuccessWithWarning"]:
             #Show the list of service detail to user.
             executeMethod = kwargs.pop('executeMethod', None)
@@ -113,19 +99,82 @@ def paypalreturn(request, *args, **kwargs):
                     initParam['discount_rate'] = discount_rate
                     return render_to_response('payment/paypal_return.html', initParam, context_instance=RequestContext(request))
                 else:
-                    log.error(' '.join(['Token:', token, 'PayerID:', payerid, '- Execute method', executeMethod.__name__, 'failed.']))
+                    log.error(_('Token %(param1)s, PayerID: %(param2)s, Execute method %(param3)s failed.')
+                              % {'param1': token, 'param2': payerID, 'param3': executeMethod.__name__})
             else:
-                log.error(' '.join(['Token:', token, 'PayerID:', payerid, '- ExecuteMethod does not exist.']))
+                log.error(_('Token %(param1)s, PayerID: %(param2)s, ExecuteMethod does not exist.')
+                          % {'param1': token, 'param2': payerID})
         else:
             error = p._get_value_from_qs(res_dict, 'L_SHORTMESSAGE0')
-            log.error(' '.join(['Token:', token, 'PayerID:', payerid, '-', error]))
+            log.error(_('Token %(param1)s, PayerID: %(param2)s, %(param3)s.')
+                      % {'param1': token, 'param2': payerID, 'param3': error})
     else:
-        log.error(' '.join(['Token or PayerID is missing.']))
+        log.error(_('Token or PayerID no exists.'))
 
-    error_msg = ' '.join([driver.GENERIC_PAYPAL_ERROR, 'Please payment again.'])
+    back_page = request.session.get('back_page', None)
+    if back_page:
+        error_msg = driver.GENERIC_PAYPAL_ERROR
+        return render_to_response('payment/paypal_failed.html',
+                                  {'error_msg': error_msg, 'back_page': back_page}, context_instance=RequestContext(request))
+    else:
+        error_msg = _('%(param1)s Please payment again.') % {'param1': driver.GENERIC_PAYPAL_ERROR}
+        return render_to_response('payment/paypal_error.html',
+                                  {"error_msg": error_msg}, context_instance=RequestContext(request))
 
-    return render_to_response('payment/paypal_error.html',
-                              {"error_msg": error_msg}, context_instance=RequestContext(request))
+
+@csrf_protect
+@transaction.commit_on_success
+@login_required(login_url='/usersetting/home/')
+def payPalDoCheckOut(request, *args, **kwargs):
+    """The PayPal method to charge the money, after all verification passed."""
+    initParam = {}
+    token = request.GET.get("token")
+    payerID = request.GET.get("PayerID")
+    initParam['token'] = token
+    initParam['payerid'] = payerID
+    initParam['gateway'] = 'paypal'
+    if token and payerID:
+        result, response = utils.process_payment_request('40', 'USD', token, payerID)
+        if result:
+            #Do something after payment success.
+            executeMethod = kwargs.pop('executeMethod', None)
+            if executeMethod:
+                if executeMethod(request, initParam=initParam):
+                    back_page = request.session.get('back_page', None)
+                    if back_page:
+                        del request.session['back_page']
+                    return render_to_response("payment/paypal_success.html", context_instance=RequestContext(request))
+                else:
+                    log.error(_('Token %(param1)s, PayerID: %(param2)s, Execute method %(param3)s failed.')
+                              % {'param1': token, 'param2': payerID, 'param3': executeMethod.__name__})
+            else:
+                log.error(_('Token %(param1)s, PayerID: %(param2)s, ExecuteMethod does not exist.')
+                          % {'param1': token, 'param2': payerID})
+        else:
+            log.error(_('Token %(param1)s, PayerID: %(param2)s, %(param3)s : %(param4)s.')
+                      % {'param1': token, 'param2': payerID, 'param3': response.error, 'param4': response.error_msg})
+    else:
+        log.error(_('Token or PayerID no exists.'))
+
+    back_page = request.session.get('back_page', None)
+    if back_page:
+        error_msg = driver.GENERIC_PAYPAL_ERROR
+        return render_to_response('payment/paypal_failed.html',
+                                  {'error_msg': error_msg, 'back_page': back_page}, context_instance=RequestContext(request))
+    else:
+        error_msg = _('%(param1)s Please payment again.') % {'param1': driver.GENERIC_PAYPAL_ERROR}
+        return render_to_response('payment/paypal_error.html',
+                                  {"error_msg": error_msg}, context_instance=RequestContext(request))
+
+
+@csrf_protect
+@transaction.commit_on_success
+@login_required(login_url='/usersetting/home/')
+def paymentCancel(request, *args, **kwargs):
+    """Payment operation."""
+    initParam = {'payment': None}
+    print 'paymentcancel'
+    return render_to_response("payment/paypal_cancel.html", initParam, context_instance=RequestContext(request))
 
 
 @csrf_protect
@@ -143,9 +192,6 @@ def start_paypal_ap(request, *args, **kwargs):
     else:
         p = driver.PayPal()
         return render_to_response("payment/paypal_return.html", {"token":paykey}, context_instance=RequestContext(request))
-
-
-
 
 
 @csrf_protect
@@ -175,53 +221,3 @@ def paypal_ap_return(request, *args, **kwargs):
             print 'the pay is not correct. Please check your operation or contact customer service.'
 
     return render_to_response("payment/paypal_ap_return.html", {"token":'test'}, context_instance=RequestContext(request))
-
-
-
-
-@csrf_protect
-@transaction.commit_on_success
-@login_required(login_url='/usersetting/home/')
-def paypal_docheckout(request, *args, **kwargs):
-    """The paypal method to charge the money, after all verification passed."""
-    token = request.GET.get("token")
-    payerid = request.GET.get("PayerID")
-
-    # charge from PayPal
-
-    # get the order id by token
-
-    result, response = process_payment_request('40', 'USD', token, payerid)
-    # process the result
-    if not result:
-        # show the error message (comes from PayPal API) and redirect user to the error page
-        #if request.user.is_authenticated():
-            #request.user.message_set.create(message = _("Amount %s has not been charged, server error is '%s'" % (amount, response.error)))
-        #return HttpResponseRedirect(error_url)
-
-    # Now we are gone, redirect user to success page
-    #if request.user.is_authenticated():
-        #request.user.message_set.create(message = _("Amount %s has been successfully charged, your transaction id is '%s'" % (amount, response.trans_id)))
-
-
-        return render_to_response("payment/paypal_failed.html", context_instance = RequestContext(request))
-    else:
-        #Do something after payment.
-        executeMethod = kwargs.pop('executeMethod', None)
-        if executeMethod:
-            result = executeMethod(request, kwargs=kwargs)
-            if result:
-                print result
-            else:
-                #business id is not correct. or return error page.
-                print 'the payment is not correct. Please check your operation or contact customer service.'
-        return render_to_response("payment/paypal_success.html", context_instance = RequestContext(request))
-
-
-@csrf_protect
-@transaction.commit_on_success
-@login_required(login_url='/usersetting/home/')
-def paymentcancel(request, *args, **kwargs):
-    """Payment operation."""
-    initParam = {'payment': None}
-    return render_to_response("payment/paypal_cancel.html", initParam, context_instance=RequestContext(request))

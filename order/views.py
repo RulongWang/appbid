@@ -66,7 +66,7 @@ def checkout(request, *args, **kwargs):
                 serviceDetail.save()
 
                 if serviceDetail.actual_amount <= 0:
-                    if executeCheckOut(request, business_id=serviceDetail.id):
+                    if checkOutSuccess(request, serviceDetail=serviceDetail):
                         initParam['payment_msg'] = _('The payment is successful.')
                         #TODO:Need show the message.
                         return redirect('/'.join(['/seller/payment', str(app.id), serviceDetail.sn]))
@@ -80,13 +80,15 @@ def checkout(request, *args, **kwargs):
                     initParam['PAYMENTREQUEST_0_DESC'] = 'Service fee for App %(param1)s of user %(param2)s on AppsWalk.' % {'param1':app.app_name, 'param2':user.username}
                     initParam['ITEMAMT'] = serviceDetail.actual_amount
                     initParam['L_NAME0'] = 'Service fee on AppsWalk'
-                    initParam['L_DESC0'] = 'Service fee for App %(param)s' % {'param':app.app_name}
+                    initParam['L_DESC0'] = 'Service fee for App %(param1)s' % {'param1':app.app_name}
                     initParam['L_AMT0'] = serviceDetail.actual_amount
                     initParam['L_QTY0'] = 1
                     #The needed operation method in payment.
                     initParam['executeMethod'] = kwargs.get('executeMethod')
                     #The back page, when payment has error.
-                    initParam['back_page'] = '/'.join([common.getHttpHeader(request), 'seller/payment', str(app.id)])
+                    back_page = request.session.get('back_page', None)
+                    if not back_page:
+                        request.session['back_page'] = '/'.join([common.getHttpHeader(request), 'seller/payment', str(app.id)])
                     return paymentViews.payment(request, initParam=initParam)
     #Init data
     initParam['form'] = forms.ServiceDetailForm(instance=serviceDetail)
@@ -104,8 +106,15 @@ def updateServiceDetail(request, *args, **kwargs):
         if serviceDetails:
             serviceDetails[0].pay_token = token
             serviceDetails[0].save()
-            return True
-    return False
+            log.info(_('ServiceDetail with id %(param1)s set pay_token to %(param2)s.')
+                     % {'param1': serviceDetail_id, 'param2': token})
+            return serviceDetails[0]
+        else:
+            log.error(_('Token: %(param1)s, ServiceDetail with id %(param2)s no exists.')
+                      % {'param1': token, 'param2': serviceDetail_id})
+    else:
+        log.error(_('ServiceDetail_id or Token no exists.'))
+    return None
 
 
 def getServiceDetail(request, *args, **kwargs):
@@ -125,45 +134,71 @@ def getServiceDetail(request, *args, **kwargs):
                 if serviceDetails:
                     serviceItems = serviceDetails[0].serviceitem.all()
                     return serviceDetails[0], serviceItems, discount_rate
+                else:
+                    log.error(_('User:%(param1)s, ServiceDetail with pay_token %(param2)s no exists.')
+                              % {'param1': request.user.username, 'param2': token})
+            else:
+                log.error(_('User:%(param1)s, Token: %(param2)s, acceptGateway no exists.')
+                          % {'param1': request.user.username, 'param2': token})
+        else:
+            log.error(_('Gateway %(param1)s no exists.') % {'param1': gateway})
+    else:
+        log.error(_('Token or Gateway no exists.'))
     return None
 
 
 def executeCheckOut(request, *args, **kwargs):
     """The operation after user payment successfully."""
-    business_id = kwargs.get('business_id')
-    if business_id:
-        serviceDetails = models.ServiceDetail.objects.filter(pk=business_id, is_payed=False)
-        if serviceDetails:
-            serviceDetail = serviceDetails[0]
-            app = serviceDetail.app
-            if app.publisher == request.user:
-                service_expiry_date = string.atoi(common.getSystemParam(key='service_expiry_date', default=31))
-                if serviceDetail.start_date < datetime.datetime.now():
-                    serviceDetail.start_date = datetime.datetime.now()
-                    serviceDetail.end_date = datetime.datetime.now() + datetime.timedelta(days=service_expiry_date)
-                serviceDetail.is_payed = True
-                serviceDetail.save()
-                # If app is draft or has been closed, change app to published after payment,.
-                if app.status == 1 or app.status == 3:
-                    app.status = 2
-                    app.publish_date = serviceDetail.start_date
-                    app.begin_date = serviceDetail.start_date
-                    app.end_date = serviceDetail.end_date
+    initParam = kwargs.get('initParam')
+    token = initParam.get('token')
+    gateway = initParam.get('gateway')
+    if token and gateway:
+        gateways = paymentModels.Gateway.objects.filter(name__iexact=gateway)
+        if gateways:
+            acceptGateways = paymentModels.AcceptGateway.objects.filter(user_id=request.user.id,
+                                                                        type_id=gateways[0].id, is_active=True)
+            if acceptGateways:
+                serviceDetails = models.ServiceDetail.objects.filter(pay_token=token, is_payed=False,
+                                                                     acceptgateway_id=acceptGateways[0].id)
+                if serviceDetails:
+                    serviceDetail = checkOutSuccess(request, serviceDetail=serviceDetails[0])
+                    log.info(_('User:%(param1)s, ServiceDetail with id %(param2)s, pay_token %(param3)s is payed.')
+                             % {'param1': request.user.username, 'param2': serviceDetail.id, 'param3': token})
+                    return serviceDetail
                 else:
-                    app.end_date = serviceDetail.end_date
-                app.save()
-
-                #Init transaction model data
-                transactionViews.initTransaction(request, app=app)
-
-                log.info(_('The ServiceDetail with id %(param1)s is payed by %(param2)s.')
-                         % {'param1': business_id, 'param2': request.user.username})
-                return serviceDetail
+                    log.error(_('User:%(param1)s, ServiceDetail with pay_token %(param2)s no exists.')
+                              % {'param1': request.user.username, 'param2': token})
             else:
-                log.error(_('The ServiceDetail with id %(param1)s do not belong the user %(param2)s.')
-                          % {'param1': business_id, 'param2': request.user.username})
+                log.error(_('User:%(param1)s, Token: %(param2)s, acceptGateway no exists.')
+                          % {'param1': request.user.username, 'param2': token})
         else:
-            log.error(_('The ServiceDetail with id %(param)s does not exist.') % {'param': business_id})
+            log.error(_('Gateway %(param1)s no exists.') % {'param1': gateway})
     else:
-        log.error('The business_id is None.')
+        log.error(_('Token or Gateway no exists.'))
+    return None
+
+
+def checkOutSuccess(request, *args, **kwargs):
+    """The operation after user payment successfully."""
+    serviceDetail = kwargs.get('serviceDetail')
+    if serviceDetail:
+        app = serviceDetail.app
+        service_expiry_date = string.atoi(common.getSystemParam(key='service_expiry_date', default=31))
+        if serviceDetail.start_date < datetime.datetime.now():
+            serviceDetail.start_date = datetime.datetime.now()
+            serviceDetail.end_date = datetime.datetime.now() + datetime.timedelta(days=service_expiry_date)
+        serviceDetail.is_payed = True
+        serviceDetail.save()
+        # If app is draft or has been closed, change app to published after payment,.
+        if app.status == 1 or app.status == 3:
+            app.status = 2
+            app.publish_date = serviceDetail.start_date
+            app.begin_date = serviceDetail.start_date
+            app.end_date = serviceDetail.end_date
+        else:
+            app.end_date = serviceDetail.end_date
+        app.save()
+        #Init transaction model data
+        transactionViews.initTransaction(request, app=app)
+        return serviceDetail
     return None

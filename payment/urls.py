@@ -12,14 +12,15 @@ urlpatterns = patterns('',
     #     #The needed operation in payment.
     #     {'executeMethod': orderViews.updateServiceDetail,
     #     },name='payment'),
-    url(r'^paypal_return/$', views.paypalreturn,
+    url(r'^paypal_return/$', views.payPalReturn,
+        #Show the list of service detail to user.
         {'executeMethod': orderViews.getServiceDetail,
         }, name='paypal_return'),
-    url(r'^paypal_cancel/$', views.paymentcancel, name='paypal_cancel'),
-    url(r'^paypal_checkout/$', views.paypal_docheckout,
+    url(r'^paypal_checkout/$', views.payPalDoCheckOut,
         #After payment, do something for actual business.
         {'executeMethod': orderViews.executeCheckOut,
         }, name='paypal_checkout'),
+    url(r'^paypal_cancel/$', views.paymentCancel, name='paypal_cancel'),
 
     url(r'^buynow/$', views.start_paypal_ap, name='buynow'),
     url(r'^paypal_ap_return/$', views.paypal_ap_return,
