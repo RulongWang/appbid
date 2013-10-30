@@ -22,8 +22,7 @@
     </div>
     <form action="" method="post">
         {% csrf_token %}
-    <fieldset>
-      <legend>Price Setting</legend>
+    <div class="dash_title">Price Setting</div>
     <div class="field_block_sale">
         *{{ form.begin_price.label_tag }}
         {% if form.begin_price.errors %}
@@ -97,7 +96,6 @@
     <div class="button_block">
             <input id="next" class="nextbutton" type="submit" name="next" value="Next"/>
     </div>
-    </fieldset>
 
     </form>
 <script type="text/javascript" language="javascript">

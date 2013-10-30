@@ -1,17 +1,17 @@
 <div id="register_nav">
     <div class="nav_title">Basic Info For Your Listing</div>
     <ul id="register_new_nav">
-        <li>
+        <li class="greenpoint_icon">
             <a href="{% url 'seller:appStore_link' app_id %}">AppleStore Info</a>
         </li>
         {% if app_id %}
-        <li>
+        <li >
             <a href="{% url 'seller:appStore_info' app_id %}">App Attributes</a>
         </li>
         {% endif %}
 
         {% if app_id %}
-        <li>
+        <li class="greypoint_icon">
             <a href="{% url 'seller:marketing' app_id %}">Revenue/Monetization</a>
         </li>
         <li>
@@ -33,6 +33,6 @@
         {% endif %}
     </ul>
     {% if app_id %}
-    <div class="preview_buttons"><a href="{% url 'query:app_detail' app_id %}">Preview your App</a></div>
+    <div class="preview_buttons"><a href="{% url 'query:app_detail' app_id %}" style="color:#00b0b0;">Preview your App</a></div>
     {% endif %}
 </div>

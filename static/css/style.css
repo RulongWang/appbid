@@ -912,7 +912,7 @@ h1{
 }
 
 #register_app{
-    margin:25px 0 0 0;
+    margin:15px 0 0 0;
     width:630px;
     float:right;
     background: #ffffff;
@@ -927,54 +927,40 @@ h1{
 .nav_title{
     text-align: center;
     height:20px;
-    border-radius: 3px;
-    background:#679b08;
+    background: url("../images/Apple-logo25x25.png") no-repeat top left;
+    color:#00b0b0;
     width:213px;
-    color: white;
-    margin-left: 25px;
-    padding:5px;
+    margin-left: 20px;
+    font-weight: bold;
+    padding:5px 0px 5px 18px;
 
 }
 
 #register_new_nav{
     margin-top:10px;
     margin-left:25px;
-
-
 }
 
 
 
 #register_new_nav li{
-
-    margin-top:13px;
-    height:20px;
-    padding:5px 5px 5px 5px;
-    background:#Fafafa;
-    border:1px solid #f1f1f1;
-    border-left:4px solid #ddd;
-    border-right:4px solid #ddd;
-
-    border-radius: 3px;
+    margin:0px 0px 0px 20px;
+    width:180px;
+    border-bottom: 1px dashed #ddd;
+    height:15px;
+    padding:10px 5px 10px 25px;
 }
-#register_new_nav li:hover{
-    /*transform:rotate(5deg);*/
-    /*-ms-transform:rotate(5deg); *//* IE 9 */
-    /*-webkit-transform:rotate(5deg); *//* Safari and Chrome */
-    color: white;
-    margin-top:13px;
-    height:20px;
-    padding:5px 5px 5px 5px;
-    background:#679b08;
+.greenpoint_icon{
+    background: url("../images/greenpoint.png") no-repeat  left;
+}
+.greypoint_icon{
+    background: url("../images/pointgrey.png") no-repeat  left;
 }
 
 #register_new_nav a,#register_new_nav a:link,#register_new_nav a:visited{
-    display: block;
-    padding: 3px;
 }
 #register_new_nav a:hover,#register_new_nav a:active{
-    color:white;
-    text-decoration: none;
+    text-decoration: underline;
 }
 
 
@@ -986,10 +972,10 @@ h1{
     width:215px;
     height:20px;
     padding: 5px;
-    font-size: 18px;
+    font-size: 15px;
     font-weight: bold;
-    background: #EEEEEE;
-    border-radius: 5px;
+    background: url("../images/preview.png") no-repeat left ;
+
 }
 
 #id_title{

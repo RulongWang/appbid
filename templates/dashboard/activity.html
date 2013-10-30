@@ -60,7 +60,7 @@
 
 
                      {% if message_list %}
-                     <div class="pagination" style="float: right">
+                     <div class="pagination" >
                         {% if message_list.has_previous %}<a href="?page={{ message_list.previous_page_number }}">previous</a>{% endif %}
                         Page {{ message_list.number }} of {{ message_list.paginator.num_pages }}
                         {% if message_list.has_next %}<a href="?page={{ message_list.next_page_number }}">next</a>{% endif %}

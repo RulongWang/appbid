@@ -3,8 +3,7 @@
     </div>
  <form action="" method="post">
         {% csrf_token %}
-    <fieldset>
-      <legend>Revenue/Monetization</legend>
+      <div class="dash_title">Revenue/Monetization</div>
 
     <div  class="field_block">
         {{ form.dl_amount.label_tag }}
@@ -39,7 +38,6 @@
         <div class="button_block">
             <input id="next" class="nextbutton" type="submit" name="next" value="Next"/>
         </div>
- </fieldset>
  </form>
 
 </div>

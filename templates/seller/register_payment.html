@@ -2,8 +2,7 @@
 <div>
     {{ payment_msg }}
 </div>
- <fieldset>
-      <legend>Payment</legend>
+    <div class="dash_title">Choose service</div>
     <form action="" method="post">
     {% csrf_token %}
     <div class="field_block_payment">
@@ -49,7 +48,6 @@
     </div>
     {% endif %}
     </form>
- </fieldset>
 
 <div class="step_block" >
 {% if serviceDetails %}
