@@ -1109,10 +1109,9 @@ fieldset {
 }
 
 .field_block{
-    margin-top:10px;
-    padding-left: 10px;
+    padding:10px 10px;
     width:500px;
-    height:50px;
+    height:30px;
     border-bottom:1px dashed #ddd;
 }
 
@@ -1184,9 +1183,8 @@ fieldset {
 
 .field_block_sale{
 
-    margin-top:30px;
     margin-left: 20px;
-    padding-left:10px;
+    padding:10px 10px;
     width:500px;
     height:30px;
     border-bottom: 1px dashed #ddd;
@@ -1845,7 +1843,8 @@ fieldset {
 .bidding_create{
     margin:0 auto;
     /*margin-top:20px;*/
-    padding-left: 100px;
+    padding:0 0 30px 100px;
+
     width:600px;
 
 }

@@ -4,7 +4,7 @@
     </div>
  <form action="" method="post">
         {% csrf_token %}
-      <div class="dash_title">App Attributes</div>
+      <div class="dash_title">Additional Information</div>
         <div class="register_icon">
             {{ appInfoForm.icon.label_tag }}
             {% if appInfoForm.icon.errors %}
