@@ -122,7 +122,8 @@ def getServiceDetail(request, *args, **kwargs):
                 serviceDetails = models.ServiceDetail.objects.filter(pay_token=token, is_payed=False,
                                                                      acceptgateway_id=acceptGateways[0].id)
                 if serviceDetails:
-                    return serviceDetails[0], serviceDetails[0].serviceitem
+                    serviceItems = serviceDetails[0].serviceitem.all()
+                    return serviceDetails[0], serviceItems
     return None
 
 
