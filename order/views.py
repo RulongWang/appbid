@@ -99,7 +99,7 @@ def updateServiceDetail(request, *args, **kwargs):
     serviceDetail_id = initParam.get('serviceDetail_id')
     token = initParam.get('token')
     if serviceDetail_id and token:
-        serviceDetails = models.ServiceDetail.objects.filter(pk=1)
+        serviceDetails = models.ServiceDetail.objects.filter(pk=serviceDetail_id)
         if serviceDetails:
             serviceDetails[0].pay_token = token
             serviceDetails[0].save()
