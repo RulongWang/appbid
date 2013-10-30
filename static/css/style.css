@@ -896,8 +896,8 @@ h1{
 .register_block{
     margin:0 auto;
     margin-top:20px;
+    padding-bottom: 30px;
     width:940px;
-    height:720px;
 
 
 }
@@ -1247,9 +1247,8 @@ fieldset {
 
 .field_block_deliery{
 
-    margin-top:30px;
     margin-left: 20px;
-    padding-left:10px;
+    padding:20px 10px;
     width:500px;
     height:60px;
     border-bottom: 1px dashed #ddd;
@@ -1266,6 +1265,15 @@ fieldset {
     padding: 3px;
     height:20px;
      width:190px;
+}
+
+#id_delivery_detail{
+    border: 1px solid #00b0b0;
+}
+
+.help_text{
+    padding: 3px;
+    font-size: 12px;
 }
 .field_block_deliery input[type=checkbox]{
       float:right;
@@ -1308,7 +1316,7 @@ fieldset {
 
 .step_block{
     margin-top:10px;
-    padding:10px;
+    padding:20px;
 }
 .step_block h2 {
     display: block;
@@ -1336,6 +1344,26 @@ fieldset {
     margin-top:10px;
     padding-left: 10px;
     width:100%;
+}
+
+.existing_apps{
+    list-style:none;
+    font-size: 12px;
+
+}
+.existing_apps li:first-child{
+    margin-top: 10px;
+}
+.app_list_name{
+    height:20px;
+    padding: 4px;
+    float:left;
+}
+.app_list_attr{
+    margin-right:40px;
+    height:20px;
+    padding: 4px;
+    float:right;
 }
 
 

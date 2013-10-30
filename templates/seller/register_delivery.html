@@ -31,6 +31,7 @@
         <div class="field_block_deliery">
             <div class="left" style="width:300px;">
                 <div style="width:300px:height:20px;">{{ form.unique_sell.label_tag }}</div>
+                <div class="help_text">Please specify if this app will be sold only once.</div>
             </div>
             <div class="right" style="width:50px">
                  {{ form.unique_sell }}
@@ -40,7 +41,7 @@
         <div class="field_block_deliery">
             <div class="left" style="width:300px;">
                 <div style="width:300px:height:20px;">{{ form.source_code.label_tag }}</div>
-                <div style="width:300px:height:40px;">{{ form.source_code.help_text }}</div>
+                <div class="help_text">{{ form.source_code.help_text }}</div>
             </div>
             <div class="right" style="width:50px">
                  {{ form.source_code }}
@@ -50,6 +51,7 @@
         <div class="field_block_deliery" style="height:50px;">
             <div class="left" style="width:200px;">
                 <div style="width:300px:height:20px;">{{ form.delivery_detail.label_tag }}</div>
+                <div class="help_text">Please list the deliverable items of this APP .</div>
             </div>
             <div class="right">
                 {{ form.delivery_detail }}
@@ -59,7 +61,7 @@
         <div class="field_block_deliery">
             <div class="left" style="width:300px;">
                 <div style="width:300px:height:30px;">{{ form.web_site.label_tag }}</div>
-                <div style="margin-top:10px;width:300px:height:40px;"> {{ form.web_site.help_text }}</div>
+                <div class="help_text"> {{ form.web_site.help_text }}</div>
             </div>
             <div class="right" style="width:50px">
                  {{ form.web_site }}

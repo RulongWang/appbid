@@ -54,21 +54,32 @@
         </form>
 
 
-        <div class="step_block" >
+        <div class="step_block" style="clear:both;" >
 
             {% if apps %}
-            <span><h2>Your existing app list:</h2></span>
-                <ol>
+            <div style="color:#00b0b0;font-weight: bold;">Your draft apps:</div>
+                <ul class="existing_apps">
                 {% for app in apps %}
                 <li>
                 <!--TODO:Green color, if published; Red color, if draft. -->
-                <a style="color: blue; font-weight: bold;" href="{% url 'seller:appStore_link' app.id %}">{{ app.title }}</a>
-                (Last modified: {{ app.last_modify|date:"Y-m-d G:i" }}
-                    {% ifequal app.status 2 %}, <b>Published</b>: {{ app.publish_date|date:"Y-m-d G:i" }}{% endifequal %}
-                    {% ifequal app.status 3 %}, <b>Closed</b>{% endifequal %})
+                <div class="app_list_name " style="clear:both;"><a  href="{% url 'seller:appStore_link' app.id %}">{{ app.app_name }}</a></div>
+
+                <div class="app_list_attr">
+                    {% ifequal app.status 1 %}
+                        Draft
+                    {% endifequal %}
+                </div>
+                <div class="app_list_attr">
+                    {% ifequal app.status 2 %}
+                        Published
+                    {% endifequal %}
+                </div>
+                <div class="app_list_attr">
+                    {% ifequal app.status 3 %}Closed{% endifequal %}
+                </div>
                 </li>
                 {% endfor %}
-                </ol>
+                </ul>
             {% endif %}
         </div>
 <script type="text/javascript" language="javascript">
@@ -84,4 +95,5 @@
         $("#progressor").show("fast");
     });
 </script>
+<div class="clear"></div>
 </div>

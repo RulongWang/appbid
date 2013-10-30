@@ -6,7 +6,7 @@
     <form action="" method="post">
     {% csrf_token %}
     <div class="field_block_payment">
-        <div class="left" style="font-weight: bold;">SN:
+        <div class="left" style="font-weight: bold;">Order Number:
             {% if serviceDetail %}
                 <input id="sn" type="hidden" name="sn" value="{{ serviceDetail.sn }}">
                 {{ serviceDetail.sn }}
