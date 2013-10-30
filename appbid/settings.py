@@ -272,4 +272,4 @@ except Exception, e:
 
 
 #flat page setting
-SITE_ID = 2
+SITE_ID = 1
