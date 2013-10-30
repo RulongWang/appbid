@@ -5,13 +5,11 @@ import logging
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 
-from django.shortcuts import render_to_response, HttpResponse, RequestContext, get_object_or_404, Http404, redirect
+from django.shortcuts import render_to_response, RequestContext, redirect
 from django.views.decorators.csrf import csrf_protect
 from django.utils.translation import ugettext as _
 from django.db import transaction
-from payment import models
 from paypal import driver, utils
-from paypal.models import PayPalResponse
 from django.conf import settings
 
 log = logging.getLogger('appbid')
@@ -49,8 +47,6 @@ def payment(request, *args, **kwargs):
                 initParam['token'] = p.token
                 if executeMethod(request, initParam=initParam):
                     redirect_url = p.paypal_url()
-                    print('success_excute_setExpressCheckout')
-                    print(redirect_url)
                     return HttpResponseRedirect(redirect_url)
                 else:
                     log.error(_('ServiceDetail with id %(param1)s. Execute method %(param2)s failed.')
@@ -64,8 +60,9 @@ def payment(request, *args, **kwargs):
 
     back_page = request.session.get('back_page', None)
     if back_page:
+        del request.session['back_page']
         error_msg = driver.GENERIC_PAYPAL_ERROR
-        return render_to_response('payment/paypal_failed.html',
+        return render_to_response('payment/paypal_cancel.html',
                                   {'error_msg': error_msg, 'back_page': back_page}, context_instance=RequestContext(request))
     else:
         error_msg = _('%(param1)s Please payment again.') % {'param1': driver.GENERIC_PAYPAL_ERROR}
@@ -113,8 +110,9 @@ def payPalReturn(request, *args, **kwargs):
 
     back_page = request.session.get('back_page', None)
     if back_page:
+        del request.session['back_page']
         error_msg = driver.GENERIC_PAYPAL_ERROR
-        return render_to_response('payment/paypal_failed.html',
+        return render_to_response('payment/paypal_cancel.html',
                                   {'error_msg': error_msg, 'back_page': back_page}, context_instance=RequestContext(request))
     else:
         error_msg = _('%(param1)s Please payment again.') % {'param1': driver.GENERIC_PAYPAL_ERROR}
@@ -143,7 +141,9 @@ def payPalDoCheckOut(request, *args, **kwargs):
                     back_page = request.session.get('back_page', None)
                     if back_page:
                         del request.session['back_page']
-                    return render_to_response("payment/paypal_success.html", context_instance=RequestContext(request))
+                        initParam['back_page'] = back_page
+                        initParam['msg'] = _('The payment success. Please check your paypal account.')
+                    return render_to_response("payment/paypal_success.html", initParam, context_instance=RequestContext(request))
                 else:
                     log.error(_('Token %(param1)s, PayerID: %(param2)s, Execute method %(param3)s failed.')
                               % {'param1': token, 'param2': payerID, 'param3': executeMethod.__name__})
@@ -158,8 +158,9 @@ def payPalDoCheckOut(request, *args, **kwargs):
 
     back_page = request.session.get('back_page', None)
     if back_page:
+        del request.session['back_page']
         error_msg = driver.GENERIC_PAYPAL_ERROR
-        return render_to_response('payment/paypal_failed.html',
+        return render_to_response('payment/paypal_cancel.html',
                                   {'error_msg': error_msg, 'back_page': back_page}, context_instance=RequestContext(request))
     else:
         error_msg = _('%(param1)s Please payment again.') % {'param1': driver.GENERIC_PAYPAL_ERROR}
@@ -171,9 +172,14 @@ def payPalDoCheckOut(request, *args, **kwargs):
 @transaction.commit_on_success
 @login_required(login_url='/usersetting/home/')
 def paymentCancel(request, *args, **kwargs):
-    """Payment operation."""
-    initParam = {'payment': None}
-    print 'paymentcancel'
+    """User cancel Payment operation."""
+    initParam = {}
+    error_msg = _("You cancel the payment to finish performing PayPal payment process. We don't charge your money.")
+    initParam['error_msg'] = error_msg
+    back_page = request.session.get('back_page', None)
+    if back_page:
+        initParam['back_page'] = back_page
+        del request.session['back_page']
     return render_to_response("payment/paypal_cancel.html", initParam, context_instance=RequestContext(request))
 
 
