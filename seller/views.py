@@ -91,7 +91,7 @@ def registerApp(request, *args, **kwargs):
     if flag == 3:
         initParam['attachmentForm'] = forms.AttachmentForm()
     if flag == 1.1:
-        initParam['apps'] = appModels.App.objects.filter(publisher=request.user).order_by('status', 'create_time')
+        initParam['apps'] = appModels.App.objects.filter(publisher=request.user, status=1).order_by('create_time')
     return render_to_response(kwargs.get('backPage'), initParam, context_instance=RequestContext(request))
 
 
@@ -103,18 +103,31 @@ def saveAppStoreLink(request, form, model, *args, **kwargs):
     if model and model.status == 3:
         return redirect(reverse(initParam.get('nextPage'), kwargs={'pk': model.id}))
 
-    if form.cleaned_data['title'].strip() == "" or form.cleaned_data['app_store_link'].strip() == "":
+    title = form.cleaned_data['title'].strip()
+    app_store_link = form.cleaned_data['app_store_link'].strip()
+    if title == "" or app_store_link == "":
         return None
+
+    #Verify whether the draft app exist.
+    if model and appModels.App.objects.filter(publisher_id=request.user.id, status=1,
+                                              app_store_link__iexact=app_store_link).exclude(pk=model.id).count():
+        initParam['error_msg'] = _('App with link %(param1)s has existed in your draft apps.') % {'param1': app_store_link}
+        return None
+    elif appModels.App.objects.filter(publisher_id=request.user.id, status=1,
+                                      app_store_link__iexact=app_store_link).count():
+        initParam['error_msg'] = _('App with link %(param1)s has existed in your draft apps.') % {'param1': app_store_link}
+        return None
+
     try:
         pattern = re.compile(r'^https://itunes.apple.com/[\S+/]+id(\d+)')
-        match = pattern.match(form.cleaned_data['app_store_link'])
+        match = pattern.match(app_store_link)
         if match is None:
             raise
         result = common.getITunes(match.group(1))
         if result is None:
             raise
     except Exception, e:
-        initParam['app_store_link_error'] = _('The app store link %(param)s is not correct.') % {'param': ''}
+        initParam['error_msg'] = _('Link %(param)s is not correct.') % {'param': ''}
         log.error(_('The app store link %(param)s is not correct.') % {'param': match.group(1)})
         log.error(e.message)
         return None
@@ -135,8 +148,8 @@ def saveAppStoreLink(request, form, model, *args, **kwargs):
         model.verify_token = ''.join(random.sample(string.ascii_letters+string.digits, string.atoi(token_len)))
         model.is_verified = False
     else:
-        model.title = form.cleaned_data['title'].strip()
-        model.app_store_link = form.cleaned_data['app_store_link'].strip()
+        model.title = title
+        model.app_store_link = app_store_link
     model.rating = result.get('averageUserRating', None)
     model.platform_version = result.get('version', None)
     model.apple_id = result.get('trackId', None)
@@ -174,7 +187,7 @@ def saveAppStoreLink(request, form, model, *args, **kwargs):
         elif result.get('artworkUrl60', None):
             urllib.urlretrieve(result.get('artworkUrl60', None), path)
     except Exception, e:
-        initParam['app_store_link_error'] = _('The app store link %(param)s is not correct.') % {'param': ''}
+        initParam['error_msg'] = _('Link %(param)s is not correct.') % {'param': ''}
         log.error(_('The app store link %(param)s is not correct.') % {'param': match.group(1)})
         log.error(e.message)
         return None

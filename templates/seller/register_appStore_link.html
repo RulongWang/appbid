@@ -7,10 +7,10 @@
             {% if form.app_store_link.errors %}
                 {{ form.app_store_link.errors }}
             {% endif %}
-            {% if app_store_link_error %}
+            {% if error_msg %}
                 <ul>
                     <li>
-                        {{ app_store_link_error }}
+                        {{ error_msg }}
                     </li>
                 </ul>
 
