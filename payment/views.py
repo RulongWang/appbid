@@ -106,9 +106,10 @@ def paypalreturn(request, *args, **kwargs):
             #Show the list of service detail to user.
             executeMethod = kwargs.pop('executeMethod', None)
             if executeMethod:
-                serviceDetail = executeMethod(request, token=token, initParam=initParam)
-                if serviceDetail:
+                serviceDetail, serviceItems = executeMethod(request, token=token, initParam=initParam)
+                if serviceDetail and serviceItems:
                     initParam['serviceDetail'] = serviceDetail
+                    initParam['serviceItems'] = serviceItems
                     return render_to_response('payment/paypal_return.html', initParam, context_instance=RequestContext(request))
                 else:
                     log.error(' '.join(['Token:', token, 'PayerID:', payerid, '- Execute method', executeMethod.__name__, 'failed.']))
