@@ -19,6 +19,10 @@ class Transaction(models.Model):
     price = models.FloatField(null=True)
     end_time = models.DateTimeField(null=True)
 
+    #For user pay.
+    # acceptgateway = models.ForeignKey(paymentModels.AcceptGateway, null=True, blank=True)
+    # pay_key = models.CharField(max_length=255,null=True, blank=True)
+
 
 class TransactionLog(models.Model):
     STATUS = (

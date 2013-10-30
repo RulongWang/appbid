@@ -25,7 +25,7 @@ urlpatterns = patterns('',
     url(r'^paypal_cancel/$', views.paymentCancel, name='paypal_cancel'),
 
     url(r'^buynow/$', views.start_paypal_ap, name='buynow'),
-    url(r'^paypal_ap_return/$', views.paypal_ap_return,
+    url(r'^paypal_ap_return/$', views.payReturn,
         #After buyer payed or one price buy, do something for actual business.
         {'executeMethod': txnViews.executePay,
         }, name='paypal_ap_return'),

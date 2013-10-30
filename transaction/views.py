@@ -189,7 +189,7 @@ def onePriceBuy(request, *args, **kwargs):
             else:
                 transaction = models.Transaction()
                 transaction.app = app
-                transaction.seller = request.user
+                transaction.seller = app.publisher
             transaction.buyer = request.user
             transaction.price = app.one_price
             transaction.save()
@@ -203,20 +203,22 @@ def onePriceBuy(request, *args, **kwargs):
             transactionsLog.save()
 
             #TODO:invoke pay method
-            p = driver.PayPal()
-            result = p.start_paypal_ap()
-
-            if result['responseEnvelope.ack'][0] =='Success':
-                print result['payKey'][0]
-                paykey = result['payKey'][0]
-                ap_redirect_url = p.AP_REDIRECTURL + paykey
-                print ap_redirect_url
-                print("Parallel Payment has been created!")
-                return HttpResponseRedirect(ap_redirect_url)
-            # result = paymentViews.start_paypal_ap(request)
-            else:
-                # return render_to_response('transaction/one_price_buy.html', initParam, context_instance=RequestContext(request))
-                return HttpResponseRedirect('/payment/paypal_cancel')
+            initParam['currency'] = app.currency.currency
+            return paymentViews.pay(request, initParam=initParam)
+            # p = driver.PayPal()
+            # result = p.start_paypal_ap()
+            #
+            # if result['responseEnvelope.ack'][0] =='Success':
+            #     print result['payKey'][0]
+            #     paykey = result['payKey'][0]
+            #     ap_redirect_url = p.AP_REDIRECTURL + paykey
+            #     print ap_redirect_url
+            #     print("Parallel Payment has been created!")
+            #     return HttpResponseRedirect(ap_redirect_url)
+            # # result = paymentViews.start_paypal_ap(request)
+            # else:
+            #     # return render_to_response('transaction/one_price_buy.html', initParam, context_instance=RequestContext(request))
+            #     return HttpResponseRedirect('/payment/paypal_cancel')
     return render_to_response('transaction/one_price_buy.html', initParam, context_instance=RequestContext(request))
 
 

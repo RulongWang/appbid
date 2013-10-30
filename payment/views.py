@@ -202,13 +202,36 @@ def paymentCancel(request, *args, **kwargs):
 @csrf_protect
 @transaction.commit_on_success
 @login_required(login_url='/usersetting/home/')
+def pay(request, *args, **kwargs):
+    initParam = kwargs.get('initParam')
+    currency = initParam.get('currency')
+    p = driver.PayPal()
+    result = p.setAPCall(currency, AP_RETURNURL, AP_CANCELURL, 'PAY', initParam=initParam)
+
+    if result['responseEnvelope.ack'][0] =='Success':
+        print 'pay-----------'
+        print result['payKey'][0]
+        paykey = result['payKey'][0]
+        ap_redirect_url = p.AP_REDIRECTURL + paykey
+        print ap_redirect_url
+        print("Parallel Payment has been created!")
+        return HttpResponseRedirect(ap_redirect_url)
+    # result = paymentViews.start_paypal_ap(request)
+    else:
+        # return render_to_response('transaction/one_price_buy.html', initParam, context_instance=RequestContext(request))
+        return HttpResponseRedirect('/payment/paypal_cancel')
+
+
+@csrf_protect
+@transaction.commit_on_success
+@login_required(login_url='/usersetting/home/')
 def start_paypal_ap(request, *args, **kwargs):
     """Payment operation."""
     p = driver.PayPal()
     result = p.setAPCall(AP_RETURNURL, AP_CANCELURL, 'pay')
 
     paykey = request.GET.get('Paykey')
-
+    print 'start_paypal_ap----------------------------'
     if paykey is None:
         error = "paykey is missing"
     else:
@@ -219,7 +242,7 @@ def start_paypal_ap(request, *args, **kwargs):
 @csrf_protect
 @transaction.commit_on_success
 @login_required(login_url='/usersetting/home/')
-def paypal_ap_return(request, *args, **kwargs):
+def payReturn(request, *args, **kwargs):
     """Payment operation."""
     # paykey = request.GET.get('Paykey')
     #

@@ -369,10 +369,9 @@ class PayPal(object):
 
 
 #method to handle adaptive payment
-    def setAPCall(self, return_url, cancel_url, action_type):
-
+    def setAPCall(self, currency, return_url, cancel_url, action_type='PAY', **kwargs):
     #Set our headers
-
+        initParam = kwargs.get('initParam')
         headers = {
             'X-PAYPAL-SECURITY-USERID':self.username,
             'X-PAYPAL-SECURITY-PASSWORD':self.password,
@@ -393,10 +392,10 @@ class PayPal(object):
         params['requestEnvelope.errorLanguage'] = 'en_US';
         params['requestEnvelope.detailLevel'] = 'ReturnAll';
         # params['reverseAllParallelPaymentsOnError'] = 'true';
-        params['returnUrl'] = self.AP_RETURNURL
-        params['cancelUrl'] = self.AP_CANCELURL
-        params['actionType'] = 'PAY'
-        params['currencyCode'] = 'USD'
+        params['returnUrl'] = return_url
+        params['cancelUrl'] = cancel_url
+        params['actionType'] = action_type
+        params['currencyCode'] = currency
         params['feesPayer'] = 'EACHRECEIVER'
         params['receiverList.receiver(0).email'] = 'me@rulong.org'
         params['receiverList.receiver(0).amount'] = '100.00'
@@ -424,16 +423,18 @@ class PayPal(object):
         #Get the reply and print it out.
         data = response.read()
         response_dic = urlparse.parse_qs(data)
+        print '====------===='
+        print response_dic
         return response_dic
 
 
-    def start_paypal_ap(self):
-        """Payment operation."""
-        p = PayPal()
-        result = p.setAPCall(self.AP_RETURNURL,self.AP_CANCELURL,'pay')
-        print("______________________________________________________________________")
-        print(result)
-        return result
+    # def start_paypal_ap(self):
+    #     """Payment operation."""
+    #     p = PayPal()
+    #     result = p.setAPCall('USD', self.AP_RETURNURL,self.AP_CANCELURL,'PAY')
+    #     print("______________________________________________________________________")
+    #     print(result)
+    #     return result
 
     def check_ap_payment_status(self,paykey):
         headers = {
