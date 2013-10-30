@@ -64,21 +64,29 @@ def checkout(request, *args, **kwargs):
                 serviceDetail.acceptgateway = acceptGateways[0]
                 serviceDetail.save()
 
-                #Invoke payment method - payment for service detail
-                initParam['serviceDetail_id'] = serviceDetail.id
-                initParam['amount'] = serviceDetail.actual_amount
-                initParam['DESC'] = 'Service fee on AppsWalk.'
-                initParam['PAYMENTREQUEST_0_DESC'] = 'Service fee for App %(param1)s of user %(param2)s on AppsWalk.' % {'param1':app.app_name, 'param2':user.username}
-                initParam['ITEMAMT'] = serviceDetail.actual_amount
-                initParam['L_NAME0'] = 'Service fee on AppsWalk'
-                initParam['L_DESC0'] = 'Service fee for App %(param)s' % {'param':app.app_name}
-                initParam['L_AMT0'] = serviceDetail.actual_amount
-                initParam['L_QTY0'] = 1
-                #The needed operation method in payment.
-                initParam['executeMethod'] = kwargs.get('executeMethod')
-                #The back page, when payment has error.
-                initParam['back_page'] = '/'.join([common.getHttpHeader(request), 'seller/payment', str(app.id)])
-                return paymentViews.payment(request, initParam=initParam)
+                if serviceDetail.actual_amount <= 0:
+                    if executeCheckOut(request, business_id=serviceDetail.id):
+                        initParam['payment_msg'] = _('The payment is successful.')
+                        #TODO:Need show the message.
+                        return redirect('/'.join(['/seller/payment', str(app.id), serviceDetail.sn]))
+                    else:
+                        initParam['order_error'] = _('The payment is failed. Please payment again.')
+                else:
+                    #Invoke payment method - payment for service detail
+                    initParam['serviceDetail_id'] = serviceDetail.id
+                    initParam['amount'] = serviceDetail.actual_amount
+                    initParam['DESC'] = 'Service fee on AppsWalk.'
+                    initParam['PAYMENTREQUEST_0_DESC'] = 'Service fee for App %(param1)s of user %(param2)s on AppsWalk.' % {'param1':app.app_name, 'param2':user.username}
+                    initParam['ITEMAMT'] = serviceDetail.actual_amount
+                    initParam['L_NAME0'] = 'Service fee on AppsWalk'
+                    initParam['L_DESC0'] = 'Service fee for App %(param)s' % {'param':app.app_name}
+                    initParam['L_AMT0'] = serviceDetail.actual_amount
+                    initParam['L_QTY0'] = 1
+                    #The needed operation method in payment.
+                    initParam['executeMethod'] = kwargs.get('executeMethod')
+                    #The back page, when payment has error.
+                    initParam['back_page'] = '/'.join([common.getHttpHeader(request), 'seller/payment', str(app.id)])
+                    return paymentViews.payment(request, initParam=initParam)
     #Init data
     initParam['form'] = forms.ServiceDetailForm(instance=serviceDetail)
 
