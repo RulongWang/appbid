@@ -195,6 +195,7 @@ def paymentCancel(request, *args, **kwargs):
     if back_page:
         initParam['back_page'] = back_page
         del request.session['back_page']
+    log.info(_('User %(param1)s cancel the payment.') % {'param1': request.user.username})
     return render_to_response("payment/paypal_cancel.html", initParam, context_instance=RequestContext(request))
 
 

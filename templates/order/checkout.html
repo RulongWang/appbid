@@ -3,11 +3,11 @@
 {% load staticfiles %}
 <script type="text/javascript" language="javascript">
   $(function() {
-    var begin_date = "{{ begin_date|date:'Y-m-d' }}";
+    var begin_date = "{{ begin_date|date:'Y-m-d H:i:s' }}";
     if (begin_date) {
         $("#id_start_date").attr("readonly", true);
         var date_str = $("#id_start_date").val().trim();
-        var end_date = new Date(date_str);
+        var end_date = new Date(Date.parse(date_str.replace(/-/g, "/")));
         var service_expiry_date = {{ service_expiry_date }};
         if (service_expiry_date) {
             end_date.setDate(end_date.getDate() + parseInt(service_expiry_date));
@@ -15,8 +15,8 @@
         else{
             end_date.setDate(end_date.getDate() + 31);
         }
-        $("#end_date_str").val(end_date.format('yyyy-MM-dd'));
-        $("#id_end_date").val(end_date.format('yyyy-MM-dd'));
+        $("#end_date_str").val(end_date.format('yyyy-MM-dd hh:mm:ss'));
+        $("#id_end_date").val(end_date.format('yyyy-MM-dd hh:mm:ss'));
     }
     else {
         $( "#id_start_date" ).datepicker({
@@ -24,7 +24,7 @@
             selectOtherMonths: true,
             changeMonth: true,
             changeYear: true,
-            dateFormat: 'yy-mm-dd'
+            dateFormat: 'yy-mm-dd hh:mm:ss'
         });
     }
   });
@@ -41,9 +41,9 @@
             <input id="id_actual_amount" name="actual_amount" type="hidden" value="{{ form.actual_amount.value }}" />
         </div>
         <div>
-            Service Begin Date: <input id="id_start_date" name="start_date" type="text" value="{{ form.start_date.value|date:'Y-m-d' }}" />
+            Service Begin Date: <input id="id_start_date" name="start_date" type="text" value="{{ form.start_date.value|date:'Y-m-d H:i:s' }}" />
             {% if begin_date %}
-                (*End date of your last valid service:{{ begin_date|date:'Y-m-d' }})
+                (*End date of your last valid service:{{ begin_date|date:'Y-m-d H:i:s' }})
             {% endif %}
         </div>
         <div>
@@ -64,16 +64,16 @@
     function validStartDate() {
         var date_str = $("#id_start_date").val().trim();
         if (date_str != "") {
-            if (validDate(date_str)) {
-                var end_date = new Date(date_str);
-                var begin_date_str = "{{ begin_date|date:'Y-m-d' }}";
+            if (validDateTime(date_str)) {
+                var end_date = new Date(Date.parse(date_str.replace(/-/g, "/")));
+                var begin_date_str = "{{ begin_date|date:'Y-m-d H:i:s' }}";
                 if (begin_date_str && new Date(begin_date_str) > end_date) {
                     $("#end_date_str").val("");
                     $("#id_end_date").val("");
                     $("#order_error").html("Service begin date should be later than service end date of your paid payment.");//TODO:it will be set in message.properties.
                     return false;
                 }
-                if (begin_date_str == "" && new Date().format('yyyy-MM-dd') > end_date.format('yyyy-MM-dd')) {
+                if (begin_date_str == "" && new Date().format('yyyy-MM-dd hh:mm:ss') > end_date.format('yyyy-MM-dd hh:mm:ss')) {
                     $("#end_date_str").val("");
                     $("#id_end_date").val("");
                     $("#order_error").html("Service begin date should be later than today.");//TODO:it will be set in message.properties.
@@ -86,8 +86,8 @@
                 else{
                     end_date.setDate(end_date.getDate() + 31);
                 }
-                $("#end_date_str").val(end_date.format('yyyy-MM-dd'));
-                $("#id_end_date").val(end_date.format('yyyy-MM-dd'));
+                $("#end_date_str").val(end_date.format('yyyy-MM-dd hh:mm:ss'));
+                $("#id_end_date").val(end_date.format('yyyy-MM-dd hh:mm:ss'));
                 $("#order_error").html("");
                 return true;
             }
