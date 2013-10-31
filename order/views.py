@@ -46,6 +46,7 @@ def checkout(request, *args, **kwargs):
     initParam['currency'] = app.currency.currency
     if acceptGateways:
         initParam['acceptGateway'] = acceptGateways[0]
+    initParam['discount_rate'] = 1 - string.atof(common.getSystemParam(key='discount_rate', default=1))
 
     if request.method == "POST":
         form = forms.ServiceDetailForm(request.POST)
@@ -127,7 +128,7 @@ def getServiceInfo(request, *args, **kwargs):
     token = initParam.get('token')
     gateway = initParam.get('gateway')
     if token and gateway:
-        discount_rate = common.getSystemParam(key='discount_rate', default=1)
+        discount_rate = 1 - string.atof(common.getSystemParam(key='discount_rate', default=1))
         gateways = paymentModels.Gateway.objects.filter(name__iexact=gateway)
         if gateways:
             acceptGateways = paymentModels.AcceptGateway.objects.filter(user_id=request.user.id,

@@ -37,7 +37,14 @@
             <input id="id_sn" name="sn" type="hidden" value="{{ form.sn.value }}"  />
         </div>
         <div>
-            Payment Fee: {{ form.actual_amount.value|floatformat|default:0 }}{{ currency }}
+            Payment Fee: {{ form.amount.value|floatformat|default:0 }}{{ currency }}
+            <input id="id_amount" name="amount" type="hidden" value="{{ form.amount.value }}" />
+        </div>
+        <div>
+            Discount Rate:{{ discount_rate|floatformat }}
+        </div>
+        <div>
+            Actual Payment Fee: {{ form.actual_amount.value|floatformat|default:0 }}{{ currency }}
             <input id="id_actual_amount" name="actual_amount" type="hidden" value="{{ form.actual_amount.value }}" />
         </div>
         <div>
