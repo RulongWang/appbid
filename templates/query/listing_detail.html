@@ -42,7 +42,12 @@
         <div class="separator"></div>
         <div class="listing_detail">
             <div class="detail_left">
-                <div class="detail_title"><h1>Description</h1></div>
+                <div class="dash_title" style="font-weight: bold;margin-bottom: 20px;">Description
+                    {% if app.publisher.username == request.user.username %}
+                    <a href="{% url 'seller:additional_info' app_id %}" title="Change description" style="display:block;width:100px;float:right;"><img src="{% static "images/edit20x20.png" %}"/>
+                    </a>
+                    {% endif %}
+                </div>
                 {% autoescape off %}
                 {{ app.description }}
                 {% endautoescape %}

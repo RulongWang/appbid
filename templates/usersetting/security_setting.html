@@ -9,49 +9,57 @@
         {% endfor %}
         </ul>
     {% endif %}
+    {% load staticfiles %}
     <div class="setting_block">
         <div class="dash_title">Security Settings</div>
         <div class="setting_item">
-            <img src="#"/><!--TODO:add verified image. -->
-            <span>Account Password</span>
-            <div>
-                Please keep your account password.
-                <a id="password_update" style="float: right;margin-right: 50px;" href="{% url 'usersetting:security_verification_password' %}">Update</a>
+            <div class="setting_item_left correct_icon">Account Password <a id="password_update" class="setting_item_right" href="{% url 'usersetting:security_verification_password' %}"><img src="{% static "images/edit20x20.png" %}"/></a></div>
+            <div class="help_text">
+                Please keep your account security.
             </div>
+
+
         </div>
-        <br/><br/>
         <div class="setting_item">
-            {% if email_info and email_info.is_verified == True%}
-            <img src="#"/><!--TODO:add verified image. -->
+            <div class="setting_item_left
+             {% if email_info and email_info.is_verified == True%}
+             correct_icon
              {% else %}
-            <img src="#"><!--TODO:add unverified image. -->
-            {% endif %}
-            <span>Email Verification</span>
-            <div>
-                {% if email_info %}
-                <span>Your email: {{ email_info.value }}</span>
-                {% else %}
-                <span>Your still have no email. Please provide and verify it ASAP.</span>
-                {% endif %}
-                <a id="email_update" style="float: right;margin-right: 50px;" href="{% url 'usersetting:security_verification_email' %}">Update</a>
+             incorrect_icon
+             {% endif %}
+            ">Email Verification <a id="email_update" class="setting_item_right" href="{% url 'usersetting:security_verification_email' %}">
+                <img src="{% static "images/edit20x20.png" %}"/>
+            </a>
             </div>
+            <div >
+                {% if email_info %}
+                <div class="help_text">Your email: {{ email_info.value }}</div>
+                {% else %}
+                <div class="help_text">
+                    Your still have no email. Please provide and verify it ASAP.
+                 </div>
+                {% endif %}
+            </div>
+
+
         </div>
-        <br/><br/>
         <div class="setting_item">
-            {% if phone_info and phone_info.is_verified == True%}
-            <img src="#"/><!--TODO:add verified image. -->
-            {% else %}
-            <img src="#"><!--TODO:add unverified image. -->
-            {% endif %}
-            <span>Cell Verification</span>
+            <div class="setting_item_left
+             {% if email_info and email_info.is_verified == True%}
+             correct_icon
+             {% else %}
+             incorrect_icon
+             {% endif %}
+            ">Cell Verification <a id="phone_update" class="setting_item_right" href="{% url 'usersetting:security_verification_phone' %}"><img src="{% static "images/edit20x20.png" %}"/></a></div>
             <div>
                 {% if phone_info %}
-                <span>Your phone: {{ phone_info.value }}</span>
+                <div class="help_text">Your phone: {{ phone_info.value }}</div>
                 {% else %}
-                <span>Your still have no phone. Please provide and verify it ASAP.</span>
+                <div class="help_text">Your still have no phone. Please provide and verify it ASAP.</div>
                 {% endif %}
-                <a id="phone_update" style="float: right;margin-right: 50px;" href="{% url 'usersetting:security_verification_phone' %}">Update</a>
             </div>
+
+
         </div>
     </div>
 
