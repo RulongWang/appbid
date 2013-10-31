@@ -6,12 +6,13 @@
     <div id="account_msg" style="color: green">
         {{ account_msg }}
     </div>
+    <div class="dash_title">Email Setting</div>
     <div>
     <form action=""  method="post">
         {% csrf_token %}
-        <div>Please enter the new email:</div>
-        <div><input id="id_email" name="email"/></div>
-        <div><input id="submit" type="submit" value="Submit"  class="newbutton"/></div>
+        <div style="padding:10px;color:#00b0b0;width:300px;float: left;">Please enter the new email:</div>
+        <div style="padding:10px;width:300px;float:left;"><input id="id_email" style="padding: 5px;width:280px;border: 1px solid #00b0b0;" name="email"/></div>
+        <div><input id="submit" type="submit" value="Update"  class="newbutton"/></div>
     </form>
     </div>
 <script type="text/javascript" language="javascript">

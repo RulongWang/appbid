@@ -6,22 +6,21 @@
     <div id="account_msg" style="color: green">
         {{ account_msg }}
     </div>
+    <div class="dash_title">Cell Phone Verification</div>
     <div>
     <form action=""  method="post">
         {% csrf_token %}
-        <div>
-            Please enter the new phone number:<input id="id_phone" name="phone"/>
-        </div>
-        <div>
+        <div style="padding-top: 20px;">
+            Please enter your cell phone number:  <input id="id_phone" style="padding: 5px;width:200px;border: 1px solid #00b0b0;" name="phone"/>
             <input id="id_get_pin" name="get_pin" type="button" value="Get PIN" class="newbutton" />
         </div>
         <div id="pin_msg" style="display: none">
-            The PIN has been sent, please take care your message. If you don't receive it, please get PIN again after <span id="remain_time">60</span>s.
+            The PIN has been sent to your cell phone. If you didn't receive it, please get PIN again after <span id="remain_time">60</span>s.
         </div>
-        <div>
-            Please enter PIN:<input id="id_pin" name="pin" type="text" disabled />
-        </div>
-        <div>
+        <div style="padding-top: 20px;">
+            Please enter PIN code:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            &nbsp;&nbsp;&nbsp;
+            <input id="id_pin" style="padding: 5px;width:200px;" name="pin" type="text" disabled />
             <input id="submit" type="submit" value="Submit"  class="newbutton" />
         </div>
     </form>

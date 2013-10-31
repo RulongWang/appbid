@@ -6,6 +6,8 @@
     <div id="account_msg" style="color: green">
         {{ account_msg }}
     </div>
+    <div class="dash_title">Cell Phone Verification</div>
+    <div >
     <form action=""  method="post">
         {% csrf_token %}
         <div>Your verified phone number:{{ phone_number }}</div>
@@ -16,13 +18,15 @@
             The PIN has been sent, please take care your message. If you don't receive it, please get PIN again after <span id="remain_time">60</span>s.
         </div>
         <div>
-            Please enter PIN:<input id="id_pin" name="pin" type="text" disabled />
+            Please enter PIN:<input id="id_pin" name="pin" type="text"  style="border: 1px solid #00b0b0;" disabled />
         </div>
         <div>
             <input id="next" name="next" type="hidden" value="{{ next }}" />
             <input id="submit" type="submit" value="Submit"  class="newbutton" />
         </div>
     </form>
+    </div>
+
 <script type="text/javascript" language="javascript">
     var interval;
     $("#id_get_pin").click(function() {

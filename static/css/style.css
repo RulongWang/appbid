@@ -1558,13 +1558,20 @@ fieldset {
 
 }
 
+.footer_cat_block{
+    padding: 10px;
+}
+
 .footer_ul{
+    clear: both;
     list-style: none;
+
 
 }
 .footer_ul li{
     margin-left:15px;
     padding-top: 10px;
+    height:30px;
     float:left;
 }
 
