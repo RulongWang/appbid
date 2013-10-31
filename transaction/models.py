@@ -3,6 +3,7 @@ __author__ = 'Jarvis'
 from django.db import models
 from django.contrib.auth.models import User
 from appbid import models as appModels
+from payment import models as paymentModels
 
 
 class Transaction(models.Model):
@@ -20,8 +21,13 @@ class Transaction(models.Model):
     end_time = models.DateTimeField(null=True)
 
     #For user pay.
-    # acceptgateway = models.ForeignKey(paymentModels.AcceptGateway, null=True, blank=True)
-    # pay_key = models.CharField(max_length=255,null=True, blank=True)
+    seller_price = models.FloatField(null=True)
+    appswalk_price = models.FloatField(null=True)
+    gateway = models.ForeignKey(paymentModels.Gateway, null=True)
+    buyer_account = models.CharField(max_length=255, null=True)
+    seller_account = models.CharField(max_length=255, null=True)
+    appswalk_account = models.CharField(max_length=255, null=True)
+    pay_key = models.CharField(max_length=255, null=True)
 
 
 class TransactionLog(models.Model):
@@ -36,6 +42,13 @@ class TransactionLog(models.Model):
     seller = models.ForeignKey(User, null=True, related_name='txn_log_seller')
     buyer = models.ForeignKey(User, null=True, related_name='txn_log_buyer')
     price = models.FloatField(null=True)
+    seller_price = models.FloatField(null=True)
+    appswalk_price = models.FloatField(null=True)
+    gateway = models.ForeignKey(paymentModels.Gateway, null=True)
+    buyer_account = models.CharField(max_length=255, null=True)
+    seller_account = models.CharField(max_length=255, null=True)
+    appswalk_account = models.CharField(max_length=255, null=True)
+    pay_key = models.CharField(max_length=255, null=True)
     create_time = models.DateTimeField(auto_now_add=True)
 
 

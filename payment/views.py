@@ -38,7 +38,7 @@ def payment(request, *args, **kwargs):
     amount = initParam.pop('amount')
     currency = initParam.pop('currency')
     id = initParam.get('serviceDetail_id')
-    if amount and currency:
+    if amount and currency and id:
         p = driver.PayPal()
         result = p.SetExpressCheckout(amount, currency, EC_RETURNURL, EC_CANCELURL, initParam=initParam)
         if result:
@@ -56,7 +56,7 @@ def payment(request, *args, **kwargs):
         else:
             log.error(_('ServiceDetail with id %(param1)s. %(param2)s') % {'param1': id, 'param2': str(p.apierror)})
     else:
-        log.error(_('ServiceDetail with id %(param1)s. Amount or Currency no exists.') % {'param1': id})
+        log.error(_('payment. Amount or Currency or ServiceDetail ID no exists.'))
 
     success_page = request.session.get('success_page', None)
     back_page = request.session.get('back_page', None)
@@ -198,8 +198,8 @@ def payPalDoCheckOut(request, *args, **kwargs):
 @csrf_protect
 @transaction.commit_on_success
 @login_required(login_url='/usersetting/home/')
-def paymentCancel(request, *args, **kwargs):
-    """User cancel Payment operation."""
+def payPalCancel(request, *args, **kwargs):
+    """User cancel payment or pay operation."""
     initParam = {}
     error_msg = _("You cancel the payment to finish performing PayPal payment process. We don't charge your money.")
     initParam['error_msg'] = error_msg
@@ -219,39 +219,45 @@ def paymentCancel(request, *args, **kwargs):
 @login_required(login_url='/usersetting/home/')
 def pay(request, *args, **kwargs):
     initParam = kwargs.get('initParam')
+    executeMethod = initParam.pop('executeMethod', None)
     currency = initParam.get('currency')
-    p = driver.PayPal()
-    result = p.setAPCall(currency, AP_RETURNURL, AP_CANCELURL, 'PAY', initParam=initParam)
-
-    if result['responseEnvelope.ack'][0] =='Success':
-        print 'pay-----------'
-        print result['payKey'][0]
-        paykey = result['payKey'][0]
-        ap_redirect_url = p.AP_REDIRECTURL + paykey
-        print ap_redirect_url
-        print("Parallel Payment has been created!")
-        return HttpResponseRedirect(ap_redirect_url)
-    # result = paymentViews.start_paypal_ap(request)
-    else:
-        # return render_to_response('transaction/one_price_buy.html', initParam, context_instance=RequestContext(request))
-        return HttpResponseRedirect('/payment/paypal_cancel')
-
-
-@csrf_protect
-@transaction.commit_on_success
-@login_required(login_url='/usersetting/home/')
-def start_paypal_ap(request, *args, **kwargs):
-    """Payment operation."""
-    p = driver.PayPal()
-    result = p.setAPCall(AP_RETURNURL, AP_CANCELURL, 'pay')
-
-    paykey = request.GET.get('Paykey')
-    print 'start_paypal_ap----------------------------'
-    if paykey is None:
-        error = "paykey is missing"
-    else:
+    id = initParam.get('txn_id')
+    if currency and id:
         p = driver.PayPal()
-        return render_to_response("payment/paypal_return.html", {"token":paykey}, context_instance=RequestContext(request))
+        result = p.setAPCall(currency, AP_RETURNURL, AP_CANCELURL, 'PAY', initParam=initParam)
+        if result['responseEnvelope.ack'][0] == 'Success':
+            pay_key = result['payKey'][0]
+            #The needed operation for verification later when pay return pay_key..
+            if executeMethod:
+                initParam['pay_key'] = pay_key
+                initParam['gateway'] = 'paypal'
+                if executeMethod(request, initParam=initParam):
+                    redirect_url = p.AP_REDIRECTURL + pay_key
+                    print redirect_url
+                    return HttpResponseRedirect(redirect_url)
+                else:
+                    log.error(_('Transaction with id %(param1)s. Execute method %(param2)s failed.')
+                              % {'param1': id, 'param2': executeMethod.__name__})
+            else:
+                log.error(_('Transaction with id %(param1)s. ExecuteMethod does not exist.') % {'param1': id})
+        else:
+            log.error(_('Transaction with id %(param1)s. %(param2)s') % {'param1': id, 'param2': str(result['error(0).message'][0])})
+    else:
+        log.error(_('Pay. Currency or Transaction ID no exists.'))
+
+    success_page = request.session.get('success_page', None)
+    back_page = request.session.get('back_page', None)
+    if success_page:
+        del request.session['success_page']
+    if back_page:
+        del request.session['back_page']
+        error_msg = driver.GENERIC_PAYPAL_ERROR
+        return render_to_response('payment/paypal_cancel.html',
+                                  {'error_msg': error_msg, 'back_page': back_page}, context_instance=RequestContext(request))
+    else:
+        error_msg = _('%(param1)s Please transaction again.') % {'param1': driver.GENERIC_PAYPAL_ERROR}
+        return render_to_response('payment/paypal_error.html',
+                                  {"error_msg": error_msg}, context_instance=RequestContext(request))
 
 
 @csrf_protect

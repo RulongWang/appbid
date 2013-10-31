@@ -16,3 +16,4 @@ insert into system_systemparam(`key`,`value`,`description`) values('cp_closed_tr
 insert into system_systemparam(`key`,`value`,`description`) values('cp_no_closed_trade','50','If buyer unpaid in paid_expiry_date, decrease seller buyer credit point.');
 insert into system_systemparam(`key`,`value`,`description`) values('cp_buyer_unpaid','50','If buyer unpaid in paid_expiry_date, decrease buyer credit point.');
 insert into system_systemparam(`key`,`value`,`description`) values('min_cp_for_bid','50','Buyer credit point need have more than this value.');
+insert into system_systemparam(`key`,`value`,`description`) values('txn_fee_pct','0.01','AppsWalk charge the percent of transaction fee in app trading.');

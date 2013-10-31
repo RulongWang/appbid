@@ -8,4 +8,7 @@ PAYPAL_SIGNATURE = 'A2vypYAyoKWCr5HKJHXEzqAil0rBANhDLrGYeKZ-H8Wjmb.OShNvkwhY'
 PAYPAL_AP_APPLICATION_ID = ''
 PAYPAL_DEBUG = True # for sandbox. False for real environment.
 
+#AppsWalk paypal account
+APPSWALK_ACCOUNT = 'me@rulong.org'
+
 

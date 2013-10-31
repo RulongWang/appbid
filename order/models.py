@@ -39,7 +39,7 @@ class ServiceDetail(models.Model):
 
     #For user payment.
     acceptgateway = models.ForeignKey(paymentModels.AcceptGateway, null=True, blank=True)
-    pay_token = models.CharField(max_length=255,null=True, blank=True)
+    pay_token = models.CharField(max_length=255, null=True, blank=True)
 
 
 admin.site.register(ServiceItem)

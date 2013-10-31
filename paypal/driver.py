@@ -389,27 +389,25 @@ class PayPal(object):
 
         #Set our POST Parameters
         params = collections.OrderedDict()
-        params['requestEnvelope.errorLanguage'] = 'en_US';
-        params['requestEnvelope.detailLevel'] = 'ReturnAll';
+        params['requestEnvelope.errorLanguage'] = 'en_US'
+        params['requestEnvelope.detailLevel'] = 'ReturnAll'
         # params['reverseAllParallelPaymentsOnError'] = 'true';
         params['returnUrl'] = return_url
         params['cancelUrl'] = cancel_url
         params['actionType'] = action_type
         params['currencyCode'] = currency
         params['feesPayer'] = 'EACHRECEIVER'
-        params['receiverList.receiver(0).email'] = 'me@rulong.org'
-        params['receiverList.receiver(0).amount'] = '100.00'
+        params['receiverList.receiver(0).email'] = initParam.get('appsWalk_account')#'me@rulong.org'
+        params['receiverList.receiver(0).amount'] = initParam.get('appsWalk_amount')#'100.00'
         # params['receiverList.receiver(0).primary'] = 'true'
 
-        params['receiverList.receiver(1).email'] = 'javacc@163.com'
-        params['receiverList.receiver(1).amount'] = '30.00'
+        params['receiverList.receiver(1).email'] = initParam.get('seller_account')#'javacc@163.com'
+        params['receiverList.receiver(1).amount'] = initParam.get('seller_amount')#'30.00'
 
         #Add Client Details
-
         params['clientDetails.ipAddress'] = '127.0.0.1'
         params['clientDetails.deviceId'] = 'mydevice'
         params['clientDetails.applicationId'] = 'PayNvpDemo'
-
 
         enc_params = urllib.urlencode(params)
         print (enc_params)

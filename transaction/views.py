@@ -6,7 +6,6 @@ import string
 import logging
 
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response, RequestContext, redirect, get_object_or_404, Http404
 from django.views.decorators.csrf import csrf_protect
 from django.core.urlresolvers import reverse
@@ -14,15 +13,15 @@ from django.utils.translation import ugettext as _
 from django.db import transaction
 from django.contrib.auth.models import User
 
-
+from appbid import settings
 from appbid import models as appModels
+from payment import models as paymentModels
 from transaction import models
 from bid import models as bidModels
 from utilities import common
 from notification import views as notificationViews
 from credit import views as creditViews
 from payment import views as paymentViews
-from paypal import driver
 
 log = logging.getLogger('appbid')
 
@@ -40,6 +39,13 @@ def initTransaction(request, *args, **kwargs):
             transaction.buyer = None
             transaction.price = None
             transaction.end_time = None
+            transaction.seller_price = None
+            transaction.appswalk_price = None
+            transaction.gateway = None
+            transaction.buyer_account = None
+            transaction.seller_account = None
+            transaction.appswalk_account = None
+            transaction.pay_key = None
         else:
             transaction = models.Transaction()
             transaction.app = app
@@ -203,22 +209,24 @@ def onePriceBuy(request, *args, **kwargs):
             transactionsLog.save()
 
             #TODO:invoke pay method
+            txn_fee_pct = string.atof(common.getSystemParam(key='txn_fee_pct', default=0.01))
             initParam['currency'] = app.currency.currency
+            initParam['appsWalk_account'] = settings.APPSWALK_ACCOUNT
+            initParam['appsWalk_amount'] = app.one_price * txn_fee_pct
+            initParam['seller_account'] = 'javacc@163.com'
+            initParam['seller_amount'] = app.one_price * (1 - txn_fee_pct)
+            initParam['txn_id'] = transaction.id
+            #The needed operation method in pay.
+            initParam['executeMethod'] = kwargs.get('executeMethod')
+            #The back page, when pay has error.
+            back_page = request.session.get('back_page', None)
+            if not back_page:
+                request.session['back_page'] = '/'.join([common.getHttpHeader(request), 'query/app-detail', str(app.id)])
+            #The success return page, when pay finish.
+            success_page = request.session.get('success_page', None)
+            if not success_page:
+                request.session['success_page'] = '/'.join([common.getHttpHeader(request), 'query/app-detail', str(app.id)])
             return paymentViews.pay(request, initParam=initParam)
-            # p = driver.PayPal()
-            # result = p.start_paypal_ap()
-            #
-            # if result['responseEnvelope.ack'][0] =='Success':
-            #     print result['payKey'][0]
-            #     paykey = result['payKey'][0]
-            #     ap_redirect_url = p.AP_REDIRECTURL + paykey
-            #     print ap_redirect_url
-            #     print("Parallel Payment has been created!")
-            #     return HttpResponseRedirect(ap_redirect_url)
-            # # result = paymentViews.start_paypal_ap(request)
-            # else:
-            #     # return render_to_response('transaction/one_price_buy.html', initParam, context_instance=RequestContext(request))
-            #     return HttpResponseRedirect('/payment/paypal_cancel')
     return render_to_response('transaction/one_price_buy.html', initParam, context_instance=RequestContext(request))
 
 
@@ -235,6 +243,35 @@ def buyerPay(request, *args, **kwargs):
 
     #TODO:invoke pay method
     return None
+
+
+def updateTransaction(request, *args, **kwargs):
+    """The operation after buyer payed successfully."""
+    initParam = kwargs.get('initParam')
+    txn_id = initParam.get('txn_id')
+    pay_key = initParam.get('pay_key')
+    gateway = initParam.get('gateway')
+    if txn_id and pay_key and gateway:
+        transactions = models.Transaction.objects.filter(pk=txn_id)
+        if transactions:
+            gateways = paymentModels.Gateway.objects.filter(name__iexact=gateway)
+            if gateways:
+                transactions[0].gateway = gateways[0]
+            else:
+                log.error(_('Gateway with name %(param1)s no exists.') % {'param1': gateway})
+                return None
+            transactions[0].pay_key = pay_key
+            transactions[0].save()
+            log.info(_('Transaction with id %(param1)s set pay_key to %(param2)s, gateway to %(param3)s.')
+                     % {'param1': txn_id, 'param2': pay_key, 'param3': gateway})
+            return transactions[0]
+        else:
+            log.error(_('PayKey: %(param1)s, Transaction with id %(param2)s no exists.')
+                      % {'param1': pay_key, 'param2': txn_id})
+    else:
+        log.error(_('Transaction ID or PayKey or Gateway no exists.'))
+    return None
+
 
 
 def executePay(request, *args, **kwargs):

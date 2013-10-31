@@ -22,9 +22,9 @@ urlpatterns = patterns('',
         #After payment, do something for actual business.
          'executeMethod': orderViews.executeCheckOut,
         }, name='paypal_checkout'),
-    url(r'^paypal_cancel/$', views.paymentCancel, name='paypal_cancel'),
+    url(r'^paypal_cancel/$', views.payPalCancel, name='paypal_cancel'),
 
-    url(r'^buynow/$', views.start_paypal_ap, name='buynow'),
+    # url(r'^buynow/$', views.start_paypal_ap, name='buynow'),
     url(r'^paypal_ap_return/$', views.payReturn,
         #After buyer payed or one price buy, do something for actual business.
         {'executeMethod': txnViews.executePay,
