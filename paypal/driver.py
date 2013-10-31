@@ -426,14 +426,6 @@ class PayPal(object):
         return response_dic
 
 
-    # def start_paypal_ap(self):
-    #     """Payment operation."""
-    #     p = PayPal()
-    #     result = p.setAPCall('USD', self.AP_RETURNURL,self.AP_CANCELURL,'PAY')
-    #     print("______________________________________________________________________")
-    #     print(result)
-    #     return result
-
     def check_ap_payment_status(self,paykey):
         headers = {
             'X-PAYPAL-SECURITY-USERID':self.username,
@@ -467,7 +459,6 @@ class PayPal(object):
         #Get the reply and print it out.
         data = response.read()
         response_dic = urlparse.parse_qs(data)
-        print response_dic
         result = response_dic
         print result
         return result

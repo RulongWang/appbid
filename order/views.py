@@ -87,13 +87,13 @@ def checkout(request, *args, **kwargs):
                     #The needed operation method in payment.
                     initParam['executeMethod'] = kwargs.get('executeMethod')
                     #The back page, when payment has error.
-                    back_page = request.session.get('back_page', None)
-                    if not back_page:
-                        request.session['back_page'] = '/'.join([common.getHttpHeader(request), 'seller/payment', str(app.id)])
+                    if request.session.get('back_page', None):
+                        del request.session['back_page']
+                    request.session['back_page'] = '/'.join([common.getHttpHeader(request), 'seller/payment', str(app.id)])
                     #The success return page, when payment finish.
-                    success_page = request.session.get('success_page', None)
-                    if not success_page:
-                        request.session['success_page'] = '/'.join([common.getHttpHeader(request), 'query/app-detail', str(app.id)])
+                    if request.session.get('success_page', None):
+                        del request.session['success_page']
+                    request.session['success_page'] = '/'.join([common.getHttpHeader(request), 'query/app-detail', str(app.id)])
                     return paymentViews.payment(request, initParam=initParam)
     #Init data
     initParam['form'] = forms.ServiceDetailForm(instance=serviceDetail)

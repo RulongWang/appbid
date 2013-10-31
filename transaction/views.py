@@ -208,12 +208,15 @@ def onePriceBuy(request, *args, **kwargs):
             transactionsLog.price = app.one_price
             transactionsLog.save()
 
-            #TODO:invoke pay method
+            #Buyser pay for app.
             txn_fee_pct = string.atof(common.getSystemParam(key='txn_fee_pct', default=0.01))
             initParam['currency'] = app.currency.currency
             initParam['appsWalk_account'] = settings.APPSWALK_ACCOUNT
+            gateways = paymentModels.Gateway.objects.filter(name__iexact='paypal')
+            initParam['gateway'] = gateways[0]
+            acceptGateways = paymentModels.AcceptGateway.objects.filter(user_id=transaction.seller.id, type_id=gateways[0].id, is_active=True)
+            initParam['seller_account'] = acceptGateways[0].value
             initParam['appsWalk_amount'] = app.one_price * txn_fee_pct
-            initParam['seller_account'] = 'javacc@163.com'
             initParam['seller_amount'] = app.one_price * (1 - txn_fee_pct)
             initParam['txn_id'] = transaction.id
             #The needed operation method in pay.
@@ -254,12 +257,7 @@ def updateTransaction(request, *args, **kwargs):
     if txn_id and pay_key and gateway:
         transactions = models.Transaction.objects.filter(pk=txn_id)
         if transactions:
-            gateways = paymentModels.Gateway.objects.filter(name__iexact=gateway)
-            if gateways:
-                transactions[0].gateway = gateways[0]
-            else:
-                log.error(_('Gateway with name %(param1)s no exists.') % {'param1': gateway})
-                return None
+            transactions[0].gateway = gateway
             transactions[0].pay_key = pay_key
             transactions[0].save()
             log.info(_('Transaction with id %(param1)s set pay_key to %(param2)s, gateway to %(param3)s.')
@@ -273,41 +271,59 @@ def updateTransaction(request, *args, **kwargs):
     return None
 
 
+def checkTransaction(request, *args, **kwargs):
+    """Check and get transaction information."""
+    initParam = kwargs.get('initParam')
+    pay_key = initParam.get('pay_key')
+    gateway = initParam.get('gateway')
+    if pay_key and gateway:
+        gateways = paymentModels.Gateway.objects.filter(name__iexact=gateway)
+        if gateways:
+            transactions = models.Transaction.objects.filter(buyer_id=request.user.id,
+                                                             pay_key=pay_key, gateway_id=gateways[0].id)
+            if transactions:
+                return transactions[0]
+    return None
+
 
 def executePay(request, *args, **kwargs):
     """The operation after buyer payed successfully."""
-    business_id = kwargs.get('business_id')
-    if business_id:
-        transactions = models.Transaction.objects.filter(pk=business_id)
+    initParam = kwargs.get('initParam')
+    txn_id = initParam.get('transaction_id')
+    if txn_id:
+        transactions = models.Transaction.objects.filter(pk=txn_id)
         if transactions:
-            transaction = transactions[0]
-            if transaction.buyer == request.user:
-                if transaction.status == 1:
-                    kwargs['transaction'] = transaction
-                    return executeOnePriceBuy(request, kwargs=kwargs)
-                elif transaction.status == 2:
-                    kwargs['transaction'] = transaction
-                    return executeBuyerPay(request, kwargs=kwargs)
-                else:
-                    log.error(_('The transaction with id %(param1)s status %(param2)s should be payed.')
-                              % {'param1': business_id, 'param1': transaction.status})
+            initParam['transaction'] = transactions[0]
+            if transactions[0].status == 1:
+                return executeOnePriceBuy(request, initParam=initParam)
+            elif transactions[0].status == 2:
+                return executeBuyerPay(request, initParam=initParam)
             else:
-                log.error(_('The transaction with id %(param1)s do not belong the buyer %(param2)s.')
-                          % {'param1': business_id, 'param2': request.user.username})
+                log.error(_('The transaction with id %(param1)s status %(param2)s should be payed with buyer %(param3)s.')
+                          % {'param1': txn_id, 'param2': transactions[0].status, 'param3': transactions[0].buyer.username})
         else:
-            log.error(_('The transaction with id %(param)s does not exist.') % {'param': business_id})
+            log.error(_('The transaction with id %(param1)s does not exist.') % {'param1': txn_id})
     else:
-        log.error('The business_id is None.')
+        log.error('Transaction_ID no exists.')
     return None
 
 
 def executeOnePriceBuy(request, *args, **kwargs):
     """The operation of one price buy, after buyer payed successfully."""
-    transaction = kwargs.get('transaction')
+    initParam = kwargs.get('initParam')
+    transaction = initParam.get('transaction')
     if transaction:
         transaction.status = 3
         txn_expiry_date = string.atoi(common.getSystemParam(key='txn_expiry_date', default=15))
         transaction.end_time = datetime.datetime.now() + datetime.timedelta(days=txn_expiry_date)
+        transaction.buyer = request.user
+        transaction.buyer_account = initParam.get('buyer_account')
+        acceptGateways = paymentModels.AcceptGateway.objects.filter(user_id=transaction.seller.id, type_id=transaction.gateway.id, is_active=True)
+        transaction.seller_account = acceptGateways[0].value
+        transaction.appswalk_account = settings.APPSWALK_ACCOUNT
+        txn_fee_pct = string.atof(common.getSystemParam(key='txn_fee_pct', default=0.01))
+        transaction.appswalk_price = transaction.price  * txn_fee_pct
+        transaction.seller_price = transaction.price  * (1 - txn_fee_pct)
         transaction.save()
 
         #Log transaction
@@ -316,6 +332,13 @@ def executeOnePriceBuy(request, *args, **kwargs):
         transactionsLog.status = 3
         transactionsLog.buyer = request.user
         transactionsLog.price = transaction.price
+        transactionsLog.buyer_account = transaction.buyer_account
+        transactionsLog.seller_account = transaction.seller_account
+        transactionsLog.appswalk_account = transaction.appswalk_account
+        transactionsLog.gateway = transaction.gateway
+        transactionsLog.appswalk_price = transaction.appswalk_price
+        transactionsLog.seller_price = transaction.seller_price
+        transactionsLog.pay_key = transaction.pay_key
         transactionsLog.save()
 
         #Send email to seller
@@ -329,11 +352,20 @@ def executeOnePriceBuy(request, *args, **kwargs):
 
 def executeBuyerPay(request, *args, **kwargs):
     """The operation, after buyer payed successfully."""
-    transaction = kwargs.get('transaction')
+    initParam = kwargs.get('initParam')
+    transaction = initParam.get('transaction')
     if transaction:
         transaction.status = 3
         txn_expiry_date = string.atoi(common.getSystemParam(key='txn_expiry_date', default=15))
         transaction.end_time = datetime.datetime.now() + datetime.timedelta(days=txn_expiry_date)
+        transaction.buyer = request.user
+        transaction.buyer_account = initParam.get('buyer_account')
+        acceptGateways = paymentModels.AcceptGateway.objects.filter(user_id=transaction.seller.id, type_id=transaction.gateway.id, is_active=True)
+        transaction.seller_account = acceptGateways[0].value
+        transaction.appswalk_account = settings.APPSWALK_ACCOUNT
+        txn_fee_pct = string.atof(common.getSystemParam(key='txn_fee_pct', default=0.01))
+        transaction.appswalk_price = transaction.price  * txn_fee_pct
+        transaction.seller_price = transaction.price  * (1 - txn_fee_pct)
         transaction.save()
 
         #Log transaction
@@ -342,6 +374,13 @@ def executeBuyerPay(request, *args, **kwargs):
         transactionsLog.status = 3
         transactionsLog.buyer = request.user
         transactionsLog.price = transaction.price
+        transactionsLog.buyer_account = transaction.buyer_account
+        transactionsLog.seller_account = transaction.seller_account
+        transactionsLog.appswalk_account = transaction.appswalk_account
+        transactionsLog.gateway = transaction.gateway
+        transactionsLog.appswalk_price = transaction.appswalk_price
+        transactionsLog.seller_price = transaction.seller_price
+        transactionsLog.pay_key = transaction.pay_key
         transactionsLog.save()
 
         #Send email to seller
