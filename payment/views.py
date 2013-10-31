@@ -58,7 +58,10 @@ def payment(request, *args, **kwargs):
     else:
         log.error(_('ServiceDetail with id %(param1)s. Amount or Currency no exists.') % {'param1': id})
 
+    success_page = request.session.get('success_page', None)
     back_page = request.session.get('back_page', None)
+    if success_page:
+        del request.session['success_page']
     if back_page:
         del request.session['back_page']
         error_msg = driver.GENERIC_PAYPAL_ERROR
@@ -108,7 +111,10 @@ def payPalReturn(request, *args, **kwargs):
     else:
         log.error(_('Token or PayerID no exists.'))
 
+    success_page = request.session.get('success_page', None)
     back_page = request.session.get('back_page', None)
+    if success_page:
+        del request.session['success_page']
     if back_page:
         del request.session['back_page']
         error_msg = driver.GENERIC_PAYPAL_ERROR
@@ -147,10 +153,13 @@ def payPalDoCheckOut(request, *args, **kwargs):
                     executeMethod = kwargs.pop('executeMethod', None)
                     if executeMethod:
                         if executeMethod(request, initParam=initParam):
+                            success_page = request.session.get('success_page', None)
                             back_page = request.session.get('back_page', None)
                             if back_page:
                                 del request.session['back_page']
-                                initParam['back_page'] = back_page
+                            if success_page:
+                                del request.session['success_page']
+                                initParam['success_page'] = success_page
                                 initParam['msg'] = _('The payment success. Please check your paypal account.')
                             return render_to_response("payment/paypal_success.html", initParam, context_instance=RequestContext(request))
                         else:
@@ -171,7 +180,10 @@ def payPalDoCheckOut(request, *args, **kwargs):
     else:
         log.error(_('Token or PayerID no exists.'))
 
+    success_page = request.session.get('success_page', None)
     back_page = request.session.get('back_page', None)
+    if success_page:
+        del request.session['success_page']
     if back_page:
         del request.session['back_page']
         error_msg = driver.GENERIC_PAYPAL_ERROR
@@ -191,7 +203,10 @@ def paymentCancel(request, *args, **kwargs):
     initParam = {}
     error_msg = _("You cancel the payment to finish performing PayPal payment process. We don't charge your money.")
     initParam['error_msg'] = error_msg
+    success_page = request.session.get('success_page', None)
     back_page = request.session.get('back_page', None)
+    if success_page:
+        del request.session['success_page']
     if back_page:
         initParam['back_page'] = back_page
         del request.session['back_page']

@@ -12,7 +12,7 @@
                     </div>
                     <div class="scanner">
                         <img id="id_app_store_link_code" src="{% static "images/scanner.png" %}" width=60px height= 40px />
-                        <div id="id_appstore" style="text-align: center;">
+                        <div id="id_appstore" style="text-align: center;display: none;">
                             <img src="{{ MEDIA_URL }}{{ appInfo.app_store_link_code }}" style="width: 250px;height: 250px;" />
                         </div>
                     </div>
@@ -69,7 +69,7 @@
                         <a id="id_weibo" href="{{ weibo_url }}"><img src="{% static "images/weibo_32.png" %}" width=15px height= 15px title="Share to Weibo" /></a>
                     </div>
                     <div class="share_icon" id="id_weixin"><img src="{% static "images/weixin.jpg" %}" width=15px height= 15px title="Share to WeChat" /></div>
-                    <div id="weixin_win" style="text-align: center;">
+                    <div id="weixin_win" style="text-align: center;display: none;">
                         <img src="{{ MEDIA_URL }}{{ appInfo.app_detail_code }}" style="width: 250px;height: 250px;" />
                         <div>
                             Open WeChat->Discover->Scan QR Code->Share(on top right)

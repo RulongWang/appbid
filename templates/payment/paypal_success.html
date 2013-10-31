@@ -4,29 +4,29 @@
     <div>
         {{ msg }}
     </div>
-    {% if back_page %}
+    {% if success_page %}
         <div>
-            The page will redirect the payment page, after <span id="remain_time" style="font-weight: bold">5</span>s.
+            The page will redirect the payment page, after <span id="remain_time" style="font-weight: bold">10</span>s.
         </div>
         <div>
             If the page not redirect, you can click next page.
         </div>
         <div>
-            <a href="{{ back_page }}">App payment page</a>
+            <a href="{{ success_page }}">App payment page</a>
         </div>
     {% endif %}
 
 <script type="text/javascript" language="javascript">
-    var back_page = '{{ back_page }}';
-    if (back_page != "") {
+    var success_page = '{{ success_page }}';
+    if (success_page != "") {
         var interval;
-        $("#remain_time").text(5);
+        $("#remain_time").text(10);
         interval = setInterval("remainTimer()", 1000);
         function remainTimer() {
             remain_second = $("#remain_time").text();
             if (parseInt(remain_second) == 1) {
                 clearTimeout(interval);
-                window.location.href="{{ back_page }}";
+                window.location.href="{{ success_page }}";
                 return;
             }
             $("#remain_time").text(parseInt(remain_second) - 1);

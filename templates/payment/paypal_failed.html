@@ -6,7 +6,7 @@
     </div>
     {% if back_page %}
         <div>
-            The page will redirect the payment page, after <span id="remain_time" style="font-weight: bold">5</span>s.
+            The page will redirect the payment page, after <span id="remain_time" style="font-weight: bold">10</span>s.
         </div>
         <div>
             If the page not redirect, you can click next page.
@@ -20,7 +20,7 @@
     var back_page = '{{ back_page }}';
     if (back_page != "") {
         var interval;
-        $("#remain_time").text(5);
+        $("#remain_time").text(10);
         interval = setInterval("remainTimer()", 1000);
         function remainTimer() {
             remain_second = $("#remain_time").text();
