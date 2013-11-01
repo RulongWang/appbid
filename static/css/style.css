@@ -1245,7 +1245,7 @@ fieldset {
 
     margin-left: 20px;
     padding:20px 10px;
-    width:500px;
+    width:580px;
     height:60px;
     border-bottom: 1px dashed #ddd;
 }
@@ -1265,6 +1265,8 @@ fieldset {
 
 #id_delivery_detail{
     border: 1px solid #00b0b0;
+    width:300px;
+    height:60px;
 }
 
 .help_text{
@@ -2314,4 +2316,7 @@ input[type="radio"]:checked:after {
     background: url("../images/minus.png") no-repeat left;
 }
 
-
+#id_path{
+    padding: 3px;
+    background: #ffffff;
+}
