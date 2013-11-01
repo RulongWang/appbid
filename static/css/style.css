@@ -2163,7 +2163,7 @@ input[type="radio"]:checked:after {
 /**************end of user settting ********************/
 
 .general_btn{
-    background-color: #08c;
+    background-color: #00b0b0;
     color:white;
     border:0;
     width:100px;
@@ -2313,7 +2313,9 @@ input[type="radio"]:checked:after {
 
 .remove{
     padding-left:30px;
+    height:30px;
     background: url("../images/minus.png") no-repeat left;
+    border: none;
 }
 
 #id_path{

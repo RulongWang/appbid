@@ -30,14 +30,14 @@
 
     {% if attachments != None %}
         {% for attachment in attachments %}
-        <div>
+        <div style="margin-top: 5px;">
             {{ attachment.name.label_tag }}
             {% if attachment.name.errors %}
-                <div>
+                <div style="padding:3px; color: #00b0b0;">
                 {{ attachment.name.errors }}
                 </div>
             {% endif %}
-            <a style="color: blue; font-weight: bold;" target="_new" href="{{ attachment.path.url }}">{{ attachment.name }}</a>
+            <a style="color:#00b0b0; font-weight: bold;" target="_new" href="{{ attachment.path.url }}">{{ attachment.name }}</a>
             {% if app_status != 3 %}
 <!--        TODO: It is better to use the image with delete meaning. -->
             <input id="{{ attachment.id }}" name="{{ attachment.name }}" type="button" class="remove" value="Remove" onclick="deleteAttachment(this)">
@@ -52,10 +52,10 @@
         </div>
         {{ attachmentError }}
         {% if attachmentForm %}
-            <div>
+            <div style="margin-top: 20px;">
 
                 {% if attachmentForm.path.errors %}
-                    <div>
+                    <div style="margin-top: 5px;padding:3px;">
                     {{ attachmentForm.path.errors }}
                     </div>
                 {% endif %}
