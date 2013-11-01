@@ -40,7 +40,7 @@
             <a style="color: blue; font-weight: bold;" target="_new" href="{{ attachment.path.url }}">{{ attachment.name }}</a>
             {% if app_status != 3 %}
 <!--        TODO: It is better to use the image with delete meaning. -->
-            <input id="{{ attachment.id }}" name="{{ attachment.name }}" type="button" value="Remove" onclick="deleteAttachment(this)">
+            <input id="{{ attachment.id }}" name="{{ attachment.name }}" type="button" class="remove" value="Remove" onclick="deleteAttachment(this)">
             {% endif %}
         </div>
         {% endfor %}
@@ -61,7 +61,7 @@
                 {% endif %}
                 {{ attachmentForm.path.label_tag }}
                 {{ attachmentForm.path }}
-                <input id="add" type="button" value="Add">
+                <input id="add" type="button" value="Add" >
             </div>
         {% endif %}
     </div>
@@ -105,7 +105,7 @@
                     '</div>'+
                 '{% endif %}'+
                 '{{ attachmentForm.path }}'+
-                '<input type="button" value="Remove" onclick="removeNode(this)">'+
+                '<input type="button" value="Remove"  class="remove" onclick="removeNode(this)">'+
             '</div>');
     });
 

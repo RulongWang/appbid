@@ -311,7 +311,6 @@ h1{
     color:#444;
     /*font:13px/16px  Calibri,Georgia,"Helvetica",Arial, Sans-serif;*/
     font:14px/18px sofiapro, "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
-    background: #ffffff;
     /*background:linear-gradient(top,#ffffff,#ffeffe);*/
     /*background:-moz-linear-gradient(top,#ffffff,#ffeffe);*/
     /*background:-webkit-linear-gradient(top,#ffffff,#ffeffe);*/
@@ -319,7 +318,9 @@ h1{
     /*color:#888888;*/
     /*background: coral;*/
     width:960px;
+    min-height: 500px;
     height:auto;
+
     clear:both;
     /*-moz-box-shadow: 0 0 6px #888;*/
     /*-webkit-box-shadow: 0 0 6px #888;*/
@@ -1375,14 +1376,16 @@ fieldset {
 #attachment input[type=button] {
     margin-top:10px;
     margin-left:30px;
-    background-color: #08c;
-    color:white;
+    color:#00b0b0;
     border:0;
     width:100px;
     height:30px;
     border-radius: 3px;
 
 }
+
+
+
 
 /**********************dashboard*******************/
 .inbox_list{
@@ -2280,6 +2283,7 @@ input[type="radio"]:checked:after {
     padding:5px 10px;
     height:20px;
     font-size: 15px;
+    color:#00b0b0;
     background: #efefef;
     text-align: center;
     vertical-align: middle;
@@ -2287,6 +2291,27 @@ input[type="radio"]:checked:after {
     background:linear-gradient(top,#ffffff,#efefef);
     background:-moz-linear-gradient(top,#ffffff,#efefef);
     background:-webkit-linear-gradient(top,#ffffff,#efefef);
+}
+
+
+.central_msg{
+    margin:50px 0 auto;
+    padding:50px;
+    width:600px;
+    color:#00b0b0;
+    text-align: center;
+    min-height: 500px;
+
+}
+
+
+#add{
+    background: url("../images/plus.png") no-repeat left;
+}
+
+.remove{
+    padding-left:30px;
+    background: url("../images/minus.png") no-repeat left;
 }
 
 
