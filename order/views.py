@@ -63,7 +63,6 @@ def checkout(request, *args, **kwargs):
                 form.save(commit=False)
                 serviceDetail.start_date = form.cleaned_data['start_date']
                 serviceDetail.end_date = form.cleaned_data['end_date']
-                serviceDetail.acceptgateway = acceptGateways[0]
                 serviceDetail.save()
 
                 if serviceDetail.actual_amount <= 0:
@@ -84,6 +83,7 @@ def checkout(request, *args, **kwargs):
                     initParam['L_DESC0'] = 'Service fee for App %(param1)s' % {'param1':app.app_name}
                     initParam['L_AMT0'] = serviceDetail.actual_amount
                     initParam['L_QTY0'] = 1
+                    initParam['gateway'] = 'paypal'
                     #The needed operation method in payment.
                     initParam['executeMethod'] = kwargs.get('executeMethod')
                     #The back page, when payment has error.
@@ -106,19 +106,26 @@ def updateServiceDetail(request, *args, **kwargs):
     initParam = kwargs.get('initParam')
     serviceDetail_id = initParam.get('serviceDetail_id')
     token = initParam.get('token')
-    if serviceDetail_id and token:
+    gateway = initParam.get('gateway')
+    if serviceDetail_id and token and gateway:
         serviceDetails = models.ServiceDetail.objects.filter(pk=serviceDetail_id)
         if serviceDetails:
-            serviceDetails[0].pay_token = token
-            serviceDetails[0].save()
-            log.info(_('ServiceDetail with id %(param1)s set pay_token to %(param2)s.')
-                     % {'param1': serviceDetail_id, 'param2': token})
-            return serviceDetails[0]
+            gateways = paymentModels.Gateway.objects.filter(name__iexact=gateway)
+            if gateways:
+                serviceDetails[0].gateway = gateways[0]
+                serviceDetails[0].pay_token = token
+                serviceDetails[0].save()
+                log.info(_('ServiceDetail with id %(param1)s set pay_token to %(param2)s, gateway to %(param3)s.')
+                         % {'param1': serviceDetail_id, 'param2': token, 'param3': gateway})
+                return serviceDetails[0]
+            else:
+                log.error(_('Token:%(param1)s, ServiceDetail ID:%(param2)s. Gateway %(param3)s no exists.')
+                          % {'param1': token, 'param2': serviceDetail_id, 'param3': gateway})
         else:
-            log.error(_('Token: %(param1)s, ServiceDetail with id %(param2)s no exists.')
+            log.error(_('Token:%(param1)s, ServiceDetail with id %(param2)s no exists.')
                       % {'param1': token, 'param2': serviceDetail_id})
     else:
-        log.error(_('ServiceDetail_id or Token no exists.'))
+        log.error(_('ServiceDetail_id or Token or Gateway no exists.'))
     return None
 
 
@@ -131,22 +138,15 @@ def getServiceInfo(request, *args, **kwargs):
         discount_rate = 1 - string.atof(common.getSystemParam(key='discount_rate', default=1))
         gateways = paymentModels.Gateway.objects.filter(name__iexact=gateway)
         if gateways:
-            acceptGateways = paymentModels.AcceptGateway.objects.filter(user_id=request.user.id,
-                                                                        type_id=gateways[0].id, is_active=True)
-            if acceptGateways:
-                serviceDetails = models.ServiceDetail.objects.filter(pay_token=token, is_payed=False,
-                                                                     acceptgateway_id=acceptGateways[0].id)
-                if serviceDetails:
-                    serviceItems = serviceDetails[0].serviceitem.all()
-                    return serviceDetails[0], serviceItems, discount_rate
-                else:
-                    log.error(_('User:%(param1)s, ServiceDetail with pay_token %(param2)s no exists.')
-                              % {'param1': request.user.username, 'param2': token})
+            serviceDetails = models.ServiceDetail.objects.filter(pay_token=token, is_payed=False, gateway_id=gateways[0].id)
+            if serviceDetails:
+                serviceItems = serviceDetails[0].serviceitem.all()
+                return serviceDetails[0], serviceItems, discount_rate
             else:
-                log.error(_('User:%(param1)s, Token: %(param2)s, acceptGateway no exists.')
+                log.error(_('User:%(param1)s, ServiceDetail with pay_token %(param2)s no exists.')
                           % {'param1': request.user.username, 'param2': token})
         else:
-            log.error(_('Gateway %(param1)s no exists.') % {'param1': gateway})
+            log.error(_('Token:%(param1)s. Gateway %(param2)s no exists.') % {'param1': token, 'param2': gateway})
     else:
         log.error(_('Token or Gateway no exists.'))
     return None
@@ -157,46 +157,41 @@ def checkServiceDetail(request, *args, **kwargs):
     initParam = kwargs.get('initParam')
     id = initParam.get('id')
     token = initParam.get('token')
-    if id and token:
-        serviceDetails = models.ServiceDetail.objects.filter(pk=id, pay_token=token, is_payed=False)
-        if serviceDetails:
-            return serviceDetails[0]
+    gateway = initParam.get('gateway')
+    if id and token and gateway:
+        gateways = paymentModels.Gateway.objects.filter(name__iexact=gateway)
+        if gateways:
+            serviceDetails = models.ServiceDetail.objects.filter(pk=id, pay_token=token, is_payed=False, gateway_id=gateways[0].id)
+            if serviceDetails:
+                return serviceDetails[0]
+            else:
+                log.error(_('User:%(param1)s, ServiceDetail with pay_token %(param2)s no exists.')
+                          % {'param1': request.user.username, 'param2': token})
         else:
-            log.error(_('User:%(param1)s, ServiceDetail with pay_token %(param2)s no exists.')
-                      % {'param1': request.user.username, 'param2': token})
+            log.error(_('User:%(param1)s, pay_token:%(param2)s. Gateway no %(param3)s exists.')
+                      % {'param1': request.user.username, 'param2': token, 'param3': gateway})
     else:
-        log.error(_('Token or ServiceDetail ID no exists.'))
+        log.error(_('Token or ServiceDetail ID or Gateway no exists.'))
     return None
 
 
 def executeCheckOut(request, *args, **kwargs):
     """The operation after user payment successfully."""
     initParam = kwargs.get('initParam')
+    id = initParam.get('serviceDetail_id')
     token = initParam.get('token')
-    gateway = initParam.get('gateway')
-    if token and gateway:
-        gateways = paymentModels.Gateway.objects.filter(name__iexact=gateway)
-        if gateways:
-            acceptGateways = paymentModels.AcceptGateway.objects.filter(user_id=request.user.id,
-                                                                        type_id=gateways[0].id, is_active=True)
-            if acceptGateways:
-                serviceDetails = models.ServiceDetail.objects.filter(pay_token=token, is_payed=False,
-                                                                     acceptgateway_id=acceptGateways[0].id)
-                if serviceDetails:
-                    serviceDetail = checkOutSuccess(request, serviceDetail=serviceDetails[0])
-                    log.info(_('User:%(param1)s, ServiceDetail with id %(param2)s, pay_token %(param3)s is payed.')
-                             % {'param1': request.user.username, 'param2': serviceDetail.id, 'param3': token})
-                    return serviceDetail
-                else:
-                    log.error(_('User:%(param1)s, ServiceDetail with pay_token %(param2)s no exists.')
-                              % {'param1': request.user.username, 'param2': token})
-            else:
-                log.error(_('User:%(param1)s, Token: %(param2)s, acceptGateway no exists.')
-                          % {'param1': request.user.username, 'param2': token})
+    if token:
+        serviceDetails = models.ServiceDetail.objects.filter(pk=id, pay_token=token, is_payed=False)
+        if serviceDetails:
+            serviceDetail = checkOutSuccess(request, serviceDetail=serviceDetails[0])
+            log.info(_('User:%(param1)s, ServiceDetail with id %(param2)s, pay_token %(param3)s is payed.')
+                     % {'param1': request.user.username, 'param2': serviceDetail.id, 'param3': token})
+            return serviceDetail
         else:
-            log.error(_('Gateway %(param1)s no exists.') % {'param1': gateway})
+            log.error(_('User:%(param1)s, ServiceDetail with pay_token %(param2)s no exists.')
+                      % {'param1': request.user.username, 'param2': token})
     else:
-        log.error(_('Token or Gateway no exists.'))
+        log.error(_('Token no exists.'))
     return None
 
 

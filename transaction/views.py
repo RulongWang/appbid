@@ -212,8 +212,8 @@ def onePriceBuy(request, *args, **kwargs):
             txn_fee_pct = string.atof(common.getSystemParam(key='txn_fee_pct', default=0.01))
             initParam['currency'] = app.currency.currency
             initParam['appsWalk_account'] = settings.APPSWALK_ACCOUNT
-            gateways = paymentModels.Gateway.objects.filter(name__iexact='paypal')
-            initParam['gateway'] = gateways[0]
+            initParam['gateway'] = 'paypal'
+            gateways = paymentModels.Gateway.objects.filter(name__iexact=initParam.get('gateway'))
             acceptGateways = paymentModels.AcceptGateway.objects.filter(user_id=transaction.seller.id, type_id=gateways[0].id, is_active=True)
             initParam['seller_account'] = acceptGateways[0].value
             initParam['appsWalk_amount'] = app.one_price * txn_fee_pct
@@ -257,12 +257,17 @@ def updateTransaction(request, *args, **kwargs):
     if txn_id and pay_key and gateway:
         transactions = models.Transaction.objects.filter(pk=txn_id)
         if transactions:
-            transactions[0].gateway = gateway
-            transactions[0].pay_key = pay_key
-            transactions[0].save()
-            log.info(_('Transaction with id %(param1)s set pay_key to %(param2)s, gateway to %(param3)s.')
-                     % {'param1': txn_id, 'param2': pay_key, 'param3': gateway})
-            return transactions[0]
+            gateways = paymentModels.Gateway.objects.filter(name__iexact=gateway)
+            if gateways:
+                transactions[0].gateway = gateways[0]
+                transactions[0].pay_key = pay_key
+                transactions[0].save()
+                log.info(_('Transaction with id %(param1)s set pay_key to %(param2)s, gateway to %(param3)s.')
+                         % {'param1': txn_id, 'param2': pay_key, 'param3': gateway})
+                return transactions[0]
+            else:
+                log.error(_('PayKey: %(param1)s, Transaction ID: %(param2)s. Gateway %(param3)s no exists.')
+                      % {'param1': pay_key, 'param2': txn_id, 'param1': gateway})
         else:
             log.error(_('PayKey: %(param1)s, Transaction with id %(param2)s no exists.')
                       % {'param1': pay_key, 'param2': txn_id})
@@ -290,8 +295,9 @@ def executePay(request, *args, **kwargs):
     """The operation after buyer payed successfully."""
     initParam = kwargs.get('initParam')
     txn_id = initParam.get('transaction_id')
-    if txn_id:
-        transactions = models.Transaction.objects.filter(pk=txn_id)
+    pay_key = initParam.get('pay_key')
+    if txn_id and pay_key:
+        transactions = models.Transaction.objects.filter(pk=txn_id, pay_key=pay_key)
         if transactions:
             initParam['transaction'] = transactions[0]
             if transactions[0].status == 1:
@@ -304,7 +310,7 @@ def executePay(request, *args, **kwargs):
         else:
             log.error(_('The transaction with id %(param1)s does not exist.') % {'param1': txn_id})
     else:
-        log.error('Transaction_ID no exists.')
+        log.error('Transaction_ID or pay_key no exists.')
     return None
 
 
@@ -322,8 +328,8 @@ def executeOnePriceBuy(request, *args, **kwargs):
         transaction.seller_account = acceptGateways[0].value
         transaction.appswalk_account = settings.APPSWALK_ACCOUNT
         txn_fee_pct = string.atof(common.getSystemParam(key='txn_fee_pct', default=0.01))
-        transaction.appswalk_price = transaction.price  * txn_fee_pct
-        transaction.seller_price = transaction.price  * (1 - txn_fee_pct)
+        transaction.appswalk_price = transaction.price * txn_fee_pct
+        transaction.seller_price = transaction.price * (1 - txn_fee_pct)
         transaction.save()
 
         #Log transaction
@@ -364,8 +370,8 @@ def executeBuyerPay(request, *args, **kwargs):
         transaction.seller_account = acceptGateways[0].value
         transaction.appswalk_account = settings.APPSWALK_ACCOUNT
         txn_fee_pct = string.atof(common.getSystemParam(key='txn_fee_pct', default=0.01))
-        transaction.appswalk_price = transaction.price  * txn_fee_pct
-        transaction.seller_price = transaction.price  * (1 - txn_fee_pct)
+        transaction.appswalk_price = transaction.price * txn_fee_pct
+        transaction.seller_price = transaction.price * (1 - txn_fee_pct)
         transaction.save()
 
         #Log transaction

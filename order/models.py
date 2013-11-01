@@ -38,7 +38,7 @@ class ServiceDetail(models.Model):
     serviceitem = models.ManyToManyField(ServiceItem, null=True)
 
     #For user payment.
-    acceptgateway = models.ForeignKey(paymentModels.AcceptGateway, null=True, blank=True)
+    gateway = models.ForeignKey(paymentModels.Gateway, null=True, blank=True)
     pay_token = models.CharField(max_length=255, null=True, blank=True)
 
 

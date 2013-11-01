@@ -18,6 +18,8 @@ if getattr(settings, "PAYPAL_DEBUG", False):
     AP_RETURNURL = "https://beta.appswalk.com/payment/paypal_ap_return"
     AP_CANCELURL = "https://beta.appswalk.com/payment/paypal_cancel"
     AP_REDIRECTURL = "https://www.sandbox.paypal.com/cgi-bin/webscr?cmd=_ap-payment&paykey="
+    # EC_RETURNURL = "http://127.0.0.1:8000/payment/paypal_return"
+    # EC_CANCELURL = "http://127.0.0.1:8000/payment/paypal_cancel"
     # AP_RETURNURL = "http://127.0.0.1:8000/payment/paypal_ap_return"
     # AP_CANCELURL = "http://127.0.0.1:8000/payment/paypal_cancel"
 else:
@@ -46,6 +48,9 @@ def payment(request, *args, **kwargs):
             if executeMethod:
                 initParam['token'] = p.token
                 if executeMethod(request, initParam=initParam):
+                    if request.session.get('gateway', None):
+                        del request.session['gateway']
+                    request.session['gateway'] = initParam.get('gateway')
                     redirect_url = p.paypal_url()
                     return redirect(redirect_url)
                 else:
@@ -83,7 +88,6 @@ def payPalReturn(request, *args, **kwargs):
     payerID = request.GET.get('PayerID')
     initParam['token'] = token
     initParam['payerid'] = payerID
-    initParam['gateway'] = 'paypal'
     if token and payerID:
         p = driver.PayPal()
         res_dict = p.GetExpressCheckoutDetailsInfo(EC_RETURNURL, EC_CANCELURL, token)
@@ -92,15 +96,21 @@ def payPalReturn(request, *args, **kwargs):
             #Show the list of service detail to user.
             executeMethod = kwargs.pop('executeMethod', None)
             if executeMethod:
-                serviceDetail, serviceItems, discount_rate = executeMethod(request, initParam=initParam)
-                if serviceDetail and serviceItems:
-                    initParam['serviceDetail'] = serviceDetail
-                    initParam['serviceItems'] = serviceItems
-                    initParam['discount_rate'] = discount_rate
-                    return render_to_response('payment/paypal_return.html', initParam, context_instance=RequestContext(request))
+                gateway = request.session.get('gateway', None)
+                if gateway:
+                    initParam['gateway'] = gateway
+                    serviceDetail, serviceItems, discount_rate = executeMethod(request, initParam=initParam)
+                    if serviceDetail and serviceItems:
+                        initParam['serviceDetail'] = serviceDetail
+                        initParam['serviceItems'] = serviceItems
+                        initParam['discount_rate'] = discount_rate
+                        return render_to_response('payment/paypal_return.html', initParam, context_instance=RequestContext(request))
+                    else:
+                        log.error(_('Token %(param1)s, PayerID: %(param2)s, Execute method %(param3)s failed.')
+                                  % {'param1': token, 'param2': payerID, 'param3': executeMethod.__name__})
                 else:
-                    log.error(_('Token %(param1)s, PayerID: %(param2)s, Execute method %(param3)s failed.')
-                              % {'param1': token, 'param2': payerID, 'param3': executeMethod.__name__})
+                    log.error(_('Token %(param1)s, PayerID: %(param2)s. Gateway no exists in request.session.')
+                          % {'param1': token, 'param2': payerID})
             else:
                 log.error(_('Token %(param1)s, PayerID: %(param2)s, ExecuteMethod does not exist.')
                           % {'param1': token, 'param2': payerID})
@@ -111,6 +121,8 @@ def payPalReturn(request, *args, **kwargs):
     else:
         log.error(_('Token or PayerID no exists.'))
 
+    if request.session.get('gateway', None):
+        del request.session['gateway']
     success_page = request.session.get('success_page', None)
     back_page = request.session.get('back_page', None)
     if success_page:
@@ -137,51 +149,59 @@ def payPalDoCheckOut(request, *args, **kwargs):
     payerID = request.GET.get("PayerID")
     initParam['id'] = id
     initParam['token'] = token
-    initParam['payerid'] = payerID
-    initParam['gateway'] = 'paypal'
     if token and payerID and id:
         #Check and get Service detail information
         checkMethod = kwargs.pop('checkMethod', None)
         if checkMethod:
-            serviceDetail = checkMethod(request, initParam=initParam)
-            if serviceDetail:
-                amount = serviceDetail.actual_amount
-                currency = serviceDetail.app.currency.currency
-                result, response = utils.process_payment_request(amount, currency, token, payerID)
-                if result:
-                    #Do something after payment success.
-                    executeMethod = kwargs.pop('executeMethod', None)
-                    if executeMethod:
-                        if executeMethod(request, initParam=initParam):
-                            success_page = request.session.get('success_page', None)
-                            back_page = request.session.get('back_page', None)
-                            if back_page:
-                                del request.session['back_page']
-                            if success_page:
-                                del request.session['success_page']
-                                initParam['success_page'] = success_page
-                            initParam['msg'] = _('The payment success. Please check your paypal account.')
-                            log.info(_('Seller %(param1)s has paid service fee with service detail id %(param2)s.')
-                                      % {'param1': request.user.username, 'param2': serviceDetail.id})
-                            return render_to_response("payment/paypal_success.html", initParam, context_instance=RequestContext(request))
+            gateway = request.session.get('gateway', None)
+            if gateway:
+                del request.session['gateway']
+                initParam['gateway'] = gateway
+                serviceDetail = checkMethod(request, initParam=initParam)
+                if serviceDetail:
+                    amount = serviceDetail.actual_amount
+                    currency = serviceDetail.app.currency.currency
+                    result, response = utils.process_payment_request(amount, currency, token, payerID)
+                    if result:
+                        #Do something after payment success.
+                        executeMethod = kwargs.pop('executeMethod', None)
+                        if executeMethod:
+                            initParam['serviceDetail_id'] = serviceDetail.id
+                            if executeMethod(request, initParam=initParam):
+                                success_page = request.session.get('success_page', None)
+                                back_page = request.session.get('back_page', None)
+                                if back_page:
+                                    del request.session['back_page']
+                                if success_page:
+                                    del request.session['success_page']
+                                    initParam['success_page'] = success_page
+                                initParam['msg'] = _('The payment success. Please check your paypal account.')
+                                log.info(_('Seller %(param1)s has paid service fee with service detail id %(param2)s.')
+                                          % {'param1': request.user.username, 'param2': serviceDetail.id})
+                                return render_to_response("payment/paypal_success.html", initParam, context_instance=RequestContext(request))
+                            else:
+                                log.error(_('Token %(param1)s, PayerID: %(param2)s, Execute method %(param3)s failed.')
+                                          % {'param1': token, 'param2': payerID, 'param3': executeMethod.__name__})
                         else:
-                            log.error(_('Token %(param1)s, PayerID: %(param2)s, Execute method %(param3)s failed.')
-                                      % {'param1': token, 'param2': payerID, 'param3': executeMethod.__name__})
+                            log.error(_('Token %(param1)s, PayerID: %(param2)s, ExecuteMethod does not exist.')
+                                      % {'param1': token, 'param2': payerID})
                     else:
-                        log.error(_('Token %(param1)s, PayerID: %(param2)s, ExecuteMethod does not exist.')
-                                  % {'param1': token, 'param2': payerID})
+                        log.error(_('Token %(param1)s, PayerID: %(param2)s, %(param3)s : %(param4)s.')
+                                  % {'param1': token, 'param2': payerID, 'param3': response.error, 'param4': response.error_msg})
                 else:
-                    log.error(_('Token %(param1)s, PayerID: %(param2)s, %(param3)s : %(param4)s.')
-                              % {'param1': token, 'param2': payerID, 'param3': response.error, 'param4': response.error_msg})
+                    log.error(_('Token %(param1)s, PayerID: %(param2)s, User: %(param3)s, Execute method %(param4)s failed.')
+                              % {'param1': token, 'param2': payerID, 'param3': request.user.username, 'param4': checkMethod.__name__})
             else:
-                log.error(_('Token %(param1)s, PayerID: %(param2)s, User: %(param3)s, Execute method %(param4)s failed.')
-                          % {'param1': token, 'param2': payerID, 'param3': request.user.username, 'param4': checkMethod.__name__})
+                log.error(_('Token %(param1)s, PayerID: %(param2)s, Gateway no exists in request.session.')
+                          % {'param1': token, 'param2': payerID})
         else:
             log.error(_('Token %(param1)s, PayerID: %(param2)s, CheckMethod does not exist.')
                       % {'param1': token, 'param2': payerID})
     else:
         log.error(_('Token or PayerID no exists.'))
 
+    if request.session.get('gateway', None):
+        del request.session['gateway']
     success_page = request.session.get('success_page', None)
     back_page = request.session.get('back_page', None)
     if success_page:
@@ -205,6 +225,10 @@ def payPalCancel(request, *args, **kwargs):
     initParam = {}
     error_msg = _("You cancel the payment to finish performing PayPal payment process. We don't charge your money.")
     initParam['error_msg'] = error_msg
+
+    if request.session.get('gateway', None):
+        del request.session['gateway']
+
     success_page = request.session.get('success_page', None)
     back_page = request.session.get('back_page', None)
     if success_page:

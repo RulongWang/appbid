@@ -82,6 +82,10 @@ def createBid(request, *args, **kwargs):
                         initParam['biddingForm'] = biddingForm
         initParam['sender'] = request.user
         initParam['receiver'] = app.publisher
+        transactions = txnModels.Transaction.objects.filter(app_id=app.id).exclude(status=1)
+        if transactions:
+            initParam['transaction'] = transactions[0]
+
         sendMessage(request, initParam=initParam)
         return render_to_response('bid/bid_create.html', initParam, context_instance=RequestContext(request))
     raise Http404
@@ -115,12 +119,10 @@ def bidList(request, *args, **kwargs):
             info_list.extend(buyer_map.get(buyer.id))
             bid_info_list.append(info_list)
         initParam['bid_info_list'] = bid_info_list
-
-        if bids:
-            #Show app transaction status to buyer or seller
-            transactions = txnModels.Transaction.objects.filter(app_id=app.id, seller_id=app.publisher.id).exclude(status=1)
-            if transactions:
-                initParam['transaction'] = transactions[0]
+        #Show app transaction status to buyer or seller
+        transactions = txnModels.Transaction.objects.filter(app_id=app.id).exclude(status=1)
+        if transactions:
+            initParam['transaction'] = transactions[0]
 
         return render_to_response('bid/bid_list.html', initParam, context_instance=RequestContext(request))
     raise Http404

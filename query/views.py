@@ -13,6 +13,7 @@ from django.contrib.auth.models import User
 
 from appbid import settings
 from appbid import models as appModels
+from transaction import models as txnModels
 from dashboard import models as dashboardModels
 from usersetting import models as userSettingModels
 from utilities import common
@@ -163,6 +164,9 @@ def getAppDetail(request, *args, **kwargs):
         q3 = request.GET.get('q3')
         if q1 and q2 and q3:
             initParam['query_tile'] = [q1, q2, q3]
+        transactions = txnModels.Transaction.objects.filter(app_id=app.id).exclude(status=1)
+        if transactions:
+            initParam['transaction'] = transactions[0]
 
         userPublicProfiles = userSettingModels.UserPublicProfile.objects.filter(user_id=app.publisher.id)
         if userPublicProfiles and userPublicProfiles[0].thumbnail:

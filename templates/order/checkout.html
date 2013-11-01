@@ -24,7 +24,7 @@
             selectOtherMonths: true,
             changeMonth: true,
             changeYear: true,
-            dateFormat: 'yy-mm-dd hh:mm:ss'
+            dateFormat: 'yy-mm-dd'//'yy-mm-dd hh:mm:ss'
         });
     }
   });
@@ -47,6 +47,7 @@
             Actual Payment Fee: {{ form.actual_amount.value|floatformat|default:0 }}{{ currency }}
             <input id="id_actual_amount" name="actual_amount" type="hidden" value="{{ form.actual_amount.value }}" />
         </div>
+        <div style="color: blue;">Add Button : Whether start service after payment finish.</div>
         <div>
             Service Begin Date: <input id="id_start_date" name="start_date" type="text" value="{{ form.start_date.value|date:'Y-m-d H:i:s' }}" />
             {% if begin_date %}
@@ -83,7 +84,7 @@
                 if (begin_date_str == "" && new Date().format('yyyy-MM-dd hh:mm:ss') > end_date.format('yyyy-MM-dd hh:mm:ss')) {
                     $("#end_date_str").val("");
                     $("#id_end_date").val("");
-                    $("#order_error").html("Service begin date should be later than today.");//TODO:it will be set in message.properties.
+                    $("#order_error").html("Service begin date should be later than current time.");//TODO:it will be set in message.properties.
                     return false;
                 }
                 var service_expiry_date = {{ service_expiry_date }};
