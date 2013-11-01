@@ -25,6 +25,7 @@ urlpatterns = patterns('',
     url(r'^transaction/', include('transaction.urls', namespace='transaction')),
     url(r'^social-auth/', include('social_auth.urls')),
     url(r'^auth/', include('auth.urls', namespace='auth')),
+    url(r'^', include('favicon.urls')),
 )
 # urlpatterns += patterns('django.contrib.flatpages.views',
 #     url(r'^about-us/$', 'flatpage', {'url': '/about-us/'}, name='about'),

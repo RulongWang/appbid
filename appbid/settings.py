@@ -157,6 +157,7 @@ INSTALLED_APPS = (
     'transaction',
     'paypal',
     'auth',
+    'favicon',
 )
 
 try:
@@ -273,3 +274,5 @@ except Exception, e:
 
 #flat page setting
 SITE_ID = 1
+
+FAVICON_PATH = STATIC_URL + 'images/favicon.ico'

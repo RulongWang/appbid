@@ -53,3 +53,6 @@ http://blog.creke.net/762.html
 need run command: python manage.py migrate
 
 
+#installed https://pypi.python.org/pypi/django-favicon
+
+pip install django-favicon
