@@ -5,25 +5,12 @@
     <div class="dash_title">Choose service</div>
     <form action="" method="post">
     {% csrf_token %}
-    <div class="field_block_payment">
-        <div class="left" style="font-weight: bold;">Order Number:
-            {% if serviceDetail %}
-                <input id="sn" type="hidden" name="sn" value="{{ serviceDetail.sn }}">
-                {{ serviceDetail.sn }}
-            {% endif %}
-        </div>
-        <div class="right" style="width:100px;">
-        <label>Total:</label><label id="total">
-        {{ amount|default:0 }}
-        </label>
-        </div>
-    </div>
     {% for serviceItem in serviceItems %}
         <div class="field_block_payment">
 
             <div class="left" style="width:300px;">
             <div style="width:300px:height:20px; font-weight: bold;"> {{ serviceItem.short_text }}</div>
-            <div style="width:300px:height:40px;">{{ serviceItem.long_text }}</div>
+            <div style="width:300px:height:40px; font-size: 12px;">{{ serviceItem.long_text }}</div>
              </div>
              <div class="right" style="width:50px">
              {{ serviceItem.price }}
@@ -41,6 +28,19 @@
         </div>
          <div class="clear"></div>
     {% endfor %}
+    <div class="field_block_payment">
+        <div class="left" style="font-weight: bold;">Order Number:
+            {% if serviceDetail %}
+                <input id="sn" type="hidden" name="sn" value="{{ serviceDetail.sn }}">
+                {{ serviceDetail.sn }}
+            {% endif %}
+        </div>
+        <div class="right" style="width:100px;">
+        <label>Total:</label><label id="total">
+        {{ amount|default:0 }}
+        </label>
+        </div>
+    </div>
 
     {% if serviceDetail == None or serviceDetail and serviceDetail.is_payed != True %}
     <div class="right" style="width:250px;">
