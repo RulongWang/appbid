@@ -64,7 +64,7 @@
                     <a  href="{% url 'seller:appStore_link' app.id %}">{{ app.app_name }}</a>
                 </div>
                 <div class="app_list_attr">
-                    Modified:{{ app.last_modify|date:"Y-m-d G:i" }}
+                    Last modified:{{ app.last_modify|date:"Y-m-d G:i" }}
                 </div>
                 </li>
                 {% endfor %}

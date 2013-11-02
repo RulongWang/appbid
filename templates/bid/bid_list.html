@@ -41,6 +41,8 @@
                                 <input id="id_trade" type="button" value="Action" />
                             </a>
                         </span>
+                    {% elif transaction and transaction.buy_type == 1 %}
+                        <span>&nbsp;</span>
                     {% else %}
                         <span>
                             <a href="{% url 'transaction:trade_now' app.id bid_info.0.buyer.id bid_info.0.id %}">
