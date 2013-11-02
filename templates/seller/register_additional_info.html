@@ -48,7 +48,7 @@
     {% if app_status != 3 %}
     <div id="attachment">
          <div>
-            <label for="attachment">Add attachment</label> <span style="font-size: 12px;">(Only accepts  <b>txt/pdf/image</b> type)</span>
+            <label for="attachment">Add attachment</label> <span style="font-size: 12px;">(Only accepts  <b>txt/pdf/image</b> type. Max size < {{ attachmentSize }}M.)</span>
         </div>
         {{ attachmentError }}
         {% if attachmentForm %}

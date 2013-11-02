@@ -26,7 +26,7 @@
                                 <div style="width:50px;padding: 5px;float:left;">
                                 <img style="width: 40px;height: 40px" src="{{ form.thumbnail.value.url }}" />
                                 </div>
-                                <input id="id_thumbnail" name="thumbnail" type="file" />
+                                <input id="id_thumbnail" name="thumbnail" type="file" />(Max size < 1M)
                             {% else %}
                                 {{ form.thumbnail }}
                             {% endif %}

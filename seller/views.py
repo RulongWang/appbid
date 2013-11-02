@@ -43,6 +43,8 @@ def registerApp(request, *args, **kwargs):
         initParam['app_status'] = app.status
         #For Additional Info
         if flag == 3:
+            attachmentSize = string.atoi(common.getSystemParam(key='attachment_size', default=50000000))
+            initParam['attachmentSize'] = attachmentSize / 1000000
             initParam['attachments'] = appModels.Attachment.objects.filter(app_id=app.id)
         #For App Verification
         if flag == 7:

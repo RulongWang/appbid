@@ -216,21 +216,31 @@ def userPublicProfile(request, *args, **kwargs):
             userPublicProfile = userPublicProfileForm.save(commit=False)
             thumbnail = request.FILES.get('thumbnail')
             if thumbnail:
-                path = '/'.join([settings.MEDIA_ROOT, str(user.id)])
-                if os.path.exists(path) is False:
-                    os.makedirs(path)
-                if userPublicProfile.thumbnail:
-                    path = '/'.join([settings.MEDIA_ROOT, str(userPublicProfile.thumbnail)])
-                    if os.path.exists(path):
-                        os.remove(path)
-                userPublicProfile.thumbnail = thumbnail
-                userPublicProfileForm = forms.UserPublicProfileForm(instance=userPublicProfile)
-            userPublicProfile.save()
-            if thumbnail:
-                #Shrink image to (50*50) for user thumbnail.
-                path = '/'.join([settings.MEDIA_ROOT, str(userPublicProfile.thumbnail)])
-                common.imageThumbnail(path=path, size=(50, 50))
-            initParam['account_msg'] = _('The public profile has been updated.')
+                if thumbnail.content_type.startswith('image'):
+                    if thumbnail.size > 1000000:
+                        initParam['account_msg'] = _('The image size is more than 1M.')
+                    else:
+                        path = '/'.join([settings.MEDIA_ROOT, str(user.id)])
+                        if os.path.exists(path) is False:
+                            os.makedirs(path)
+                        if userPublicProfile.thumbnail:
+                            path = '/'.join([settings.MEDIA_ROOT, str(userPublicProfile.thumbnail)])
+                            if os.path.exists(path):
+                                os.remove(path)
+                        userPublicProfile.thumbnail = thumbnail
+                        userPublicProfileForm = forms.UserPublicProfileForm(instance=userPublicProfile)
+                        userPublicProfile.save()
+                        if thumbnail:
+                            #Shrink image to (50*50) for user thumbnail.
+                            path = '/'.join([settings.MEDIA_ROOT, str(userPublicProfile.thumbnail)])
+                            common.imageThumbnail(path=path, size=(50, 50))
+                        initParam['account_msg'] = _('The public profile has been updated.')
+                else:
+                    initParam['account_msg'] =  _('The file type of %(param)s does not supported.') % {'param': thumbnail.name}
+            else:
+                userPublicProfile.save()
+                initParam['account_msg'] = _('The public profile has been updated.')
+
     initParam['form'] = userPublicProfileForm
     return render_to_response("usersetting/publicprofile.html", initParam, context_instance=RequestContext(request))
 

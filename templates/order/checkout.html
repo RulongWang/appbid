@@ -41,7 +41,7 @@
             <input id="id_amount" name="amount" type="hidden" value="{{ form.amount.value }}" />
         </div>
         <div>
-            Discount Rate:{{ discount_rate|floatformat }}
+            Discount Rate:{{ discount_rate }}
         </div>
         <div>
             Actual Payment Fee: {{ form.actual_amount.value|floatformat|default:0 }}{{ currency }}
