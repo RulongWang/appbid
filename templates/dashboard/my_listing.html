@@ -16,7 +16,7 @@
                    <div class="app_list">{{ app.0.last_modify|date:"Y-m-d H:i"|default:"N/A" }}</div>
                    {% ifequal app.0.is_verified True %}
                        <div class="app_list">{{ app.0.is_verified }}</div>
-                       <div class="app_list"><a href="{% url 'seller:payment' app.0.id '' %}">Payment</a></div>
+                       <div class="app_list"><a href="{% url 'seller:payment' app.0.id '' %}">UnPaid</a></div>
                    {% else %}
                        <div class="app_list"><a href="{% url 'seller:verification' app.0.id %}">Verification</a></div>
                        <div class="app_list" style="color: red;">Payment after verified.</div>

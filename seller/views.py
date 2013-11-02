@@ -398,15 +398,17 @@ def saveService(request, form, model, *args, **kwargs):
         serviceDetail.serviceitem.clear()
     else:
         #Check if there is the unpaid payment, before create the new one.
-        if model.servicedetail_set.filter(is_payed=False):
-            initParam['payment_msg'] = _('You have the unpaid payment.')
-            return None
-        #Create the new service detail.
-        serviceDetail = orderModels.ServiceDetail()
-        serviceDetail.app_id = model.id
-        serviceDetail.is_payed = False
-        serviceDetail.sn = datetime.datetime.now().strftime('%Y%m%d%H%M%S')
-        serviceDetail.save()
+        serviceDetails = model.servicedetail_set.filter(is_payed=False)
+        if serviceDetails:
+            serviceDetail = serviceDetails[0]
+            serviceDetail.serviceitem.clear()
+        else:
+            #Create the new service detail.
+            serviceDetail = orderModels.ServiceDetail()
+            serviceDetail.app_id = model.id
+            serviceDetail.is_payed = False
+            serviceDetail.sn = datetime.datetime.now().strftime('%Y%m%d%H%M%S')
+            serviceDetail.save()
 
     #Save service items
     amount = 0
