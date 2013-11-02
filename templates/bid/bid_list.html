@@ -35,7 +35,7 @@
             {% if app.publisher.id == request.user.id %}
                 {% ifequal forloop.counter 1 %}
                 <div>
-                    {% if transaction %}
+                    {% if transaction and transaction.buy_type == 2 %}
                         <span>
                             <a href="{% url 'transaction:trade_action' 'sell' app.id request.user.id %}">
                                 <input id="id_trade" type="button" value="Action" />
@@ -51,12 +51,11 @@
                 </div>
                 {% endifequal %}
             {% else %}
-                {% if transaction and bid_info.0.buyer.id == transaction.buyer.id and transaction.price == bid_info.0.price %}
+                {% if transaction and bid_info.0.buyer.id == transaction.buyer.id and transaction.buy_type == 2 and transaction.price == bid_info.0.price %}
                     <div>
                         {% ifequal request.user.id transaction.buyer.id %}
                             {% ifequal transaction.status 2 %}
                                 <span>
-                                    <!-- TODO: will change to pay url for buyer. -->
                                     <a href="{% url 'transaction:trade_action' 'buy' app.id request.user.id %}">
                                         <input id="id_trade" type="button" value="Pay now" />
                                     </a>
@@ -68,10 +67,6 @@
                                     </a>
                                 </span>
                             {% endifequal %}
-                        {% else %}
-                            <span style="color:white; background-color: green;">
-                                {% ifequal transaction.status 4 %}Traded{% else %}Trading{% endifequal %}
-                            </span>
                         {% endifequal %}
                     </div>
                 {% endif %}

@@ -39,6 +39,7 @@ def initTransaction(request, *args, **kwargs):
             transaction.buyer = None
             transaction.price = None
             transaction.end_time = None
+            transaction.buy_type = None
             transaction.seller_price = None
             transaction.appswalk_price = None
             transaction.gateway = None
@@ -93,6 +94,7 @@ def tradeNow(request, *args, **kwargs):
             transaction.price = bid.price
             paid_expiry_date = string.atoi(common.getSystemParam(key='paid_expiry_date', default=7))
             transaction.end_time = datetime.datetime.now() + datetime.timedelta(days=paid_expiry_date)
+            transaction.buy_type = 2
             transaction.save()
             #Log transaction
             transactionsLog = models.TransactionLog()
@@ -101,6 +103,7 @@ def tradeNow(request, *args, **kwargs):
             transactionsLog.seller = request.user
             transactionsLog.buyer = user
             transactionsLog.price = bid.price
+            transactionsLog.buy_type = transaction.buy_type
             transactionsLog.save()
             #Update app status and end_date
             if app.status == 2:
@@ -123,15 +126,18 @@ def tradeAction(request, *args, **kwargs):
     """Query trade status."""
     initParam = {}
     user_id = string.atoi(kwargs.get('user_id'))
+    app_id = kwargs.get('app_id')
     action = kwargs.get('action')
     if 'sell' == action and user_id == request.user.id:
-        transaction = get_object_or_404(models.Transaction, app_id=kwargs.get('app_id'), seller_id=user_id)
+        transaction = get_object_or_404(models.Transaction, app_id=app_id, seller_id=user_id)
     elif 'buy' == action and user_id == request.user.id:
-        transaction = get_object_or_404(models.Transaction, app_id=kwargs.get('app_id'), buyer_id=user_id)
+        transaction = get_object_or_404(models.Transaction, app_id=app_id, buyer_id=user_id)
+        if transaction.status == 2:
+            token = common.getToken(key='token_length', default=30)
+            initParam['pay_url'] = '/'.join([common.getHttpHeader(request), 'transaction/buyer-pay', str(app_id), str(transaction.id), token])
     else:
         raise Http404
 
-    initParam['action'] = action
     initParam['transaction'] = transaction
     if transaction.status == 2 or transaction.status == 3:
         initParam['time_remaining'] = time.mktime(time.strptime(str(transaction.end_time), '%Y-%m-%d %H:%M:%S'))
@@ -198,6 +204,7 @@ def onePriceBuy(request, *args, **kwargs):
                 transaction.seller = app.publisher
             transaction.buyer = request.user
             transaction.price = app.one_price
+            transaction.buy_type = 1
             transaction.save()
 
             #Log transaction
@@ -206,6 +213,7 @@ def onePriceBuy(request, *args, **kwargs):
             transactionsLog.status = 1
             transactionsLog.buyer = request.user
             transactionsLog.price = app.one_price
+            transactionsLog.buy_type = transaction.buy_type
             transactionsLog.save()
 
             #Buyser pay for app.
@@ -237,15 +245,37 @@ def onePriceBuy(request, *args, **kwargs):
 @transaction.commit_on_success
 @login_required(login_url='/usersetting/home/')
 def buyerPay(request, *args, **kwargs):
-    """Buyer pay, after seller begin to trade.."""
+    """Buyer pay, after seller begin to trade."""
+    initParam = {}
     app_id = kwargs.get('app_id')
     txn_id = kwargs.get('txn_id')
     #TODO:Can use or verify it later.
     token_id = kwargs.get('token')
     transaction = get_object_or_404(models.Transaction, pk=txn_id, app_id=app_id, buyer_id=request.user.id, status=2)
+    app = transaction.app
 
-    #TODO:invoke pay method
-    return None
+    #Buyser pay for app.
+    txn_fee_pct = string.atof(common.getSystemParam(key='txn_fee_pct', default=0.01))
+    initParam['currency'] = app.currency.currency
+    initParam['appsWalk_account'] = settings.APPSWALK_ACCOUNT
+    initParam['gateway'] = 'paypal'
+    gateways = paymentModels.Gateway.objects.filter(name__iexact=initParam.get('gateway'))
+    acceptGateways = paymentModels.AcceptGateway.objects.filter(user_id=transaction.seller.id, type_id=gateways[0].id, is_active=True)
+    initParam['seller_account'] = acceptGateways[0].value
+    initParam['appsWalk_amount'] = app.one_price * txn_fee_pct
+    initParam['seller_amount'] = app.one_price * (1 - txn_fee_pct)
+    initParam['txn_id'] = transaction.id
+    #The needed operation method in pay.
+    initParam['executeMethod'] = kwargs.get('executeMethod')
+    #The back page, when pay has error.
+    back_page = request.session.get('back_page', None)
+    if not back_page:
+        request.session['back_page'] = '/'.join([common.getHttpHeader(request), 'transaction/trade-action/buy', str(app.id), str(request.user.id)])
+    #The success return page, when pay finish.
+    success_page = request.session.get('success_page', None)
+    if not success_page:
+        request.session['success_page'] = '/'.join([common.getHttpHeader(request), 'query/app-detail', str(app.id)])
+    return paymentViews.pay(request, initParam=initParam)
 
 
 def updateTransaction(request, *args, **kwargs):
@@ -383,6 +413,7 @@ def executeBuyerPay(request, *args, **kwargs):
         transactionsLog.buyer_account = transaction.buyer_account
         transactionsLog.seller_account = transaction.seller_account
         transactionsLog.appswalk_account = transaction.appswalk_account
+        transactionsLog.buy_type = transaction.buy_type
         transactionsLog.gateway = transaction.gateway
         transactionsLog.appswalk_price = transaction.appswalk_price
         transactionsLog.seller_price = transaction.seller_price

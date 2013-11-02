@@ -55,27 +55,16 @@
 
 
         <div class="step_block" style="clear:both;" >
-
             {% if apps %}
             <div style="color:#00b0b0;font-weight: bold;">Your draft apps:</div>
                 <ul class="existing_apps">
                 {% for app in apps %}
                 <li>
-                <!--TODO:Green color, if published; Red color, if draft. -->
-                <div class="app_list_name " style="clear:both;"><a  href="{% url 'seller:appStore_link' app.id %}">{{ app.app_name }}</a></div>
-
-                <div class="app_list_attr">
-                    {% ifequal app.status 1 %}
-                        Draft
-                    {% endifequal %}
+                <div class="app_list_name " style="clear:both;">
+                    <a  href="{% url 'seller:appStore_link' app.id %}">{{ app.app_name }}</a>
                 </div>
                 <div class="app_list_attr">
-                    {% ifequal app.status 2 %}
-                        Published
-                    {% endifequal %}
-                </div>
-                <div class="app_list_attr">
-                    {% ifequal app.status 3 %}Closed{% endifequal %}
+                    Modified:{{ app.last_modify|date:"Y-m-d G:i" }}
                 </div>
                 </li>
                 {% endfor %}

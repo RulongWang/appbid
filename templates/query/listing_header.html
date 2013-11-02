@@ -105,13 +105,21 @@
                         </div>
                      {% endif %}
                      {% if transaction %}
-                        {% if transaction.status == 2 %}
-                        <div>In Trading. The trade price is {{ transaction.price|floatformat }}{{ app.currency.currency }}.</div>
-                        {% elif transaction.status == 3 %}
-                        <div>In Trading. The trade price is {{ transaction.price|floatformat }}{{ app.currency.currency }}.</div>
-                        {% elif transaction.status == 4 %}
-                        <div>Trade success. The trade price is {{ transaction.price|floatformat }}{{ app.currency.currency }}.</div>
-                        {% endif %}
+                        <div>
+                            {% if transaction.status == 4 %}
+                            Trade success
+                            {% else %}
+                            In trading
+                            {% endif %}
+                            {% if transaction.buy_type == 1 %}
+                                by one price buy.
+                            {% else%}
+                                by bid.
+                            {% endif %}
+                        </div>
+                        <div>
+                            The trade price is {{ transaction.price|floatformat }}{{ app.currency.currency }}.
+                        </div>
                      {% else %}
                         {% if app.status == 2 and begin_bid == True %}
                         <div id="bid_part">

@@ -13,6 +13,10 @@ class Transaction(models.Model):
         (3, 'Transaction'),
         (4, 'Closed'),
     )
+    BUY_TYPE = (
+        (1, 'one-price-buy'),
+        (2, 'bid-win'),
+    )
     app = models.OneToOneField(appModels.App)
     status = models.IntegerField(choices=STATUS, default=1)
     seller = models.ForeignKey(User, null=True, related_name='txn_seller')
@@ -21,6 +25,7 @@ class Transaction(models.Model):
     end_time = models.DateTimeField(null=True)
 
     #For user pay.
+    buy_type = models.IntegerField(choices=BUY_TYPE, null=True)
     seller_price = models.FloatField(null=True)
     appswalk_price = models.FloatField(null=True)
     gateway = models.ForeignKey(paymentModels.Gateway, null=True)
@@ -37,6 +42,10 @@ class TransactionLog(models.Model):
         (3, 'paid'),
         (4, 'closed'),
     )
+    BUY_TYPE = (
+        (1, 'one-price-buy'),
+        (2, 'bid-win'),
+    )
     app = models.ForeignKey(appModels.App)
     status = models.IntegerField(choices=STATUS)
     seller = models.ForeignKey(User, null=True, related_name='txn_log_seller')
@@ -44,6 +53,7 @@ class TransactionLog(models.Model):
     price = models.FloatField(null=True)
     seller_price = models.FloatField(null=True)
     appswalk_price = models.FloatField(null=True)
+    buy_type = models.IntegerField(choices=BUY_TYPE, null=True)
     gateway = models.ForeignKey(paymentModels.Gateway, null=True)
     buyer_account = models.CharField(max_length=255, null=True)
     seller_account = models.CharField(max_length=255, null=True)
