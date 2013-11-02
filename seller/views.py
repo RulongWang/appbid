@@ -58,7 +58,6 @@ def registerApp(request, *args, **kwargs):
         if flag == 6:
             initParam['serviceItems'] = orderModels.ServiceItem.objects.filter(end_date__gte=datetime.datetime.now())
             serviceDetails = orderModels.ServiceDetail.objects.filter(app_id=app.id).order_by('-pk')
-            initParam['serviceDetails'] = serviceDetails
             sn = kwargs.get('sn', None)
             if sn and sn != 'new':
                 #For query service detail by sn.
