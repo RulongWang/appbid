@@ -1,4 +1,5 @@
 {% extends "dashboard/activity.html" %}
+{% load staticfiles %}
 {% block dashboard_detail %}
           <div class="dash_title">Draft Apps</div>
           <ul class="inbox_list">
@@ -13,7 +14,13 @@
                    <div class="app_list">
                        <a href="{% url 'query:app_detail' app.0.id %}">{{ app.0.app_name }}</a>
                    </div>
-                   <div class="app_list">{{ app.0.last_modify|date:"Y-m-d H:i"|default:"N/A" }}</div>
+                   <div class="app_list">
+                       {{ app.0.last_modify|date:"Y-m-d H:i"|default:"N/A" }}
+                        <a href="{% url 'seller:additional_info' app.0.id %}" title="Change" >
+                            <img src="{% static "images/edit20x20.png" %}"/>
+                        </a>
+
+                   </div>
                    {% ifequal app.0.is_verified True %}
                        <div class="app_list">{{ app.0.is_verified }}</div>
                        <div class="app_list"><a href="{% url 'seller:payment' app.0.id '' %}">UnPaid</a></div>
