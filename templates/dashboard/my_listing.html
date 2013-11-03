@@ -25,7 +25,7 @@
                    </div>
                    {% ifequal app.0.is_verified True %}
                        <div class="app_list">Verified</div>
-                       <div class="app_list_shorter"><a href="{% url 'seller:payment' app.0.id '' %}">Pay It Now</a></div>
+                       <div class="app_list_shorter"><a href="{% url 'seller:payment' app.0.id '' %}" class="pending_style">Pay It Now</a></div>
                    {% else %}
                        <div class="app_list"><a href="{% url 'seller:verification' app.0.id %}" class="pending_style">Pending</a></div>
                        <div class="app_list_shorter" style="color: #cc3333;">Pending</div>
