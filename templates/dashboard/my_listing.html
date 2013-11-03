@@ -18,7 +18,7 @@
                    </div>
                    <div class="app_list">
 
-                       <a href="{% url 'query:app_detail' app.0.id %}">{{ app.0.app_name }}</a>
+                       <a href="{% url 'query:app_detail' app.0.id %}">{{ app.0.app_name|truncatewords:5 }}</a>
                    </div>
                    <div class="app_list">
                        {{ app.0.last_modify|date:"Y-m-d H:i"|default:"N/A" }}
@@ -63,7 +63,7 @@
                        </a>
                    </div>
                    <div class="app_list">
-                       <a href="{% url 'query:app_detail' app.0.id %}">{{ app.0.app_name }}</a>
+                       <a href="{% url 'query:app_detail' app.0.id %}">{{ app.0.app_name|truncatewords:5 }}</a>
                    </div>
                    <div class="app_list">
                        {{ app.0.begin_date|date:"Y-m-d H:i"|default:"N/A" }}
@@ -101,7 +101,7 @@
            {% for app in traded_apps %}
                <li>
                    <div class="app_list">
-                       <a href="{% url 'query:app_detail' app.0.id %}">{{ app.0.app_name }}</a>
+                       <a href="{% url 'query:app_detail' app.0.id %}">{{ app.0.app_name|truncatewords:5 }}</a>
                    </div>
                    <div class="app_list">
                        <a href="{% url 'bid:bid_list' app.0.id %}">{{ app.1.0|default:0 }} {{ app.0.currency.currency }}</a>
