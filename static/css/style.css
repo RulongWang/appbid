@@ -1559,6 +1559,7 @@ fieldset {
     font-size: 12px;
     width:15px;
     float:left;
+    text-align: left;
 }
 .app_list_shorter{
     font-size: 12px;
@@ -2365,4 +2366,9 @@ input[type="radio"]:checked:after {
 #id_path{
     padding: 3px;
     background: #ffffff;
+}
+
+
+.pending_style:link,.pending_style:visited,.pending_style:active,.pending_style:hover {
+    color:#CC3333;
 }

@@ -4,10 +4,10 @@
           <div class="dash_title">Draft Apps</div>
           <ul class="inbox_list">
             <li class="highlight_li">
-               <div class="app_title">App Name</div>
-               <div class="app_title">Last Modify</div>
-               <div class="app_title">Is Verified</div>
-               <div class="app_title">Fees</div>
+               <div class="app_title" style="width: 140px;;padding-left: 30px;">App Name</div>
+               <div class="app_title" style="padding-left:10px;">Last Modify</div>
+               <div class="app_title" style="padding-left: 10px;">Is Verified</div>
+               <div class="app_title" style="width:120px;">Fees</div>
             </li>
            {% for app in draft_apps %}
                <li>
@@ -27,8 +27,8 @@
                        <div class="app_list">Verified</div>
                        <div class="app_list_shorter"><a href="{% url 'seller:payment' app.0.id '' %}">Pay It Now</a></div>
                    {% else %}
-                       <div class="app_list"><a href="{% url 'seller:verification' app.0.id %}">Not Yet</a></div>
-                       <div class="app_list_shorter" style="color: red;">Pending</div>
+                       <div class="app_list"><a href="{% url 'seller:verification' app.0.id %}" class="pending_style">Pending</a></div>
+                       <div class="app_list_shorter" style="color: #cc3333;">Pending</div>
                    {% endifequal %}
                </li>
            {% empty %}
@@ -50,10 +50,10 @@
           <div class="dash_title">Published Apps</div>
          <ul class="inbox_list">
            <li class="highlight_li">
-               <div class="app_title">App Name</div>
-               <div class="app_title">Auction Beginning</div>
-               <div class="app_title">Auction Ending</div>
-               <div class="app_title">Bids</div>
+               <div class="app_title" style="width: 140px;;padding-left: 30px;">App Name</div>
+               <div class="app_title" style="padding-left:20px;">Auction Beginning</div>
+               <div class="app_title" style="padding-left: 0px;">Auction Ending</div>
+               <div class="app_title" style="width:120px;">Bids</div>
            </li>
            {% for app in published_apps %}
                 <li>
