@@ -39,6 +39,11 @@ def loginView(request, *args, **kwargs):
     if user:
         if user.is_active:
             login(request, user)
+            #record user login info, such as IP.
+            userLoginInfo = models.UserLoginInfo()
+            userLoginInfo.user = user
+            userLoginInfo.ip = common.getUserClientIP(request)
+            userLoginInfo.save()
             log.info('%(name)s login.' % {'name': user.username})
             return redirect(redirect_to)
         else:

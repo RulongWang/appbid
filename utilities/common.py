@@ -255,6 +255,16 @@ def makeTwoDimensionCode(*args, **kwargs):
     return 1
 
 
+def getUserClientIP(request, *args, **kwargs):
+    """Get user client IP address."""
+    x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+    if x_forwarded_for:
+        ip = x_forwarded_for.split(',')[0]
+    else:
+        ip = request.META.get('REMOTE_ADDR')
+    return ip
+
+
 # For social auth function
 class HTTPSConnectionV3(httplib.HTTPSConnection):
     def __init__(self, *args, **kwargs):

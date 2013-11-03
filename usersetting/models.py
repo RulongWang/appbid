@@ -91,6 +91,16 @@ class SecurityVerification(models.Model):
     is_verified = models.BooleanField(default=False)
     verified_date = models.DateTimeField(auto_now=True)
 
+
+class UserLoginInfo(models.Model):
+    """User login info."""
+    user = models.ForeignKey(User)
+    ip = models.CharField(max_length=255, null=True)
+    #The address that IP belong.
+    address = models.CharField(max_length=255, null=True)
+    login_date = models.DateTimeField(auto_now_add=True)
+
+
 admin.site.register(UserPrivateItem, UserPrivateItemAdmin)
 admin.site.register(UserDetail, UserDetailAdmin)
 admin.site.register(SubscriptionItem, SubscriptionItemAdmin)
