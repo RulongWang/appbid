@@ -12,8 +12,8 @@
             <div style="width:300px:height:20px; font-weight: bold;"> {{ serviceItem.short_text }}</div>
             <div style="width:300px:height:40px; font-size: 12px;">{{ serviceItem.long_text }}</div>
              </div>
-             <div class="right" style="width:50px">
-             {{ serviceItem.price }}
+             <div class="right" style="width:60px">
+             {{ serviceItem.price }}$
                  <input type="checkbox" name="serviceItem_id" value="{{ serviceItem.id }}"
                        price="{{ serviceItem.price }}" onclick="checkServiceItem(this)"
                        {% ifequal serviceItem.is_basic_service True %}checked="checked" disabled
@@ -31,7 +31,7 @@
     <div class="field_block_payment">
         <div class="right" style="width:100px;">
         <label>Total:</label><label id="total">
-        {{ amount|default:0 }}
+        {{ amount|default:0 }}$
         </label>
         </div>
     </div>
