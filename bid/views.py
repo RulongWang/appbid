@@ -85,8 +85,8 @@ def createBid(request, *args, **kwargs):
         transactions = txnModels.Transaction.objects.filter(app_id=app.id).exclude(status=1)
         if transactions:
             initParam['transaction'] = transactions[0]
-
-        sendMessage(request, initParam=initParam)
+        #Comment the message
+        # sendMessage(request, initParam=initParam)
         return render_to_response('bid/bid_create.html', initParam, context_instance=RequestContext(request))
     raise Http404
 

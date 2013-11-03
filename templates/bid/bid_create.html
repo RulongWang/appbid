@@ -18,23 +18,23 @@
             </div>
             <div id="price_msg_new">{{ bid_error }}</div>
             <div id="bid_agreement">
-            <input id="agreement" name="agreement" type="checkbox"/>I have read <a href="#">the Bidding Terms and Conditions</a> and I agree to them.
+            <input id="agreement" name="agreement" type="checkbox"/>I have read <a href="#"><b>the Bidding Terms and Conditions</b></a> and I agree to them.
             </div>
         {% if app.status == 2 and begin_bid == True %}
-            <input id="insert_comment" name="Add Comment" value="Add Comment"  type="button" class="newbutton"/>
+{#            <input id="insert_comment" name="Add Comment" value="Add Comment"  type="button" class="newbutton"/>#}
             <input type="hidden" id="bid_create" name="bid_create" value="yes"/>
             <input id="save" class="newbutton" type="submit" name="save" value="Save"/>
-            <div id="bid_form" style="padding-bottom: 20px;">
-                <div class="bid_comments_form">
-                    <input type="hidden" id="is_send_message" name="send_message" value="no"/>
-                    <input id="id_sender" name="sender" type="text" hidden="hidden" value="{{ sender.id }}">
-                    <input id="id_receiver" name="receiver" type="text" hidden="hidden" value="{{ receiver.id }}">
-                    {{ messageForm.title.label_tag }}{{ messageForm.title }}
-                    <div>
-                        {{ messageForm.content.label_tag }} {{ messageForm.content }}
-                    </div>
-                </div>
-            </div>
+{#            <div id="bid_form" style="padding-bottom: 20px;">#}
+{#                <div class="bid_comments_form">#}
+{#                    <input type="hidden" id="is_send_message" name="send_message" value="no"/>#}
+{#                    <input id="id_sender" name="sender" type="text" hidden="hidden" value="{{ sender.id }}">#}
+{#                    <input id="id_receiver" name="receiver" type="text" hidden="hidden" value="{{ receiver.id }}">#}
+{#                    {{ messageForm.title.label_tag }}{{ messageForm.title }}#}
+{#                    <div>#}
+{#                        {{ messageForm.content.label_tag }} {{ messageForm.content }}#}
+{#                    </div>#}
+{#                </div>#}
+{#            </div>#}
         {% endif %}
         </form>
     </div>
@@ -57,7 +57,7 @@
             return false;
         }
         if ($("#agreement").is(':checked') == false) {
-             $("#price_msg_new").text("亲，貌似你没有同意竞标协议哦！");
+             $("#price_msg_new").text("You must be read and agreed the Bidding Terms and Conditions.");
             return false;
         }
         if (($("#bid_form").is(":visible") || $("#is_send_message").val()=="yes") && $("#id_title").val().trim() == "") {
@@ -65,15 +65,15 @@
             return false;
         }
     });
-    $("#insert_comment").click(function() {
-        if ($("#bid_form").is(":visible")) {
-            $("#bid_form").hide("fast");
-            $("#is_send_message").val('no');
-        }
-        else{
-            $("#bid_form").show("fast");
-            $("#is_send_message").val('yes');
-        }
-    });
+{#    $("#insert_comment").click(function() {#}
+{#        if ($("#bid_form").is(":visible")) {#}
+{#            $("#bid_form").hide("fast");#}
+{#            $("#is_send_message").val('no');#}
+{#        }#}
+{#        else{#}
+{#            $("#bid_form").show("fast");#}
+{#            $("#is_send_message").val('yes');#}
+{#        }#}
+{#    });#}
 </script>
 {% endblock %}
