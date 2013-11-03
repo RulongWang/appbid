@@ -13,7 +13,7 @@ urlpatterns = patterns('',
 
     # Uncomment the next line to enable the admin:
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^$', include('home.urls', namespace='home')),
+    url(r'^', include('home.urls', namespace='home')),
     url(r'^comments/', include('django.contrib.comments.urls')),
     url(r'^seller/', include('seller.urls', namespace='seller')),
     url(r'^usersetting/', include('usersetting.urls', namespace='usersetting')),

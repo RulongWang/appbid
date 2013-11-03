@@ -1,33 +1,29 @@
 <div id="register_nav">
     <div class="nav_title">Basic Info For Your Listing</div>
     <ul id="register_new_nav">
-        <li class="greenpoint_icon">
+        <li class="{{ app_store_link }}point_icon">
             <a href="{% url 'seller:appStore_link' app_id %}">AppleStore Info</a>
         </li>
         {% if app_id %}
-        <li >
+        <li class="{{ app_store_info }}point_icon">
             <a href="{% url 'seller:appStore_info' app_id %}">App Attributes</a>
         </li>
-        {% endif %}
-
-        {% if app_id %}
-        <li class="greypoint_icon">
+        <li class="{{ marketing }}point_icon">
             <a href="{% url 'seller:marketing' app_id %}">Revenue/Monetization</a>
         </li>
-        <li>
+        <li class="{{ additional_info }}point_icon">
             <a href="{% url 'seller:additional_info' app_id %}">Additional Info</a>
-
         </li>
-        <li>
+        <li class="{{ sale }}point_icon">
             <a href="{% url 'seller:sale' app_id %}">Price Setting</a>
         </li>
-        <li>
+        <li class="{{ delivery }}point_icon">
             <a href="{% url 'seller:delivery' app_id %}">Your Delivery</a>
         </li>
-        <li>
+        <li class="{{ payment }}point_icon">
             <a href="{% url 'seller:payment' app_id serviceDetail.sn %}">Payment</a>
         </li>
-        <li>
+        <li class="{{ verification }}point_icon">
             <a href="{% url 'seller:verification' app_id %}">App Verification</a>
         </li>
         {% endif %}

@@ -77,6 +77,8 @@ def registerApp(request, *args, **kwargs):
                 for serviceItem in serviceItems:
                     amount += serviceItem.price
                 initParam['amount'] = amount
+    #Get app Nav status.
+    appNavStatus(app=app, initParam=initParam)
 
     #Create or update app.
     if request.method == "POST":
@@ -94,6 +96,36 @@ def registerApp(request, *args, **kwargs):
     if flag == 1.1:
         initParam['apps'] = appModels.App.objects.filter(publisher=request.user, status=1).order_by('create_time')
     return render_to_response(kwargs.get('backPage'), initParam, context_instance=RequestContext(request))
+
+
+def appNavStatus(*args, **kwargs):
+    """Get app nav status."""
+    app = kwargs.get('app')
+    initParam = kwargs.get('initParam')
+    if app:
+        initParam['app_store_link'] = 'green'
+        initParam['app_store_info'] = 'green'
+        if app.dl_amount or app.revenue:
+            initParam['marketing'] = 'green'
+        else:
+            initParam['marketing'] = 'grey'
+        initParam['additional_info'] = 'green'
+        if app.begin_price:
+            initParam['sale'] = 'green'
+        else:
+            initParam['sale'] = 'grey'
+        initParam['delivery'] = 'green'
+        if orderModels.ServiceDetail.objects.filter(app_id=app.id, is_payed=True).count():
+            initParam['payment'] = 'green'
+        else:
+            initParam['payment'] = 'grey'
+        if app.is_verified:
+            initParam['verification'] = 'green'
+        else:
+            initParam['verification'] = 'grey'
+    else:
+        initParam['app_store_link'] = 'grey'
+
 
 
 @transaction.commit_on_success
