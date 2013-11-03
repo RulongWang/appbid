@@ -110,10 +110,11 @@ def saveAppStoreLink(request, form, model, *args, **kwargs):
         return None
 
     #Verify whether the draft app exist.
-    if model and appModels.App.objects.filter(publisher_id=request.user.id, status=1,
-                                              app_store_link__iexact=app_store_link).exclude(pk=model.id).count():
-        initParam['error_msg'] = _('App with link %(param1)s has existed in your draft apps.') % {'param1': app_store_link}
-        return None
+    if model:
+        if appModels.App.objects.filter(publisher_id=request.user.id, status=1,
+                                        app_store_link__iexact=app_store_link).exclude(pk=model.id).count():
+            initParam['error_msg'] = _('App with link %(param1)s has existed in your draft apps.') % {'param1': app_store_link}
+            return None
     elif appModels.App.objects.filter(publisher_id=request.user.id, status=1,
                                       app_store_link__iexact=app_store_link).count():
         initParam['error_msg'] = _('App with link %(param1)s has existed in your draft apps.') % {'param1': app_store_link}

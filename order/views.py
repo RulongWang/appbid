@@ -30,19 +30,23 @@ def checkout(request, *args, **kwargs):
     app_id = kwargs.get('app_id')
     service_id = kwargs.get('service_id')
     service_sn = kwargs.get('service_sn')
+    initParam['select'] = request.POST.get('select')
     user = get_object_or_404(User, pk=request.user.id, username=request.user.username)
     app = get_object_or_404(appModels.App, pk=app_id, publisher_id=user.id)
     serviceDetail = get_object_or_404(models.ServiceDetail, pk=service_id, app_id=app_id, sn=service_sn)
+
+    #Init data
+    service_expiry_date = string.atoi(common.getSystemParam(key='service_expiry_date', default=31))
+    initParam['service_expiry_date'] = service_expiry_date
     acceptGateways = user.acceptgateway_set.filter(is_active=True, is_default=True)
     serviceDetails = models.ServiceDetail.objects.filter(app_id=app_id, is_payed=True,
                             end_date__gte=datetime.datetime.now().strftime('%Y-%m-%d')).order_by('-pk')
-    #Init data
     if serviceDetails:
         initParam['begin_date'] = serviceDetails[0].end_date
         serviceDetail.start_date = serviceDetails[0].end_date
     else:
         serviceDetail.start_date = datetime.datetime.now()
-    initParam['service_expiry_date'] = common.getSystemParam(key='service_expiry_date', default=1)
+        serviceDetail.end_date = datetime.datetime.now() + datetime.timedelta(days=service_expiry_date)
     initParam['currency'] = app.currency.currency
     if acceptGateways:
         initParam['acceptGateway'] = acceptGateways[0]
@@ -52,7 +56,6 @@ def checkout(request, *args, **kwargs):
         form = forms.ServiceDetailForm(request.POST)
         if form.is_valid():
             days = (form.cleaned_data['end_date'] - form.cleaned_data['start_date']).days
-            service_expiry_date = string.atoi(common.getSystemParam(key='service_expiry_date', default=31))
             if serviceDetail.is_payed:
                 initParam['order_error'] = _('The payment is paid.')
             elif len(acceptGateways) == 0:

@@ -15,6 +15,7 @@ from django.contrib.auth.models import User
 
 from message import models as messageModels
 from appbid import models as appModels
+from order import models as orderModels
 from bid import models as bidModels
 from transaction import models as txnModels
 from dashboard import models
@@ -452,6 +453,16 @@ def unpaid_fees(request, *args, **kwargs):
                         context_instance=RequestContext(request))
 
 
-def past_orders(request, *args, **kwargs):
-    return render_to_response("dashboard/past_orders.html",{"payment_accounts":'test'},
-                        context_instance=RequestContext(request))
+@csrf_protect
+@login_required(login_url='/usersetting/home/')
+def pasOrders(request, *args, **kwargs):
+    """Query user's past orders in past order page."""
+    initParam = {}
+    page = request.GET.get('page', 1)
+    initParam['page'] = page
+
+    serviceDetails = orderModels.ServiceDetail.objects.filter(
+        app__in=appModels.App.objects.filter(publisher_id=request.user.id)).order_by('app')
+    initParam['serviceDetails'] = common.queryWithPaginator(request, page=page, obj=serviceDetails)
+
+    return render_to_response("dashboard/past_orders.html", initParam, context_instance=RequestContext(request))

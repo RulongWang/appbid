@@ -4,6 +4,7 @@
 <script type="text/javascript" language="javascript">
   $(function() {
     var begin_date = "{{ begin_date|date:'Y-m-d H:i:s' }}";
+    var select = "{{ select }}";
     if (begin_date) {
         $("#id_start_date").attr("readonly", true);
         var date_str = $("#id_start_date").val().trim();
@@ -15,7 +16,6 @@
         else{
             end_date.setDate(end_date.getDate() + 31);
         }
-        $("#end_date_str").val(end_date.format('yyyy-MM-dd hh:mm:ss'));
         $("#id_end_date").val(end_date.format('yyyy-MM-dd hh:mm:ss'));
     }
     else {
@@ -26,6 +26,17 @@
             changeYear: true,
             dateFormat: 'yy-mm-dd'//'yy-mm-dd hh:mm:ss'
         });
+    }
+    if (select == 'true') {
+        $("#id_select").attr("checked", true);
+        $('#id_select').val('true');
+        $('#id_begin').hide();
+        $('#id_end').hide();
+    }
+    else{
+        $('#id_select').val('false');
+        $('#id_begin').show();
+        $('#id_end').show();
     }
   });
 </script>
@@ -47,16 +58,22 @@
             Actual Payment Fee: {{ form.actual_amount.value|floatformat|default:0 }}{{ currency }}
             <input id="id_actual_amount" name="actual_amount" type="hidden" value="{{ form.actual_amount.value }}" />
         </div>
-        <div style="color: blue;">Add Button : Whether start service after payment finish.</div>
+        {% if begin_date == None %}
         <div>
-            Service Begin Date: <input id="id_start_date" name="start_date" type="text" value="{{ form.start_date.value|date:'Y-m-d H:i:s' }}" />
+            <input id="id_select" name="select" type="checkbox" />
+            Whether start service after payment finish.
+        </div>
+        {% endif %}
+        <div id="id_begin">
+            Service Begin Date:
+            <input id="id_start_date" name="start_date" type="text" value="{{ form.start_date.value|date:'Y-m-d H:i:s' }}" />
             {% if begin_date %}
                 (*End date of your last valid service:{{ begin_date|date:'Y-m-d H:i:s' }})
             {% endif %}
         </div>
-        <div>
+        <div id="id_end">
             Service End Date:
-            <input id="id_end_date" name="end_date" type="text" readonly="readonly" value="" />
+            <input id="id_end_date" name="end_date" type="text" readonly="readonly" value="{{ form.end_date.value|date:'Y-m-d H:i:s' }}" />
         </div>
         {% if acceptGateway %}<!-- prevent user's cheat -->
         <div>
@@ -69,6 +86,18 @@
         {% endif %}
     </form>
 <script type="text/javascript" language="javascript">
+    $('#id_select').click(function(){
+        if ($('#id_select').is(':checked')) {
+            $('#id_begin').hide();
+            $('#id_end').hide();
+            $('#id_select').val('true');
+        }
+        else {
+            $('#id_begin').show();
+            $('#id_end').show();
+            $('#id_select').val('false');
+        }
+    });
     function validStartDate() {
         var date_str = $("#id_start_date").val().trim();
         if (date_str != "") {
@@ -76,14 +105,10 @@
                 var end_date = new Date(Date.parse(date_str.replace(/-/g, "/")));
                 var begin_date_str = "{{ begin_date|date:'Y-m-d H:i:s' }}";
                 if (begin_date_str && new Date(begin_date_str) > end_date) {
-                    $("#end_date_str").val("");
-                    $("#id_end_date").val("");
                     $("#order_error").html("Service begin date should be later than service end date of your paid payment.");//TODO:it will be set in message.properties.
                     return false;
                 }
                 if (begin_date_str == "" && new Date().format('yyyy-MM-dd hh:mm:ss') > end_date.format('yyyy-MM-dd hh:mm:ss')) {
-                    $("#end_date_str").val("");
-                    $("#id_end_date").val("");
                     $("#order_error").html("Service begin date should be later than current time.");//TODO:it will be set in message.properties.
                     return false;
                 }
@@ -94,13 +119,11 @@
                 else{
                     end_date.setDate(end_date.getDate() + 31);
                 }
-                $("#end_date_str").val(end_date.format('yyyy-MM-dd hh:mm:ss'));
                 $("#id_end_date").val(end_date.format('yyyy-MM-dd hh:mm:ss'));
                 $("#order_error").html("");
                 return true;
             }
             else {
-                $("#end_date_str").val("");
                 $("#id_end_date").val("");
                 $("#order_error").html("Service begin date is not correct.");//TODO:it will be set in message.properties.
                 return false;
@@ -115,7 +138,9 @@
         validStartDate();
     });
     $("#submit").click(function(){
-        return validStartDate();
+        if (!$('#id_select').is(':checked')) {
+            return validStartDate();
+        }
     });
 </script>
 {% endblock %}

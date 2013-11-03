@@ -61,7 +61,7 @@
                 {% for app in apps %}
                 <li>
                 <div class="app_list_name " style="clear:both;">
-                    <a  href="{% url 'seller:appStore_link' app.id %}">{{ app.app_name }}</a>
+                    <a  href="{% url 'seller:appStore_link' app.id %}">{{ app.title }}</a>
                 </div>
                 <div class="app_list_attr">
                     Last modified:{{ app.last_modify|date:"Y-m-d G:i" }}
