@@ -124,15 +124,15 @@ def myListing(request, *args, **kwargs):
     initParam['published_page'] = published_page
     initParam['traded_page'] = traded_page
 
-    draft_apps = appModels.App.objects.filter(publisher_id=user, status=1)
+    draft_apps = appModels.App.objects.filter(publisher_id=user.id, status=1)
     initParam['draft_apps'] = common.queryWithPaginator(request, page_range=page_range, page=draft_page, obj=draft_apps)
 
-    published_apps = appModels.App.objects.filter(publisher_id=user, status=2, end_date__gt=datetime.datetime.now())
+    published_apps = appModels.App.objects.filter(publisher_id=user.id, status=2, end_date__gt=datetime.datetime.now())
     initParam['published_apps'] = common.queryWithPaginator(request, page_range=page_range, page=published_page,
                                                             obj=published_apps, query_method=queryAppServiceDetail)
 
     #Query status =3 or (status=2 and current time is greater then end_date - when the job running time is not coming.).
-    traded_apps = appModels.App.objects.filter(publisher_id=user, end_date__lte=datetime.datetime.now()).exclude(status=1)
+    traded_apps = appModels.App.objects.filter(publisher_id=user.id, end_date__lte=datetime.datetime.now()).exclude(status=1)
     initParam['traded_apps'] = common.queryWithPaginator(request, page_range=page_range, page=traded_page,
                                                          obj=traded_apps, query_method=queryAppTxnInfo)
 

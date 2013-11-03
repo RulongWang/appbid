@@ -361,7 +361,6 @@ def executeOnePriceBuy(request, *args, **kwargs):
         transaction.appswalk_price = transaction.price * txn_fee_pct
         transaction.seller_price = transaction.price * (1 - txn_fee_pct)
         transaction.save()
-
         #Log transaction
         transactionsLog = models.TransactionLog()
         transactionsLog.app = transaction.app
@@ -376,6 +375,12 @@ def executeOnePriceBuy(request, *args, **kwargs):
         transactionsLog.seller_price = transaction.seller_price
         transactionsLog.pay_key = transaction.pay_key
         transactionsLog.save()
+        #Update app status and end_date.
+        app = transaction.app
+        if app.status == 2:
+            app.status = 3
+            app.end_date = datetime.datetime.now()
+            app.save()
 
         #Send email to seller
         notificationViews.onePriceBuyInformSellerEmail(request, transaction=transaction)
@@ -403,7 +408,6 @@ def executeBuyerPay(request, *args, **kwargs):
         transaction.appswalk_price = transaction.price * txn_fee_pct
         transaction.seller_price = transaction.price * (1 - txn_fee_pct)
         transaction.save()
-
         #Log transaction
         transactionsLog = models.TransactionLog()
         transactionsLog.app = transaction.app
