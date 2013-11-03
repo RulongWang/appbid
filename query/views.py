@@ -296,7 +296,7 @@ def queryAppsWithPaginator(request, *args, **kwargs):
                 percent = 0
             else:
                 percent = (info_list[0].end_date - datetime.datetime.now()).days * 100 / serviceDate
-            if percent == 0:
+            if percent <= 0:
                 info_list.append(0)
             elif percent == 100:
                 info_list.append(4)
