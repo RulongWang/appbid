@@ -11,10 +11,13 @@
             </li>
            {% for app in draft_apps %}
                <li>
-                   <div class="app_list">
+                   <div class="app_list_edit">
                        <a href="{% url 'seller:appStore_link' app.0.id %}" title="Change" >
-                            <img src="{% static "images/edit20x20.png" %}"/>
+                            <img src="{% static "images/edit20x20.png" %}" style="height:15px;width: 15px;"/>
                        </a>
+                   </div>
+                   <div class="app_list">
+
                        <a href="{% url 'query:app_detail' app.0.id %}">{{ app.0.app_name }}</a>
                    </div>
                    <div class="app_list">
@@ -22,10 +25,10 @@
                    </div>
                    {% ifequal app.0.is_verified True %}
                        <div class="app_list">Verified</div>
-                       <div class="app_list"><a href="{% url 'seller:payment' app.0.id '' %}">Pay It Now</a></div>
+                       <div class="app_list_shorter"><a href="{% url 'seller:payment' app.0.id '' %}">Pay It Now</a></div>
                    {% else %}
                        <div class="app_list"><a href="{% url 'seller:verification' app.0.id %}">Not Yet</a></div>
-                       <div class="app_list" style="color: red;">Pending</div>
+                       <div class="app_list_shorter" style="color: red;">Pending</div>
                    {% endifequal %}
                </li>
            {% empty %}
@@ -54,10 +57,12 @@
            </li>
            {% for app in published_apps %}
                 <li>
-                   <div class="app_list">
+                   <div class="app_list_edit">
                        <a href="{% url 'seller:appStore_link' app.0.id %}" title="Change" >
-                            <img src="{% static "images/edit20x20.png" %}"/>
+                            <img src="{% static "images/edit20x20.png" %}" style="height:15px;width: 15px;"/>
                        </a>
+                   </div>
+                   <div class="app_list">
                        <a href="{% url 'query:app_detail' app.0.id %}">{{ app.0.app_name }}</a>
                    </div>
                    <div class="app_list">
@@ -66,7 +71,7 @@
                    <div class="app_list">
                        {{ app.0.end_date|date:"Y-m-d H:i"|default:"N/A" }}
                    </div>
-                   <div class="app_list">
+                   <div class="app_list_shorter">
                        <a href="{% url 'bid:bid_list' app.0.id %}">{{ app.1|floatformat|default:0 }} bid{{ app.1|floatformat|pluralize }}</a>
                    </div>
                </li>
