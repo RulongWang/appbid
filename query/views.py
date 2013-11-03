@@ -290,9 +290,9 @@ def queryAppsWithPaginator(request, *args, **kwargs):
             info_list.append(common.dateRemaining(info_list[0].end_date))
             #info list[5]:percent of remaining date. 0:0, 1:1%-37%, 2:38%-62%, 1:63%-99%, 4:100%
             serviceDate = (info_list[0].end_date - info_list[0].begin_date).days
-            if (datetime.datetime.now() - info_list[0].begin_date).days <= 0:
+            if datetime.datetime.now() <= info_list[0].begin_date:
                 percent = 100
-            elif (info_list[0].end_date - datetime.datetime.now()).days <= 0:
+            elif info_list[0].end_date <= datetime.datetime.now():
                 percent = 0
             else:
                 percent = (info_list[0].end_date - datetime.datetime.now()).days * 100 / serviceDate
