@@ -7,26 +7,25 @@
                <div class="app_title">App Name</div>
                <div class="app_title">Last Modify</div>
                <div class="app_title">Is Verified</div>
-               <div class="app_title">Payment</div>
+               <div class="app_title">Fees</div>
             </li>
            {% for app in draft_apps %}
                <li>
                    <div class="app_list">
+                       <a href="{% url 'seller:appStore_link' app.0.id %}" title="Change" >
+                            <img src="{% static "images/edit20x20.png" %}"/>
+                       </a>
                        <a href="{% url 'query:app_detail' app.0.id %}">{{ app.0.app_name }}</a>
                    </div>
                    <div class="app_list">
                        {{ app.0.last_modify|date:"Y-m-d H:i"|default:"N/A" }}
-                        <a href="{% url 'seller:additional_info' app.0.id %}" title="Change" >
-                            <img src="{% static "images/edit20x20.png" %}"/>
-                        </a>
-
                    </div>
                    {% ifequal app.0.is_verified True %}
-                       <div class="app_list">{{ app.0.is_verified }}</div>
-                       <div class="app_list"><a href="{% url 'seller:payment' app.0.id '' %}">UnPaid</a></div>
+                       <div class="app_list">Verified</div>
+                       <div class="app_list"><a href="{% url 'seller:payment' app.0.id '' %}">Pay It Now</a></div>
                    {% else %}
-                       <div class="app_list"><a href="{% url 'seller:verification' app.0.id %}">Verification</a></div>
-                       <div class="app_list" style="color: red;">Payment after verified.</div>
+                       <div class="app_list"><a href="{% url 'seller:verification' app.0.id %}">Not Yet</a></div>
+                       <div class="app_list" style="color: red;">Pending</div>
                    {% endifequal %}
                </li>
            {% empty %}
@@ -56,6 +55,9 @@
            {% for app in published_apps %}
                 <li>
                    <div class="app_list">
+                       <a href="{% url 'seller:appStore_link' app.0.id %}" title="Change" >
+                            <img src="{% static "images/edit20x20.png" %}"/>
+                       </a>
                        <a href="{% url 'query:app_detail' app.0.id %}">{{ app.0.app_name }}</a>
                    </div>
                    <div class="app_list">
