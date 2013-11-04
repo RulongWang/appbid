@@ -2372,3 +2372,34 @@ input[type="radio"]:checked:after {
 .pending_style:link,.pending_style:visited,.pending_style:active,.pending_style:hover {
     color:#CC3333;
 }
+
+
+
+#tranprogress{
+    margin:50px 0 0 55px;
+    height:150px;
+
+}
+
+.tran_block{
+    padding-top: 25px;
+    width:60px;
+    height:40px;
+    float:left;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.tran_progress_line{
+
+    width:200px;
+    height:28px;
+    float:left;
+    border-bottom: 4px solid #00b0b0;
+}
+.ok_status{
+    background: url("../images/circle_green40x40.png") no-repeat center;
+}
+.pending_status{
+    background: url("../images/circle_grey40x40.png") no-repeat center;
+}
