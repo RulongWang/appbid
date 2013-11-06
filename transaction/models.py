@@ -5,12 +5,26 @@ from django.contrib.auth.models import User
 from appbid import models as appModels
 from payment import models as paymentModels
 
+SELLER_STATUS = (
+    (1, 'Unsold'),
+    (2, 'Waiting for payment'),
+    (3, 'Confirm my delivery'),
+    (4, 'Waiting for confirmation'),
+)
+
+BUYER_STATUS = (
+    (1, 'Initialized'),
+    (2, 'Pay it now'),
+    (3, 'Waiting for delivery'),
+    (4, 'Confirm this deal'),
+)
+
 
 class Transaction(models.Model):
     STATUS = (
-        (1, 'Unsold'),
+        (1, 'Initialized'),
         (2, 'Unpaid'),
-        (3, 'Transaction'),
+        (3, 'In Delivery'),
         (4, 'Closed'),
     )
     BUY_TYPE = (
