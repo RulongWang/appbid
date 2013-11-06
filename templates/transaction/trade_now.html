@@ -2,6 +2,9 @@
 {% block mainContent %}
 {% load staticfiles %}
     <div>
+        {% include "transaction/transaction_progress.html" %}
+        <div class="clear"></div>
+
         <div>{{ error_msg }}</div>
         {% if is_expiry_date == False %}
             <div>
@@ -14,6 +17,10 @@
                 <a href="#">Trade policy<a/><!--TODO:link to the page of trade policy.-->
             </div>
         {% endif %}
+
+        {% include "transaction/step1.html" %}
+
+
         <div>
             <div>App Name: <a href="{% url 'query:app_detail' app.id %}">{{ app.app_name }}</a></div>
             <div>Trade Price: {{ bid.price }}</div>
