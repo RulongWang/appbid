@@ -21,23 +21,6 @@
         {% include "transaction/step1.html" %}
 
 
-        <div>
-            <div>App Name: <a href="{% url 'query:app_detail' app.id %}">{{ app.app_name }}</a></div>
-            <div>Trade Price: {{ bid.price }}</div>
-            <div>Buyer: {{ user.username }}</div>
-        </div>
-        <div>
-            {% if transaction and transaction.status != 1 %}
-                <div>You has clicked button 'Trade'.</div>
-            {% else %}
-                <form action="" method="post">
-                    {% csrf_token %}
-                    <div>
-                        You can click 'Trade' button to begin to trade. Buyer will receiver the pay email.
-                    </div>
-                    <input id="submit" type="submit" name="submit" value="Trade"/>
-                </form>
-            {% endif %}
-        </div>
+
     </div>
 {% endblock %}
