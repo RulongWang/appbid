@@ -99,7 +99,7 @@ def tradeNow(request, *args, **kwargs):
             #Log transaction
             transactionsLog = models.TransactionLog()
             transactionsLog.app = app
-            transactionsLog.status = 2
+            transactionsLog.status = transaction.status
             transactionsLog.seller = request.user
             transactionsLog.buyer = user
             transactionsLog.price = bid.price
@@ -202,6 +202,7 @@ def onePriceBuy(request, *args, **kwargs):
                 transaction = models.Transaction()
                 transaction.app = app
                 transaction.seller = app.publisher
+                transaction.status = 1
             transaction.buyer = request.user
             transaction.price = app.one_price
             transaction.buy_type = 1
@@ -210,7 +211,7 @@ def onePriceBuy(request, *args, **kwargs):
             #Log transaction
             transactionsLog = models.TransactionLog()
             transactionsLog.app = app
-            transactionsLog.status = 1
+            transactionsLog.status = transaction.status
             transactionsLog.buyer = request.user
             transactionsLog.price = app.one_price
             transactionsLog.buy_type = transaction.buy_type
@@ -364,7 +365,7 @@ def executeOnePriceBuy(request, *args, **kwargs):
         #Log transaction
         transactionsLog = models.TransactionLog()
         transactionsLog.app = transaction.app
-        transactionsLog.status = 3
+        transactionsLog.status = transaction.status
         transactionsLog.buyer = request.user
         transactionsLog.price = transaction.price
         transactionsLog.buyer_account = transaction.buyer_account
@@ -411,7 +412,7 @@ def executeBuyerPay(request, *args, **kwargs):
         #Log transaction
         transactionsLog = models.TransactionLog()
         transactionsLog.app = transaction.app
-        transactionsLog.status = 3
+        transactionsLog.status = transaction.status
         transactionsLog.buyer = request.user
         transactionsLog.price = transaction.price
         transactionsLog.buyer_account = transaction.buyer_account
