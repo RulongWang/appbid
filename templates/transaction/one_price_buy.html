@@ -4,22 +4,13 @@
     {% include "transaction/transaction_progress.html" %}
     <div class="clear"></div>
     <div style="color: red">{{ error_msg }}</div>
+    <!--TODO: get which step the process is pending at -->
 
-    <div style="margin:0 auto;width:500px;">
-        <div>
-            <div><span style="font-weight: 500;background: #ddd;">The APP you are going to buy:</span> <a href="{% url 'query:app_detail' app.id %}">{{ app.app_name }}</a></div>
-            <div>Dealing Price: {{ app.one_price }} {{ app.currency.currency }}</div>
-            <div>Seller: {{ app.publisher.username }}</div>
-        </div>
-        <div>
-            <form action="" method="post">
-                {% csrf_token %}
-                <div>
-                    Currently , you are on the first step , you need to pay {{ app.one_price }} {{ app.currency.currency }} to  {{ app.publisher.username }} .
-                    After your paid, seller will receive your paid email, then you can trade app.
-                </div>
-                <input id="submit" type="submit" name="submit" value="Pay Now"/>
-            </form>
-        </div>
-    </div>
+    {% include "transaction/step2.html" %}
+{#    {% include "transaction/step3.html" %}#}
+{#    {% include "transaction/step4.html" %}#}
+
+
+
+
 {% endblock %}

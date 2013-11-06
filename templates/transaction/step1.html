@@ -1,0 +1,38 @@
+    <div class="paymentbox">
+        <div>
+            <div><h2 style="font-weight: bold;">Current Status:</h2></div>
+                <div style="line-height: 1.5em;">
+                    Currently ,you are on the first step , you will start the dealing process with bidder{{ user.username }} .<br/>
+                    Please notice that the agreed dealing price is {{ bid.price }}.<br/>
+                    After you clicked the button 'Start transaction', we will help you inform buyer to start the payment process immediately.
+                </div>
+            <div style="padding: 3px;"><h2 style="font-weight: bold;">The promised things you will deliver to the buyer({{ user.username }}):</h2></div>
+            <div>
+                <ul class="delivery_list">
+                    <li>You should transfer the ownership of the app ({{ app.app_name }}) to {{ user.username }}.</li>
+                    {% if app.source_code  %}
+                    <li>You should deliver the source of the app.</li>
+                    {% endif %}
+                    <li>
+                        The other things you should deliver:
+                    </li>
+                </ul>
+                <div class="other_delivery">
+                {{ app.delivery_detail }}
+                </div>
+            </div>
+        </div>
+        <div>
+            {% if transaction and transaction.status != 1 %}
+                <div>You has clicked button 'Trade'.</div>
+            {% else %}
+                <form action="" method="post">
+                    {% csrf_token %}
+{#                    <div>#}
+{#                        You can click 'Trade' button to begin to trade. Buyer will receiver the pay email.#}
+{#                    </div>#}
+                    <input id="submit" type="submit" name="submit" value="Trade" class="button_s"/>
+                </form>
+            {% endif %}
+        </div>
+    </div>

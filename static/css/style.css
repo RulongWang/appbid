@@ -1087,6 +1087,18 @@ fieldset {
 
 }
 
+.button_s{
+    margin-top:10px;
+    margin-left:10px;
+    background-color: #00b0b0;
+    color:white;
+    border:0;
+    width:100px;
+    height:30px;
+    border-radius: 3px;
+
+}
+
 #bid_now{
     background-color: #00b0b0;
     color:white;
@@ -2402,4 +2414,28 @@ input[type="radio"]:checked:after {
 }
 .pending_status{
     background: url("../images/circle_grey40x40.png") no-repeat center;
+}
+
+.delivery_list{
+    list-style: none;
+
+}
+.delivery_list li{
+    padding:3px 3px 3px 20px;
+    background: url("../images/greenpoint.png") no-repeat left;
+}
+
+.other_delivery{
+    margin:10px 0 20px 10px;
+    padding: 3px 3px 3px 5px;
+    width:500px;
+    min-height: 100px;
+    background: #ddd;
+}
+.paymentbox{
+    margin:0 auto;
+    margin-bottom: 20px;
+    padding:15px;
+    width:800px;
+    border:1px solid #eee;
 }
