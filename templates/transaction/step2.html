@@ -2,7 +2,7 @@
         <div>
             <div><h2 style="font-weight: bold;">Current Status:</h2></div>
                 <div style="line-height: 1.5em;">
-                    Currently ,you need to pay <span style="color: red;">{{transaction.app.one_price }} {{ transaction.app.currency.currency }}</span> to  {{ transaction.app.publisher.username }} .
+                    Currently ,you need to pay <span style="color: red;">{{transaction.price }} {{ transaction.app.currency.currency }}</span> to  {{ transaction.app.publisher.username }} .
                     After your payment, we will help you inform seller to start the delivery process immediately.<br/>
                     The remaining time for your payment: {% include "bid/remaintime.html" %} <br/>
 
