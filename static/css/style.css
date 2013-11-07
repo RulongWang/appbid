@@ -2397,8 +2397,21 @@ input[type="radio"]:checked:after {
 
 #tranprogress{
     margin:50px 0 0 55px;
-    height:150px;
+    height:80px;
 
+}
+
+#tranprogress_text{
+    margin:0 0 20px 55px;
+    height:30px;
+
+}
+
+.tran_begin{
+    width:200px;
+    height:40px;
+    float:left;
+    text-align: center;
 }
 
 .tran_block{
@@ -2415,7 +2428,13 @@ input[type="radio"]:checked:after {
     width:200px;
     height:28px;
     float:left;
-    border-bottom: 4px solid #00b0b0;
+}
+.green_line{
+        border-bottom: 4px solid #00b0b0;
+}
+.grey_line{
+        border-bottom: 4px solid #999999;
+
 }
 .ok_status{
     background: url("../images/circle_green40x40.png") no-repeat center;
