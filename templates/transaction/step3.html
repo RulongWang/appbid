@@ -9,7 +9,9 @@
                     If {{ transaction.app.publisher.username }} didn't deliver these items to you , please raise an incident here.<br/>
                     In the meanwhile, please contact Paypal to dispute/reverse this payment, we will help you provide all transaction evidence accordingly.<br/>
                     The remaining time for the seller {{ transaction.app.publisher.username }} to accomplish the delivery.<br/>
+                    {% include "bid/remaintime.html" %}
                 </div>
+            <div><h2 style="font-weight: bold;">What you can do::</h2></div>
                 <ul class="delivery_list">
 
                     <li>
@@ -19,19 +21,9 @@
                          Contact Paypal to dispute/reverse this payment, we will help you provide all transaction evidence accordingly.<br/>
                     </li>
                     <li>
-                    The remaining time for the seller {{ transaction.app.publisher.username }} to accomplish the delivery.<br/>
-
-                    </li>
-                    <li>
                         Click the button 'Confirm Transaction' to close this transaction. This means you have already got all delivery items from seller.
                     </li>
                 </ul>
-                 <div>
-                    The app transaction has {% include "bid/remaintime.html" %} to close.
-                </div>
-                <div>
-                    You can complain seller, if he is not honest.
-                </div>
                 <div>
                     <a href="">
                         <input id="id_complain" type="button" value="Complain Seller">
