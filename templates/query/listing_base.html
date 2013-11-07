@@ -11,20 +11,20 @@
                 <a href="{% url 'query:featured' %}" title="Featured listings">Featured</a>
             </li>
             <li >
-                <a href="/query/app-list/">New Listings</a>
+                <a href="{% url 'query:list_latest' %}" title="Listings with the latest Apps">New Listings</a>
             </li>
             <li >
-                <a href="/query/most_active/" title="Listings with the most bidding activity">Most Active</a>
+                <a href="{% url 'query:most_active' %}" title="Listings with the most bidding activity">Most Active</a>
             </li>
             <li >
-                <a href="/query/ending_soon/" title="Listings which are almost over">Ending Soon</a>
+                <a href="{% url 'query:ending_soon' %}" title="Listings which are almost over">Ending Soon</a>
             </li>
             <li >
-                <a href="/query/just_sold/" title="Listings which have just been sold">Just Sold</a>
+                <a href="{% url 'query:just_sold' %}" title="Listings which have just been sold">Just Sold</a>
             </li>
 
             <li >
-                <a href="/classifieds">Classifieds</a>
+                <a href="{% url 'query:list_closed' %}">Closed</a>
             </li>
             <li class="special">
                 <a href="/seller/app-store-link" >Sell Your Apps!</a>

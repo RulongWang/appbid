@@ -1,15 +1,39 @@
     <div class="paymentbox">
         <div>
             <div><h2 style="font-weight: bold;">Current Status:</h2></div>
+
                 <div style="line-height: 1.5em;">
-                    Currently ,you are on the second step , you need to pay <span style="color: red;">{{ app.one_price }} {{ app.currency.currency }}</span> to  {{ app.publisher.username }} .
-                    After your payment, we will help you inform seller to start the delivery immediately.
+                    Currently ,you have already paid <span style="color: red;">{{ transaction.app.one_price }} {{ transaction.app.currency.currency }}</span> to  {{ transaction.app.publisher.username }} .
+                    {{ transaction.app.publisher.username }} is preparing the delivery items to you, he/she could contact you via private message,email or phone.<br/>
+                    Please be remember the agreed items {{ transaction.app.publisher.username }} promised to send to you.<br/>
+                    If {{ transaction.app.publisher.username }} didn't deliver these items to you , please raise an incident here.<br/>
+                    In the meanwhile, please contact Paypal to dispute/reverse this payment, we will help you provide all transaction evidence accordingly.<br/>
+                    The remaining time for the seller {{ transaction.app.publisher.username }} to accomplish the delivery.<br/>
+                    {% include "bid/remaintime.html" %}
                 </div>
-            <div style="padding: 3px;"><h2 style="font-weight: bold;">The promised things you should get after payment from the app seller({{ app.publisher.username }}):</h2></div>
+            <div><h2 style="font-weight: bold;">What you can do::</h2></div>
+                <ul class="delivery_list">
+
+                    <li>
+                        Raise an incident here.
+                    </li><!--TODO: add incident interface later -->
+                    <li>
+                         Contact Paypal to dispute/reverse this payment, we will help you provide all transaction evidence accordingly.<br/>
+                    </li>
+                    <li>
+                        Click the button 'Confirm Transaction' to close this transaction. This means you have already got all delivery items from seller.
+                    </li>
+                </ul>
+                <div>
+                    <a href="">
+                        <input id="id_complain" type="button" value="Complain Seller">
+                    </a>
+                </div>
+            <div style="padding: 3px;"><h2 style="font-weight: bold;">The promised things you should get after payment from the app seller({{ transaction.app.publisher.username }}):</h2></div>
             <div>
                 <ul class="delivery_list">
-                    <li>You should get the ownership of the app({{ app.app_name }}) at APPSTORE.</li>
-                    {% if app.source_code  %}
+                    <li>You should get the ownership of the app({{ transaction.app.app_name }}) at APPSTORE.</li>
+                    {% if transaction.app.source_code  %}
                     <li>You should get the source of the app.</li>
                     {% endif %}
                     <li>
@@ -17,7 +41,7 @@
                     </li>
                 </ul>
                 <div class="other_delivery">
-                {{ app.delivery_detail }}
+                {{ transaction.app.delivery_detail }}
                 </div>
             </div>
         </div>
@@ -25,7 +49,9 @@
         <div>
             <form action="" method="post">
                 {% csrf_token %}
-                <input id="submit" type="submit" name="submit" value="Pay Now" class="newbutton"/>
+                    <a href="{% url 'transaction:closed_trade' transaction.id transaction.buyer.id %}">
+                        <input id="id_pay" type="button" value="Confirm Delivery">
+                    </a>
             </form>
         </div>
     </div>

@@ -2,8 +2,8 @@
         <div>
             <div><h2 style="font-weight: bold;">Current Status:</h2></div>
                 <div style="line-height: 1.5em;">
-                    Currently ,you are on the first step , you will start the dealing process with bidder{{ user.username }} .<br/>
-                    Please notice that the agreed dealing price is {{ bid.price }}.<br/>
+                    Currently ,you are on the first step , you will start the dealing process with bidder {{ transaction.buyer.username }} .<br/>
+                    Please notice that the agreed dealing price is {{ bid.price }}{{ transaction.app.currency.currency }}.<br/>
                     After you clicked the button 'Start transaction', we will help you inform buyer to start the payment process immediately.
                 </div>
             <div style="padding: 3px;"><h2 style="font-weight: bold;">The promised things you will deliver to the buyer({{ user.username }}):</h2></div>
@@ -24,7 +24,7 @@
         </div>
         <div>
             {% if transaction and transaction.status != 1 %}
-                <div>You has clicked button 'Trade'.</div>
+                <div>Your has started the transaction'.</div>
             {% else %}
                 <form action="" method="post">
                     {% csrf_token %}

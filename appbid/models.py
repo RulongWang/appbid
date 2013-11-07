@@ -68,6 +68,8 @@ class App(models.Model):
     publisher = models.ForeignKey(User)
     store_type = models.IntegerField(choices=STORE_TYPES, null=True, blank=True, default=1)
     seller_name = models.CharField(max_length=255, null=True, blank=True)
+    #The user id in apple store.
+    artist_id = models.CharField(max_length=255, null=True, blank=True)
     publish_date = models.DateTimeField(null=True, blank=True)
     status = models.IntegerField(choices=APP_STATUS, null=True, blank=True, default=1)
     title = models.CharField(max_length=255, blank=True)

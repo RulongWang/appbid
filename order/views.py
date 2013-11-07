@@ -219,6 +219,6 @@ def checkOutSuccess(request, *args, **kwargs):
             app.end_date = serviceDetail.end_date
         app.save()
         #Init transaction model data
-        transactionViews.initTransaction(request, app=app)
+        # transactionViews.initTransaction(request, app=app)
         return serviceDetail
     return None

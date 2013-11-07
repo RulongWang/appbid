@@ -237,7 +237,6 @@ h1{
 }
 #company_logo{
     width:600px;
-    margin-top:15px;
     margin-left:20px;
     float:left;
 
@@ -254,9 +253,8 @@ h1{
 
 }
 .logo_desc{
-    margin-top: 10px;
-    margin-left: 20px;
-
+    font-family:12 px Calibri;
+    margin-top: 40px;
     float: left;
     width:350px;
     text-align: left;
@@ -1093,8 +1091,29 @@ fieldset {
     background-color: #00b0b0;
     color:white;
     border:0;
-    width:100px;
+    min-width:100px;
     height:30px;
+    border-radius: 3px;
+
+}
+.button_v{
+    margin-top:10px;
+    margin-left:50px;
+    padding:5px;
+    background-color: #00b0b0;
+    color:white;
+    border:0;
+    min-width:100px;
+    height:30px;
+    border-radius: 3px;
+
+}
+.button_n{
+    background-color: #00b0b0;
+    color:white;
+    border:0;
+    min-width:100px;
+    height:20px;
     border-radius: 3px;
 
 }
@@ -1441,12 +1460,12 @@ fieldset {
 }
 
 .inbox_list li{
-    height:30px;
+    height:20px;
     padding: 10px 0px;
     border-bottom: 1px dashed #eeeeee;
 }
 .inbox_list li:hover{
-    height:30px;
+    height:20px;
     padding: 10px 0px;
     border-bottom: 1px dashed #eeeeee;
     background:#fafafa;
@@ -2389,8 +2408,21 @@ input[type="radio"]:checked:after {
 
 #tranprogress{
     margin:50px 0 0 55px;
-    height:150px;
+    height:80px;
 
+}
+
+#tranprogress_text{
+    margin:0 0 20px 55px;
+    height:30px;
+
+}
+
+.tran_begin{
+    width:200px;
+    height:40px;
+    float:left;
+    text-align: center;
 }
 
 .tran_block{
@@ -2407,7 +2439,17 @@ input[type="radio"]:checked:after {
     width:200px;
     height:28px;
     float:left;
-    border-bottom: 4px solid #00b0b0;
+}
+.text_color{
+    color:#00b0b0;
+    font-weight: bold;
+}
+.green_line{
+        border-bottom: 4px solid #00b0b0;
+}
+.grey_line{
+        border-bottom: 4px solid #999999;
+
 }
 .ok_status{
     background: url("../images/circle_green40x40.png") no-repeat center;
@@ -2438,4 +2480,12 @@ input[type="radio"]:checked:after {
     padding:15px;
     width:800px;
     border:1px solid #eee;
+}
+
+
+.verify_token{
+      font-weight: bold;
+      padding:13px 13px 13px 3px;
+      background: url("../images/circle_green40x40.png") no-repeat left;
+
 }

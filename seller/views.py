@@ -192,6 +192,7 @@ def saveAppStoreLink(request, form, model, *args, **kwargs):
     model.reviews = result.get('userRatingCount', None)
     model.description = result.get('description', None)
     model.seller_name = result.get('sellerName', None)
+    model.artist_id = result.get('artistId', None)
     model.save()
 
     #Save date in appinfo table.

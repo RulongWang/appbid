@@ -2,69 +2,32 @@
 {% block mainContent %}
 {% load staticfiles %}
 <div>
-    <div>
-        <div>App Name: <a href="{% url 'query:app_detail' transaction.app.id %}">{{ transaction.app.app_name }}</a></div>
-        <div>Trade Price: {{ transaction.price }} {{ transaction.app.currency.currency }}</div>
-        {% if transaction.buyer.id == request.user.id %}
-            <div>Seller: {{ transaction.seller.username }}</div>
-        {% elif transaction.seller.id == request.user.id %}
-            <div>Buyer: {{ transaction.buyer.username }}</div>
-        {% endif %}
+    {% include "transaction/transaction_progress.html" %}
+    <!--TODO: judge process step number and display differect step info -->
+     <div>
+{#        <div>App Name: <a href="{% url 'query:app_detail' transaction.app.id %}">{{ transaction.app.app_name }}</a></div>#}
+{#        {% if transaction.buyer.id == request.user.id %}#}
+{#            <div>Seller: {{ transaction.seller.username }}</div>#}
+{#        {% elif transaction.seller.id == request.user.id %}#}
+{#            <div>Buyer: {{ transaction.buyer.username }}</div>#}
+{#        {% endif %}#}
         {% if transaction.status == 2 %}
             {% if transaction.buyer.id == request.user.id %}
-                <div>
-                    You has {% include "bid/remaintime.html" %} to pay.
-                </div>
-                <div>
-                    <!-- TODO: will change to pay url for buyer. -->
-                    <a href="{{ pay_url }}">
-                        <input id="id_pay" type="button" value="pay now">
-                    </a>
-                </div>
+                {% include "transaction/step2.html" %}
             {% elif transaction.seller.id == request.user.id %}
-                <div>
-                    Buyer has {% include "bid/remaintime.html" %} to pay.
-                </div>
-                <div>If buyer still does not pay some days later, you can send email to ask buyer to pay ASAP.</div>
-                <div>
-                    <a href="">
-                        <input id="id_pay" type="button" value="Send Email">
-                    </a>
-                </div>
+
+                {% include "transaction/step2_seller.html" %}
+
             {% endif %}
-        {% elif transaction.status == 3 %}
+        {% elif transaction.status == 3 %} <!-- now in Delivery process status code 3-->
+
             {% if transaction.buyer.id == request.user.id %}
-                <div>
-                    The app transaction has {% include "bid/remaintime.html" %} to close.
-                </div>
-                <div>
-                    <a href="{% url 'transaction:closed_trade' transaction.id transaction.buyer.id %}">
-                        <input id="id_pay" type="button" value="Closed Trade">
-                    </a>
-                </div>
-                <div>
-                    You can complain seller, if he is not honest.
-                </div>
-                <div>
-                    <a href="">
-                        <input id="id_complain" type="button" value="Complain Seller">
-                    </a>
-                </div>
+
+                {% include "transaction/step3.html" %}
+
             {% elif transaction.seller.id == request.user.id %}
-                <div>
-                    The app transaction has {% include "bid/remaintime.html" %} to close.
-                </div>
-                <div>
-                    The buyer will click finished trade, after trade finish.
-                </div>
-                <div>
-                    You can complain buyer, if he is not honest.
-                </div>
-                <div>
-                    <a href="">
-                        <input id="id_complain" type="button" value="Complain Buyer">
-                    </a>
-                </div>
+                {% include "transaction/step3_seller.html" %}
+
             {% endif %}
         {% elif transaction.status == 4 %}
             <div>
@@ -73,6 +36,9 @@
             <div>
                 Closed in: {{ time_remaining.0|floatformat }} {{ time_remaining.1 }}{{ time_remaining.0|floatformat|pluralize }} {{ time_remaining.2 }}
             </div>
+
+
+
             <!-- TODO: Comment the transaction for seller or buyer. -->
 {#            {% if transaction.buyer.id == request.user.id %}#}
 {#                <div>You can comment the transaction.</div>#}
@@ -91,5 +57,6 @@
 {#            {% endif %}#}
         {% endif %}
     </div>
+
 </div>
 {% endblock %}

@@ -2,30 +2,29 @@
         <div>
             <div><h2 style="font-weight: bold;">Current Status:</h2></div>
                 <div style="line-height: 1.5em;">
-                    Currently ,you are on the second step , you need to pay <span style="color: red;">{{ app.one_price }} {{ app.currency.currency }}</span> to  {{ app.publisher.username }} .
-                    After your payment, we will help you inform seller to start the delivery immediately.
+                    Currently ,transaction closed.
                 </div>
-            <div style="padding: 3px;"><h2 style="font-weight: bold;">The promised things you should get after payment from the app seller({{ app.publisher.username }}):</h2></div>
+            <div style="padding: 3px;"><h2 style="font-weight: bold;">The things you got from the app seller({{ transaction.app.publisher.username }}):</h2></div>
             <div>
                 <ul class="delivery_list">
-                    <li>You should get the ownership of the app({{ app.app_name }}) at APPSTORE.</li>
-                    {% if app.source_code  %}
-                    <li>You should get the source of the app.</li>
+                    <li>You already got the ownership of the app({{ transaction.app.app_name }}) at APPSTORE.</li>
+                    {% if transaction.app.source_code  %}
+                    <li>You already got the source of the app.</li>
                     {% endif %}
                     <li>
                         The other things you should get:
                     </li>
                 </ul>
                 <div class="other_delivery">
-                {{ app.delivery_detail }}
+                {{ transaction.app.delivery_detail }}
                 </div>
             </div>
         </div>
 
-        <div>
-            <form action="" method="post">
-                {% csrf_token %}
-                <input id="submit" type="submit" name="submit" value="Pay Now" class="newbutton"/>
-            </form>
-        </div>
+{#        <div>#}
+{#            <form action="" method="post">#}
+{#                {% csrf_token %}#}
+{#                <input id="submit" type="submit" name="submit" value="Pay Now" class="newbutton"/>#}
+{#            </form>#}
+{#        </div>#}
     </div>
