@@ -237,7 +237,6 @@ h1{
 }
 #company_logo{
     width:600px;
-    margin-top:15px;
     margin-left:20px;
     float:left;
 
@@ -254,9 +253,8 @@ h1{
 
 }
 .logo_desc{
-    margin-top: 10px;
-    margin-left: 20px;
-
+    font-family:12 px Calibri;
+    margin-top: 40px;
     float: left;
     width:350px;
     text-align: left;
@@ -1097,7 +1095,20 @@ fieldset {
     height:30px;
     border-radius: 3px;
 
-}.button_n{
+}
+.button_v{
+    margin-top:10px;
+    margin-left:50px;
+    padding:5px;
+    background-color: #00b0b0;
+    color:white;
+    border:0;
+    min-width:100px;
+    height:30px;
+    border-radius: 3px;
+
+}
+.button_n{
     background-color: #00b0b0;
     color:white;
     border:0;
@@ -2469,4 +2480,12 @@ input[type="radio"]:checked:after {
     padding:15px;
     width:800px;
     border:1px solid #eee;
+}
+
+
+.verify_token{
+      font-weight: bold;
+      padding:13px 13px 13px 3px;
+      background: url("../images/circle_green40x40.png") no-repeat left;
+
 }

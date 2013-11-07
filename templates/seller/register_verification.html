@@ -2,28 +2,33 @@
 <div>{{ verify_msg }}</div>
 <div class="dash_title">Verification Infomation</div>
 <div class="verification_block">
-   <div class=""><h1>You must verify you own the app before proceeding</h1></div>
+   <div class=""><h1>You must verify the app ownership before proceeding</h1></div>
    <div class="step_block">
-        <h2>Step1:Add a unique token to your app's description</h2>
-        <p>Copy the token below and paste it into the description field of your app's App Store profile. If you're not sure how to do this, Apple's official documentation describes how to edit your app's description and other meta data here:
-        </p>
-        <p>
+        <div  class="verify_token"><span style="color:white;padding:13px;font-size:14px;">1</span> Add a unique token to your app's description</div>
+        <div style="line-height: 1.5em;padding-left:20px;">
+            Copy the token below and paste it into the description field of your app's App Store profile. If you're not sure how to do this, Apple's official documentation describes how to edit your app's description and other meta data here:
             <a href="https://developer.apple.com/library/mac/documentation/LanguagesUtilities/Conceptual/iTunesConnect_Guide/11_EditingandUpdatingAppInformation/EditingandUpdatingAppInformation.html#//apple_ref/doc/uid/TP40011225-CH14-SW40" target="_blank">
             Apple Documentation: Editing Metadata and Uploads
             </a>
-        </p>
-       <p>
-        You can place the token anywhere in the description but we suggest you put it at the end of the description so it's not immediately visibile to users.
-        </p>
-        <label>App Verification Token:</label>
-        <input type="text" readonly="true" value="{{ verify_token }}" />
+            You can place the token anywhere in the description but we suggest you put it at the end of the description so it's not immediately visibile to users.
+
+        </div>
+
+
+        <label style="margin-top:20px;margin-left:50px;background:#00b0b0; padding:5px;color:white;">App Verification Token:</label>
+        <input type="text" style="margin-top:20px;color:red;font-weight: bold;" readonly="true" value="{{ verify_token }}" />
    </div>
    <div class="step_block">
-    <h2>Step2:Tell us to verify the token's presence</h2>
-    <p>Once you've added the token to your app's App Store page, click the button below and we'll verify the token's presence. That's all you have to do! The verification process <strong>can take up to 3 hours</strong> whilst we wait for Apple to update the app's App Store page. <strong>We will notify you via email once we've verified the token</strong> so that you can remove it.
-    </p>    <form action="" method="post">
+    <div  class="verify_token"><span style="color:white;padding:13px;font-size:14px;">2</span> Take action to verify the token's presence</div>
+    <div style="line-height: 1.5em;padding-left:20px;">
+        Once you've added the token to your app's App Store page, click the button below and we'll verify the token's presence.
+        That's all you have to do! The verification process <strong>can take up to 3 hours</strong>
+        In the meanwhile we wait for Apple to update the your app's App Store description.
+        <strong>We will notify you via email once we've verified the token</strong> after that you can remove it.
+    </div>
+       <form action="" method="post">
         {% csrf_token %}
-        <input id="next" class="nextbutton" type="submit" name="next" value="Verify Token Now"/>
+        <input id="next" class="button_v" type="submit" name="next" value="Verify Token Now"/>
     </form>
     </div>
     </div>
