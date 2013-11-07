@@ -50,17 +50,18 @@ class AppForm(forms.ModelForm):
                 self.fields['revenue'].widget.attrs['disabled'] = True
                 self.fields['monetize'].widget.attrs['disabled'] = True
                 self.fields['description'].widget.attrs['disabled'] = True
-                self.fields['begin_price'].widget.attrs['disabled'] = True
-                self.fields['one_price'].widget.attrs['disabled'] = True
-                self.fields['reserve_price'].widget.attrs['disabled'] = True
-                self.fields['currency'].widget.attrs['disabled'] = True
                 self.fields['begin_date'].widget.attrs['disabled'] = True
                 self.fields['end_date'].widget.attrs['disabled'] = True
-                self.fields['minimum_bid'].widget.attrs['disabled'] = True
                 self.fields['source_code'].widget.attrs['disabled'] = True
                 self.fields['delivery_detail'].widget.attrs['disabled'] = True
                 self.fields['unique_sell'].widget.attrs['disabled'] = True
                 self.fields['web_site'].widget.attrs['disabled'] = True
+            if instance.status == 2 or instance.status == 3:
+                self.fields['begin_price'].widget.attrs['disabled'] = True
+                self.fields['one_price'].widget.attrs['disabled'] = True
+                self.fields['reserve_price'].widget.attrs['disabled'] = True
+                self.fields['currency'].widget.attrs['disabled'] = True
+                self.fields['minimum_bid'].widget.attrs['disabled'] = True
 
 
 class AttachmentForm(forms.ModelForm):

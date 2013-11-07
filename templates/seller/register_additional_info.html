@@ -3,6 +3,10 @@
 //<![CDATA[
  bkLib.onDomLoaded(function() {
 	new nicEditor({fullPanel : true}).panelInstance('appdescription');
+    var status = "{{ app_status }}";
+    if (status == 3) {
+        nicEditors.findEditor("appdescription").disable();
+    }
  });
 //]]>
 </script>
@@ -10,22 +14,16 @@
 <div id="register_app">
     <form action="" method="post" enctype="multipart/form-data">
         {% csrf_token %}
-      <div class="dash_title">App Attributes</div>
-
+    <div class="dash_title">App Attributes</div>
     <div id="app_description">
-{#        {{ form.description.label_tag }}#}
         {% if form.description.errors %}
             <div>
             {{ form.description.errors }}
             </div>
         {% endif %}
-        {% if app_status != 3 %}
-            <textarea id="appdescription" name="description" cols="60" rows="20" style="width: 628px; height: 30em;line-height: 1.8em;">
-                {{ form.description.value }}
-            </textarea>
-        {% else %}
-            {{ form.description }}
-        {% endif %}
+        <textarea id="appdescription" name="description" cols="60" rows="20" style="width: 628px; height: 30em;line-height: 1.8em;">
+            {{ form.description.value }}
+        </textarea>
     </div>
 
     {% if attachments != None %}

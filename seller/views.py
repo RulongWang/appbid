@@ -105,12 +105,12 @@ def appNavStatus(*args, **kwargs):
     if app:
         initParam['app_store_link'] = 'green'
         initParam['app_store_info'] = 'green'
-        if app.dl_amount or app.revenue:
+        if app.dl_amount >= 0 or app.revenue >= 0:
             initParam['marketing'] = 'green'
         else:
             initParam['marketing'] = 'grey'
         initParam['additional_info'] = 'green'
-        if app.begin_price:
+        if app.begin_price >= 0:
             initParam['sale'] = 'green'
         else:
             initParam['sale'] = 'grey'
@@ -384,14 +384,12 @@ def saveSale(request, form, model, *args, **kwargs):
         return None
 
     initParam = kwargs.get('initParam')
-    # The app in status=3 can not be edit.
-    if model.status != 3:
+    # The app in status =2 and status=3 can not be edit.
+    if model.status == 1:
         model.begin_price = form.cleaned_data['begin_price']
         model.one_price = form.cleaned_data['one_price']
         model.reserve_price = form.cleaned_data['reserve_price']
         model.currency_id = form.cleaned_data['currency']
-        # model.begin_date = form.cleaned_data['begin_date']
-        # model.end_date = form.cleaned_data['end_date']
         model.minimum_bid = form.cleaned_data['minimum_bid']
         model.save()
     return redirect(reverse(initParam.get('nextPage'), kwargs={'pk': model.id}))
