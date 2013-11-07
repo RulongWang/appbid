@@ -57,11 +57,11 @@
                        {% ifequal txn.0.status 2 %}
                            <!-- TODO: will change to pay url for buyer. -->
                            <a href="{% url 'transaction:trade_action' 'buy' txn.0.app.id txn.0.buyer.id %}">
-                               <input id="id_action" type="button" value="Pay now" />
+                               <input id="id_action" type="button" value="Pay now" class="button_n" />
                            </a>
                        {% else %}
                            <a href="{% url 'transaction:trade_action' 'buy' txn.0.app.id txn.0.buyer.id %}">
-                               <input id="id_action" type="button" value="Action" />
+                               <input id="id_action" type="button" value="Action" class="button_n" />
                            </a>
                        {% endifequal %}
                    </div>

@@ -1,0 +1,57 @@
+    <div class="paymentbox">
+        <div>
+            <div><h2 style="font-weight: bold;">Current Status:</h2></div>
+            <div style="line-height: 1.5em;">
+                    Currently ,the deal is pending on the 2nd step , we have informed {{ app.publisher.username }} to pay the money {{ transaction.price }} {{ transaction.app.currency.currency }} .<br/>
+                    At the meanwhile, you can send private message to {{ transaction.app.publisher.username }}<br/> <!--TODO: add send private message funciton here -->
+                    And please prepare your delivery items, which should be sent to the bidder after he/she paid you.<br/>
+                    The remaining time for bidder to pay to pay {% include "bid/remaintime.html" %}
+
+            </div>
+            <div><!--TODO: reminder button , send email to buyer -->
+                   You can send an email to remind buyer to pay ASAP.
+                   <a href="">
+                        <input id="id_pay" type="button" value="Send Email">
+                    </a>
+
+            </div>
+
+            <div style="padding: 3px;"><h2 style="font-weight: bold;">The promised things you will deliver to the buyer({{ user.username }}):</h2></div>
+            <div>
+                <ul class="delivery_list">
+                    <li>You should transfer the ownership of the app (<a href="{% url 'query:app_detail' transaction.app.id %}">{{ transaction.app.app_name }}</a>) to {{ user.username }}.</li>
+                    {% if transaction.app.source_code  %}
+                    <li>You should deliver the source of the app.</li>
+                    {% endif %}
+                    {% if transaction.app.delivery_detail  %}
+                    <li>
+                        The other things you should deliver:
+                    </li>
+                    {% endif %}
+                </ul>
+                    {% if transaction.app.delivery_detail   %}
+                    <div class="other_delivery">
+                    {{ app.delivery_detail }}
+                    </div>
+                    {% endif %}
+            </div>
+        </div>
+
+        <div>
+            <form action="" method="post">
+                {% csrf_token %}
+                <input id="submit" type="submit" name="submit" value="Confirm My Delivery" class="button_s"/>
+            </form>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+

@@ -1093,8 +1093,16 @@ fieldset {
     background-color: #00b0b0;
     color:white;
     border:0;
-    width:100px;
+    min-width:100px;
     height:30px;
+    border-radius: 3px;
+
+}.button_n{
+    background-color: #00b0b0;
+    color:white;
+    border:0;
+    min-width:100px;
+    height:20px;
     border-radius: 3px;
 
 }
@@ -1441,12 +1449,12 @@ fieldset {
 }
 
 .inbox_list li{
-    height:30px;
+    height:20px;
     padding: 10px 0px;
     border-bottom: 1px dashed #eeeeee;
 }
 .inbox_list li:hover{
-    height:30px;
+    height:20px;
     padding: 10px 0px;
     border-bottom: 1px dashed #eeeeee;
     background:#fafafa;
