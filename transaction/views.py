@@ -263,8 +263,8 @@ def buyerPay(request, *args, **kwargs):
     gateways = paymentModels.Gateway.objects.filter(name__iexact=initParam.get('gateway'))
     acceptGateways = paymentModels.AcceptGateway.objects.filter(user_id=transaction.seller.id, type_id=gateways[0].id, is_active=True)
     initParam['seller_account'] = acceptGateways[0].value
-    initParam['appsWalk_amount'] = app.one_price * txn_fee_pct
-    initParam['seller_amount'] = app.one_price * (1 - txn_fee_pct)
+    initParam['appsWalk_amount'] = transaction.price * txn_fee_pct
+    initParam['seller_amount'] = transaction.price * (1 - txn_fee_pct)
     initParam['txn_id'] = transaction.id
     #The needed operation method in pay.
     initParam['executeMethod'] = kwargs.get('executeMethod')
