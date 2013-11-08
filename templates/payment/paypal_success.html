@@ -1,19 +1,17 @@
 {% extends "index.html" %}
 {% block mainContent %}
 {% load staticfiles %}
-    <div>
+    <div class="payment_msg">
         {{ msg }}
     </div>
     {% if success_page %}
-        <div style="">
+        <div class="payment_return_block">
             The page will redirect the payment page, after <span id="remain_time" style="font-weight: bold">15</span>s.
-        </div>
-        <div>
             If the page not redirect, you can click next page.
+                    <a href="{{ success_page }}">App payment page</a>
+
         </div>
-        <div>
-            <a href="{{ success_page }}">App payment page</a>
-        </div>
+
     {% endif %}
 
 <script type="text/javascript" language="javascript">

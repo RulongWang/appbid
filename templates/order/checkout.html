@@ -41,50 +41,107 @@
   });
 </script>
     <div id="order_error">{{ order_error }}</div>
+    <div class="service_pay">
     <form action=""  method="post">
         {% csrf_token %}
-        <div>
-            {{ form.sn.label_tag }}:{{ form.sn.value }}
-            <input id="id_sn" name="sn" type="hidden" value="{{ form.sn.value }}"  />
+
+        <div class="table_form">
+            <div class="table_row">
+            <div class="table_left">
+            Your order number:
+            </div>
+            <div class="table_left">
+                {{ form.sn.value }}
+                <input id="id_sn" name="sn" type="hidden" value="{{ form.sn.value }}"  />
+            </div>
+            </div>
         </div>
-        <div>
-            Payment Fee: {{ form.amount.value|floatformat|default:0 }}{{ currency }}
-            <input id="id_amount" name="amount" type="hidden" value="{{ form.amount.value }}" />
+
+        <div class="table_form">
+            <div class="table_row">
+            <div class="table_left">
+            Payment Fee:
+            </div>
+            <div class="table_left">
+                {{ form.amount.value|floatformat|default:0 }}{{ currency }}
+                <input id="id_amount" name="amount" type="hidden" value="{{ form.amount.value }}" />
+
+            </div>
+            </div>
         </div>
-        <div>
-            Discount Rate:{{ discount_rate }}
+
+        <div class="table_form">
+            <div class="table_row">
+            <div class="table_left">
+            Your order number:
+            </div>
+            <div class="table_left">
+                {{ form.sn.value }}
+                <input id="id_sn" name="sn" type="hidden" value="{{ form.sn.value }}"  />
+            </div>
+            </div>
         </div>
-        <div>
-            Actual Payment Fee: {{ form.actual_amount.value|floatformat|default:0 }}{{ currency }}
+
+        <div class="table_form">
+            <div class="table_row">
+            <div class="table_left">
+            Discount Rate:
+            </div>
+            <div class="table_left">
+                {{ discount_rate }}
+            </div>
+            </div>
+        </div>
+
+        <div class="table_form">
+            <div class="table_row">
+            <div class="table_left">
+            Actual Payment Fee:
+            </div>
+            <div class="table_left">
+             {{ form.actual_amount.value|floatformat|default:0 }}{{ currency }}
             <input id="id_actual_amount" name="actual_amount" type="hidden" value="{{ form.actual_amount.value }}" />
+            </div>
+            </div>
         </div>
+
+
         {% if begin_date == None %}
-        <div>
+        <div class="table_form" style="clear:both;margin-top:10px;font-weight: bold;">
             <input id="id_select" name="select" type="checkbox" />
-            Whether start service after payment finish.
+             Auction immediately start  after you finished your payment.
         </div>
         {% endif %}
-        <div id="id_begin">
-            Service Begin Date:
+        <div id="id_begin" class="table_form" style="clear:both;margin-top:10px;font-weight: bold;">
+            <div class="table_left">
+            Choose your Auction Start Date:
+            </div>
+            <div class="table_left">
             <input id="id_start_date" name="start_date" type="text" value="{{ form.start_date.value|date:'Y-m-d H:i:s' }}" />
             {% if begin_date %}
                 (*End date of your last valid service:{{ begin_date|date:'Y-m-d H:i:s' }})
             {% endif %}
+            </div>
         </div>
-        <div id="id_end">
-            Service End Date:
+        <div id="id_end" class="table_form">
+           <div class="table_left" style="clear:both;margin-top:10px;font-weight: bold;">
+            Auction End Date:
+           </div>
+           <div class="table_left">
             <input id="id_end_date" name="end_date" type="text" readonly="readonly" value="{{ form.end_date.value|date:'Y-m-d H:i:s' }}" />
+           </div>
         </div>
         {% if acceptGateway %}<!-- prevent user's cheat -->
-        <div>
-            <img src="{% static acceptGateway.type.logo %}" style="width:90px;height:30px;">
-            <input id="id_account" name="account" type="text" value="{{ acceptGateway.value }}" readonly="readonly" />
+        <div class="table_form">
+        <div class="table_left">
+{#            <img src="{% static acceptGateway.type.logo %}" style="width:90px;height:30px;">#}
+            <input id="submit" type="submit" value="Checkout with Paypal"  class="button_s"/>
         </div>
-        <div>
-            <input id="submit" type="submit" value="Submit"  class="newbutton"/>
         </div>
         {% endif %}
     </form>
+    <div class="clear"></div>
+    </div>
 <script type="text/javascript" language="javascript">
     $('#id_select').click(function(){
         if ($('#id_select').is(':checked')) {
@@ -105,11 +162,11 @@
                 var end_date = new Date(Date.parse(date_str.replace(/-/g, "/")));
                 var begin_date_str = "{{ begin_date|date:'Y-m-d H:i:s' }}";
                 if (begin_date_str && new Date(begin_date_str) > end_date) {
-                    $("#order_error").html("Service begin date should be later than service end date of your paid payment.");//TODO:it will be set in message.properties.
+                    $("#order_error").html("Auction start date should be earlier than your auction end date.");//TODO:it will be set in message.properties.
                     return false;
                 }
                 if (begin_date_str == "" && new Date().format('yyyy-MM-dd hh:mm:ss') > end_date.format('yyyy-MM-dd hh:mm:ss')) {
-                    $("#order_error").html("Service begin date should be later than current time.");//TODO:it will be set in message.properties.
+                    $("#order_error").html("Auction start date should be later than current time.");//TODO:it will be set in message.properties.
                     return false;
                 }
                 var service_expiry_date = {{ service_expiry_date }};
@@ -125,12 +182,12 @@
             }
             else {
                 $("#id_end_date").val("");
-                $("#order_error").html("Service begin date is not correct.");//TODO:it will be set in message.properties.
+                $("#order_error").html("Auction start date is not correct.");//TODO:it will be set in message.properties.
                 return false;
             }
         }
         else {
-             $("#order_error").html("Service begin date is required.");//TODO:it will be set in message.properties.
+             $("#order_error").html("Auction start date is required.");//TODO:it will be set in message.properties.
              return false;
         }
     }
