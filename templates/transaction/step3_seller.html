@@ -27,15 +27,12 @@
             </div>
         </div>
 
-        <div>
-            <form action="" method="post">
-                {% csrf_token %}
-                <input name="txn_id" hidden="hidden" value="{{ transaction.id }}">
-                <input name="app_id" hidden="hidden" value="{{ transaction.app.id }}">
-                <input name="buyer_id" hidden="hidden" value="{{ transaction.buyer.id }}">
-                <input id="submit" type="submit" name="submit" value="Delivery" class="button_s"/>  <!-- comment because seller should not confirm the delivery by him/herself -->
-            </form>
-        </div>
+{#        <div>#}
+{#            <form action="" method="post">#}
+{#                {% csrf_token %}#}
+{#                <input id="submit" type="submit" name="submit" value="Delivery" class="button_s"/>  <!-- comment because seller should not confirm the delivery by him/herself -->#}
+{#            </form>#}
+{#        </div>#}
     </div>
 
 

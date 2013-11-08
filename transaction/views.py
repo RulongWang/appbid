@@ -143,6 +143,8 @@ def tradeAction(request, *args, **kwargs):
     else:
         raise Http404
 
+    tradeOperation(request, transaction=transaction)
+
     initParam['transaction'] = transaction
     if transaction.status == 2 or transaction.status == 3:
         initParam['time_remaining'] = time.mktime(time.strptime(str(transaction.end_time), '%Y-%m-%d %H:%M:%S'))
@@ -152,16 +154,27 @@ def tradeAction(request, *args, **kwargs):
     return render_to_response('transaction/trade_action.html', initParam, context_instance=RequestContext(request))
 
 
-@csrf_protect
-@transaction.commit_on_success
-@login_required(login_url='/usersetting/home/')
-def deliveryItem(request, *args, **kwargs):
-    if request.method == 'POST':
-        txn_id = request.POST.get('txn_id')
-        app_id = request.POST.get('app_id')
-        buyer_id = request.POST.get('buyer_id')
-        print txn_id, app_id, buyer_id
-    return None
+def tradeOperation(request, *args, **kwargs):
+    transaction = kwargs.get('transaction')
+    if transaction and request.method == 'POST':
+        delivery = request.POST.get('delivery')
+        if delivery and delivery == 'confirm_deliver':
+            transaction.status = 4
+            transaction.end_time = datetime.datetime.now()
+            transaction.save()
+            #Log transaction
+            transactionsLog = models.TransactionLog()
+            transactionsLog.app = transaction.app
+            transactionsLog.status = transaction.status
+            transactionsLog.buyer = transaction.buyer
+            transactionsLog.save()
+            #Send email to seller and buyer
+            notificationViews.closedTradeInform(request, transaction=transaction)
+        #TODO:if no complain, then increase credit point.
+        #Increase seller and buyer credit point
+        # point = common.getSystemParam(key='cp_closed_trade', default=50)
+        # creditViews.increaseCreditPoint(user=transaction.buyer, point=point)
+        # creditViews.increaseCreditPoint(user=transaction.seller, point=point)
 
 
 @csrf_protect

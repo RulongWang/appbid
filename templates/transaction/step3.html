@@ -56,9 +56,8 @@
         <div>
             <form action="" method="post">
                 {% csrf_token %}
-                    <a href="{% url 'transaction:closed_trade' transaction.id transaction.buyer.id %}">
-{#                        <input id="id_pay" type="button" value="Confirm Delivery">#}
-                    </a>
+                <input name="delivery" hidden="hidden" value="confirm_deliver">
+                <input id="submit" type="submit" name="submit" value="Confirm Delivery" class="button_s"/>
             </form>
         </div>
     </div>
