@@ -20,9 +20,11 @@
         <div class="bidlisting_item">
             <div class="bidder">
                 Bidder {{ bid_info.1 }}
-                {% ifequal bid_info.0.buyer.id request.user.id %}
+                {% if bid_info.0.buyer.id == request.user.id %}
                 - {{ bid_info.0.buyer.username }}
-                 {% endifequal %} has bid on {{ bid_info.2 }} listings from {{ bid_info.3 }} sellers
+                {% elif forloop.counter == 1 and app.publisher.id == request.user.id %}
+                - {{ bid_info.0.buyer.username }}
+                {% endif %} has bid on {{ bid_info.2 }} listings from {{ bid_info.3 }} sellers.
             </div>
             <div class="bidder_price">
                 {{ bid_info.0.price|floatformat }}{{ app.currency.currency }}

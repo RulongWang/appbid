@@ -9,12 +9,12 @@
         {% if is_expiry_date == False %}
             <div>
                 Bidding price is more than your reserve price, you have {% include "bid/remaintime.html" %} to trade. You can choose not trade, but your credit points will be decreased 50.
-                <a href="#">Trade policy<a/><!--TODO:link to the page of trade policy.-->
+                <a href="#">Trade policy</a><!--TODO:link to the page of trade policy.-->
             </div>
         {% elif is_expiry_date == True %}
             <div>
                 After 7 days, you did not trade, your credit points have been decreased 50. You can still continue to trade. After trade is finished, your credit points will be increased 50.
-                <a href="#">Trade policy<a/><!--TODO:link to the page of trade policy.-->
+                <a href="#">Trade policy</a><!--TODO:link to the page of trade policy.-->
             </div>
         {% endif %}
 

@@ -9,7 +9,7 @@
                 </div>
 
                 </div>
-            <div style="padding: 3px;"><h2 style="font-weight: bold;">The promised things you will deliver to the buyer({{ transaction.buyer.username  }}):</h2></div>
+            <div style="padding: 3px;"><h2 style="font-weight: bold;">The promised things you will deliver to the buyer ({{ transaction.buyer.username  }}):</h2></div>
             <div>
                 <ul class="delivery_list">
                     <li>You should transfer the ownership of the app ({{ transaction.app.app_name }}) to {{ transaction.user.username }}.</li>
@@ -30,7 +30,10 @@
         <div>
             <form action="" method="post">
                 {% csrf_token %}
-{#                <input id="submit" type="submit" name="submit" value="Confirm My Delivery" class="button_s"/>#}  <!-- comment because seller should not confirm the delivery by him/herself -->
+                <input name="txn_id" hidden="hidden" value="{{ transaction.id }}">
+                <input name="app_id" hidden="hidden" value="{{ transaction.app.id }}">
+                <input name="buyer_id" hidden="hidden" value="{{ transaction.buyer.id }}">
+                <input id="submit" type="submit" name="submit" value="Delivery" class="button_s"/>  <!-- comment because seller should not confirm the delivery by him/herself -->
             </form>
         </div>
     </div>

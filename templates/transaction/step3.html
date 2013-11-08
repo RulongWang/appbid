@@ -1,9 +1,10 @@
+   {% load staticfiles %}
     <div class="paymentbox">
         <div>
             <div><h2 style="font-weight: bold;">Current Status:</h2></div>
 
                 <div style="line-height: 1.5em;">
-                    Currently ,you have already paid <span style="color: red;">{{ transaction.price }} {{ transaction.app.currency.currency }}</span> to  {{ transaction.app.publisher.username }} .
+                    Currently ,you have already paid <span style="color: red;"><b>{{ transaction.price|floatformat }} {{ transaction.app.currency.currency }}</b></span> to <b>{{ transaction.seller.username }}</b>.
                     {{ transaction.seller.username }} is preparing the delivery items to you, he/she could contact you via private message,email or phone.<br/>
                     Please be remember the agreed items {{ transaction.seller.username }} promised to send to you.<br/>
                     If {{ transaction.seller.username }} didn't deliver these items to you , please raise an incident here.<br/>
@@ -14,7 +15,11 @@
             <div><h2 style="font-weight: bold;">What you can do:</h2></div>
                 <ul class="delivery_list">
                     <li>
-                        Send a private message to {{ transaction.seller.username }}
+                        Send a private message to {{ transaction.seller.username }}.
+                        <a href="/dashboard/create-message/reply/{{ transaction.seller.username }}/{{ transaction.seller.id }}?next={{ request.path }}"
+                           title="Send private message to seller" >
+                            <img src="{% static 'images/email.png' %}"/>
+                        </a>
                     </li>
                     <li>
                         Raise an incident here.
@@ -31,7 +36,7 @@
                         <input id="id_complain" type="button" value="Complain Seller">
                     </a>
                 </div>
-            <div style="padding: 3px;"><h2 style="font-weight: bold;">The promised things you should get after payment from the app seller({{ transaction.seller.username }}):</h2></div>
+            <div style="padding: 3px;"><h2 style="font-weight: bold;">The promised things you should get after payment from the app seller ({{ transaction.seller.username }}):</h2></div>
             <div>
                 <ul class="delivery_list">
                     <li>You should get the ownership of the app({{ transaction.app.app_name }}) at APPSTORE.</li>
@@ -52,7 +57,7 @@
             <form action="" method="post">
                 {% csrf_token %}
                     <a href="{% url 'transaction:closed_trade' transaction.id transaction.buyer.id %}">
-                        <input id="id_pay" type="button" value="Confirm Delivery">
+{#                        <input id="id_pay" type="button" value="Confirm Delivery">#}
                     </a>
             </form>
         </div>

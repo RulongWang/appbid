@@ -2,17 +2,17 @@
         <div>
             <div><h2 style="font-weight: bold;">Current Status:</h2></div>
                 <div style="line-height: 1.5em;">
-                    Currently ,you need to pay <span style="color: red;">{{transaction.price }} {{ transaction.app.currency.currency }}</span> to  {{ transaction.app.publisher.username }} .
+                    Currently ,you need to pay <span style="color: red;"><b>{{transaction.price|floatformat }} {{ transaction.app.currency.currency }}</b></span> to <b>{{ transaction.seller.username }}</b>.
                     After your payment, we will help you inform seller to start the delivery process immediately.<br/>
                     The remaining time for your payment: {% include "bid/remaintime.html" %} <br/>
 
 
 
                 </div>
-            <div style="padding: 3px;"><h2 style="font-weight: bold;">The promised things you will get after payment from the app seller({{ transaction.app.publisher.username }}):</h2></div>
+            <div style="padding: 3px;"><h2 style="font-weight: bold;">The promised things you will get after payment from the app seller ({{ transaction.seller.username }}):</h2></div>
             <div>
                 <ul class="delivery_list">
-                    <li>You should get the ownership of the app ({{ transaction.app.app_name }}) at APPSTORE.</li>
+                    <li>You should get the ownership of the app (<a href="{% url 'query:app_detail' transaction.app.id %}">{{ transaction.app.app_name }}</a>) at APPSTORE.</li>
                     {% if transaction.app.source_code  %}
                     <li>You should deliver the source of the app.</li>
                     {% endif %}
@@ -22,7 +22,7 @@
                     </li>
                     {% endif %}
                 </ul>
-                    {% if transaction.app.delivery_detail   %}
+                    {% if transaction.app.delivery_detail  %}
                     <div class="other_delivery">
                     {{ app.delivery_detail }}
                     </div>

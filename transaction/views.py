@@ -68,18 +68,23 @@ def tradeNow(request, *args, **kwargs):
     initParam['app'] = app
     initParam['user'] = user
     initParam['bid'] = bid
-    transaction = None
     transactions = models.Transaction.objects.filter(app_id=app.id, seller_id=request.user.id)
     if transactions:
         transaction = transactions[0]
-        initParam['transaction'] = transaction
-        #Remind that seller has 7 days to trade now, if bid price is more than reserve price.
-        if app.status == 3 and bid.price >= app.reserve_price and transaction.status == 1 and transaction.end_time:
-            if transaction.end_time > datetime.datetime.now():
-                initParam['time_remaining'] = time.mktime(time.strptime(str(transaction.end_time), '%Y-%m-%d %H:%M:%S'))
-                initParam['is_expiry_date'] = False
-            else:
-                initParam['is_expiry_date'] = True
+    else:
+        transaction = models.Transaction()
+        transaction.app = app
+        transaction.status = 1
+        transaction.seller = request.user
+        transaction.save()
+    #Remind that seller has 7 days to trade now, if bid price is more than reserve price.
+    if app.status == 3 and bid.price >= app.reserve_price and transaction.status == 1 and transaction.end_time:
+        if transaction.end_time > datetime.datetime.now():
+            initParam['time_remaining'] = time.mktime(time.strptime(str(transaction.end_time), '%Y-%m-%d %H:%M:%S'))
+            initParam['is_expiry_date'] = False
+        else:
+            initParam['is_expiry_date'] = True
+    initParam['transaction'] = transaction
 
     if request.method == 'POST':
         if transaction and transaction.status != 1:
@@ -145,6 +150,18 @@ def tradeAction(request, *args, **kwargs):
         initParam['time_remaining'] = common.dateBefore(transaction.end_time)
 
     return render_to_response('transaction/trade_action.html', initParam, context_instance=RequestContext(request))
+
+
+@csrf_protect
+@transaction.commit_on_success
+@login_required(login_url='/usersetting/home/')
+def deliveryItem(request, *args, **kwargs):
+    if request.method == 'POST':
+        txn_id = request.POST.get('txn_id')
+        app_id = request.POST.get('app_id')
+        buyer_id = request.POST.get('buyer_id')
+        print txn_id, app_id, buyer_id
+    return None
 
 
 @csrf_protect
@@ -237,7 +254,7 @@ def onePriceBuy(request, *args, **kwargs):
             #The success return page, when pay finish.
             success_page = request.session.get('success_page', None)
             if not success_page:
-                request.session['success_page'] = '/'.join([common.getHttpHeader(request), 'query/app-detail', str(app.id)])
+                request.session['success_page'] = '/'.join([common.getHttpHeader(request), 'transaction/trade-action/buy', str(app.id), str(request.user.id)])
             return paymentViews.pay(request, initParam=initParam)
     return render_to_response('transaction/one_price_buy.html', initParam, context_instance=RequestContext(request))
 
@@ -270,12 +287,13 @@ def buyerPay(request, *args, **kwargs):
     initParam['executeMethod'] = kwargs.get('executeMethod')
     #The back page, when pay has error.
     back_page = request.session.get('back_page', None)
+    url = '/'.join([common.getHttpHeader(request), 'transaction/trade-action/buy', str(app.id), str(request.user.id)])
     if not back_page:
-        request.session['back_page'] = '/'.join([common.getHttpHeader(request), 'transaction/trade-action/buy', str(app.id), str(request.user.id)])
+        request.session['back_page'] = url
     #The success return page, when pay finish.
     success_page = request.session.get('success_page', None)
     if not success_page:
-        request.session['success_page'] = '/'.join([common.getHttpHeader(request), 'query/app-detail', str(app.id)])
+        request.session['success_page'] = url
     return paymentViews.pay(request, initParam=initParam)
 
 

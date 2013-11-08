@@ -2,10 +2,10 @@
         <div>
             <div><h2 style="font-weight: bold;">Current Status:</h2></div>
             <div style="line-height: 1.5em;">
-                    Currently ,the deal is pending on the 2nd step , we have informed buyer {{ transaction.buyer.username }} to pay the money {{ transaction.price }} {{ transaction.app.currency.currency }} .<br/>
+                    Currently ,the deal is pending on the 2nd step , we have informed buyer <b>{{ transaction.buyer.username }}</b> to pay the money <b>{{ transaction.price|floatformat }} {{ transaction.app.currency.currency }}</b>.<br/>
                     In the meanwhile, you can send private message to {{ transaction.app.publisher.username }}<br/> <!--TODO: add send private message funciton here -->
                     And please prepare your delivery items, which should be sent to the bidder after he/she paid you.<br/>
-                    The remaining time for bidder to pay to pay {% include "bid/remaintime.html" %}
+                    The remaining time for bidder to pay {% include "bid/remaintime.html" %}
 
             </div>
             <div><!--TODO: reminder button , send email to buyer -->
@@ -16,10 +16,10 @@
 
             </div>
 
-            <div style="padding: 3px;"><h2 style="font-weight: bold;">The promised things you will deliver to the buyer({{ user.username }}):</h2></div>
+            <div style="padding: 3px;"><h2 style="font-weight: bold;">The promised things you will deliver to the buyer ({{ transaction.buyer.username }}):</h2></div>
             <div>
                 <ul class="delivery_list">
-                    <li>You should transfer the ownership of the app (<a href="{% url 'query:app_detail' transaction.app.id %}">{{ transaction.app.app_name }}</a>) to {{ user.username }}.</li>
+                    <li>You should transfer the ownership of the app (<a href="{% url 'query:app_detail' transaction.app.id %}">{{ transaction.app.app_name }}</a>) to <b>{{ transaction.buyer.username }}</b>.</li>
                     {% if transaction.app.source_code  %}
                     <li>You should deliver the source of the app.</li>
                     {% endif %}
@@ -29,7 +29,7 @@
                     </li>
                     {% endif %}
                 </ul>
-                    {% if transaction.app.delivery_detail   %}
+                    {% if transaction.app.delivery_detail %}
                     <div class="other_delivery">
                     {{ app.delivery_detail }}
                     </div>

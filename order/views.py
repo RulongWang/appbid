@@ -70,9 +70,11 @@ def checkout(request, *args, **kwargs):
 
                 if serviceDetail.actual_amount <= 0:
                     if checkOutSuccess(request, serviceDetail=serviceDetail):
-                        initParam['payment_msg'] = _('The payment is successful.')
-                        #TODO:Need show the message.
-                        return redirect('/'.join(['/seller/payment', str(app.id), serviceDetail.sn]))
+                        initParam['msg'] = _('The payment is successful.')
+                        initParam['success_page'] = '/'.join([common.getHttpHeader(request), 'query/app-detail', str(app.id)])
+                        log.info(_('Seller %(param1)s has paid service fee - %(param2)s with service detail id %(param3)s.')
+                                 % {'param1': request.user.username, 'param2': serviceDetail.actual_amount, 'param3': serviceDetail.id})
+                        return render_to_response('payment/paypal_success.html', initParam, context_instance=RequestContext(request))
                     else:
                         initParam['order_error'] = _('The payment is failed. Please payment again.')
                 else:
