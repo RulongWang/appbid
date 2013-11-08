@@ -40,7 +40,7 @@
                     {% if transaction and transaction.buy_type == 2 %}
                         <span>
                             <a href="{% url 'transaction:trade_action' 'sell' app.id request.user.id %}">
-                                <input id="id_trade" type="button" value="Action" />
+                                <input id="id_trade" type="button" value="Action" class="button_n" />
                             </a>
                         </span>
                     {% elif transaction and transaction.buy_type == 1 %}
@@ -48,7 +48,7 @@
                     {% else %}
                         <span>
                             <a href="{% url 'transaction:trade_now' app.id bid_info.0.buyer.id bid_info.0.id %}">
-                                <input id="id_trade" type="button" value="Trade Now" />
+                                <input id="id_trade" type="button" value="Trade Now" class="button_n" />
                             </a>
                         </span>
                     {% endif %}
@@ -61,13 +61,13 @@
                             {% ifequal transaction.status 2 %}
                                 <span>
                                     <a href="{% url 'transaction:trade_action' 'buy' app.id request.user.id %}">
-                                        <input id="id_trade" type="button" value="Pay now" />
+                                        <input id="id_trade" type="button" value="Pay now" class="button_n" />
                                     </a>
                                 </span>
                             {% else %}
                                 <span>
                                     <a href="{% url 'transaction:trade_action' 'buy' app.id request.user.id %}">
-                                        <input id="id_trade" type="button" value="Action" />
+                                        <input id="id_trade" type="button" value="Action" class="button_n" />
                                     </a>
                                 </span>
                             {% endifequal %}

@@ -156,11 +156,11 @@ def queryAppTxnInfo(request, *args, **kwargs):
         transactions = txnModels.Transaction.objects.filter(app_id=app.id)
         if transactions:
             status_id = app.transaction.status
-            status = txnModels.Transaction.STATUS[status_id-1][1]
+            status = txnModels.SELLER_STATUS[status_id-1][1]
             price = app.transaction.price
         else:
             status_id = 1
-            status = txnModels.Transaction.STATUS[0][1]
+            status = txnModels.SELLER_STATUS[0][1]
             bids = app.bidding_set.filter(status=1).order_by('-price')
             if bids:
                 price = bids[0].price
@@ -215,7 +215,7 @@ def queryTxnInfo(request, *args, **kwargs):
     """Return transaction status."""
     transaction = kwargs.get('obj_param')
     if transaction:
-        return txnModels.Transaction.STATUS[transaction.status-1][1]
+        return txnModels.BUYER_STATUS[transaction.status-1][1]
     return None
 
 

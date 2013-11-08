@@ -109,11 +109,11 @@
                    <div class="app_list">
                        {% if app.1.1 == 1 %}
                            <a href="{% url 'bid:bid_list' app.0.id %}">
-                               <input id="id_trade" type="button" value="Trade Now" />
+                               <input id="id_trade" type="button" value="Trade Now" class="button_n" />
                            </a>
                        {% else %}
                            <a href="{% url 'transaction:trade_action' 'sell' app.0.id request.user.id %}">
-                               <input id="id_action" type="button" value="Action" />
+                               <input id="id_action" type="button" value="Action" class="button_n" />
                            </a>
                        {% endif %}
                    </div>
