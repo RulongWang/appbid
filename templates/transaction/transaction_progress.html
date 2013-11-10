@@ -5,11 +5,11 @@
     <div class="tran_progress_line {% if transaction.status > 2 %} green_line {% else %} grey_line {% endif %}"></div>
     <div id="seller_delivery" class="tran_block {% if transaction.status > 3 %} ok_status {% else %} pending_status {% endif %}">3</div>
     <div class="tran_progress_line {% if transaction.status > 3 %} green_line {% else %} grey_line {% endif %}"></div>
-    <div id="buyer_confirm" class="tran_block {% if transaction.status >= 4 %} ok_status {% else %} pending_status {% endif %}">4</div>
+    <div id="buyer_confirm" class="tran_block {% if transaction.status > 4 %} ok_status {% else %} pending_status {% endif %}">4</div>
 </div>
 <div id="tranprogress_text">
     <div class="tran_begin {% if transaction.status > 1 %} text_color{% endif %}" style=""  >Transaction Start</div>
     <div class="tran_begin {% if transaction.status > 2 %} text_color{% endif %}" style="margin-left:10px;">Bidder pay the money</div>
     <div class="tran_begin {% if transaction.status > 3 %} text_color{% endif %}" style="margin-left:40px;">Seller delivery</div>
-    <div class="tran_begin {% if transaction.status >= 4 %} text_color{% endif %}" >Transaction Finished</div>
+    <div class="tran_begin {% if transaction.status > 4 %} text_color{% endif %}" >Transaction Finished</div>
 </div>

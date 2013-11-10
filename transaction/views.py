@@ -143,7 +143,7 @@ def tradeAction(request, *args, **kwargs):
     else:
         raise Http404
 
-    tradeOperation(request, transaction=transaction)
+    tradeOperation(request, transaction=transaction, initParam=initParam)
 
     initParam['transaction'] = transaction
     if transaction.status == 2 or transaction.status == 3:
@@ -155,21 +155,27 @@ def tradeAction(request, *args, **kwargs):
 
 
 def tradeOperation(request, *args, **kwargs):
+    initParam = kwargs.get('initParam')
     transaction = kwargs.get('transaction')
     if transaction and request.method == 'POST':
         delivery = request.POST.get('delivery')
-        if delivery and delivery == 'confirm_deliver':
-            transaction.status = 4
-            transaction.end_time = datetime.datetime.now()
-            transaction.save()
-            #Log transaction
-            transactionsLog = models.TransactionLog()
-            transactionsLog.app = transaction.app
-            transactionsLog.status = transaction.status
-            transactionsLog.buyer = transaction.buyer
-            transactionsLog.save()
-            #Send email to seller and buyer
-            notificationViews.closedTradeInform(request, transaction=transaction)
+        if delivery and delivery == 'confirm_delivery':
+            if transaction.status == 3:
+                transaction.status = 4
+                transaction.end_time = datetime.datetime.now()
+                transaction.save()
+                #Log transaction
+                transactionsLog = models.TransactionLog()
+                transactionsLog.app = transaction.app
+                transactionsLog.status = transaction.status
+                transactionsLog.buyer = transaction.buyer
+                transactionsLog.save()
+                #Send email to seller and buyer
+                notificationViews.closedTradeInform(request, transaction=transaction)
+            else:
+                initParam['error_msg'] = _('Transaction can not be confirmed delivery.')
+                log.error(_('Transaction: %(param1)s, status: %(param2)s can not confirm delivery.')
+                      % {'param1': transaction.id, 'param2': transaction.status})
         #TODO:if no complain, then increase credit point.
         #Increase seller and buyer credit point
         # point = common.getSystemParam(key='cp_closed_trade', default=50)

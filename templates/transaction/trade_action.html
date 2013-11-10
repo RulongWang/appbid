@@ -2,6 +2,7 @@
 {% block mainContent %}
 {% load staticfiles %}
 <div>
+    <div>{{ error_msg }}</div>
     {% include "transaction/transaction_progress.html" %}
     <!--TODO: judge process step number and display differect step info -->
      <div>
