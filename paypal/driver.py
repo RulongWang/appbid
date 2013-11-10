@@ -9,22 +9,21 @@
 # Email: ozgurvt@gmail.com
 
 
-import urllib, md5, datetime
+import urllib
 from django.conf import settings
 import urlparse
 import collections
 import httplib
 
 # Exception messages
-
 TOKEN_NOT_FOUND_ERROR = "PayPal error occured. There is no TOKEN info to finish performing PayPal payment process. We haven't charged your money yet."
 NO_PAYERID_ERROR = "PayPal error occured. There is no PAYERID info to finish performing PayPal payment process. We haven't charged your money yet."
 GENERIC_PAYPAL_ERROR = "There occured an error while performing PayPal checkout process. We apologize for the inconvenience. We haven't charged your money yet."
 GENERIC_PAYMENT_ERROR = "Transaction failed. Check out your order details again."
 GENERIC_REFUND_ERROR = "An error occured, we can not perform your refund request"
 
+
 class PayPal(object):
-    
     """
     Pluggable Python PayPal Driver that implements NVP (Name Value Pair) API methods.
     There are simply 3 main methods to be executed in order to finish the PayPal payment process.
@@ -36,45 +35,40 @@ class PayPal(object):
     3) DoExpressCheckoutPayment
     """
     
-    def __init__(self, debug = False):
+    def __init__(self, debug=False):
         # PayPal Credientials
         
         # You can use the following api credientials for DEBUGGING. (in shell)
 
         # First step is to get the correct credientials.
         if debug or getattr(settings, "PAYPAL_DEBUG", False):
-            self.username  = "me_api1.rulong.org"
-            self.password  = "1380869543"
+            self.username = "me_api1.rulong.org"
+            self.password = "1380869543"
             self.sign = "A2vypYAyoKWCr5HKJHXEzqAil0rBANhDLrGYeKZ-H8Wjmb.OShNvkwhY"
-            self.AP_RETURNURL    = "https://beta.appswalk.com/payment/paypal_ap_return"
-            self.AP_CANCELURL = "https://beta.appswalk.com/payment/paypal_cancel"
             self.AP_APPLICATION_ID = "APP-80W284485P519543T"
-
             self.AP_REDIRECTURL = "https://www.sandbox.paypal.com/cgi-bin/webscr?cmd=_ap-payment&paykey="
             self.AP_ENDPOINT = "svcs.sandbox.paypal.com"
         else:
-            self.username  = getattr(settings, "PAYPAL_USER", None)
-            self.password  = getattr(settings, "PAYPAL_PASSWORD", None)
-            self.sign      = getattr(settings, "PAYPAL_SIGNATURE", None)
+            self.username = getattr(settings, "PAYPAL_USER", None)
+            self.password = getattr(settings, "PAYPAL_PASSWORD", None)
+            self.sign = getattr(settings, "PAYPAL_SIGNATURE", None)
             self.AP_APPLICATION_ID = getattr(settings, "PAYPAL_AP_APPLICATION_ID", None)
-            self.AP_RETURNURL    = "https://www.appswalk.com/payment/paypal_ap_return"
-            self.AP_CANCELURL = "https://www.appswalk.com/payment/paypal_cancel"
             self.AP_REDIRECTURL = "https://www.paypal.com/webscr?cmd=_ap-payment&paykey="
             self.AP_ENDPOINT = "svcs.paypal.com"
 
         self.credientials = {
-            "USER" : self.username,
-            "PWD" : self.password,
-            "SIGNATURE" : self.sign,
-            "VERSION" : "53.0",
+            "USER": self.username,
+            "PWD": self.password,
+            "SIGNATURE": self.sign,
+            "VERSION": "53.0",
         }
         # Second step is to set the API end point and redirect urls correctly.
         if debug or getattr(settings, "PAYPAL_DEBUG", False):
-            self.NVP_API_ENDPOINT    = "https://api-3t.sandbox.paypal.com/nvp"
+            self.NVP_API_ENDPOINT = "https://api-3t.sandbox.paypal.com/nvp"
             self.PAYPAL_REDIRECT_URL = "https://www.sandbox.paypal.com/cgi-bin/webscr?cmd=_express-checkout&token="
 
         else:
-            self.NVP_API_ENDPOINT    = "https://api-3t.paypal.com/nvp"
+            self.NVP_API_ENDPOINT = "https://api-3t.paypal.com/nvp"
             self.PAYPAL_REDIRECT_URL = "https://www.paypal.com/cgi-bin/webscr?cmd=_express-checkout&token="
 
         # initialization
@@ -103,8 +97,7 @@ class PayPal(object):
         else:
             return raw
 
-
-    def paypal_url(self, token = None):
+    def paypal_url(self, token=None):
         """
         Returns a 'redirect url' for PayPal payments.
         If token was null, this function MUST NOT return any URL.
@@ -113,8 +106,6 @@ class PayPal(object):
         if not token:
             return None
         return self.PAYPAL_REDIRECT_URL + token
-
-
 
     def SetExpressCheckout(self, amount, currency, return_url, cancel_url, **kwargs):
         """
@@ -137,30 +128,29 @@ class PayPal(object):
             'METHOD': 'SetExpressCheckout',
             'NOSHIPPING': 0,#no need shipping address
             # 'PAYMENTACTION': 'Sale',
-            'PAYMENTACTION':'Sale',
+            'PAYMENTACTION': 'Sale',
             'RETURNURL': return_url,
             'CANCELURL': cancel_url,
             'AMT': amount,
             # 'PAYMENTREQUEST_0_AMT': amount,
-            'CURRENCYCODE':currency,
-            'DESC':initParam.get('DESC', ''),
-            # 'INVNUM':'1000'  #invoice number
-            # 'CURRENCYCODE' : currency,
-            # 'ALLOWNOTE':1,
+            'CURRENCYCODE': currency,
+            'DESC': initParam.get('DESC', ''),
+            # 'INVNUM': '1000'  #invoice number
+            # 'ALLOWNOTE': 1,
             # 'SOLUTIONTYPE'=Sole
-            # 'order':'Appswalk service fee',
+            # 'order': 'Appswalk service fee',
             # 'L_PAYMENTREQUEST_0_NUMBER0': 10001,
-            'PAYMENTREQUEST_0_DESC ':initParam.get('PAYMENTREQUEST_0_DESC', ''),
+            'PAYMENTREQUEST_0_DESC': initParam.get('PAYMENTREQUEST_0_DESC', ''),
             # 'L_PAYMENTREQUEST_0_AMT0':30,
             'ITEMAMT': initParam.get('ITEMAMT', amount),
 
             # &PAYMENTREQUEST_0_SHIPPINGAMT=3.00
-            'L_NAME0':initParam.get('L_NAME0', ''),
-            'L_DESC0':initParam.get('L_DESC0', ''),
-            'L_AMT0':initParam.get('L_AMT0', amount),
+            'L_NAME0': initParam.get('L_NAME0', ''),
+            'L_DESC0': initParam.get('L_DESC0', ''),
+            'L_AMT0': initParam.get('L_AMT0', amount),
             # 'L_PAYMENTREQUEST_0_NUMBER0':'10100',
-            'L_QTY0':initParam.get('L_QTY0', '1'),
-            'L_PAYMENTREQUEST_0_ITEMCATEGORY0':'Digital',
+            'L_QTY0': initParam.get('L_QTY0', '1'),
+            'L_PAYMENTREQUEST_0_ITEMCATEGORY0': 'Digital',
             # &PAYMENTREQUEST_0_SHIPDISCAMT=-3.00
             # &PAYMENTREQUEST_0_INSURANCEAMT=1.00
         }
@@ -169,8 +159,6 @@ class PayPal(object):
         query_string = self.signature + urllib.urlencode(parameters)
         response = urllib.urlopen(self.NVP_API_ENDPOINT, query_string).read()
         response_dict = urlparse.parse_qs(response)
-        print(response)
-        print response_dict
         self.api_response = response_dict
         state = self._get_value_from_qs(response_dict, "ACK")
         if state in ["Success", "SuccessWithWarning"]:
@@ -181,10 +169,6 @@ class PayPal(object):
         self.apierror = self._get_value_from_qs(response_dict, "L_LONGMESSAGE0")
         return False
 
-
-
-
-
     """
     If SetExpressCheckout is successfull use TOKEN to redirect to the browser to the address BELOW:
     
@@ -192,11 +176,7 @@ class PayPal(object):
 
     """
 
-
-
-
-
-    def GetExpressCheckoutDetails(self, return_url, cancel_url, token = None):
+    def GetExpressCheckoutDetails(self, return_url, cancel_url, token=None):
         """
         This method performs the NVP API method that is responsible from getting the payment details.
         This returns True if successfully fetch the checkout details, otherwise returns False.
@@ -210,10 +190,10 @@ class PayPal(object):
             return False
 
         parameters = {
-            'METHOD' : "GetExpressCheckoutDetails",
-            'RETURNURL' : return_url,
-            'CANCELURL' : cancel_url,
-            'TOKEN' : token,
+            'METHOD': "GetExpressCheckoutDetails",
+            'RETURNURL': return_url,
+            'CANCELURL': cancel_url,
+            'TOKEN': token,
         }
         query_string = self.signature + urllib.urlencode(parameters)
         response = urllib.urlopen(self.NVP_API_ENDPOINT, query_string).read()
@@ -224,13 +204,9 @@ class PayPal(object):
             self.getexpresscheckoutdetailserror = self._get_value_from_qs(response_dict, "L_SHORTMESSAGE0")
             self.apierror = self.getexpresscheckoutdetailserror
             return False
-
         return True
 
-
-
-
-    def DoExpressCheckoutPayment(self, currency, amount, token = None, payerid = None):
+    def DoExpressCheckoutPayment(self, currency, amount, token=None, payerid=None):
         """
         This method performs the NVP API method that is responsible from doing the actual payment.
         All of the parameters are REQUIRED.
@@ -238,8 +214,6 @@ class PayPal(object):
         @amount : should be string with the following format '10.00'
         @token : token that will come from the result of SetExpressionCheckout process.
         @payerid : payerid that will come from the url when PayPal redirects you after SetExpressionCheckout process.
-
-
         @returns bool
         """
         if token is None:
@@ -251,12 +225,12 @@ class PayPal(object):
             return False
 
         parameters = {
-            'METHOD' : "DoExpressCheckoutPayment",
-            'PAYMENTACTION' : 'Sale',
-            'TOKEN' : token,
-            'AMT' : amount,
-            'CURRENCYCODE' : currency,
-            'PAYERID' : payerid,
+            'METHOD': "DoExpressCheckoutPayment",
+            'PAYMENTACTION': 'Sale',
+            'TOKEN': token,
+            'AMT': amount,
+            'CURRENCYCODE': currency,
+            'PAYERID': payerid,
         }
         query_string = self.signature + urllib.urlencode(parameters)
         response = urllib.urlopen(self.NVP_API_ENDPOINT, query_string).read()
@@ -265,7 +239,7 @@ class PayPal(object):
             response_tokens[token.split("=")[0]] = token.split("=")[1]
         for key in response_tokens.keys():
             response_tokens[key] = urllib.unquote(response_tokens[key])
-                
+
         state = self._get_value_from_qs(response_tokens, "ACK")
         self.response = response_tokens
         self.api_response = response_tokens
@@ -275,10 +249,7 @@ class PayPal(object):
             return False
         return True
 
-
-
-
-    def RefundTransaction(self, transid, refundtype, currency = None, amount = None, note = "Dummy note for refund"):
+    def RefundTransaction(self, transid, refundtype, currency=None, amount=None, note="Dummy note for refund"):
         """
         Performs PayPal API method for refund.
         
@@ -301,16 +272,16 @@ class PayPal(object):
             return False
         
         parameters = {
-            'METHOD' : "RefundTransaction",
-            'TRANSACTIONID' : transid,
-            'REFUNDTYPE' : refundtype,
+            'METHOD': "RefundTransaction",
+            'TRANSACTIONID': transid,
+            'REFUNDTYPE': refundtype,
         }
         
         if refundtype == "Partial":
             extra_values = {
-                'AMT' : amount,
-                'CURRENCYCODE' : currency,
-                'NOTE' : note
+                'AMT': amount,
+                'CURRENCYCODE': currency,
+                'NOTE': note
             }
             parameters.update(extra_values)
 
@@ -331,17 +302,14 @@ class PayPal(object):
             return False
         return True
 
-
     def GetPaymentResponse(self):
         return self.response
-
-
 
     def GetRefundResponse(self):
         return self.refund_response
 
-#add new method to return details info
-    def GetExpressCheckoutDetailsInfo(self, return_url, cancel_url, token = None):
+    #add new method to return details info
+    def GetExpressCheckoutDetailsInfo(self, return_url, cancel_url, token=None):
         """
         This method performs the NVP API method that is responsible from getting the payment details.
         This returns True if successfully fetch the checkout details, otherwise returns False.
@@ -355,10 +323,10 @@ class PayPal(object):
             return False
 
         parameters = {
-            'METHOD' : "GetExpressCheckoutDetails",
-            'RETURNURL' : return_url,
-            'CANCELURL' : cancel_url,
-            'TOKEN' : token,
+            'METHOD': "GetExpressCheckoutDetails",
+            'RETURNURL': return_url,
+            'CANCELURL': cancel_url,
+            'TOKEN': token,
         }
         query_string = self.signature + urllib.urlencode(parameters)
         response = urllib.urlopen(self.NVP_API_ENDPOINT, query_string).read()
@@ -367,19 +335,18 @@ class PayPal(object):
         state = self._get_value_from_qs(response_dict, "ACK")
         return response_dict
 
-
-#method to handle adaptive payment
+    #method to handle adaptive payment
     def setAPCall(self, currency, return_url, cancel_url, action_type='PAY', **kwargs):
     #Set our headers
         initParam = kwargs.get('initParam')
         headers = {
-            'X-PAYPAL-SECURITY-USERID':self.username,
-            'X-PAYPAL-SECURITY-PASSWORD':self.password,
-            'X-PAYPAL-SECURITY-SIGNATURE':self.sign,
-            'X-PAYPAL-APPLICATION-ID':self.AP_APPLICATION_ID,
-            'X-PAYPAL-SERVICE-VERSION':'1.1.0',
-            'X-PAYPAL-REQUEST-DATA-FORMAT':'NV',
-            'X-PAYPAL-RESPONSE-DATA-FORMAT':'NV'
+            'X-PAYPAL-SECURITY-USERID': self.username,
+            'X-PAYPAL-SECURITY-PASSWORD': self.password,
+            'X-PAYPAL-SECURITY-SIGNATURE': self.sign,
+            'X-PAYPAL-APPLICATION-ID': self.AP_APPLICATION_ID,
+            'X-PAYPAL-SERVICE-VERSION': '1.1.0',
+            'X-PAYPAL-REQUEST-DATA-FORMAT': 'NV',
+            'X-PAYPAL-RESPONSE-DATA-FORMAT': 'NV'
         }
 
         ###################################################################
@@ -391,50 +358,45 @@ class PayPal(object):
         params = collections.OrderedDict()
         params['requestEnvelope.errorLanguage'] = 'en_US'
         params['requestEnvelope.detailLevel'] = 'ReturnAll'
-        # params['reverseAllParallelPaymentsOnError'] = 'true';
+        # params['reverseAllParallelPaymentsOnError'] = 'true'
         params['returnUrl'] = return_url
         params['cancelUrl'] = cancel_url
         params['actionType'] = action_type
         params['currencyCode'] = currency
         params['feesPayer'] = 'EACHRECEIVER'
-        params['receiverList.receiver(0).email'] = initParam.get('appsWalk_account')#'me@rulong.org'
-        params['receiverList.receiver(0).amount'] = initParam.get('appsWalk_amount')#'100.00'
+        params['receiverList.receiver(0).email'] = initParam.get('appsWalk_account')
+        params['receiverList.receiver(0).amount'] = initParam.get('appsWalk_amount')
         # params['receiverList.receiver(0).primary'] = 'true'
 
-        params['receiverList.receiver(1).email'] = initParam.get('seller_account')#'javacc@163.com'
-        params['receiverList.receiver(1).amount'] = initParam.get('seller_amount')#'30.00'
+        params['receiverList.receiver(1).email'] = initParam.get('seller_account')
+        params['receiverList.receiver(1).amount'] = initParam.get('seller_amount')
 
         #Add Client Details
         params['clientDetails.ipAddress'] = '127.0.0.1'
         params['clientDetails.deviceId'] = 'mydevice'
         params['clientDetails.applicationId'] = 'PayNvpDemo'
-
         enc_params = urllib.urlencode(params)
-        print (enc_params)
 
         #Connect to sand box and POST.
         conn = httplib.HTTPSConnection(self.AP_ENDPOINT)
         conn.request("POST", "/AdaptivePayments/Pay/", enc_params, headers)
         #Check the response - should be 200 OK.
         response = conn.getresponse()
-        print (response.status, response.reason)
+
         #Get the reply and print it out.
         data = response.read()
         response_dic = urlparse.parse_qs(data)
-        print '====------===='
-        print response_dic
         return response_dic
 
-
-    def check_ap_payment_status(self,paykey):
+    def check_ap_payment_status(self, paykey):
         headers = {
-            'X-PAYPAL-SECURITY-USERID':self.username,
-            'X-PAYPAL-SECURITY-PASSWORD':self.password,
-            'X-PAYPAL-SECURITY-SIGNATURE':self.sign,
-            'X-PAYPAL-APPLICATION-ID':self.AP_APPLICATION_ID,
-            'X-PAYPAL-SERVICE-VERSION':'1.1.0',
-            'X-PAYPAL-REQUEST-DATA-FORMAT':'NV',
-            'X-PAYPAL-RESPONSE-DATA-FORMAT':'NV'
+            'X-PAYPAL-SECURITY-USERID': self.username,
+            'X-PAYPAL-SECURITY-PASSWORD': self.password,
+            'X-PAYPAL-SECURITY-SIGNATURE': self.sign,
+            'X-PAYPAL-APPLICATION-ID': self.AP_APPLICATION_ID,
+            'X-PAYPAL-SERVICE-VERSION': '1.1.0',
+            'X-PAYPAL-REQUEST-DATA-FORMAT': 'NV',
+            'X-PAYPAL-RESPONSE-DATA-FORMAT': 'NV'
         }
 
         ###################################################################
@@ -445,21 +407,26 @@ class PayPal(object):
         #Set our POST Parameters
         params = collections.OrderedDict()
         params['payKey'] = paykey
-        params['requestEnvelope.errorLanguage'] = 'en_US';
-
+        params['requestEnvelope.errorLanguage'] = 'en_US'
         enc_params = urllib.urlencode(params)
-        print ("get Payment result")
-        print (enc_params)
+
         #Connect to sand box and POST.
         conn = httplib.HTTPSConnection(self.AP_ENDPOINT)
         conn.request("POST", "/AdaptivePayments/PaymentDetails/", enc_params, headers)
         #Check the response - should be 200 OK.
         response = conn.getresponse()
-        print (response.status, response.reason)
+
         #Get the reply and print it out.
         data = response.read()
         response_dic = urlparse.parse_qs(data)
         result = response_dic
-        print result
         return result
 
+    def paypal_ap_url(self, pay_key=None):
+        """
+        Returns a 'redirect url' for PayPal pay.
+        If pay_key was null, this function MUST NOT return any URL.
+        """
+        if not pay_key:
+            return None
+        return self.AP_REDIRECTURL + pay_key

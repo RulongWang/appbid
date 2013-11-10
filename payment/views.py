@@ -8,26 +8,9 @@ from django.views.decorators.csrf import csrf_protect
 from django.utils.translation import ugettext as _
 from django.db import transaction
 from paypal import driver, utils
-from django.conf import settings
+from utilities import common
 
 log = logging.getLogger('appbid')
-
-if getattr(settings, "PAYPAL_DEBUG", False):
-    EC_RETURNURL = "https://beta.appswalk.com/payment/paypal_return"
-    EC_CANCELURL = "https://beta.appswalk.com/payment/paypal_cancel"
-    AP_RETURNURL = "https://beta.appswalk.com/payment/paypal_ap_return"
-    AP_CANCELURL = "https://beta.appswalk.com/payment/paypal_cancel"
-    AP_REDIRECTURL = "https://www.sandbox.paypal.com/cgi-bin/webscr?cmd=_ap-payment&paykey="
-    # EC_RETURNURL = "http://127.0.0.1:8000/payment/paypal_return"
-    # EC_CANCELURL = "http://127.0.0.1:8000/payment/paypal_cancel"
-    # AP_RETURNURL = "http://127.0.0.1:8000/payment/paypal_ap_return"
-    # AP_CANCELURL = "http://127.0.0.1:8000/payment/paypal_cancel"
-else:
-    EC_RETURNURL = "https://www.appswalk.com/payment/paypal_return"
-    EC_CANCELURL = "https://www.appswalk.com/payment/paypal_cancel"
-    AP_RETURNURL = "https://www.appswalk.com/payment/paypal_ap_return"
-    AP_CANCELURL = "https://www.appswalk.com/payment/paypal_cancel"
-    # AP_REDIRECTURL = "https://www.paypal.com/webscr?cmd=_ap-payment&paykey="
 
 
 @csrf_protect
@@ -42,6 +25,8 @@ def payment(request, *args, **kwargs):
     id = initParam.get('serviceDetail_id')
     if amount and currency and id:
         p = driver.PayPal()
+        EC_RETURNURL = '/'.join([common.getHttpHeader(request), 'payment/paypal_return'])
+        EC_CANCELURL = '/'.join([common.getHttpHeader(request), 'payment/paypal_cancel'])
         result = p.SetExpressCheckout(amount, currency, EC_RETURNURL, EC_CANCELURL, initParam=initParam)
         if result:
             #The needed operation for verification later when payment return token..
@@ -90,6 +75,8 @@ def payPalReturn(request, *args, **kwargs):
     initParam['payerid'] = payerID
     if token and payerID:
         p = driver.PayPal()
+        EC_RETURNURL = '/'.join([common.getHttpHeader(request), 'payment/paypal_return'])
+        EC_CANCELURL = '/'.join([common.getHttpHeader(request), 'payment/paypal_cancel'])
         res_dict = p.GetExpressCheckoutDetailsInfo(EC_RETURNURL, EC_CANCELURL, token)
         state = p._get_value_from_qs(res_dict, 'ACK')
         if state in ["Success", "SuccessWithWarning"]:
@@ -250,6 +237,8 @@ def pay(request, *args, **kwargs):
     id = initParam.get('txn_id')
     if currency and id:
         p = driver.PayPal()
+        AP_RETURNURL = '/'.join([common.getHttpHeader(request), 'payment/paypal_ap_return'])
+        AP_CANCELURL = '/'.join([common.getHttpHeader(request), 'payment/paypal_cancel'])
         result = p.setAPCall(currency, AP_RETURNURL, AP_CANCELURL, 'PAY', initParam=initParam)
         if result['responseEnvelope.ack'][0] == 'Success':
             pay_key = result['payKey'][0]
@@ -265,7 +254,7 @@ def pay(request, *args, **kwargs):
                         del request.session['gateway']
                     request.session['gateway'] = 'paypal'
                     #redirect PayPal pay website.
-                    redirect_url = p.AP_REDIRECTURL + pay_key
+                    redirect_url = p.paypal_ap_url(pay_key)
                     return redirect(redirect_url)
                 else:
                     log.error(_('Transaction with id %(param1)s. Execute method %(param2)s failed.')
