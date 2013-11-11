@@ -37,15 +37,17 @@
             <div class="item_summary_sum">
                   Actual Amount:{{ serviceDetail.actual_amount }}{{ serviceDetail.app.currency.currency }}
             </div>
-        </div>
-    </div>
-
-            <form action="/payment/paypal_checkout" method="get">
+            <div class="item_summary_sum">
+                            <form action="/payment/paypal_checkout" method="get">
             <input type=hidden name = "id" value="{{ serviceDetail.id }}"/>
             <input type=hidden name = "PayerID" value="{{ payerid }}"/>
             <input type=hidden name = "token" value="{{ token }}" />
-            <input type= submit value="checkout" class="newbutton"/>
+            <input type= submit value="checkout" class="button_n"/>
             </form>
+
+            </div>
+    </div>
+
 
   </div>
 {% endblock %}
