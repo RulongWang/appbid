@@ -2336,6 +2336,7 @@ input[type="radio"]:checked:after {
     border-bottom: 1px dashed #ddd;
 }
 .item_summary_sum{
+    margin-left:450px;
      padding:5px;
     width:300px;
     text-align: left;
