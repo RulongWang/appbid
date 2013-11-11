@@ -2289,13 +2289,13 @@ input[type="radio"]:checked:after {
 }
 
 .item_amount{
-    padding-top: 30px;
+    font-weight: bold;
     text-align: center;
 }
 
 .item_detail{
+    padding:25px 0;
     float:left;
-    height:80px;
     width:300px;
 }
 
@@ -2307,7 +2307,6 @@ input[type="radio"]:checked:after {
 .items_list li{
     display: block;
     width:600px;
-    height:80px;
     border-bottom: 1px dashed #ddd;
 
 }
