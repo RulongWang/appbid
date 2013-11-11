@@ -2384,7 +2384,8 @@ input[type="radio"]:checked:after {
 }
 
 .payment_dash_title{
-    margin:20px 0 0 0 auto;
+    margin:0 auto;
+    margin-top:20px;
     padding:5px 10px;
     height:20px;
     width:800px;
