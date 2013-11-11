@@ -3,11 +3,12 @@
 {% load staticfiles %}
 
     {% if back_page %}
- <div class="payment_dash_title">Oops....Somthing wrong here</div>
     <div class="errors_msg">
         {{ error_msg }}
     </div>
   <div class="service_pay">
+  <div class="payment_dash_title">Oops....Somthing wrong here</div>
+
      The page will be redirected the payment page, after <span id="remain_time" style="font-weight: bold">15</span>s.
   You can also go to <a href="{{ back_page }}">"App payment page"</a> right now.
  </div>
