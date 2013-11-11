@@ -13,15 +13,17 @@
               <div class="table_left">
                  You paid:{{ transaction.price }} <!--TODO: need display transaction price -->
               </div>
-              <div class="table_left">
-                 The name of the App:{{ transaction.price }} <!--TODO: need display transaction price -->
-              </div>
+
 
             </div>
-            <div class="table_row">
-                {% static "images/pay success32-32.png" %}The page will redirect the payment page, after <span id="remain_time" style="font-weight: bold">15</span>s.
+              <div class="table_form">
+                 The name of the App:{{ transaction.price }} <!--TODO: need display transaction price -->
+              </div>
+              <div class="table_desc">
+                <img src="{% static "images/pay success32-32.png" %}"/> You have successfully paid. <br/>
+                The page will redirect the payment page, after <span id="remain_time" style="font-weight: bold">15</span>s.
                 If the page not redirect, you can click next page.<a href="{{ success_page }}">App payment page</a>
-            </div>
+              </div>
 
            </div>
 

@@ -2279,7 +2279,6 @@ input[type="radio"]:checked:after {
 
 .item_detail_header{
     float:left;
-    height:30px;
     width:300px;
     text-align: center;
 }
@@ -2313,24 +2312,25 @@ input[type="radio"]:checked:after {
 
 }
 .item_header{
-    display: block;
+    padding:15px;
+    font-weight: bold;
     width:600px;
-    height:30px;
     border-bottom: 1px dashed #ddd;
 }
 
 .item_name{
     padding: 3px 0px 3px 10px;
+    font-weight: bold;
 }.item_desc{
     padding: 3px 0px 3px 10px;
+    font-size: 12px;
 }.item_num{
     padding: 3px 0px 3px 10px;
 }
 
 .item_summary{
-    display: block;
+    padding: 10px;
     width:600px;
-    height:30px;
     text-align: center;
     border-bottom: 1px dashed #ddd;
 }
@@ -2524,6 +2524,10 @@ input[type="radio"]:checked:after {
 
 .table_row{
 
+}
+.table_desc{
+    margin-top:20px;
+    font-weight: normal;
 }
 
 .table_left{
