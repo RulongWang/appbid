@@ -40,7 +40,9 @@
     }
   });
 </script>
+    <div class="dash_title">Checkout for your selected service</div>
     <div id="order_error">{{ order_error }}</div>
+
     <div class="service_pay">
     <form action=""  method="post">
         {% csrf_token %}
@@ -70,17 +72,6 @@
             </div>
         </div>
 
-        <div class="table_form">
-            <div class="table_row">
-            <div class="table_left">
-            Your order number:
-            </div>
-            <div class="table_left">
-                {{ form.sn.value }}
-                <input id="id_sn" name="sn" type="hidden" value="{{ form.sn.value }}"  />
-            </div>
-            </div>
-        </div>
 
         <div class="table_form">
             <div class="table_row">
