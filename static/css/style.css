@@ -2383,6 +2383,23 @@ input[type="radio"]:checked:after {
     background:-webkit-linear-gradient(top,#ffffff,#efefef);
 }
 
+.payment_dash_title{
+    margin-top:20px;
+    padding:5px 10px;
+    height:20px;
+    width:800px;
+    font-size: 15px;
+    color:#00b0b0;
+    background: #efefef;
+    text-align: center;
+    vertical-align: middle;
+    border:1px solid #ddd;
+    background:linear-gradient(top,#ffffff,#efefef);
+    background:-moz-linear-gradient(top,#ffffff,#efefef);
+    background:-webkit-linear-gradient(top,#ffffff,#efefef);
+}
+
+
 
 .central_msg{
     margin:50px 0 auto;
