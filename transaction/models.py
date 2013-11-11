@@ -31,8 +31,8 @@ class Transaction(models.Model):
         (5, 'Closed'),
     )
     BUY_TYPE = (
-        (1, 'one-price-buy'),
-        (2, 'bid-win'),
+        (1, 'One Price Buy'),
+        (2, 'Won Bidding'),
     )
     app = models.OneToOneField(appModels.App)
     status = models.IntegerField(choices=STATUS, default=1)

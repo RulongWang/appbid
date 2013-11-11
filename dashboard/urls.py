@@ -25,5 +25,6 @@ urlpatterns = patterns('',
     url(r'^unwatch-category/(?P<category_id>\d+)$', views.unwatchCategory, name='unwatch_category'),
     url(r'^watch-categories$', views.watchCategories, name='watch_categories'),
 
+    url(r'^past-transactions$', views.pastTransactions, name='past_transactions'),
     url(r'^past-orders$', views.pasOrders, name='past_orders'),
 )

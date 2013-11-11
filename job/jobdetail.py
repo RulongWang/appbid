@@ -10,6 +10,7 @@ from notification import models as notificationModels
 from transaction import models as txnModels
 from utilities import common, email
 from credit import views as creditViews
+from transaction import views as txnViews
 
 
 def verificationAppForSeller(*args, **kwargs):
@@ -138,3 +139,12 @@ def taskForTradeFinished(*args, **kwargs):
         1.
     """
     return None
+
+
+def jobPayStatus(*args, **kwargs):
+    """
+        The task will be done in at schedule time, such as: every 5 min..
+        Check whether buyer pay is complete in case that buyer close the page after pay by paypal.
+        In the case, payReturn (url 'paypal_ap_return') is not executed.
+    """
+    txnViews.jobCheckPayComplete()

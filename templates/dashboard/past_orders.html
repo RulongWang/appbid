@@ -14,10 +14,10 @@
                        <a href="{% url 'query:app_detail' serviceDetail.0.app.id %}">{{ serviceDetail.0.app.app_name }}</a>
                    </div>
                    <div class="app_list">
-                       {{ serviceDetail.0.start_date|date:"Y-m-d G:i" }} - {{ serviceDetail.0.end_date|date:"Y-m-d G:i" }}
+                       {{ serviceDetail.0.start_date|date:"Y-m-d H:i" }} - {{ serviceDetail.0.end_date|date:"Y-m-d H:i" }}
                    </div>
                    <div class="app_list">
-                       {{ serviceDetail.0.actual_amount }} {{ serviceDetail.0.app.currency.currency }}
+                       {{ serviceDetail.0.actual_amount|floatformat|default:0 }} {{ serviceDetail.0.app.currency.currency }}
                    </div>
                    <div class="app_list">
                        <a href="{% url 'seller:payment' serviceDetail.0.app.id serviceDetail.0.sn %}">

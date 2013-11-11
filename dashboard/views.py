@@ -443,20 +443,24 @@ def queryCategoryApps(request, *args, **kwargs):
     return None
 
 
-def past_invoices(request, *args, **kwargs):
-    return render_to_response("dashboard/pastinvoices.html",{"payment_accounts":'test'},
-                        context_instance=RequestContext(request))
+def pastTransactions(request, *args, **kwargs):
+    """Query user's past orders in past transactions page."""
+    initParam = {}
+    page = request.GET.get('page', 1)
+    initParam['page'] = page
 
+    transactions = txnModels.Transaction.objects.filter(buyer_id=request.user.id)
+    initParam['transactions'] = common.queryWithPaginator(request, page=page, obj=transactions)
+    initParam['buy_type'] = txnModels.Transaction.BUY_TYPE
+    initParam['buyer_status'] = txnModels.BUYER_STATUS
 
-def unpaid_fees(request, *args, **kwargs):
-    return render_to_response("dashboard/unpaid_fees.html",{"payment_accounts":'test'},
-                        context_instance=RequestContext(request))
+    return render_to_response("dashboard/past_transactions.html", initParam, context_instance=RequestContext(request))
 
 
 @csrf_protect
 @login_required(login_url='/usersetting/home/')
 def pasOrders(request, *args, **kwargs):
-    """Query user's past orders in past order page."""
+    """Query user's past orders in past orders page."""
     initParam = {}
     page = request.GET.get('page', 1)
     initParam['page'] = page

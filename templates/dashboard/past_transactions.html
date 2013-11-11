@@ -1,0 +1,55 @@
+{% extends "dashboard/activity.html" %}
+{% block dashboard_detail %}
+           <div class="dash_title">Post Transactions</div>
+           <ul class="inbox_list">
+            <li class="highlight_li">
+               <div class="app_title">App Name</div>
+               <div class="app_title">Buy Type</div>
+               <div class="app_title">Price</div>
+               <div class="app_title">Status</div>
+           </li>
+           {% for transaction in transactions %}
+               <li>
+                   <div class="app_list">
+                       <a href="{% url 'query:app_detail' transaction.0.app.id %}">{{ transaction.0.app.app_name }}</a>
+                   </div>
+                   <div class="app_list">
+                       {% if transaction.0.buy_type == 1 %}
+                            {{ buy_type.0.1 }}
+                       {% elif transaction.0.buy_type == 2 %}
+                           {{ buy_type.1.1 }}
+                       {% else %}
+                           -
+                       {% endif %}
+                   </div>
+                   <div class="app_list">
+                       {{ transaction.0.price|floatformat|default:0 }} {{ transaction.0.app.currency.currency }}
+                   </div>
+                   <div class="app_list">
+                       <a href="{% url 'transaction:trade_action' 'buy' transaction.0.app.id request.user.id %}">
+                       {% if transaction.0.status == 1 %}
+                           {{ buyer_status.0.1 }}
+                       {% elif transaction.0.status == 2 %}
+                           {{ buyer_status.1.1 }}
+                       {% elif transaction.0.status == 3 %}
+                           {{ buyer_status.2.1 }}
+                       {% elif transaction.0.status == 4 %}
+                           {{ buyer_status.3.1 }}
+                       {% elif transaction.0.status == 5 %}
+                           {{ buyer_status.4.1 }}
+                       {% endif %}
+                       </a>
+                   </div>
+               </li>
+           {% empty %}
+                <div class="no_message">No past transactions.</div>
+           {% endfor %}
+           {% if transactions %}
+             <div class="pagination" >
+                {% if transactions.has_previous %}<a href="?page={{ transactions.previous_page_number }}">previous</a>{% endif %}
+                Page {{ transactions.number }} of {{ transactions.paginator.num_pages }}
+                {% if transactions.has_next %}<a href="?page={{ transactions.next_page_number }}">next</a>{% endif %}
+             </div>
+           {% endif %}
+           </ul>
+{% endblock %}
