@@ -40,6 +40,7 @@ class Transaction(models.Model):
     buyer = models.ForeignKey(User, null=True, related_name='txn_buyer')
     price = models.FloatField(null=True)
     end_time = models.DateTimeField(null=True)
+    create_time = models.DateTimeField(auto_now_add=True)
 
     #For user pay.
     buy_type = models.IntegerField(choices=BUY_TYPE, null=True)

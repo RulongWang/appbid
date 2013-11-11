@@ -103,11 +103,11 @@ def tradeNow(request, *args, **kwargs):
             transaction.save()
             #Log transaction
             transactionsLog = models.TransactionLog()
-            transactionsLog.app = app
+            transactionsLog.app = transaction.app
             transactionsLog.status = transaction.status
-            transactionsLog.seller = request.user
-            transactionsLog.buyer = user
-            transactionsLog.price = bid.price
+            transactionsLog.seller = transaction.seller
+            transactionsLog.buyer = transaction.buyer
+            transactionsLog.price = transaction.price
             transactionsLog.buy_type = transaction.buy_type
             transactionsLog.save()
             #Update app status and end_date
@@ -171,7 +171,7 @@ def tradeOperation(request, *args, **kwargs):
                 transactionsLog.buyer = transaction.buyer
                 transactionsLog.save()
                 #Send email to seller and buyer
-                notificationViews.closedTradeInform(request, transaction=transaction)
+                notificationViews.closedTradeInform(transaction=transaction)
             else:
                 initParam['error_msg'] = _('Transaction can not be confirmed delivery.')
                 log.error(_('Transaction: %(param1)s, status: %(param2)s can not confirm delivery.')
@@ -196,15 +196,15 @@ def closedTrade(request, *args, **kwargs):
     #Log transaction
     transactionsLog = models.TransactionLog()
     transactionsLog.app = transaction.app
-    transactionsLog.status = 4
-    transactionsLog.buyer = request.user
+    transactionsLog.status = transaction.status
+    transactionsLog.buyer = transaction.buyer
     transactionsLog.save()
     #Increase seller and buyer credit point
     point = common.getSystemParam(key='cp_closed_trade', default=50)
     creditViews.increaseCreditPoint(user=transaction.buyer, point=point)
     creditViews.increaseCreditPoint(user=transaction.seller, point=point)
     #Send email to seller and buyer
-    notificationViews.closedTradeInform(request, transaction=transaction)
+    notificationViews.closedTradeInform(transaction=transaction)
 
     initParam['transaction'] = transaction
     return render_to_response('transaction/trade_action.html', initParam, context_instance=RequestContext(request))
@@ -246,10 +246,10 @@ def onePriceBuy(request, *args, **kwargs):
 
             #Log transaction
             transactionsLog = models.TransactionLog()
-            transactionsLog.app = app
+            transactionsLog.app = transaction.app
             transactionsLog.status = transaction.status
-            transactionsLog.buyer = request.user
-            transactionsLog.price = app.one_price
+            transactionsLog.buyer = transaction.buyer
+            transactionsLog.price = transaction.price
             transactionsLog.buy_type = transaction.buy_type
             transactionsLog.save()
 
@@ -265,7 +265,7 @@ def onePriceBuy(request, *args, **kwargs):
             initParam['seller_amount'] = app.one_price * (1 - txn_fee_pct)
             initParam['txn_id'] = transaction.id
             #The needed operation method in pay.
-            initParam['executeMethod'] = kwargs.get('executeMethod')
+            initParam['executeMethod'] = updateTransaction
             #The back page, when pay has error.
             back_page = request.session.get('back_page', None)
             if not back_page:
@@ -303,7 +303,7 @@ def buyerPay(request, *args, **kwargs):
     initParam['seller_amount'] = transaction.price * (1 - txn_fee_pct)
     initParam['txn_id'] = transaction.id
     #The needed operation method in pay.
-    initParam['executeMethod'] = kwargs.get('executeMethod')
+    initParam['executeMethod'] = updateTransaction
     #The back page, when pay has error.
     back_page = request.session.get('back_page', None)
     url = '/'.join([common.getHttpHeader(request), 'transaction/trade-action/buy', str(app.id), str(request.user.id)])
@@ -316,7 +316,7 @@ def buyerPay(request, *args, **kwargs):
     return paymentViews.pay(request, initParam=initParam)
 
 
-def updateTransaction(request, *args, **kwargs):
+def updateTransaction(*args, **kwargs):
     """The operation after buyer payed successfully."""
     initParam = kwargs.get('initParam')
     txn_id = initParam.get('txn_id')
@@ -359,7 +359,7 @@ def checkTransaction(request, *args, **kwargs):
     return None
 
 
-def executePay(request, *args, **kwargs):
+def executePay(*args, **kwargs):
     """The operation after buyer payed successfully."""
     initParam = kwargs.get('initParam')
     txn_id = initParam.get('transaction_id')
@@ -369,9 +369,9 @@ def executePay(request, *args, **kwargs):
         if transactions:
             initParam['transaction'] = transactions[0]
             if transactions[0].status == 1:
-                return executeOnePriceBuy(request, initParam=initParam)
+                return executeOnePriceBuy(initParam=initParam)
             elif transactions[0].status == 2:
-                return executeBuyerPay(request, initParam=initParam)
+                return executeBuyerPay(initParam=initParam)
             else:
                 log.error(_('The transaction with id %(param1)s status %(param2)s should be payed with buyer %(param3)s.')
                           % {'param1': txn_id, 'param2': transactions[0].status, 'param3': transactions[0].buyer.username})
@@ -382,7 +382,7 @@ def executePay(request, *args, **kwargs):
     return None
 
 
-def executeOnePriceBuy(request, *args, **kwargs):
+def executeOnePriceBuy(*args, **kwargs):
     """The operation of one price buy, after buyer payed successfully."""
     initParam = kwargs.get('initParam')
     transaction = initParam.get('transaction')
@@ -390,7 +390,6 @@ def executeOnePriceBuy(request, *args, **kwargs):
         transaction.status = 3
         txn_expiry_date = string.atoi(common.getSystemParam(key='txn_expiry_date', default=15))
         transaction.end_time = datetime.datetime.now() + datetime.timedelta(days=txn_expiry_date)
-        transaction.buyer = request.user
         transaction.buyer_account = initParam.get('buyer_account')
         acceptGateways = paymentModels.AcceptGateway.objects.filter(user_id=transaction.seller.id, type_id=transaction.gateway.id, is_active=True)
         transaction.seller_account = acceptGateways[0].value
@@ -403,7 +402,7 @@ def executeOnePriceBuy(request, *args, **kwargs):
         transactionsLog = models.TransactionLog()
         transactionsLog.app = transaction.app
         transactionsLog.status = transaction.status
-        transactionsLog.buyer = request.user
+        transactionsLog.buyer = transaction.buyer
         transactionsLog.price = transaction.price
         transactionsLog.buyer_account = transaction.buyer_account
         transactionsLog.seller_account = transaction.seller_account
@@ -421,15 +420,15 @@ def executeOnePriceBuy(request, *args, **kwargs):
             app.save()
 
         #Send email to seller
-        notificationViews.onePriceBuyInformSellerEmail(request, transaction=transaction)
+        notificationViews.onePriceBuyInformSellerEmail(transaction=transaction)
 
         log.info(_('The transaction of one price buy with id %(param1)s is payed by %(param2)s.')
-                 % {'param1': transaction.id, 'param2': request.user.username})
+                 % {'param1': transaction.id, 'param2': transaction.buyer.username})
         return transaction
     return None
 
 
-def executeBuyerPay(request, *args, **kwargs):
+def executeBuyerPay(*args, **kwargs):
     """The operation, after buyer payed successfully."""
     initParam = kwargs.get('initParam')
     transaction = initParam.get('transaction')
@@ -437,7 +436,6 @@ def executeBuyerPay(request, *args, **kwargs):
         transaction.status = 3
         txn_expiry_date = string.atoi(common.getSystemParam(key='txn_expiry_date', default=15))
         transaction.end_time = datetime.datetime.now() + datetime.timedelta(days=txn_expiry_date)
-        transaction.buyer = request.user
         transaction.buyer_account = initParam.get('buyer_account')
         acceptGateways = paymentModels.AcceptGateway.objects.filter(user_id=transaction.seller.id, type_id=transaction.gateway.id, is_active=True)
         transaction.seller_account = acceptGateways[0].value
@@ -450,7 +448,7 @@ def executeBuyerPay(request, *args, **kwargs):
         transactionsLog = models.TransactionLog()
         transactionsLog.app = transaction.app
         transactionsLog.status = transaction.status
-        transactionsLog.buyer = request.user
+        transactionsLog.buyer = transaction.buyer
         transactionsLog.price = transaction.price
         transactionsLog.buyer_account = transaction.buyer_account
         transactionsLog.seller_account = transaction.seller_account
@@ -463,9 +461,20 @@ def executeBuyerPay(request, *args, **kwargs):
         transactionsLog.save()
 
         #Send email to seller
-        notificationViews.buyerPayInformSellerEmail(request, transaction=transaction)
+        notificationViews.buyerPayInformSellerEmail(transaction=transaction)
 
         log.info(_('The transaction with id %(param1)s is payed by %(param2)s.')
-                 % {'param1': transaction.id, 'param2': request.user.username})
+                 % {'param1': transaction.id, 'param2': transaction.buyer.username})
         return transaction
     return None
+
+
+def jobCheckPayComplete(*args, **kwargs):
+    """Check whether buyer pay is complete in case that buyer close the page after pay by paypal.
+        In the case, payReturn (url 'paypal_ap_return') is not executed.
+    """
+    #Just check pay before 5 min.
+    do_time = datetime.datetime.now() + datetime.timedelta(0, -300)
+    transactions = models.Transaction.objects.filter(status=2, create_time__lte=do_time, pay_key__isnull=False, gateway_id__isnull=False)
+    for transaction in transactions:
+        paymentViews.checkPayComplete(transaction=transaction, executeMethod=executePay)

@@ -245,7 +245,7 @@ def pay(request, *args, **kwargs):
             #The needed operation for verification later when pay return pay_key.
             if executeMethod:
                 initParam['pay_key'] = pay_key
-                if executeMethod(request, initParam=initParam):
+                if executeMethod(initParam=initParam):
                     #payReturn will do operation by two session values.
                     if request.session.get('pay_key', None):
                         del request.session['pay_key']
@@ -308,7 +308,7 @@ def payReturn(request, *args, **kwargs):
                     if executeMethod:
                         initParam['transaction_id'] = transaction.id
                         initParam['buyer_account'] = result['senderEmail'][0]
-                        if executeMethod(request, initParam=initParam):
+                        if executeMethod(initParam=initParam):
                             success_page = request.session.get('success_page', None)
                             back_page = request.session.get('back_page', None)
                             if back_page:
@@ -351,3 +351,21 @@ def payReturn(request, *args, **kwargs):
         error_msg = _('%(param1)s Please transaction again.') % {'param1': driver.GENERIC_PAYPAL_ERROR}
         return render_to_response('payment/paypal_error.html',
                                   {"error_msg": error_msg}, context_instance=RequestContext(request))
+
+
+def checkPayComplete(*args, **kwargs):
+    """Check whether pay is complete."""
+    initParam = {}
+    transaction = kwargs.get('transaction')
+    if transaction:
+        p = driver.PayPal()
+        #Check whether use has paid successfully.
+        result = p.check_ap_payment_status(transaction.pay_key)
+        if result['status'][0] != 'COMPLETED':
+            #Do something after user payed successfully.
+            executeMethod = kwargs.pop('executeMethod', None)
+            if executeMethod:
+                initParam['transaction_id'] = transaction.id
+                initParam['pay_key'] = transaction.pay_key
+                initParam['buyer_account'] = result['senderEmail'][0]
+                executeMethod(initParam=initParam)

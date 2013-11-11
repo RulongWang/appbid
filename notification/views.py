@@ -17,7 +17,7 @@ def sendRegisterActiveEmail(request, *args, **kwargs):
                                 'register-confirm-verification', token])
         temp_params = [user.username, active_link]
         recipient_list = [user.email]
-        sendCommonEmail(request, temp_name=temp_name, temp_params=temp_params, recipient_list=recipient_list)
+        sendCommonEmail(temp_name=temp_name, temp_params=temp_params, recipient_list=recipient_list)
     return None
 
 
@@ -32,11 +32,11 @@ def sendSecurityVerificationEmail(request, *args, **kwargs):
                                 'email-security-verification', token])
         temp_params = [user.username, active_link]
         recipient_list = [user.email]
-        sendCommonEmail(request, temp_name=temp_name, temp_params=temp_params, recipient_list=recipient_list)
+        sendCommonEmail(temp_name=temp_name, temp_params=temp_params, recipient_list=recipient_list)
     return None
 
 
-def sendCommonEmail(request, *args, **kwargs):
+def sendCommonEmail(*args, **kwargs):
     """Send common email by param setting."""
     temp_name = kwargs.get('temp_name')
     sub_params = kwargs.get('sub_params')
@@ -73,11 +73,11 @@ def tradeNowInformBuyerPayEmail(request, *args, **kwargs):
         pay_url = '/'.join([link_header, 'dashboard/my-bidding'])
         temp_params = [user.username, app_detail_url, app.app_name, pay_url]
         recipient_list = [user.email]
-        sendCommonEmail(request, temp_name=temp_name, sub_params=sub_params, temp_params=temp_params, recipient_list=recipient_list)
+        sendCommonEmail(temp_name=temp_name, sub_params=sub_params, temp_params=temp_params, recipient_list=recipient_list)
     return None
 
 
-def closedTradeInform(request, *args, **kwargs):
+def closedTradeInform(*args, **kwargs):
     """After buyer close trade, send email to seller that trade is closed."""
     transaction = kwargs.get('transaction')
     if transaction:
@@ -99,19 +99,19 @@ def closedTradeInform(request, *args, **kwargs):
     return None
 
 
-def onePriceBuyInformSellerEmail(request, *args, **kwargs):
+def onePriceBuyInformSellerEmail(*args, **kwargs):
     """After seller click button 'Buy It Now with 10 USD', send email to seller inform that he can trade now."""
     transaction = kwargs.get('transaction')
     if transaction:
         temp_name = 'buyer_one_price_inform_seller'
         sub_params = [transaction.buyer.username, transaction.app.app_name]
-        temp_params = [request.user.username, transaction.buyer.username, transaction.app.app_name]
+        temp_params = [transaction.seller.username, transaction.buyer.username, transaction.app.app_name]
         recipient_list = [transaction.app.publisher.username]
-        sendCommonEmail(request, temp_name=temp_name, sub_params=sub_params, emp_params=temp_params, recipient_list=recipient_list)
+        sendCommonEmail(temp_name=temp_name, sub_params=sub_params, temp_params=temp_params, recipient_list=recipient_list)
     return None
 
 
-def buyerPayInformSellerEmail(request, *args, **kwargs):
+def buyerPayInformSellerEmail(*args, **kwargs):
     """After buyer pay, send email to seller inform that buyer has paid, and he can trade now."""
     transaction = kwargs.get('transaction')
     if transaction:
@@ -119,5 +119,5 @@ def buyerPayInformSellerEmail(request, *args, **kwargs):
         sub_params = [transaction.app.app_name]
         temp_params = [transaction.app.app_name, transaction.buyer.username]
         recipient_list = [transaction.app.publisher.username]
-        sendCommonEmail(request, temp_name=temp_name, sub_params=sub_params, temp_params=temp_params, recipient_list=recipient_list)
+        sendCommonEmail(temp_name=temp_name, sub_params=sub_params, temp_params=temp_params, recipient_list=recipient_list)
     return None
