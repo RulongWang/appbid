@@ -2280,11 +2280,11 @@ input[type="radio"]:checked:after {
 .item_detail_header{
     float:left;
     width:300px;
-    text-align: right;
+    text-align: center;
 }
 
 .item_amount_header{
-    text-align: right;
+    text-align: center;
 
 }
 
@@ -2293,9 +2293,6 @@ input[type="radio"]:checked:after {
     font-size:12px;
     text-align: center;
 }
-
-
-
 
 .item_detail{
     float:left;
@@ -2338,7 +2335,10 @@ input[type="radio"]:checked:after {
     text-align: center;
     border-bottom: 1px dashed #ddd;
 }
+.item_summary_sum{
+     padding:5px;
 
+}
 
 /****************message_block***************/
 .errormsg_block{

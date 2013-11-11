@@ -25,19 +25,16 @@
             {% endfor %}
         </ul>
         <div class="item_summary">
-            <div class="item_detail_header">
-            </div>
-            <div class="item_amount_header">
+
+            <div class="item_summary_sum">
                   Total:{{ serviceDetail.amount }}{{ serviceDetail.app.currency.currency }}
             </div>
-            <div class="item_detail_header">
-            </div>
-            <div class="item_amount_header">
+
+            <div class="item_summary_sum">
                   Discount Rate:{{ discount_rate }}
             </div>
-            <div class="item_detail_header">
-            </div>
-            <div class="item_amount_header">
+
+            <div class="item_summary_sum">
                   Actual Total:{{ serviceDetail.actual_amount }}{{ serviceDetail.app.currency.currency }}
             </div>
         </div>
