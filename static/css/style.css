@@ -2280,18 +2280,22 @@ input[type="radio"]:checked:after {
 .item_detail_header{
     float:left;
     width:300px;
-    text-align: center;
+    text-align: right;
 }
 
 .item_amount_header{
-    text-align: center;
+    text-align: right;
 
 }
 
 .item_amount{
     padding-top: 30px;
+    font-size:12px;
     text-align: center;
 }
+
+
+
 
 .item_detail{
     float:left;
