@@ -1,21 +1,17 @@
 {% extends "index.html" %}
 {% block mainContent %}
 {% load staticfiles %}
-    <div>
+
+    {% if back_page %}
+ <div class="dash_title">Oops....Somthing wrong here</div>
+    <div class="errors_msg">
         {{ error_msg }}
     </div>
-    {% if back_page %}
-
-        <div>
-            The page will redirect the payment page, after <span id="remain_time" style="font-weight: bold">15</span>s.
-        </div>
-        <div>
-            If the page not redirect, you can click next page.
-        </div>
-        <div>
-            <a href="{{ back_page }}">App payment page</a>
-        </div>
-    {% endif %}
+  <div class="service_pay">
+     The page will be redirected the payment page, after <span id="remain_time" style="font-weight: bold">15</span>s.
+  You can also go to <a href="{{ back_page }}">"App payment page"</a> right now.
+ </div>
+  {% endif %}
 
 <script type="text/javascript" language="javascript">
     var back_page = '{{ back_page }}';

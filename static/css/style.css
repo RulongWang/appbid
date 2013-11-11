@@ -1022,10 +1022,7 @@ h1{
     width:400px;
 
 }
-.errors_block{
-    margin-top:10px;
-    margin-left:20px;
-}
+
 #progressor{
     display: none;
     position:relative;
@@ -1051,6 +1048,12 @@ fieldset {
 .errors_block{
     margin-top:10px;
     margin-bottom:10px;
+
+}
+
+.errors_msg{
+    padding:5px;
+    color:red;
 }
 .errors_block ul{
     margin-left:10px;
