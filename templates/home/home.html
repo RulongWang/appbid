@@ -2,85 +2,85 @@
 {% block mainContent %}
 {% load staticfiles %}
 {% include "home/promotion.html" %}
+    <script src="{% static "scripts/jquery.screw.js" %}"></script>
      <div class="listing_block_home">
          <div class="home_listing_title">
              <span style="float:left;"><h1>Recommendation</h1></span>
              <span style="float:right;"><h1><a href="/query/featured">See More>></a></h1></span>
          </div>
          <div class="listing_content">
-            <ul >
+            <ul>
                 {% for app in apps %}
                 <li>
                     <div class="app_wrapper">
-                           <div class="app_img">
-                               <a href="{% url 'query:app_detail' app.0.id %}">
-                                   <img class="img_140x140" src="{{ MEDIA_URL }}{{ app.0.appinfo.icon }}"/>
-                               </a>
-                           </div>
+                       <div class="app_img">
+                           <a href="{% url 'query:app_detail' app.0.id %}">
+                               <img class="img_140x140" src="{{ MEDIA_URL }}{{ app.0.appinfo.icon }}"/>
+                           </a>
+                       </div>
 
-                           <div class="app_attribute">
-                               <div class="info_detail">
-                                <div>
-                                    <h1><a href="{% url 'query:app_detail' app.0.id %}">{{ app.0.app_name }}</a></h1>
-                                </div>
-                                <div class="fontcolor_light_grey">
-                                   <p>{{ app.0.title }}</p>
-                                </div>
-                                <div class="fontcolor_light_grey">
-                                    <span class="att_line">Monthly Downloads: </span>
-                                    {{ app.0.dl_amount|default:0 }} time{{ app.0.dl_amount|pluralize }}
-                                </div>
-                                {% if app.0.revenue %}
-                                   <div class="fontcolor_light_grey" >
-                                       <span class="att_line">Revenue: </span>
-                                       {{ app.0.revenue|floatformat:"-2"|default:0 }} {{ app.0.currency.currency }}
-                                   </div>
-                                {% endif %}
-                                {% if app.0.rating %}
-                                   <div class="fontcolor_light_grey" >
-                                       <span class="att_line">Rating: </span>
-                                       <img src="{% static "images/rating/" %}{{ app.0.rating }}.png"/>
-                                   </div>
-                                {% endif %}
-                                   <div class="fontcolor_light_grey">
-                                       <span class="att_line">AppleStore Price: </span>
-                                       {{ app.0.appinfo.price|floatformat:"-2"|default:0 }} {{ app.0.currency.currency }}
-                                   </div>
+                       <div class="app_attribute">
+                           <div class="info_detail">
+                            <div>
+                                <h1><a href="{% url 'query:app_detail' app.0.id %}">{{ app.0.app_name }}</a></h1>
+                            </div>
+                            <div class="fontcolor_light_grey">
+                               <p>{{ app.0.title }}</p>
+                            </div>
+                            <div class="fontcolor_light_grey">
+                                <span class="att_line">Monthly Downloads: </span>
+                                {{ app.0.dl_amount|default:0 }} time{{ app.0.dl_amount|pluralize }}
+                            </div>
+                            {% if app.0.revenue %}
+                               <div class="fontcolor_light_grey" >
+                                   <span class="att_line">Revenue: </span>
+                                   {{ app.0.revenue|floatformat:"-2"|default:0 }} {{ app.0.currency.currency }}
                                </div>
-
-                               <div class="bidding_info">
-                                    <div class="clock_wrapper">
-
-                                      <div class="clock{{ app.5 }}" title="Ending: {{ app.4.0|floatformat }} {{ app.4.1 }}{{ app.4.0|floatformat|pluralize }}"></div>
-                                   </div>
-                                   <div style="text-align: center;margin-bottom: 10px;">
-                                       {{ app.1|floatformat:"-2"|default:0 }} {{ app.0.currency.currency }}
-                                   </div>
-                                   <div class="bid_button" style="margin:0 auto;">
-                                       <a href="{% url 'bid:bid_list' app.0.id %}">
-                                           {{ app.2|floatformat|default:0 }} bid{{ app.2|floatformat|pluralize }}
-                                       </a>
-                                   </div>
-
-{#                                   <div><a href="#"><img src="{% static "images/favrioute.png" %}"/></a></div>#}
+                            {% endif %}
+                            {% if app.0.rating %}
+                               <div class="fontcolor_light_grey" >
+                                   <span class="att_line">Rating: </span>
+                                   <img src="{% static "images/rating/" %}{{ app.0.rating }}.png"/>
+                               </div>
+                            {% endif %}
+                               <div class="fontcolor_light_grey">
+                                   <span class="att_line">AppleStore Price: </span>
+                                   {{ app.0.appinfo.price|floatformat:"-2"|default:0 }} {{ app.0.currency.currency }}
+                               </div>
                            </div>
+
+                           <div class="bidding_info">
+                                <div class="clock_wrapper">
+                                  <div class="clock{{ app.5 }}" title="Ending: {{ app.4.0|floatformat }} {{ app.4.1 }}{{ app.4.0|floatformat|pluralize }}"></div>
+                               </div>
+                               <div style="text-align: center;margin-bottom: 10px;">
+                                   {{ app.1|floatformat:"-2"|default:0 }} {{ app.0.currency.currency }}
+                               </div>
+                               <div class="bid_button" style="margin:0 auto;">
+                                   <a href="{% url 'bid:bid_list' app.0.id %}">
+                                       {{ app.2|floatformat|default:0 }} bid{{ app.2|floatformat|pluralize }}
+                                   </a>
+                               </div>
                            </div>
+                       </div>
                     </div>
                 </li>
-                 {% endfor %}
+                {% endfor %}
+                <span class="screw" rel="{% url 'home:screw_home' %}?page={{ apps.next_page_number }}"></span>
             </ul>
          </div>
-         {% if apps %}
-{#             <div class="pagination" style="float: right">#}
-{#                {% if apps.has_previous %}<a href="?page={{ apps.previous_page_number }}">previous</a>{% endif %}#}
-{#                Page {{ apps.number }} of {{ apps.paginator.num_pages }}#}
-{#                {% if apps.has_next %}<a href="?page={{ apps.next_page_number }}">next</a>{% endif %}#}
-{#             </div>#}
-
-          <div class="more_block">
-                <a  href="#"  class="getmore">>>Get More<<< </a>
-          </div>
-         {% endif %}
+{#         {% if apps.has_next %}#}
+{#          <div class="more_block">#}
+{#                <span> >>>Get More<<< </span>#}
+{#          </div>#}
+{#         {% endif %}#}
     </div>
-
+<script type="text/javascript" language="javascript">
+$(function() {
+    $("body").screw({
+        loadingHTML: '<img style="clear:both;display:block;margin:auto;" ' +
+                'alt="Loading" src="{% static "images/loading.gif" %}" width=25 height=25>'
+    });
+});
+</script>
 {% endblock %}
