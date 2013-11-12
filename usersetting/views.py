@@ -89,6 +89,13 @@ def register(request, *args, **kwargs):
                     user.save()
                     #Init user credit point
                     creditViews.initCreditPoint(user=user)
+                    #Add user security verification info.
+                    securityVerification = models.SecurityVerification()
+                    securityVerification.user = user
+                    securityVerification.vtype = 1
+                    securityVerification.value = user.email
+                    securityVerification.is_verified = False
+                    securityVerification.save()
                     #Init some setting for the user
                     # privateSet = models.UserPrivateSetting()
                     # privateSet.user = user
@@ -155,12 +162,11 @@ def registerActiveConfirm(request, *args, **kwargs):
     if users:
         users[0].is_active = True
         users[0].save()
-        securityVerification = models.SecurityVerification()
-        securityVerification.user_id = users[0].id
-        securityVerification.vtype = 1
-        securityVerification.value = users[0].email
-        securityVerification.is_verified = True
-        securityVerification.save()
+        #Update user security verification info.
+        securityVerifications = models.SecurityVerification.objects.filter(user_id=users[0].id, vtype=1)
+        if securityVerifications:
+            securityVerifications[0].is_verified = True
+            securityVerifications[0].save()
         initParam['account_msg'] = _('The account active successfully.')
     else:
         initParam['account_error'] = _('The active link is not correct.')

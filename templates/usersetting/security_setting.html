@@ -22,7 +22,7 @@
         </div>
         <div class="setting_item">
             <div class="setting_item_left
-             {% if email_info and email_info.is_verified == True%}
+             {% if email_info and email_info.is_verified == True %}
              correct_icon
              {% else %}
              incorrect_icon
@@ -32,8 +32,10 @@
             </a>
             </div>
             <div >
-                {% if email_info %}
+                {% if email_info and email_info.is_verified == True %}
                 <div class="help_text">Your email: {{ email_info.value }}</div>
+                {% elif email_info and email_info.is_verified == False %}
+                <div class="help_text">Your email {{ email_info.value }} is not verified. Please active it ASAP. </div>
                 {% else %}
                 <div class="help_text">
                     Your still have no email. Please provide and verify it ASAP.
