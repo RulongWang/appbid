@@ -20,9 +20,11 @@
                        {{ serviceDetail.0.actual_amount|floatformat|default:0 }} {{ serviceDetail.0.app.currency.currency }}
                    </div>
                    <div class="app_list">
-                       <a href="{% url 'seller:payment' serviceDetail.0.app.id serviceDetail.0.sn %}">
-                           {% if serviceDetail.0.is_payed %}Paid{% else %}UnPaid{% endif %}
-                       </a>
+                   {% if serviceDetail.0.is_payed %}
+                       <a href="{% url 'seller:payment' serviceDetail.0.app.id serviceDetail.0.sn %}">Paid</a>
+                   {% else %}
+                       <a href="{% url 'seller:payment' serviceDetail.0.app.id serviceDetail.0.sn %}" class="pending_style">UnPaid</a>
+                   {% endif %}
                    </div>
                </li>
            {% empty %}

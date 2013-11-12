@@ -449,7 +449,7 @@ def pastTransactions(request, *args, **kwargs):
     page = request.GET.get('page', 1)
     initParam['page'] = page
 
-    transactions = txnModels.Transaction.objects.filter(buyer_id=request.user.id)
+    transactions = txnModels.Transaction.objects.filter(buyer_id=request.user.id).order_by('-pk')
     initParam['transactions'] = common.queryWithPaginator(request, page=page, obj=transactions)
     initParam['buy_type'] = txnModels.Transaction.BUY_TYPE
     initParam['buyer_status'] = txnModels.BUYER_STATUS
@@ -466,7 +466,7 @@ def pasOrders(request, *args, **kwargs):
     initParam['page'] = page
 
     serviceDetails = orderModels.ServiceDetail.objects.filter(
-        app__in=appModels.App.objects.filter(publisher_id=request.user.id)).order_by('app')
+        app__in=appModels.App.objects.filter(publisher_id=request.user.id)).order_by('is_payed', 'app')
     initParam['serviceDetails'] = common.queryWithPaginator(request, page=page, obj=serviceDetails)
 
     return render_to_response("dashboard/past_orders.html", initParam, context_instance=RequestContext(request))
