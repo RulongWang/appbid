@@ -3,7 +3,7 @@ __author__ = 'rulongwang'
 from django.db import models
 from django.contrib.auth.models import User
 from django.contrib import admin
-
+from transaction import models as txnModels
 
 
 class CreditPoint(models.Model):
@@ -18,12 +18,27 @@ class CreditPoint(models.Model):
 class CreditLog(models.Model):
     user = models.ForeignKey(User)
     credit_point = models.ForeignKey(CreditPoint)
-    change_reason = models.TextField(null=True,blank=True)
+    change_reason = models.TextField(null=True, blank=True)
     points = models.IntegerField()
     create_time = models.DateTimeField(auto_now_add=True)
 
     def __unicode__(self):
         return ' '.join([self.user.username, ':', str(self.points), self.change_reason, str(self.create_time)])
 
+
+class Appraisement(models.Model):
+    user = models.ForeignKey(User)
+    transaction = models.ForeignKey(txnModels.Transaction)
+    attitude = models.IntegerField(null=True, default=0, blank=True)
+    response = models.IntegerField(null=True, default=0, blank=True)
+    quality = models.IntegerField(null=True, default=0, blank=True)
+    honesty = models.IntegerField(null=True, default=0, blank=True)
+    content = models.TextField(null=True, blank=True)
+    create_time = models.DateTimeField(auto_now_add=True)
+
+    def __unicode__(self):
+        return ' '.join([self.user.username, ':', str(self.transaction.id), str(self.create_time)])
+
 admin.site.register(CreditPoint)
 admin.site.register(CreditLog)
+admin.site.register(Appraisement)

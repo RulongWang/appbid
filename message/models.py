@@ -5,6 +5,13 @@ from django.contrib.auth.models import User
 
 
 class Message(models.Model):
+    TYPE = (
+        (1, 'message'),
+        (2, 'complain'),
+        (3, 'tech'),
+        (4, 'sale'),
+        (5, 'advice'),
+    )
     title = models.CharField(max_length=255)
     content = models.TextField(null=True, blank=True)
     type = models.IntegerField(default=1, blank=True)#use later.

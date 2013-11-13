@@ -9,16 +9,14 @@ SELLER_STATUS = (
     (1, 'Unsold'),
     (2, 'Waiting for payment'),
     (3, 'In delivery'),
-    (4, 'Waiting for evaluation'),
-    (5, 'Closed'),
+    (4, 'Closed'),
 )
 
 BUYER_STATUS = (
     (1, 'Initialized'),
     (2, 'Pay it now'),
     (3, 'Waiting for delivery'),
-    (4, 'Waiting for evaluation'),
-    (5, 'Closed'),
+    (4, 'Closed'),
 )
 
 
@@ -27,8 +25,7 @@ class Transaction(models.Model):
         (1, 'Initialized'),
         (2, 'Unpaid'),
         (3, 'Delivery'),
-        (4, 'Evaluation'),
-        (5, 'Closed'),
+        (4, 'Closed'),
     )
     BUY_TYPE = (
         (1, 'One Price Buy'),
