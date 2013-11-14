@@ -332,7 +332,7 @@ def getAppDetail(request, *args, **kwargs):
 
         app_url = '/'.join([common.getHttpHeader(request), 'query/app-detail', str(app.id)])
         twitter = 'http://twitter.com/intent/tweet?'
-        text = ''.join(['App (', app.app_name, ') for sale from AppsWalk '])
+        text = ''.join(['App (', app.app_name.encode('utf-8'), ') for sale from AppsWalk '])
         # initParam['twitter_url'] = twitter + urllib.urlencode({'status': status})
         initParam['twitter_url'] = twitter + urllib.urlencode({'url': app_url, 'text': text})
         initParam['http_header'] = common.getHttpHeader(request)
