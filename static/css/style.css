@@ -718,17 +718,9 @@ h1{
 
 }
 /*********************central block****************/
-#central_block{
-    margin:0 auto;
-    margin-bottom: 20px;
-    width:960px;
-    border-radius: 10px;
-    background:#FEFEFE;
-
-
-}
 .central_section{
     margin:0 auto;
+    margin-top:150px;
     padding-top: 20px;
     width:400px;
 }
@@ -746,28 +738,35 @@ h1{
 .user_register td{
     padding:3px;
     text-align: left;
+    font-size: 12px;
 
 }
 .user_td_width{
     width:200px;
 }
-.user_register input{
-    -webkit-box-shadow: inset 0 1px 0.25em #d9d9d9;
-    -moz-box-shadow: inset 0 1px 0.25em #d9d9d9;
-    padding:4px;
-    width:200px;
-    box-shadow: inset 0 1px 0.25em #d9d9d9;
-    border: 1px solid #858585;
-    border-radius:3px;
-}
+/*.user_register input{*/
+    /*-webkit-box-shadow: inset 0 1px 0.25em #d9d9d9;*/
+    /*-moz-box-shadow: inset 0 1px 0.25em #d9d9d9;*/
+    /*padding:4px;*/
+    /*width:200px;*/
+    /*box-shadow: inset 0 1px 0.25em #d9d9d9;*/
+    /*border: 1px solid #858585;*/
+    /*border-radius:3px;*/
+/*}*/
 
+/****************************logon **************************************/
+.logon_input{
+    padding:10px;
+    border: 1px solid #00b0b0;
+    width:230px;
+}
 
 .usg{
     width:200px;
     float:right;
 }
 #central_block a{
-    color:#426da7;
+    color:#00b0b0;
 }
 
 /********************promotion part***************/
@@ -1876,15 +1875,6 @@ fieldset {
     height:50px;
     padding-left:20px;
     border-bottom: 1px dashed #ddd;
-}
-/****************************logon **************************************/
-.logon_input{
-    -webkit-box-shadow: inset 0 1px 0.25em #d9d9d9;
-    -moz-box-shadow: inset 0 1px 0.25em #d9d9d9;
-    padding:4px;
-    box-shadow: inset 0 1px 0.25em #d9d9d9;
-    border: 1px solid #858585;
-    border-radius:3px;
 }
 /***********************Query and detail Listing ************************/
 #breadcrumb{
