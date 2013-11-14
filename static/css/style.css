@@ -303,9 +303,8 @@ h1{
 #mainContent{
     margin-left: auto;
     margin-right:auto;
-    margin-top:20px;
     margin-bottom: 10px;
-    padding-top: 0;
+    padding-top:20px;
     color:#444;
     /*font:13px/16px  Calibri,Georgia,"Helvetica",Arial, Sans-serif;*/
     font:14px/18px sofiapro, "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
@@ -324,6 +323,7 @@ h1{
     /*-webkit-box-shadow: 0 0 6px #888;*/
     /*box-shadow: 0 0 6px #ddd;*/
     border:1px solid #ddd;
+    border-top:none;
     border-radius:3px;
     -moz-border-radius:3px;
     -webkit-border-radius: 3px;
@@ -1645,7 +1645,9 @@ fieldset {
 }
 
 .footer_cat_block{
+    width:170px;
     padding: 10px;
+    float:left;
 }
 
 .footer_ul{
@@ -1655,10 +1657,8 @@ fieldset {
 
 }
 .footer_ul li{
-    margin-left:15px;
-    padding-top: 10px;
-    height:30px;
-    float:left;
+    margin-left:5px;
+    padding: 5px 10px 5px 50px;
 }
 
 
