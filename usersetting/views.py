@@ -3,6 +3,7 @@ __author__ = 'rulongwang'
 import json
 import os
 import logging
+import string
 
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
@@ -60,6 +61,60 @@ def logoutView(request, *args, **kwargs):
     log.info('%(name)s logout.' % {'name': request.user.username})
     redirect_to = '/'
     return render_to_response('usersetting/login.html', {"redirect_to": redirect_to}, context_instance=RequestContext(request))
+
+
+def forgetPassword(request, *args, **kwargs):
+    """Forget password page"""
+    initParam = {}
+    if request.method == "POST":
+        flag = False
+        username = request.POST.get('username')
+        if '@' in username:
+            users = models.User.objects.filter(email=username)
+            if users:
+                type = 1
+                flag = True
+        else:
+            users = models.User.objects.filter(username=username)
+            if users:
+                type = 2
+                flag = True
+        if flag:
+            user = users[0]
+            #Send the email to user
+            notificationViews.sendResetPasswordEmail(request, type=type, user=user)
+            email = common.hiddenEmail(user.email)
+            initParam['msg'] = _('The change password information has send to %(param)s. Please login email to change password ASAP.') % {'param': email}
+        else:
+            initParam['error_msg'] = _('%(param)s do not exist.') % {'param': username}
+
+    return render_to_response("usersetting/forget_password.html", initParam, context_instance=RequestContext(request))
+
+
+def resetPassword(request, *args, **kwargs):
+    """Reset password page."""
+    initParam = {}
+    type = string.atoi(kwargs.get('type'))
+    user_id = kwargs.get('user_id')
+    username = kwargs.get('username')
+    #TODO:use it later.
+    token = kwargs.get('token')
+    if type == 1 or type == 2:
+        if request.method == "POST":
+            password = request.POST.get('password')
+            confirm_password = request.POST.get('confirm_password')
+            if password != confirm_password:
+                initParam['error_msg'] = _('Password is not the same with confirm password.')
+            else:
+                if type == 1:
+                    user = get_object_or_404(models.User, pk=user_id, email=username)
+                else:
+                    user = get_object_or_404(models.User, pk=user_id, username=username)
+                user.set_password(password)
+                user.save()
+                initParam['msg'] = _('The account password has been updated.')
+        return render_to_response("usersetting/reset_password.html", initParam, context_instance=RequestContext(request))
+    return Http404
 
 
 @csrf_protect

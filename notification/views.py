@@ -1,9 +1,13 @@
 __author__ = 'Jarvis'
 
+import logging
 
+from django.utils.translation import ugettext as _
 from notification import models
 from utilities import email
 from utilities import common
+
+log = logging.getLogger('email')
 
 
 def sendRegisterActiveEmail(request, *args, **kwargs):
@@ -57,8 +61,7 @@ def sendCommonEmail(*args, **kwargs):
                 template = template.replace(param, temp_params[i])
         email.EmailThread(from_email=from_email, subject=subject, message=template, recipient_list=recipient_list).start()
     else:
-        #TODO: Log error
-        print 'No template'
+        log.error(_('%(param)s does not exist.') % {'param': temp_name})
 
 
 def tradeNowInformBuyerPayEmail(request, *args, **kwargs):
@@ -121,3 +124,20 @@ def buyerPayInformSellerEmail(*args, **kwargs):
         recipient_list = [transaction.app.publisher.username]
         sendCommonEmail(temp_name=temp_name, sub_params=sub_params, temp_params=temp_params, recipient_list=recipient_list)
     return None
+
+
+def sendResetPasswordEmail(request, *args, **kwargs):
+    """Send the email of reset password."""
+    user = kwargs.get('user')
+    type = kwargs.get('type')
+    if user and type:
+        header = common.getHttpHeader(request)
+        token = common.getToken(key='token_length', default=30)
+        url = '/'.join([header, 'usersetting/reset-password', str(type), str(user.id), user.username, token])
+        temp_name = 'reset_password_email'
+        sub_params = ['']
+        temp_params = [user.username, url]
+        recipient_list = [user.email]
+        sendCommonEmail(temp_name=temp_name, sub_params=sub_params, temp_params=temp_params, recipient_list=recipient_list)
+    return None
+

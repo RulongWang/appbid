@@ -7,6 +7,9 @@ from usersetting import views
 urlpatterns = patterns('',
     url(r'^login/$', views.loginView, name='login_view'),
     url(r'^logout/$', views.logoutView, name='logout_view'),
+    url(r'^forget-password/$', views.forgetPassword, name='forget_password'),
+    url(r'^reset-password/(?P<type>\d{1})/(?P<user_id>\d+)/(?P<username>\S+)/(?P<token>\w{30})$', views.resetPassword,
+        name='reset_password'),
 
     url(r'^register/$', views.register, name='register_view'),
     url(r'^username-verified/(?P<username>\S*)$', views.ajaxUserVerified, name='username_verified'),
