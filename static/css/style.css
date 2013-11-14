@@ -2568,3 +2568,77 @@ input[type="radio"]:checked:after {
     width:150px;
 }
 
+
+#mainhelp{
+    margin-left: auto;
+    margin-right:auto;
+    margin-top:20px;
+    margin-bottom: 10px;
+    padding-top: 0;
+    color:#444;
+    font:14px/18px sofiapro, "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
+    width:960px;
+    min-height: 500px;
+    height:auto;
+    clear:both;
+    border:1px solid #ddd;
+    border-radius:3px;
+    -moz-border-radius:3px;
+    -webkit-border-radius: 3px;
+    background-color: #fefefe;
+    background: -webkit-gradient(linear,0% 0%,0% 100%,from(#fff),to(#fefefe));
+    background: -webkit-linear-gradient(top,#ffffff,#fefefe);
+    background: -moz-linear-gradient(top,#ffffff,#fefefe);
+    background: -ms-linear-gradient(top,#ffffff,#fefefe);
+    background: -o-linear-gradient(top,#ffffff,#fefefe);
+
+
+}
+#mainhelp p{
+    line-height: 1.8em;
+    padding: 20px;
+}
+#mainhelp h1{
+    padding: 10px;
+    text-align: center;
+    font-size: 15px;
+    font-weight:bold;
+}
+#mainhelp h2{
+    padding: 10px;
+    text-align: center;
+    font-size: 15px;
+    font-weight:bold;
+}
+
+#mainhelp h3{
+    padding: 10px;
+    text-align: left;
+    font-size: 14px;
+    font-weight:bold;
+}
+
+
+#terms{
+    list-style: none;
+    padding: 10px 10px 10px 30px;
+
+}
+
+#terms dl{
+    padding-left:10px;
+}
+#terms dl dt{
+    padding:5px 10px 5px 10px;
+    font-weight: bold;
+}
+#terms dl dd{
+    padding:5px 10px 5px 10px;
+    line-height: 1.8em;
+}
+
+
+.alpha{
+    line-height: 1.8em;
+    padding:5px 10px 5px 39px;
+}
