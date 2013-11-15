@@ -2,11 +2,11 @@
 {% block mainContent %}
 {% load staticfiles %}
     {% if account_msg %}
-    <div>
+    <div class="message_back">
         {{ account_msg }} Please click <a href="{% url 'usersetting:home' %}">login</a> to login AppsWalk.
     </div>
     {% else %}
-    <div>
+    <div class="message_back">
         Active account failed. {{ account_error }}
     </div>
     {% endif %}

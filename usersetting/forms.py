@@ -9,16 +9,15 @@ from django.contrib.auth.models import User
 class RegisterForm(forms.Form):
     email = forms.EmailField(
         max_length=30,
-        widget=forms.TextInput(attrs={'size': 30,'class': "logon_input"})
+        widget=forms.TextInput(attrs={'size': 30,'class': "logon_input",'placeholder': "Email"})
     )
     password = forms.CharField(
         max_length=30,
-        widget=forms.PasswordInput(attrs={'size': 20, 'class': "logon_input"}),
-        help_text='The password length must be more than 6.'
+        widget=forms.PasswordInput(attrs={'size': 20, 'class': "logon_input", 'placeholder': "Password",'title':"At least 6 characters"}),
     )
     username = forms.CharField(
         max_length=30,
-        widget=forms.TextInput(attrs={'size': 20, 'class': "logon_input"})
+        widget=forms.TextInput(attrs={'size': 20, 'class': "logon_input",'placeholder': "Username",'title':"Only allows Number,Letter,_"})
     )
 
     def clean_username(self):

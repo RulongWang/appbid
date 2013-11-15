@@ -720,8 +720,9 @@ h1{
 /*********************central block****************/
 .central_section{
     margin:0 auto;
-    margin-top:150px;
-    padding-top: 20px;
+    margin-top:90px;
+    margin-bottom: 90px;
+    padding-top: 50px;
     width:400px;
 }
 .central_ul{
@@ -755,10 +756,20 @@ h1{
 /*}*/
 
 /****************************logon **************************************/
+
+#logon{
+    margin: 0 auto;
+    width:960px;
+}
+
 .logon_input{
     padding:10px;
     border: 1px solid #00b0b0;
-    width:230px;
+    width:250px;
+}
+
+.user_register{
+    margin-left:80px;
 }
 
 .usg{
@@ -766,9 +777,20 @@ h1{
     float:right;
 }
 #central_block a{
+
     color:#00b0b0;
 }
+.correct{
+    padding:10px 10px 10px 30px;
+    background: url("../images/correct.png") no-repeat left;
+    color:#33ba0d;
+}
 
+.incorrect{
+    padding:10px 10px 10px 30px;
+    background: url("../images/error_icon20x20.png") no-repeat left;
+    color:red;
+}
 /********************promotion part***************/
 #home_promotion{
     margin:0 auto;
@@ -1045,8 +1067,12 @@ fieldset {
 }
 
 .errors_block{
+    margin:0 auto;
+    width:400px;
     margin-top:10px;
-    margin-bottom:10px;
+    padding:10px 20px 20px 10px;
+    opacity: 0.6;
+    color:#CC3333;
 
 }
 
@@ -2200,7 +2226,8 @@ input[type="radio"]:checked:after {
 .message_back{
     margin:0 auto;
     width:600px;
-    padding:10px;
+    padding:30px;
+    line-height: 1.8em;
 
 
 }

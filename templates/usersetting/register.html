@@ -1,5 +1,5 @@
-{% extends "index.html" %}
-{% block mainContent %}
+{% extends "usersetting/log_tp.html" %}
+{% block logon %}
 {% load staticfiles %}
     <div class="errors_block">
         {% if register_form.username.errors %}
@@ -25,17 +25,17 @@
             {% csrf_token %}
             <table class="user_register">
              <tr>
-                 <td>{{ register_form.username.label_tag }}</td>
+                 <td></td>
                  <td>{{ register_form.username }}</td>
-                 <td><img id="valid_username_img" hidden="hidden" src=""/><div id="username_msg" class="usg"></div></td>
+                 <td><div id="username_msg" class="usg"></div></td>
              </tr>
              <tr>
-                 <td>{{ register_form.password.label_tag }}</td>
+                 <td></td>
                  <td>{{ register_form.password }}</td>
-                 <td><img src="{% static 'images/help_icon.png' %}">{{ register_form.password.help_text }}</td>
+                 <td><div id="passowrd_msg">{{ register_form.password.help_text }}</div></td>
              </tr>
              <tr>
-                 <td>{{ register_form.email.label_tag }}</td>
+                 <td></td>
                  <td>{{ register_form.email }}</td>
                  <td><img id="valid_email_img" hidden="hidden" src=""/><div id="email_msg" class="usg"></div></td>
              </tr>
@@ -79,21 +79,19 @@
                 },
                 success:function(data) {
                     if(data.ok === 'true') {
-                        $("#valid_username_img").attr('src', '{% static "images/yes.png" %}');//TODO:add the correct image.
+                        $("#username_msg").attr('class', 'correct');
                         usernameflag = true;
                     }
                     else {
-                        $("#valid_username_img").attr('src', '{% static "images/no.png" %}');//TODO:add the wrong image.
+                        $("#username_msg").attr('class', 'incorrect');
                         usernameflag = false;
                     }
-                    $("#valid_username_img").show();
                     $("#username_msg").html(data.message);
                     $(".errors_block").html('');
                 }
             });
         }
         else {
-            $("#valid_username_img").hide();
             $("#username_msg").html('');
             $(".errors_block").html('');
             usernameflag = false;
@@ -111,13 +109,11 @@
                 },
                 success:function(data) {
                     if(data.ok === 'true') {
-                        $("#valid_email_img").hide();
                         $("#email_msg").html('');
                         emailflag = true;
                     }
                     else {
-                        $("#valid_email_img").attr('src', '{% static "images/no.png" %}');//TODO:add the wrong image.
-                        $("#valid_email_img").show();
+                        $("#email_msg").attr('class', 'incorrect');
                         $("#email_msg").html(data.message);
                         emailflag = false;
                     }
@@ -149,7 +145,7 @@
             return false;
         }
         if (!valid_email($("#id_email").val().trim())) {
-            $(".errors_block").html("<ul><li>Email is not correct.</li></ul>");//TODO:it will be set in message.properties.
+            $(".errors_block").html("<ul><li>Email is invalid.</li></ul>");//TODO:it will be set in message.properties.
             return false;
         }
         if (!usernameflag || !emailflag) return false;
