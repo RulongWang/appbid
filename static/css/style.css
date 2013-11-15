@@ -720,7 +720,7 @@ h1{
 /*********************central block****************/
 .central_section{
     margin:0 auto;
-    margin-top:90px;
+    margin-top:50px;
     margin-bottom: 90px;
     padding-top: 50px;
     width:400px;
@@ -765,7 +765,7 @@ h1{
 .logon_input{
     padding:10px;
     border: 1px solid #00b0b0;
-    width:250px;
+    width:300px;
 }
 
 .user_register{
