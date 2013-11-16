@@ -96,13 +96,13 @@
     $("#add").click(function() {
         $("#attachment").append(
             '<div>'+
-                '{{ attachmentForm.path.label_tag }}'+
+                '{{ attachmentForm.path.label_tag }} '+
                 '{% if attachmentForm.path.errors %}'+
                     '<div>'+
                     '{{ attachmentForm.path.errors }}'+
                     '</div>'+
                 '{% endif %}'+
-                '{{ attachmentForm.path }}'+
+                '{{ attachmentForm.path }} '+
                 '<input type="button" value="Remove"  class="remove" onclick="removeNode(this)">'+
             '</div>');
     });

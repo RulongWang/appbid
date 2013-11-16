@@ -7,16 +7,6 @@
     <form action=""  method="post" enctype="multipart/form-data">
     {% csrf_token %}
             <ul class="account_detail_items">
-                    <li >
-                    <div class="fieldWrapper" style="display: none;">
-                        {{ form.user.errors }}
-                        <div class="field_label" >{{ form.user.label_tag }}</div>
-                        <div class="field_value" >
-                            <span style="display: none">{{ form.user }}</span>
-                            <input id="username" name="username" value="{{ request.user.username }}" readonly="true"/>
-                        </div>
-                    </div>
-                    </li>
                     <li>
                     <div class="thumnailWrapper" >
                         {{ form.thumbnail.errors }}
@@ -26,10 +16,8 @@
                                 <div style="width:50px;padding: 5px;float:left;">
                                 <img style="width: 40px;height: 40px" src="{{ form.thumbnail.value.url }}" />
                                 </div>
-                                <input id="id_thumbnail" name="thumbnail" type="file" />(Max size < 1M)
-                            {% else %}
-                                {{ form.thumbnail }}(Max size < 1M)
                             {% endif %}
+                                <input id="id_thumbnail" name="thumbnail" type="file" style="width: 150px;" />(Max size < 1M)
                         </div>
                     </div>
                     </li>

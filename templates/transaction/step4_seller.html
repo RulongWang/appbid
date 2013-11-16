@@ -1,3 +1,4 @@
+    {% load staticfiles %}
     <div class="paymentbox">
         <div>
             <div><h2 style="font-weight: bold;">Current Status:</h2></div>
@@ -8,7 +9,9 @@
             <div style="padding: 3px;"><h2 style="font-weight: bold;">The promised things you should get after payment from the app seller({{ app.publisher.username }}):</h2></div>
             <div>
                 <ul class="delivery_list">
-                    <li>You should get the ownership of the app({{ app.app_name }}) at APPSTORE.</li>
+                    <li>You should get the ownership of the app(<a href="{% url 'query:app_detail' transaction.app.id %}">{{ transaction.app.app_name }}</a>) at APPSTORE.
+                    <a target="_blank" href="{{ transaction.app.app_store_link }}" title="{{ transaction.app.app_name }}">
+                        <img src="{% static "images/appstore.png" %}" style="width: 67px;height: 20px;"/></a></li>
                     {% if app.source_code  %}
                     <li>You should get the source of the app.</li>
                     {% endif %}
@@ -21,11 +24,236 @@
                 </div>
             </div>
         </div>
-
+         <div>
+            <span>
+                <a href="/dashboard/create-message/reply/{{ support_user.username }}/{{ support_user.id }}?next={{ request.path }}">
+                    <input id="id_complain" type="button" value="Complain Buyer" class="button_s">
+                </a>
+            </span>
+        </div>
+        {% if buyer_txn %}
+            <div style="padding: 3px;"><h2 style="font-weight: bold;">Buyer({{ transaction.buyer.username }}) Appraise for You/Transaction:</h2></div>
+            <div>
+                <ul class="delivery_list">
+                    <li>
+                        Your Attitude
+                        <img id="buyer_attitude_1" />
+                        <img id="buyer_attitude_2" />
+                        <img id="buyer_attitude_3" />
+                        <img id="buyer_attitude_4" />
+                        <img id="buyer_attitude_5" />
+                    </li>
+                    <li>
+                        Your Response
+                        <img id="buyer_response_1" />
+                        <img id="buyer_response_2" />
+                        <img id="buyer_response_3" />
+                        <img id="buyer_response_4" />
+                        <img id="buyer_response_5" />
+                    </li>
+                    <li>
+                        Your Quality
+                        <img id="buyer_quality_1" />
+                        <img id="buyer_quality_2" />
+                        <img id="buyer_quality_3" />
+                        <img id="buyer_quality_4" />
+                        <img id="buyer_quality_5" />
+                    </li>
+                    <li>
+                        Your Honesty
+                        <img id="buyer_honesty_1" />
+                        <img id="buyer_honesty_2" />
+                        <img id="buyer_honesty_3" />
+                        <img id="buyer_honesty_4" />
+                        <img id="buyer_honesty_5" />
+                    </li>
+                    <li>
+                       Content
+                    </li>
+                </ul>
+                <div class="other_delivery">{{ buyer_txn.content }}</div>
+            </div>
+        {% endif %}
+        {% if seller_txn %}
+            <div style="padding: 3px;"><h2 style="font-weight: bold;">Your Appraise for Buyer({{ transaction.buyer.username }})/Transaction:</h2></div>
+            <div>
+                <ul class="delivery_list">
+                    <li>
+                        Buyer Attitude
+                        <img id="seller_attitude_1" />
+                        <img id="seller_attitude_2" />
+                        <img id="seller_attitude_3" />
+                        <img id="seller_attitude_4" />
+                        <img id="seller_attitude_5" />
+                    </li>
+                    <li>
+                        Buyer Response
+                        <img id="seller_response_1" />
+                        <img id="seller_response_2" />
+                        <img id="seller_response_3" />
+                        <img id="seller_response_4" />
+                        <img id="seller_response_5" />
+                    </li>
+                    <li>
+                        Buyer Quality
+                        <img id="seller_quality_1" />
+                        <img id="seller_quality_2" />
+                        <img id="seller_quality_3" />
+                        <img id="seller_quality_4" />
+                        <img id="seller_quality_5" />
+                    </li>
+                    <li>
+                        Buyer Honesty
+                        <img id="seller_honesty_1" />
+                        <img id="seller_honesty_2" />
+                        <img id="seller_honesty_3" />
+                        <img id="seller_honesty_4" />
+                        <img id="seller_honesty_5" />
+                    </li>
+                    <li>
+                       Content
+                    </li>
+                </ul>
+                <div class="other_delivery">{{ seller_txn.content }}</div>
+            </div>
+        {% else %}
         <div>
+            {{ error_msg }}
+            <div style="padding: 3px;"><h2 style="font-weight: bold;">Your can appraise Buyer({{ transaction.buyer.username }})/Transaction:</h2></div>
             <form action="" method="post">
-                {% csrf_token %}
-                <input id="submit" type="submit" name="submit" value="Pay Now" class="newbutton"/>
+            {% csrf_token %}
+            <ul class="delivery_list">
+                <li>
+                    Buyer Attitude
+                    <input id="id_attitude" name="attitude" hidden="hidden" value="0" />
+                    <img id="attitude_1" src="{% static "images/appraise_no.png" %}" />
+                    <img id="attitude_2" src="{% static "images/appraise_no.png" %}" />
+                    <img id="attitude_3" src="{% static "images/appraise_no.png" %}" />
+                    <img id="attitude_4" src="{% static "images/appraise_no.png" %}" />
+                    <img id="attitude_5" src="{% static "images/appraise_no.png" %}" />
+                </li>
+                <li>
+                    Buyer Response
+                    <input id="id_response" name="response" hidden="hidden" value="0" />
+                    <img id="response_1" src="{% static "images/appraise_no.png" %}" />
+                    <img id="response_2" src="{% static "images/appraise_no.png" %}" />
+                    <img id="response_3" src="{% static "images/appraise_no.png" %}" />
+                    <img id="response_4" src="{% static "images/appraise_no.png" %}" />
+                    <img id="response_5" src="{% static "images/appraise_no.png" %}" />
+                </li>
+                <li>
+                    Buyer Quality
+                    <input id="id_quality" name="quality" hidden="hidden" value="0" />
+                    <img id="quality_1" src="{% static "images/appraise_no.png" %}" />
+                    <img id="quality_2" src="{% static "images/appraise_no.png" %}" />
+                    <img id="quality_3" src="{% static "images/appraise_no.png" %}" />
+                    <img id="quality_4" src="{% static "images/appraise_no.png" %}" />
+                    <img id="quality_5" src="{% static "images/appraise_no.png" %}" />
+                </li>
+                <li>
+                    Buyer Honesty
+                    <input id="id_honesty" name="honesty" hidden="hidden" value="0" />
+                    <img id="honesty_1" src="{% static "images/appraise_no.png" %}" />
+                    <img id="honesty_2" src="{% static "images/appraise_no.png" %}" />
+                    <img id="honesty_3" src="{% static "images/appraise_no.png" %}" />
+                    <img id="honesty_4" src="{% static "images/appraise_no.png" %}" />
+                    <img id="honesty_5" src="{% static "images/appraise_no.png" %}" />
+                </li>
+                <li>
+                    Content
+                </li>
+            </ul>
+                <div class="other_delivery">
+                    <textarea id="id_content" name="content" rows="5"></textarea>
+                </div>
+                <input id="submit" type="submit" name="submit" value="Appraise Transaction" class="button_s" />
             </form>
         </div>
+        {% endif %}
     </div>
+<script type="text/javascript" language="javascript">
+    $(function() {
+        if ("{{ seller_txn }}" != null) {
+            appraiseValid("seller_attitude", "{{ seller_txn.attitude }}");
+            appraiseValid("seller_response", "{{ seller_txn.response }}");
+            appraiseValid("seller_quality", "{{ seller_txn.quality }}");
+            appraiseValid("seller_honesty", "{{ seller_txn.honesty }}");
+        }
+        if ("{{ buyer_txn }}" != null) {
+            appraiseValid("buyer_attitude", "{{ buyer_txn.attitude }}");
+            appraiseValid("buyer_response", "{{ buyer_txn.response }}");
+            appraiseValid("buyer_quality", "{{ buyer_txn.quality }}");
+            appraiseValid("buyer_honesty", "{{ buyer_txn.honesty }}");
+        }
+    });
+    function appraiseValid(name, index) {
+        index = parseInt(index);
+        for (var i=1; i<=index; i++) {
+            $("#"+name+"_"+i).attr("src", "{% static "images/appraise_yes.png" %}");
+        }
+        for (var i=index+1; i<=5; i++) {
+            $("#"+name+"_"+i).attr("src", "{% static "images/appraise_no.png" %}");
+        }
+        $("#id_"+name).attr("value", index);
+    }
+    $("#attitude_1").click(function(){
+        appraiseValid("attitude", 1);
+    });
+    $("#attitude_2").click(function(){
+        appraiseValid("attitude", 2);
+    });
+    $("#attitude_3").click(function(){
+        appraiseValid("attitude", 3);
+    });
+    $("#attitude_4").click(function(){
+        appraiseValid("attitude", 4);
+    });
+    $("#attitude_5").click(function(){
+        appraiseValid("attitude", 5);
+    });
+    $("#response_1").click(function(){
+        appraiseValid("response", 1);
+    });
+    $("#response_2").click(function(){
+        appraiseValid("response", 2);
+    });
+    $("#response_3").click(function(){
+        appraiseValid("response", 3);
+    });
+    $("#response_4").click(function(){
+        appraiseValid("response", 4);
+    });
+    $("#response_5").click(function(){
+        appraiseValid("response", 5);
+    });
+    $("#quality_1").click(function(){
+        appraiseValid("quality", 1);
+    });
+    $("#quality_2").click(function(){
+        appraiseValid("quality", 2);
+    });
+    $("#quality_3").click(function(){
+        appraiseValid("quality", 3);
+    });
+    $("#quality_4").click(function(){
+        appraiseValid("quality", 4);
+    });
+    $("#quality_5").click(function(){
+        appraiseValid("quality", 5);
+    });
+    $("#honesty_1").click(function(){
+        appraiseValid("honesty", 1);
+    });
+    $("#honesty_2").click(function(){
+        appraiseValid("honesty", 2);
+    });
+    $("#honesty_3").click(function(){
+        appraiseValid("honesty", 3);
+    });
+    $("#honesty_4").click(function(){
+        appraiseValid("honesty", 4);
+    });
+    $("#honesty_5").click(function(){
+        appraiseValid("honesty", 5);
+    });
+</script>

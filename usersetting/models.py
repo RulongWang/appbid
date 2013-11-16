@@ -25,7 +25,7 @@ class UserPrivateSetting(models.Model):
 
 class UserDetail(models.Model):
     """UserDetail table info."""
-    user = models.OneToOneField(User)
+    user = models.OneToOneField(User, blank=True)
     birthday = models.DateField(blank=True, null=True)
     real_name = models.CharField(blank=True, max_length=255, null=True)
     street_address = models.CharField(blank=True, max_length=300, null=True)
@@ -52,7 +52,7 @@ class UserPublicProfile(models.Model):
         (2, 'Female'),
         (3, 'Secret'),
     )
-    user = models.OneToOneField(User)
+    user = models.OneToOneField(User, blank=True)
     thumbnail = models.FileField(max_length=255, upload_to=content_file_name, null=True, blank=True)
     gender = models.IntegerField(choices=GENDER_TYPES, blank=True, default=3, null=True)
     homepage = models.CharField(max_length=255, blank=True, null=True)

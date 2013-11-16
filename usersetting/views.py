@@ -254,7 +254,9 @@ def userDetail(request, *args, **kwargs):
     if request.method == "POST":
         detailForm = forms.UserDetailForm(request.POST, instance=userDetail)
         if detailForm.is_valid():
-            detailForm.save()
+            userDetail = detailForm.save(commit=False)
+            userDetail.user_id = request.user.id
+            userDetail.save()
             initParam['account_msg'] = _('The account detail has been updated.')
     initParam['form'] = detailForm
     return render_to_response("usersetting/account_setting.html", initParam, context_instance=RequestContext(request))
@@ -280,6 +282,7 @@ def userPublicProfile(request, *args, **kwargs):
         userPublicProfileForm = forms.UserPublicProfileForm(request.POST, instance=userPublicProfile)
         if userPublicProfileForm.is_valid():
             userPublicProfile = userPublicProfileForm.save(commit=False)
+            userPublicProfile.user_id = request.user.id
             thumbnail = request.FILES.get('thumbnail')
             if thumbnail:
                 if thumbnail.content_type.startswith('image'):

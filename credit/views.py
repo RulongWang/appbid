@@ -1,9 +1,14 @@
 __author__ = 'Jarvis'
 
+import logging
+
 from django.utils.translation import ugettext as _
 
 from credit import models
+from credit import forms
 from utilities import common
+
+log = logging.getLogger('appbid')
 
 
 def initCreditPoint(*args, **kwargs):
@@ -83,3 +88,31 @@ def getUserCreditPoint(*args, **kwargs):
         if creditPoints:
             return creditPoints[0].points
     return -1
+
+
+def createAppraisement(request, *args, **kwargs):
+    initParam = kwargs.get('initParam')
+    form = forms.AppraisementForm()
+    if request.method == 'POST':
+        appraisementForm = forms.AppraisementForm(request.POST)
+        if appraisementForm.is_valid():
+            appraisement = appraisementForm.save(commit=False)
+            appraisement.user_id = request.user.id
+            appraisement.transaction_id = initParam.get('transaction').id
+            appraisement.save()
+            return appraisement
+        else:
+            initParam['error_msg'] = _("Appraisement failed. Please try again.")
+            log.error(_("Appraisement failed. Please try again."))
+    initParam['form'] = form
+    return None
+
+
+def getAppraisement(*args, **kwargs):
+    user_id = kwargs.get('user_id')
+    txn_id = kwargs.get('txn_id')
+    if user_id and txn_id:
+        appraisements = models.Appraisement.objects.filter(user_id=user_id, transaction_id=txn_id)
+        if appraisements:
+            return appraisements[0]
+    return None

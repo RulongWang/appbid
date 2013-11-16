@@ -4,60 +4,26 @@
 <div>
     <div>{{ error_msg }}</div>
     {% include "transaction/transaction_progress.html" %}
-    <!--TODO: judge process step number and display differect step info -->
      <div>
-{#        <div>App Name: <a href="{% url 'query:app_detail' transaction.app.id %}">{{ transaction.app.app_name }}</a></div>#}
-{#        {% if transaction.buyer.id == request.user.id %}#}
-{#            <div>Seller: {{ transaction.seller.username }}</div>#}
-{#        {% elif transaction.seller.id == request.user.id %}#}
-{#            <div>Buyer: {{ transaction.buyer.username }}</div>#}
-{#        {% endif %}#}
         {% if transaction.status == 2 %}
             {% if transaction.buyer.id == request.user.id %}
                 {% include "transaction/step2.html" %}
             {% elif transaction.seller.id == request.user.id %}
-
                 {% include "transaction/step2_seller.html" %}
-
             {% endif %}
-        {% elif transaction.status == 3 %} <!-- now in Delivery process status code 3-->
-
+        {% elif transaction.status == 3 %}
             {% if transaction.buyer.id == request.user.id %}
-
                 {% include "transaction/step3.html" %}
-
             {% elif transaction.seller.id == request.user.id %}
                 {% include "transaction/step3_seller.html" %}
-
             {% endif %}
         {% elif transaction.status == 4 %}
-            <div>
-                The transaction has finished.
-            </div>
-            <div>
-                Closed in: {{ time_remaining.0|floatformat }} {{ time_remaining.1 }}{{ time_remaining.0|floatformat|pluralize }} {{ time_remaining.2 }}
-            </div>
-
-
-
-            <!-- TODO: Comment the transaction for seller or buyer. -->
-{#            {% if transaction.buyer.id == request.user.id %}#}
-{#                <div>You can comment the transaction.</div>#}
-{#                <div>#}
-{#                    <a href="">#}
-{#                        <input id="id_comment" type="button" value="comment">#}
-{#                    </a>#}
-{#                </div>#}
-{#            {% elif transaction.seller.id == request.user.id %}#}
-{#                <div>You can comment the transaction.</div>#}
-{#                <div>#}
-{#                    <a href="">#}
-{#                        <input id="id_comment" type="button" value="comment">#}
-{#                    </a>#}
-{#                </div>#}
-{#            {% endif %}#}
+            {% if transaction.buyer.id == request.user.id %}
+                {% include "transaction/step4.html" %}
+            {% elif transaction.seller.id == request.user.id %}
+                {% include "transaction/step4_seller.html" %}
+            {% endif %}
         {% endif %}
     </div>
-
 </div>
 {% endblock %}

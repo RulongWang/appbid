@@ -42,10 +42,8 @@
                             <ul class="account_detail_items">
                                     <li>
                                     <div class="fieldWrapper">
-                                        {{ form.user.errors }}
                                         <div class="field_label" >{{ form.user.label_tag }}</div>
                                         <div class="field_value" >
-                                            <span style="display: none">{{ form.user }}</span>
                                             <input id="username" name="username" value="{{ request.user.username }}" readonly="true"/>
                                         </div>
                                     </div>

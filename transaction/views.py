@@ -149,7 +149,18 @@ def tradeAction(request, *args, **kwargs):
     if transaction.status == 2 or transaction.status == 3:
         initParam['time_remaining'] = time.mktime(time.strptime(str(transaction.end_time), '%Y-%m-%d %H:%M:%S'))
     elif transaction.status == 4:
+        support_user = common.getSystemParam(key='support_user', default='appswalk')
+        support_users = models.User.objects.filter(username=support_user)
+        if support_users:
+            initParam['support_user'] = support_users[0]
+        else:
+            log.error(_('Support user account does not exist.'))
         initParam['time_remaining'] = common.dateBefore(transaction.end_time)
+
+        initParam['seller_txn'] = creditViews.getAppraisement(user_id=transaction.seller.id, txn_id=transaction.id)
+        initParam['buyer_txn'] = creditViews.getAppraisement(user_id=transaction.buyer.id, txn_id=transaction.id)
+        if creditViews.createAppraisement(request, initParam=initParam):
+            return redirect(request.path)
 
     return render_to_response('transaction/trade_action.html', initParam, context_instance=RequestContext(request))
 
