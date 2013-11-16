@@ -143,11 +143,11 @@ def tradeAction(request, *args, **kwargs):
     else:
         raise Http404
 
-    tradeOperation(request, transaction=transaction, initParam=initParam)
-
     initParam['transaction'] = transaction
     if transaction.status == 2 or transaction.status == 3:
         initParam['time_remaining'] = time.mktime(time.strptime(str(transaction.end_time), '%Y-%m-%d %H:%M:%S'))
+        if tradeOperation(request, transaction=transaction, initParam=initParam):
+            return redirect(request.path)
     elif transaction.status == 4:
         support_user = common.getSystemParam(key='support_user', default='appswalk')
         support_users = models.User.objects.filter(username=support_user)
@@ -183,6 +183,7 @@ def tradeOperation(request, *args, **kwargs):
                 transactionsLog.save()
                 #Send email to seller and buyer
                 notificationViews.closedTradeInform(transaction=transaction)
+                return transaction
             else:
                 initParam['error_msg'] = _('Transaction can not be confirmed delivery.')
                 log.error(_('Transaction: %(param1)s, status: %(param2)s can not confirm delivery.')
@@ -192,6 +193,7 @@ def tradeOperation(request, *args, **kwargs):
         # point = common.getSystemParam(key='cp_closed_trade', default=50)
         # creditViews.increaseCreditPoint(user=transaction.buyer, point=point)
         # creditViews.increaseCreditPoint(user=transaction.seller, point=point)
+    return None
 
 
 @csrf_protect
