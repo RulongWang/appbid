@@ -120,7 +120,7 @@
                         </div>
                         {% if app.publisher.username != request.user.username %}
                            <div style="margin-left:10px;width:100px;float: left;">
-                               <a href="/dashboard/create-message/reply/{{ app.publisher.username }}/{{ app.publisher.id }}?next={{ request.path }}" title="Send private message to seller" >
+                               <a href="/dashboard/create-message/reply/1/{{ app.publisher.username }}/{{ app.publisher.id }}?next={{ request.path }}" title="Send private message to seller" >
                                <img src="{% static "images/email.png" %}"/>
                                </a>
                            </div>

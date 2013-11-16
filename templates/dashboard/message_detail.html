@@ -24,7 +24,7 @@
                      </a>
                  </span>
                  <span>
-                     <a href="/dashboard/create-message/reply/{{ message.sender.username }}/{{ message.sender.id }}/{{ message.id }}?next={{ request.path }}&page={{ page }}">
+                     <a href="/dashboard/create-message/reply/{{ message.type }}/{{ message.sender.username }}/{{ message.sender.id }}/{{ message.id }}?next={{ request.path }}&page={{ page }}">
                          <input id="id_reply" name="reply" type="button" class="general_btn" value="Reply" />
                      </a>
                  </span>
@@ -36,7 +36,7 @@
                      </a>
                  </span>
                  <span>
-                     <a href="/dashboard/create-message/send/{{ message.receiver.username }}/{{ message.receiver.id }}/{{ message.id }}?next={{ request.path }}&page={{ page }}">
+                     <a href="/dashboard/create-message/send/{{ message.type }}/{{ message.receiver.username }}/{{ message.receiver.id }}/{{ message.id }}?next={{ request.path }}&page={{ page }}">
                          <input id="id_reply" name="reply" type="button" class="general_btn" value="Reply" />
                  </a>
                  </span>

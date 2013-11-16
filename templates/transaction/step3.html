@@ -16,7 +16,7 @@
                 <ul class="delivery_list">
                     <li>
                         Send a private message to {{ transaction.seller.username }}.
-                        <a href="/dashboard/create-message/reply/{{ transaction.seller.username }}/{{ transaction.seller.id }}?next={{ request.path }}"
+                        <a href="/dashboard/create-message/reply/1/{{ transaction.seller.username }}/{{ transaction.seller.id }}?next={{ request.path }}"
                            title="Send private message to seller" >
                             <img src="{% static 'images/email.png' %}"/>
                         </a>

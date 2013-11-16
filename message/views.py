@@ -1,11 +1,15 @@
 __author__ = 'Jarvis'
 
+import logging
+
 from django.views.decorators.csrf import csrf_protect
 from django.contrib.auth.decorators import login_required
 from django.db import transaction
 from django.utils.translation import ugettext as _
 
 from message import forms
+
+log = logging.getLogger('appbid')
 
 
 @csrf_protect
@@ -24,12 +28,11 @@ def sendMessage(request, *args, **kwargs):
         messageForm = forms.MessageForm(request.POST)
         if messageForm.is_valid():
             message = messageForm.save(commit=False)
-            message.type = 1
             message.is_read = False
             message.save()
             return message
         elif initParam:
-            # print messageForm.errors#TODO:log the error message
-            initParam['message_error'] = _('Send private message failed.')
+            initParam['message_error'] = _('Save message failed.')
+            log.error(_('Save message failed.'))
     return None
 

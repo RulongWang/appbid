@@ -80,6 +80,7 @@ def createMessage(request, *args, **kwargs):
     initParam = {}
     username = kwargs.get('username')
     user_id = kwargs.get('user_id')
+    type = kwargs.get('type', 1)
     msg_id = kwargs.get('msg_id')
     msg_action = kwargs.get('msg_action')
     if msg_action and (msg_action == 'reply' or msg_action == 'send'):
@@ -99,6 +100,7 @@ def createMessage(request, *args, **kwargs):
 
     initParam['sender'] = user
     initParam['receiver'] = receiver
+    initParam['type'] = type
     initParam['next'] = request.GET.get('next', None)
     initParam['page'] = request.GET.get('page', 1)
 

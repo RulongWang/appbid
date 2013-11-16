@@ -5,7 +5,7 @@
             <div style="line-height: 1.5em;">
                     Currently ,the deal is pending on the 2nd step , we have informed buyer <b>{{ transaction.buyer.username }}</b> to pay the money <b>{{ transaction.price|floatformat }} {{ transaction.app.currency.currency }}</b>.<br/>
                     In the meanwhile, you can send private message to {{ transaction.buyer.username }}
-                    <a href="/dashboard/create-message/reply/{{ transaction.buyer.username }}/{{ transaction.buyer.id }}?next={{ request.path }}"
+                    <a href="/dashboard/create-message/reply/1/{{ transaction.buyer.username }}/{{ transaction.buyer.id }}?next={{ request.path }}"
                        title="Send private message to buyer" >
                         <img src="{% static 'images/email.png' %}"/>
                     </a><br/>
