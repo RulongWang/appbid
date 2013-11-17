@@ -3,11 +3,8 @@
 {% load staticfiles %}
     <div class="errors_block">
         {% if login_error %}
-            <ul>
-                <li>
+
                     {{ login_error }}
-                </li>
-            </ul>
         {% endif %}
     </div>
     <div id="central_block">
@@ -17,9 +14,6 @@
 
 
                <table class="user_register">
-                    <col width="50">
-                    <col width="200">
-                    <col width="200">
                    <tr>
                        <td>
 {#                           Username:#}
@@ -27,7 +21,7 @@
                        <td>
                            <input id='username' name='username' class="logon_input" type="text" placeholder="User Name" value="{{ user_name }}">
                        </td>
-                       <td>
+                       <td style="width:200px;">
                              <a href="{% url 'usersetting:register_view' %}">Not register？</a>
                        </td>
                    </tr>

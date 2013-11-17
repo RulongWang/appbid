@@ -84,6 +84,12 @@ def contact(request, *args, **kwargs):
     return render_to_response('help/contact.html', initParam, context_instance=RequestContext(request))
 
 
+def siterules(request, *args, **kwargs):
+    """Query the apps info in home page."""
+
+    return render_to_response('help/siterules.html', context_instance=RequestContext(request))
+
+
 def about(request, *args, **kwargs):
     """Query the apps info in home page."""
     initParam = {}

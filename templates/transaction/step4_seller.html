@@ -1,30 +1,12 @@
     {% load staticfiles %}
     <div class="paymentbox">
         <div>
-            <div><h2 style="font-weight: bold;">Current Status:</h2></div>
-                <div style="line-height: 1.5em;">
-                    Currently ,you are on the second step , you need to pay <span style="color: red;">{{ transaction.price }} {{ app.currency.currency }}</span> to  {{ app.publisher.username }} .
-                    After your payment, we will help you inform seller to start the delivery immediately.
-                </div>
-            <div style="padding: 3px;"><h2 style="font-weight: bold;">The promised things you should get after payment from the app seller({{ app.publisher.username }}):</h2></div>
-            <div>
-                <ul class="delivery_list">
-                    <li>You should get the ownership of the app(<a href="{% url 'query:app_detail' transaction.app.id %}">{{ transaction.app.app_name }}</a>) at APPSTORE.
-                    <a target="_blank" href="{{ transaction.app.app_store_link }}" title="{{ transaction.app.app_name }}">
-                        <img src="{% static "images/appstore.png" %}" style="width: 67px;height: 20px;"/></a></li>
-                    {% if app.source_code  %}
-                    <li>You should get the source of the app.</li>
-                    {% endif %}
-                    <li>
-                        The other things you should get:
-                    </li>
-                </ul>
-                <div class="other_delivery">
-                {{ app.delivery_detail }}
-                </div>
-            </div>
+            <div><h2 style="font-weight: bold;">Current Status:Transaction Closed</h2></div>
+
         </div>
+
          <div>
+             Now you can:
             <span>
                 <a href="/dashboard/create-message/reply/2/{{ support_user.username }}/{{ support_user.id }}?next={{ request.path }}">
                     <input id="id_complain" type="button" value="Complain Buyer" class="button_s">
@@ -68,7 +50,7 @@
                         <img id="buyer_honesty_5" />
                     </li>
                     <li>
-                       Content
+                       Comments
                     </li>
                 </ul>
                 <div class="other_delivery">{{ buyer_txn.content }}</div>
@@ -111,7 +93,7 @@
                         <img id="seller_honesty_5" />
                     </li>
                     <li>
-                       Content
+                       Comments
                     </li>
                 </ul>
                 <div class="other_delivery">{{ seller_txn.content }}</div>
@@ -160,7 +142,7 @@
                     <img id="honesty_5" src="{% static "images/appraise_no.png" %}" />
                 </li>
                 <li>
-                    Content
+                    Comments
                 </li>
             </ul>
                 <div class="other_delivery">

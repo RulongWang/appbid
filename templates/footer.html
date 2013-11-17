@@ -1,5 +1,5 @@
 
-
+{% load staticfiles %}
 <footer class="footer">
     <div id="footer_wrapper">
         <div id="footer_category">
@@ -7,13 +7,8 @@
                     <div style="height:30px;text-align: center;font-size:13px;font-weight: bold;">Seller/Buyer</div>
                     <ul class="footer_ul">
                     <li><a href ="{% url 'help:guide' %}">Transaction Guide</a></li>
-                    <li><a href ="{% url 'help:pricing' %}">Site</a></li>
-                    <li><a href ="{% url 'help:support' %}">Support</a></li>
-                    <li><a href ="{% url 'help:privacy' %}">Privacy</a></li>
-                    <li><a href ="{% url 'help:terms' %}">Terms</a></li>
-                    <li><a href ="{% url 'help:security' %}">Security</a></li>
-                    <li><a href ="{% url 'help:contact' %}">Contact</a></li>
-                    <li><a href ="{% url 'help:about' %}">About </a></li>
+                    <li><a href ="/siterules">Site Rules</a></li>
+                    <li><a href ="{% static "docs/APPSWALK WEBSITE SALE AGREEMENT.pdf" %}">Sale Contract</a></li>
                     </ul>
             </div>
              <div class="footer_cat_block">
@@ -34,7 +29,6 @@
                     <li><a href ="{% url 'help:support' %}">Support</a></li>
                     <li><a href ="{% url 'help:privacy' %}">Privacy</a></li>
                     <li><a href ="{% url 'help:terms' %}">Terms</a></li>
-                    <li><a href ="{% url 'help:security' %}">Security</a></li>
                     </ul>
             </div>
              <div class="footer_cat_block">

@@ -15,7 +15,7 @@
                     <li>You already got the source of the app.</li>
                     {% endif %}
                     <li>
-                        The other things you should get:
+                        The other things you should already got:
                     </li>
                 </ul>
                 <div class="other_delivery">
@@ -31,7 +31,7 @@
             </span>
         </div>
         {% if seller_txn %}
-            <div style="padding: 3px;"><h2 style="font-weight: bold;">Seller({{ transaction.seller.username }}) Appraise for You/Transaction:</h2></div>
+            <div style="padding: 3px;"><h2 style="font-weight: bold;">Seller's({{ transaction.seller.username }}) feedback on You/Transaction:</h2></div>
             <div>
                 <ul class="delivery_list">
                     <li>
@@ -51,7 +51,7 @@
                         <img id="seller_response_5" />
                     </li>
                     <li>
-                        Your Quality
+                        Your APP Quality
                         <img id="seller_quality_1" />
                         <img id="seller_quality_2" />
                         <img id="seller_quality_3" />
@@ -67,14 +67,14 @@
                         <img id="seller_honesty_5" />
                     </li>
                     <li>
-                       Content
+                       Comments from the Seller:
                     </li>
                 </ul>
                 <div class="other_delivery">{{ seller_txn.content }}</div>
             </div>
         {% endif %}
         {% if buyer_txn %}
-            <div style="padding: 3px;"><h2 style="font-weight: bold;">Your Appraise for Seller({{ transaction.seller.username }})/Transaction:</h2></div>
+            <div style="padding: 3px;"><h2 style="font-weight: bold;">Your feedback on Seller({{ transaction.seller.username }})/Transaction:</h2></div>
             <div>
                 <ul class="delivery_list">
                     <li>
@@ -110,7 +110,7 @@
                         <img id="buyer_honesty_5" />
                     </li>
                     <li>
-                       Content
+                       Your comments
                     </li>
                 </ul>
                 <div class="other_delivery">{{ buyer_txn.content }}</div>
@@ -159,7 +159,7 @@
                     <img id="honesty_5" src="{% static "images/appraise_no.png" %}" />
                 </li>
                 <li>
-                    Content
+                    Comments
                 </li>
             </ul>
                 <div class="other_delivery">

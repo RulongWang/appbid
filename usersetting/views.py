@@ -85,7 +85,7 @@ def forgetPassword(request, *args, **kwargs):
             #Send the email to user
             notificationViews.sendResetPasswordEmail(request, type=type, user=user)
             email = common.hiddenEmail(user.email)
-            initParam['msg'] = _('The change password information has send to %(param)s. Please login email to change password ASAP.') % {'param': email}
+            initParam['msg'] = _('The password reset link has been sent to %(param)s. Please check your email, click attached link to change your password ASAP.') % {'param': email}
         else:
             initParam['error_msg'] = _('%(param)s do not exist.') % {'param': username}
 
@@ -113,7 +113,7 @@ def resetPassword(request, *args, **kwargs):
                     user = get_object_or_404(models.User, pk=user_id, username=username)
                 user.set_password(password)
                 user.save()
-                initParam['msg'] = _('The account password has been updated.')
+                initParam['msg'] = _('Your password has been updated successfully.')
         return render_to_response("usersetting/reset_password.html", initParam, context_instance=RequestContext(request))
     return Http404
 

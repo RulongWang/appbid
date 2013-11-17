@@ -760,6 +760,7 @@ h1{
 #logon{
     margin: 0 auto;
     width:960px;
+    min-height: 300px;
 }
 
 .logon_input{
@@ -769,7 +770,7 @@ h1{
 }
 
 .user_register{
-    margin-left:80px;
+    margin-left:30px;
 }
 
 .usg{
@@ -1071,6 +1072,7 @@ fieldset {
     width:400px;
     margin-top:10px;
     padding:10px 20px 20px 10px;
+    text-align: center;
     opacity: 0.6;
     color:#CC3333;
 
