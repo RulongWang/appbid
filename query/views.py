@@ -282,7 +282,7 @@ def getAppDetail(request, *args, **kwargs):
     if kwargs.get('pk'):
         initParam = {}
         app = get_object_or_404(appModels.App, pk=kwargs.get('pk'))
-        authViews.shareToWeiBo(request, app=app)
+        # authViews.shareToWeiBo(request, app=app)
         appInfo = app.appinfo
         initParam['app'] = app
         initParam['appInfo'] = appInfo
