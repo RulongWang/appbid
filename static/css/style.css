@@ -2661,3 +2661,20 @@ input[type="radio"]:checked:after {
     line-height: 1.8em;
     padding:5px 10px 5px 39px;
 }
+
+
+.siterules{
+    list-style:decimal;
+    line-height: 1.8em;
+    padding: 10px 10px 10px 30px;
+
+}
+
+.siterules li{
+    margin-left: 30px;
+}
+
+.siterules li li{
+    list-style: lower-latin;
+}
+
