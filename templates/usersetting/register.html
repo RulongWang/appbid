@@ -127,8 +127,13 @@
         }
     });
     $("#submit").click(function() {
-        if ($("#id_username").val().trim() == "") {
+        var username = $("#id_username").val().trim();
+        if (username == "") {
             $(".errors_block").html("<ul><li>Username is required.</li></ul>");//TODO:it will be set in message.properties.
+            return false;
+        }
+        if (!new RegExp(/^[a-zA-Z0-9_]+$/).test(username)) {
+            $(".errors_block").html("<ul><li>Username just includes number, letter or underline.</li></ul>");//TODO:it will be set in message.properties.
             return false;
         }
         if ($("#id_password").val().trim() == "") {

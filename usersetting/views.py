@@ -4,6 +4,7 @@ import json
 import os
 import logging
 import string
+import re
 
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
@@ -135,7 +136,9 @@ def register(request, *args, **kwargs):
             username = (registerForm.cleaned_data["username"]).strip()
             email = (registerForm.cleaned_data["email"]).strip()
             password = (registerForm.cleaned_data["password"]).strip()
-            if models.User.objects.filter(Q(username=username) | Q(email=email)):
+            if not bool(re.match(r"^[a-zA-Z0-9_]+$", username)):
+                initParam['register_error'] = _('Username just includes number, letter or underline.')
+            elif models.User.objects.filter(Q(username=username) | Q(email=email)):
                 initParam['register_error'] = _('%(name)s or %(email)s has been used.') % {'name': username, 'email': email}
             else:
                 user = User.objects.create_user(username, email, password)
@@ -176,7 +179,10 @@ def ajaxUserVerified(request, *args, **kwargs):
         dict = request.GET
     try:
         if dict.get('username') is not None:
-            if models.User.objects.filter(username=dict.get('username')):
+            if not bool(re.match(r"^[a-zA-Z0-9_]+$", dict.get('username'))):
+                data['message'] = _('Username just includes number, letter or underline.')
+                raise
+            elif models.User.objects.filter(username=dict.get('username')):
                 data['message'] = _('%(param)s has been used.') % {'param': dict.get('username')}
                 raise
             else:
