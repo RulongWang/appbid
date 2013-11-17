@@ -10,6 +10,9 @@ MySQL-python, yum install MySQL-python
 PIL (1.1.7), download URL:http://www.pythonware.com/products/pil/
 django-social-auth (0.7.28), download URL:https://pypi.python.org/pypi/django-social-auth
 
+install requests:(For share to WeiBo)pip install requests
+Requests document:http://cn.python-requests.org/en/latest/user/quickstart.html
+
 qrcode - make two-dimension code:
 pip install qrcode / easy_install qrcode
 download URL:https://github.com/lincolnloop/python-qrcode

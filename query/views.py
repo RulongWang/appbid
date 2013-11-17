@@ -17,6 +17,7 @@ from transaction import models as txnModels
 from dashboard import models as dashboardModels
 from usersetting import models as userSettingModels
 from utilities import common
+from auth import views as authViews
 
 
 def listLatest(request):
@@ -281,6 +282,7 @@ def getAppDetail(request, *args, **kwargs):
     if kwargs.get('pk'):
         initParam = {}
         app = get_object_or_404(appModels.App, pk=kwargs.get('pk'))
+        authViews.shareToWeiBo(request, app=app)
         appInfo = app.appinfo
         initParam['app'] = app
         initParam['appInfo'] = appInfo

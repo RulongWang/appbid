@@ -141,6 +141,7 @@ INSTALLED_APPS = (
     # 'django_crontab',
     'social_auth',
     'qrcode',
+    'requests',
     #The package list
     'appbid',
     'bid',
