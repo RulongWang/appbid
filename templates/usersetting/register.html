@@ -133,7 +133,7 @@
             return false;
         }
         if (!new RegExp(/^[a-zA-Z0-9_]+$/).test(username)) {
-            $(".errors_block").html("<ul><li>Username just includes number, letter or underline.</li></ul>");//TODO:it will be set in message.properties.
+            $(".errors_block").html("<ul><li>Username only allows 0-9,A-Z a-z and underline.</li></ul>");//TODO:it will be set in message.properties.
             return false;
         }
         if ($("#id_password").val().trim() == "") {

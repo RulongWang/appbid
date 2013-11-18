@@ -1069,12 +1069,11 @@ fieldset {
 
 .errors_block{
     margin:0 auto;
-    width:400px;
-    margin-top:10px;
-    padding:10px 20px 20px 10px;
+    width:300px;
+    padding:0px 20px 20px 10px;
     text-align: center;
-    opacity: 0.6;
-    color:#CC3333;
+    color:red;
+    font-weight: bold;
 
 }
 
@@ -1082,14 +1081,18 @@ fieldset {
     padding:5px;
     color:red;
 }
+
+
+#account_msg{
+    padding:5px;
+    font-size: 12px;
+}
 .errors_block ul{
     margin-left:10px;
     list-style: none;
 }
 .errors_block ul li{
-    padding-left:20px;
-    background-image:url("../images/error.png");
-    background-repeat: no-repeat;
+    background:url("../images/error_icon20x20.png") no-repeat left;
 }
 .nextbutton{
     margin-top:10px;
@@ -1730,6 +1733,7 @@ fieldset {
 }
 .account_detail_items li{
     margin-top:20px;
+    font-size: 13px;
 
 
 }
@@ -1821,7 +1825,7 @@ fieldset {
 
 .payement_wrapper{
     margin-top:20px;
-    height:80px;
+    height:120px;
     padding-left:20px;
     border-bottom: 1px dashed #ddd;
 

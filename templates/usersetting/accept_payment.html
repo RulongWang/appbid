@@ -1,7 +1,7 @@
 {% extends "usersetting/account_setting.html" %}
 {% block account_detail %}
 {% load staticfiles %}
-    <div class="dash_title">Payment Account Setting</div>
+    <div class="dash_title">Accepted Payment</div>
     <div id="account_msg">{{ account_msg }}</div>
     <form action="" method="post">
         {% csrf_token %}
@@ -9,11 +9,14 @@
             <div class="payement_wrapper">
                 <div class="field_label" >
                         <img src="{% static gateway.logo %}" />
+                    <div style="font-size: 12px;">
+                        The buyer will use this gateway to pay you the money.
+                    </div>
                 </div>
                 <div class="field_value" >
                     <div class="field_wrapper">
                         <input type="text" hidden="hidden" name="gateway_type" value="{{ gateway.id }}" />
-                        <input type="text" id="payment_account" name="payment_account" value="{% if acceptGateway and acceptGateway.value != None %}{{ acceptGateway.value }}{% endif %}" />
+                        <input type="text" style="margin-left: 100px;" id="payment_account" name="payment_account" value="{% if acceptGateway and acceptGateway.value != None %}{{ acceptGateway.value }}{% endif %}" />
                     </div>
                 </div>
 {#                <div class="field_value" >#}
@@ -23,10 +26,10 @@
 {#                </div>#}
             </div>
         {% endfor %}
-        <div class="payement_wrapper">
+        <div style="text-align: center;">
             <div class="field_value" >
             <input type="text" hidden="hidden" name="next" value="{{ next }}" />
-            <input id="submit" name="submit" type="submit" value="Submit" class="addnew">
+            <input id="submit" name="submit" type="submit" value="Submit" class="addnew" style="margin-top:30px;margin-right: 150px;">
             </div>
         </div>
     </form>

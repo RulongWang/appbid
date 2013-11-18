@@ -105,7 +105,7 @@ def resetPassword(request, *args, **kwargs):
             password = request.POST.get('password')
             confirm_password = request.POST.get('confirm_password')
             if password != confirm_password:
-                initParam['error_msg'] = _('Password is not the same with confirm password.')
+                initParam['error_msg'] = _('Password is not the same with the confirm password.')
             else:
                 if type == 1:
                     user = get_object_or_404(models.User, pk=user_id, email=username)
@@ -137,7 +137,7 @@ def register(request, *args, **kwargs):
             email = (registerForm.cleaned_data["email"]).strip()
             password = (registerForm.cleaned_data["password"]).strip()
             if not bool(re.match(r"^[a-zA-Z0-9_]+$", username)):
-                initParam['register_error'] = _('Username just includes number, letter or underline.')
+                initParam['register_error'] = _('Username only allows 0-9,a-z,A-Z or underline.')
             elif models.User.objects.filter(Q(username=username) | Q(email=email)):
                 initParam['register_error'] = _('%(name)s or %(email)s has been used.') % {'name': username, 'email': email}
             else:
@@ -164,7 +164,7 @@ def register(request, *args, **kwargs):
                     #     privateSet.save()
                     return redirect("".join(["/usersetting/register-active/", user.username, '/', str(user.id)]))
                 else:
-                    initParam['register_error'] = _('Register failed, please try again.')
+                    initParam['register_error'] = _('Registration failed, please try again.')
     initParam['register_form'] = registerForm
     return render_to_response("usersetting/register.html", initParam, context_instance=RequestContext(request))
 
@@ -180,7 +180,7 @@ def ajaxUserVerified(request, *args, **kwargs):
     try:
         if dict.get('username') is not None:
             if not bool(re.match(r"^[a-zA-Z0-9_]+$", dict.get('username'))):
-                data['message'] = _('Username just includes number, letter or underline.')
+                data['message'] = _('Username only allows 0-9,a-z,A-Z or underline.')
                 raise
             elif models.User.objects.filter(username=dict.get('username')):
                 data['message'] = _('%(param)s has been used.') % {'param': dict.get('username')}
@@ -228,9 +228,9 @@ def registerActiveConfirm(request, *args, **kwargs):
         if securityVerifications:
             securityVerifications[0].is_verified = True
             securityVerifications[0].save()
-        initParam['account_msg'] = _('The account active successfully.')
+        initParam['account_msg'] = _('The account has been activated successfully.')
     else:
-        initParam['account_error'] = _('The active link is not correct.')
+        initParam['account_error'] = _('The activation link is not correct.')
     return render_to_response("usersetting/register_active_confirm.html", initParam, context_instance=RequestContext(request))
 
 
@@ -263,7 +263,7 @@ def userDetail(request, *args, **kwargs):
             userDetail = detailForm.save(commit=False)
             userDetail.user_id = request.user.id
             userDetail.save()
-            initParam['account_msg'] = _('The account detail has been updated.')
+            initParam['account_msg'] = _('You account info has been updated successfully.')
     initParam['form'] = detailForm
     return render_to_response("usersetting/account_setting.html", initParam, context_instance=RequestContext(request))
 
@@ -293,7 +293,7 @@ def userPublicProfile(request, *args, **kwargs):
             if thumbnail:
                 if thumbnail.content_type.startswith('image'):
                     if thumbnail.size > 1000000:
-                        initParam['account_msg'] = _('The image size is more than 1M.')
+                        initParam['account_msg'] = _('The image size is larger than 1M.')
                     else:
                         path = '/'.join([settings.MEDIA_ROOT, str(user.id)])
                         if os.path.exists(path) is False:
@@ -309,12 +309,12 @@ def userPublicProfile(request, *args, **kwargs):
                             #Shrink image to (50*50) for user thumbnail.
                             path = '/'.join([settings.MEDIA_ROOT, str(userPublicProfile.thumbnail)])
                             common.imageThumbnail(path=path, size=(50, 50))
-                        initParam['account_msg'] = _('The public profile has been updated.')
+                        initParam['account_msg'] = _('The public profile has been updated successful.')
                 else:
-                    initParam['account_msg'] =  _('The file type of %(param)s does not supported.') % {'param': thumbnail.name}
+                    initParam['account_msg'] =  _('The file type of %(param)s is not supported.') % {'param': thumbnail.name}
             else:
                 userPublicProfile.save()
-                initParam['account_msg'] = _('The public profile has been updated.')
+                initParam['account_msg'] = _('The public profile has been updated successfully.')
 
     initParam['form'] = userPublicProfileForm
     return render_to_response("usersetting/publicprofile.html", initParam, context_instance=RequestContext(request))
@@ -336,7 +336,7 @@ def subscriptionSetting(request, *args, **kwargs):
                 user.subscriptionitem_set.add(subscriptionItem)
             except models.SubscriptionItem.DoesNotExist:
                 return Http404
-        initParam['account_msg'] = _('The subscription setting has been updated.')
+        initParam['account_msg'] = _('The subscription setting has been updated successful.')
 
     subscriptionSettings = models.SubscriptionItem.objects.all()
     selectSettings = user.subscriptionitem_set.all()
@@ -407,7 +407,7 @@ def changePassword(request, *args, **kwargs):
             else:
                 user.set_password(new_password)
                 user.save()
-                messages.info(request, _('The account password has been updated.'))
+                messages.info(request, _('The account password has been updated successful.'))
                 return redirect(reverse('usersetting:security_setting'))
         else:
             initParam['account_error'] = _('Old password is not correct.')
@@ -523,7 +523,7 @@ def securitySettingPhone(request, *args, **kwargs):
                 securitySettings[0].value = new_phone
                 securitySettings[0].is_verified = True
                 securitySettings[0].save()
-                messages.info(request, _('The phone number has been updated.'))
+                messages.info(request, _('The phone number has been updated successful.'))
                 return redirect(reverse('usersetting:security_setting'))
         else:
             securitySetting = models.SecurityVerification()
@@ -532,7 +532,7 @@ def securitySettingPhone(request, *args, **kwargs):
             securitySetting.value = new_phone
             securitySetting.is_verified = True
             securitySetting.save()
-            messages.info(request, _('The phone number has been updated.'))
+            messages.info(request, _('The phone number has been updated successful.'))
             return redirect(reverse('usersetting:security_setting'))
     return render_to_response("usersetting/security_setting_phone.html", initParam, context_instance=RequestContext(request))
 
