@@ -47,6 +47,8 @@ def shareToWeiBo(request, *args, **kwargs):
             result = requests.post(url, data=data, files=files)
             data = json.loads(result.text)
             if data.get('error_code'):
-                log.error(_('share failed for App %(param1)s, error:%(param2)s') % {'param1': app.app_name, 'param2': data})
+                log.error(_('Share App %(param1)s failed to WeiBo, error:%(param2)s') % {'param1': app.app_name, 'param2': data})
+            else:
+                log.info(_('Share App %(param1)s success to WeiBo.') % {'param1': app.app_name})
         except Exception, e:
-            log.error(_('share failed for App %(param1)s, error:%(param2)s') % {'param1': app.app_name, 'param2': e})
+            log.error(_('Share App %(param1)s failed to WeiBo, error:%(param2)s') % {'param1': app.app_name, 'param2': e})
