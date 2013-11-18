@@ -39,11 +39,12 @@ def shareToWeiBo(request, *args, **kwargs):
     app = kwargs.get('app')
     if app:
         try:
-            url = 'https://api.weibo.com/2/statuses/upload.json'
+            # url = 'https://api.weibo.com/2/statuses/upload.json'
+            url = 'https://upload.api.weibo.com/2/statuses/upload.json'
             app_url = '/'.join([common.getHttpHeader(request), 'query/app-detail', str(app.id)])
-            status = ''.join(['App "', app.app_name.encode('utf-8'), '" for sale from AppsWalk. ', app_url])
+            status = ''.join(['App "', app.app_name.encode('utf-8'), '" for sale from AppsWalk. '])#, app_url
             data = {'source': settings.WEIBO_CLIENT_KEY, 'access_token': settings.WEIBO_ACCESS_TOKEN, 'status': status}
-            files = {'pic': '/'.join([settings.MEDIA_ROOT, app.appinfo.icon])}
+            files = {'pic': open('/'.join([settings.MEDIA_ROOT, app.appinfo.icon]), 'rb')}
             result = requests.post(url, data=data, files=files)
             data = json.loads(result.text)
             if data.get('error_code'):
