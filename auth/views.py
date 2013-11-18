@@ -41,7 +41,7 @@ def shareToWeiBo(request, *args, **kwargs):
     if app:
         try:
             reload(sys)
-            sys.setdefaultencoding('utf8')
+            sys.setdefaultencoding('utf-8')
             # url = 'https://api.weibo.com/2/statuses/upload.json'
             url = 'https://upload.api.weibo.com/2/statuses/upload.json'
             app_url = '/'.join([common.getHttpHeader(request), 'query/app-detail', str(app.id)])
