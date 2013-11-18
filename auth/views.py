@@ -41,9 +41,9 @@ def shareToWeiBo(request, *args, **kwargs):
         try:
             url = 'https://api.weibo.com/2/statuses/upload.json'
             app_url = '/'.join([common.getHttpHeader(request), 'query/app-detail', str(app.id)])
-            status = ''.join(['App "', app.app_name, '" for sale from AppsWalk. ', app_url])
+            status = ''.join(['App "', app.app_name.encode('utf-8'), '" for sale from AppsWalk. ', app_url])
             data = {'source': settings.WEIBO_CLIENT_KEY, 'access_token': settings.WEIBO_ACCESS_TOKEN, 'status': status}
-            files = {'pic': open('/'.join([settings.MEDIA_ROOT, app.appinfo.icon]), 'rb')}
+            files = {'pic': '/'.join([settings.MEDIA_ROOT, app.appinfo.icon])}
             result = requests.post(url, data=data, files=files)
             data = json.loads(result.text)
             if data.get('error_code'):
