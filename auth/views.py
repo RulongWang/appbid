@@ -5,7 +5,6 @@ import urllib
 import requests
 import json
 import logging
-import sys
 import os
 
 from django.shortcuts import render_to_response, RequestContext
@@ -41,19 +40,15 @@ def shareToWeiBo(request, *args, **kwargs):
     app = kwargs.get('app')
     if app:
         try:
-            print sys.getfilesystemencoding()
-            reload(sys)
-            sys.setdefaultencoding('mbcs')
             # url = 'https://api.weibo.com/2/statuses/upload.json'
             url = 'https://upload.api.weibo.com/2/statuses/upload.json'
             app_url = '/'.join([common.getHttpHeader(request), 'query/app-detail', str(app.id)])
-            status = ''.join(['App "', app.app_name.encode('utf-8'), '" for sale from AppsWalk. '])#, app_url
+            # status = ''.join(['App "', app.app_name.encode('utf-8'), '" for sale from AppsWalk. ', app_url])
+            status = ''.join(['App for sale from AppsWalk.'])
             data = {'source': settings.WEIBO_CLIENT_KEY, 'access_token': settings.WEIBO_ACCESS_TOKEN, 'status': status}
             path = '/'.join([settings.MEDIA_ROOT, app.appinfo.icon])
-            length = os.path.getsize(path)
+            # length = os.path.getsize(path)
             files = {'pic': open(path, 'rb')}
-            print type(open('/'.join([settings.MEDIA_ROOT, app.appinfo.icon]), 'rb'))
-            print type('/'.join([settings.MEDIA_ROOT, app.appinfo.icon]))
             result = requests.post(url, data=data, files=files)
             data = json.loads(result.text)
             if data.get('error_code'):
