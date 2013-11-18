@@ -5,6 +5,7 @@ import urllib
 import requests
 import json
 import logging
+import sys
 
 from django.shortcuts import render_to_response, RequestContext
 from django.views.decorators.csrf import csrf_protect
@@ -39,12 +40,14 @@ def shareToWeiBo(request, *args, **kwargs):
     app = kwargs.get('app')
     if app:
         try:
+            reload(sys)
+            sys.setdefaultencoding('utf8')
             # url = 'https://api.weibo.com/2/statuses/upload.json'
             url = 'https://upload.api.weibo.com/2/statuses/upload.json'
             app_url = '/'.join([common.getHttpHeader(request), 'query/app-detail', str(app.id)])
             status = ''.join(['App "', app.app_name.encode('utf-8'), '" for sale from AppsWalk. '])#, app_url
             data = {'source': settings.WEIBO_CLIENT_KEY, 'access_token': settings.WEIBO_ACCESS_TOKEN, 'status': status}
-            files = {'pic': open('/'.join([settings.MEDIA_ROOT, app.appinfo.icon]), 'rb').read()}
+            files = {'pic': open('/'.join([settings.MEDIA_ROOT, app.appinfo.icon]), 'rb')}
             print type(open('/'.join([settings.MEDIA_ROOT, app.appinfo.icon]), 'rb'))
             print type('/'.join([settings.MEDIA_ROOT, app.appinfo.icon]))
             result = requests.post(url, data=data, files=files)
