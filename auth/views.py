@@ -47,12 +47,18 @@ def shareToWeiBo(request, *args, **kwargs):
             # status = ''.join(['App "', app.app_name.encode('utf-8'), '" for sale from AppsWalk. ', app_url])
             status = ''.join(['App for sale from AppsWalk.'])
             data = {'source': settings.WEIBO_CLIENT_KEY, 'access_token': settings.WEIBO_ACCESS_TOKEN, 'status': status}
-            # path = '/'.join([settings.MEDIA_ROOT, app.appinfo.icon])
+            path = '/'.join([settings.MEDIA_ROOT, app.appinfo.icon])
             # length = os.path.getsize(path)
             print sys.getdefaultencoding()
             print sys.getfilesystemencoding()
-            path = '/var/www/attachment/2/12/Icon.jpg'
-            files = {'pic': open(path, 'rb')}
+            reload(sys)
+            sys.setdefaultencoding('utf-8')
+            print '----'
+            print sys.getdefaultencoding()
+            print sys.getfilesystemencoding()
+            # path = '/var/www/attachment/2/12/Icon.jpg'
+            files = {'pic': open(path, mode='rb').read()}
+            print type(open(path, mode='rb').read())
             result = requests.post(url, data=data, files=files)
             data = json.loads(result.text)
             if data.get('error_code'):
