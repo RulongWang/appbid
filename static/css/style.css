@@ -305,6 +305,7 @@ h1{
     margin-right:auto;
     margin-bottom: 10px;
     padding-top:20px;
+    padding-bottom:30px;
     color:#444;
     /*font:13px/16px  Calibri,Georgia,"Helvetica",Arial, Sans-serif;*/
     font:14px/18px sofiapro, "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
@@ -556,7 +557,7 @@ h1{
 .app_wrapper{
     margin:10px;
     height:150px;
-    padding:5px;
+    padding:10px 5px 10px 5px;
     border-bottom: 1px dashed #ddd;
 }
 
@@ -569,7 +570,7 @@ h1{
 }
 .info_detail{
     float:left;
-    padding-bottom: 10px;
+    padding-bottom: 20px;
     width:350px;
 }
 .info_detail span{
@@ -1666,6 +1667,7 @@ fieldset {
     width:100%;
     background:#fafafa;
     border-top: 1px solid #00b0b0;
+    font-size: 12px;
 }
 
 #footer_category{
@@ -1687,8 +1689,21 @@ fieldset {
 
 }
 .footer_ul li{
-    margin-left:5px;
-    padding: 5px 10px 5px 50px;
+    margin-left:15px;
+    padding: 3px 10px 3px 30px;
+}
+
+.facebook{
+    background: url("../images/facebook_icon.png") no-repeat left center;
+}
+.linkedin{
+    background: url("../images/linkedin_icon.png") no-repeat left center;
+}
+.googleplus{
+    background: url("../images/google_plus_icon.png") no-repeat left center;
+}
+.twitter{
+    background: url("../images/twitter_icon.png") no-repeat left center;
 }
 
 
