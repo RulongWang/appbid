@@ -5,9 +5,6 @@ import urllib
 import requests
 import json
 import logging
-import sys
-import os
-import binascii
 
 from django.shortcuts import render_to_response, RequestContext
 from django.views.decorators.csrf import csrf_protect
@@ -42,31 +39,14 @@ def shareToWeiBo(request, *args, **kwargs):
     app = kwargs.get('app')
     if app:
         try:
-            # url = 'https://api.weibo.com/2/statuses/upload.json'
             url = 'https://upload.api.weibo.com/2/statuses/upload.json'
             app_url = '/'.join([common.getHttpHeader(request), 'query/app-detail', str(app.id)])
             # status = ''.join(['App "', app.app_name.encode('utf-8'), '" for sale from AppsWalk. ', app_url])
             status = ''.join(['App for sale from AppsWalk.'])
             data = {'source': settings.WEIBO_CLIENT_KEY, 'access_token': settings.WEIBO_ACCESS_TOKEN, 'status': status}
             path = '/'.join([settings.MEDIA_ROOT, app.appinfo.icon])
-            length = os.path.getsize(path)
-            # print sys.getdefaultencoding()
-            # print sys.getfilesystemencoding()
-            # reload(sys)
-            # sys.setdefaultencoding('utf-8')
-            # print '----'
-            # print sys.getdefaultencoding()
-            # print sys.getfilesystemencoding()
-            # path = '/var/www/attachment/2/12/Icon.jpg'
-            files = {'pic': open(path, mode='rb').read()}
-            # path = 'G:/Photo/HeadPictures/2.jpg'
-            s = binascii.hexlify(open(path, 'rb').read(length))
-            print path
-            print type(s)
-            # params = urllib.urlencode({'source': settings.WEIBO_CLIENT_KEY, 'access_token': settings.WEIBO_ACCESS_TOKEN, 'status': status,
-            #                            'pic': open(path, mode='rb').read()})
-            # data = urllib.urlopen('https://upload.api.weibo.com/2/statuses/upload.json?', params).read()
-            # print data
+            files = {'pic': open(path, mode='rb')}
+            # files = {'pic': open(path, mode='rb').read()}
             result = requests.post(url, data=data, files=files)
             data = json.loads(result.text)
             if data.get('error_code'):
