@@ -13,6 +13,9 @@ django-social-auth (0.7.28), download URL:https://pypi.python.org/pypi/django-so
 install requests:(For share to WeiBo)pip install requests
 Requests document:http://cn.python-requests.org/en/latest/user/quickstart.html
 
+install twython:(For share to twitter)pip install twython
+twython document:https://pypi.python.org/pypi/twython
+
 qrcode - make two-dimension code:
 pip install qrcode / easy_install qrcode
 download URL:https://github.com/lincolnloop/python-qrcode
