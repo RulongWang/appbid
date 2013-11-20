@@ -7,6 +7,7 @@ import json
 import logging
 import sys
 import os
+import binascii
 
 from django.shortcuts import render_to_response, RequestContext
 from django.views.decorators.csrf import csrf_protect
@@ -48,7 +49,7 @@ def shareToWeiBo(request, *args, **kwargs):
             status = ''.join(['App for sale from AppsWalk.'])
             data = {'source': settings.WEIBO_CLIENT_KEY, 'access_token': settings.WEIBO_ACCESS_TOKEN, 'status': status}
             path = '/'.join([settings.MEDIA_ROOT, app.appinfo.icon])
-            # length = os.path.getsize(path)
+            length = os.path.getsize(path)
             # print sys.getdefaultencoding()
             # print sys.getfilesystemencoding()
             # reload(sys)
@@ -58,15 +59,19 @@ def shareToWeiBo(request, *args, **kwargs):
             # print sys.getfilesystemencoding()
             # path = '/var/www/attachment/2/12/Icon.jpg'
             files = {'pic': open(path, mode='rb').read()}
-            print type(open(path, mode='rb').read())
-            params = urllib.urlencode({'source': settings.WEIBO_CLIENT_KEY, 'access_token': settings.WEIBO_ACCESS_TOKEN, 'status': status})
-            data = urllib.urlopen('https://api.weibo.com/2/statuses/update.json?', params).read()
-            print data
-            # result = requests.post(url, data=data, files=files)
-            # data = json.loads(result.text)
-            # if data.get('error_code'):
-            #     log.error(_('Share App %(param1)s failed to WeiBo, error:%(param2)s') % {'param1': app.app_name, 'param2': data})
-            # else:
-            #     log.info(_('Share App %(param1)s success to WeiBo.') % {'param1': app.app_name})
+            # path = 'G:/Photo/HeadPictures/2.jpg'
+            s = binascii.hexlify(open(path, 'rb').read(length))
+            print path
+            print type(s)
+            # params = urllib.urlencode({'source': settings.WEIBO_CLIENT_KEY, 'access_token': settings.WEIBO_ACCESS_TOKEN, 'status': status,
+            #                            'pic': open(path, mode='rb').read()})
+            # data = urllib.urlopen('https://upload.api.weibo.com/2/statuses/upload.json?', params).read()
+            # print data
+            result = requests.post(url, data=data, files=files)
+            data = json.loads(result.text)
+            if data.get('error_code'):
+                log.error(_('Share App %(param1)s failed to WeiBo, error:%(param2)s') % {'param1': app.app_name, 'param2': data})
+            else:
+                log.info(_('Share App %(param1)s success to WeiBo.') % {'param1': app.app_name})
         except Exception, e:
             log.error(_('Share App %(param1)s failed to WeiBo, error:%(param2)s') % {'param1': app.app_name, 'param2': e})
