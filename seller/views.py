@@ -386,9 +386,14 @@ def saveSale(request, form, model, *args, **kwargs):
     initParam = kwargs.get('initParam')
     # The app in status =2 and status=3 can not be edit.
     if model.status == 1:
+        one_price = form.cleaned_data['one_price']
+        reserve_price = form.cleaned_data['reserve_price']
+        if one_price and reserve_price and one_price > reserve_price:
+            initParam['error_msg'] = _('Reserve price should be greater than one price.')
+            return None
         model.begin_price = form.cleaned_data['begin_price']
-        model.one_price = form.cleaned_data['one_price']
-        model.reserve_price = form.cleaned_data['reserve_price']
+        model.one_price = one_price
+        model.reserve_price = reserve_price
         model.currency_id = form.cleaned_data['currency']
         model.minimum_bid = form.cleaned_data['minimum_bid']
         model.save()
