@@ -142,6 +142,7 @@ INSTALLED_APPS = (
     'social_auth',
     'qrcode',
     'requests',
+    'twython',
     #The package list
     'appbid',
     'bid',
