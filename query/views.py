@@ -369,6 +369,7 @@ def initBidInfo(request, *args, **kwargs):
     if initParam['current_price']:
         initParam['bid_price'] = initParam['current_price'] + app.minimum_bid
     else:
+        initParam['current_price'] = 0
         initParam['bid_price'] = app.minimum_bid
     initParam['begin_bid'] = False
     # current_date = datetime.datetime.combine(datetime.date.today(), datetime.time())

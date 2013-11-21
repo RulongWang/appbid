@@ -66,13 +66,13 @@ def shareToTwitter(request, *args, **kwargs):
         app_url = '/'.join([common.getHttpHeader(request), 'query/app-detail', str(app.id)])
         # status = ''.join(['App "', app.app_name.encode('utf-8'), '" for sale from AppsWalk. ', app_url])
         status = ''.join(['App for sale from AppsWalk.'])
-        path = '/'.join([settings.MEDIA_ROOT, app.appinfo.icon])
+        pic = open('/'.join([settings.MEDIA_ROOT, app.appinfo.icon]), mode='rb')
         twitter = Twython(
             app_key=settings.TWITTER_CONSUMER_KEY,
             app_secret=settings.TWITTER_CONSUMER_SECRET,
             oauth_token=settings.TWITTER_OAUTH_TOKEN,
             oauth_token_secret=settings.TWITTER_OAUTH_TOKEN_SECRET
         )
-        # result = twitter.update_status_with_media(status=status, media=[path])
+        # result = twitter.update_status_with_media(status=status, media=pic)
         result = twitter.update_status(status='I am jarvis, post message to twitter.')
         print result

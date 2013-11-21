@@ -1,24 +1,6 @@
-<script>
-  $(function() {
-    $( "#id_begin_date" ).datepicker({
-        showOtherMonths: true,
-        selectOtherMonths: true,
-        changeMonth: true,
-        changeYear: true,
-        dateFormat: 'yy-mm-dd'
-    });
-    $( "#id_end_date" ).datepicker({
-        showOtherMonths: true,
-        selectOtherMonths: true,
-        changeMonth: true,
-      changeYear: true,
-        dateFormat: 'yy-mm-dd'
-    });
-  });
-  </script>
-
 <div id="register_app">
      <div class="errors_block">
+         {{ error_msg }}
     </div>
     <form action="" method="post">
         {% csrf_token %}
@@ -62,27 +44,6 @@
         {% endif %}
         {{ form.currency }}
     </div>
-
-{#    <div class="field_block_sale">#}
-{#        *{{ form.begin_date.label_tag }}#}
-{#        {% if form.begin_date.errors %}#}
-{#            <div>#}
-{#            {{ form.begin_date.errors }}#}
-{#            </div>#}
-{#        {% endif %}#}
-{#        {{ form.begin_date }}#}
-{#    </div>#}
-{##}
-{#    <div class="field_block_sale">#}
-{#        *{{ form.end_date.label_tag }}#}
-{#        {% if form.end_date.errors %}#}
-{#            <div>#}
-{#            {{ form.end_date.errors }}#}
-{#            </div>#}
-{#        {% endif %}#}
-{#        {{ form.end_date }}#}
-{#    </div>#}
-
     <div class="field_block_sale">
         *{{ form.minimum_bid.label_tag }}
         {% if form.minimum_bid.errors %}
@@ -100,11 +61,15 @@
     </form>
 <script type="text/javascript" language="javascript">
     $("#next").click(function() {
-        if ($("#id_begin_price").val().trim() == "") {
+        var begin_price = $("#id_begin_price").val().trim();
+        var one_price = $("#id_one_price").val().trim();
+        var reserve_price = $("#id_reserve_price").val().trim();
+        var minimum_bid = $("#id_minimum_bid").val().trim();
+        if (begin_price == "") {
             $(".errors_block").html("<ul><li>Begin price is required.</li></ul>");//TODO:it will be set in message.properties.
             return false;
         }
-        if (isNaN($("#id_begin_price").val())) {
+        if (isNaN(begin_price)) {
             $(".errors_block").html("<ul><li>Begin price should be number.</li></ul>");//TODO:it will be set in message.properties.
             return false;
         }
@@ -112,33 +77,23 @@
             $(".errors_block").html("<ul><li>Currency is required.</li></ul>");//TODO:it will be set in message.properties.
             return false;
         }
-        /*
-        if ($("#id_begin_date").val().trim() == "") {
-            $(".errors_block").html("<ul><li>Begin date is required.</li></ul>");
+        if (one_price != "" && isNaN(one_price)) {
+            $(".errors_block").html("<ul><li>One price should be number.</li></ul>");//TODO:it will be set in message.properties.
             return false;
         }
-        if (!validDateTime($("#id_begin_date").val())) {
-            $(".errors_block").html("<ul><li>Begin date is not correct.</li></ul>");
+        if (reserve_price != "" && isNaN(reserve_price)) {
+            $(".errors_block").html("<ul><li>Reserve price should be number.</li></ul>");//TODO:it will be set in message.properties.
             return false;
         }
-        if ($("#id_end_date").val().trim() == "") {
-            $(".errors_block").html("<ul><li>End date is required.</li></ul>");
+        if (one_price != "" && reserve_price != "" && parseFloat(one_price) > parseFloat(reserve_price)) {
+            $(".errors_block").html("<ul><li>Reserve price should be greater than one price.</li></ul>");//TODO:it will be set in message.properties.
             return false;
         }
-        if (!validDateTime($("#id_end_date").val())) {
-            $(".errors_block").html("<ul><li>End date is not correct.</li></ul>");
-            return false;
-        }
-        if (new Date($("#id_end_date").val().replace(/\-/g, "\/")) <= new Date($("#id_begin_date").val().replace(/\-/g, "\/"))) {
-            $(".errors_block").html("<ul><li>End date should be later than begin date.</li></ul>");
-            return false;
-        }
-        */
-        if ($("#id_minimum_bid").val().trim() == "") {
+        if (minimum_bid == "") {
             $(".errors_block").html("<ul><li>Minimum bid is required.</li></ul>");//TODO:it will be set in message.properties.
             return false;
         }
-        if (isNaN($("#id_minimum_bid").val())) {
+        if (isNaN(minimum_bid)) {
             $(".errors_block").html("<ul><li>Minimum bid should be number.</li></ul>");//TODO:it will be set in message.properties.
             return false;
         }
