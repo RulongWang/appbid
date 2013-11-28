@@ -143,6 +143,7 @@ INSTALLED_APPS = (
     'qrcode',
     'requests',
     'twython',
+    'social_auth',
     #The package list
     'appbid',
     'bid',
@@ -160,6 +161,7 @@ INSTALLED_APPS = (
     'paypal',
     'auth',
     'favicon',
+    'job',
 )
 
 try:
@@ -263,9 +265,9 @@ EMAIL_PORT = '25'
 EMAIL_HOST_USER = 'support@appswalk.com'#your email username
 EMAIL_HOST_PASSWORD = '20130101' #your email passowrd
 
-# CRONJOBS = [
-#     ('*/1 * * * *', 'utilities.job.jobTest')
-# ]
+CRONJOBS = [
+    ('*/1 * * * *', 'job.job.jobForMidnight')
+]
 
 try:
     from paypal.settings import *
