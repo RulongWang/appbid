@@ -138,12 +138,11 @@ INSTALLED_APPS = (
     # Uncomment the next line to enable admin documentation:
     'django.contrib.admindocs',
     'django.contrib.comments',
-    # 'django_crontab',
+    'django_crontab',
     'social_auth',
     'qrcode',
     'requests',
     'twython',
-    'social_auth',
     #The package list
     'appbid',
     'bid',
