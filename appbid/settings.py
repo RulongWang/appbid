@@ -138,7 +138,7 @@ INSTALLED_APPS = (
     # Uncomment the next line to enable admin documentation:
     'django.contrib.admindocs',
     'django.contrib.comments',
-    # 'django_crontab',
+    'django_crontab',
     'social_auth',
     'qrcode',
     'requests',
@@ -160,6 +160,7 @@ INSTALLED_APPS = (
     'paypal',
     'auth',
     'favicon',
+    'job',
 )
 
 try:
@@ -263,9 +264,9 @@ EMAIL_PORT = '25'
 EMAIL_HOST_USER = 'support@appswalk.com'#your email username
 EMAIL_HOST_PASSWORD = '20130101' #your email passowrd
 
-# CRONJOBS = [
-#     ('*/1 * * * *', 'utilities.job.jobTest')
-# ]
+CRONJOBS = [
+    ('*/1 * * * *', 'appbid.job.job.jobForMidnight'),
+]
 
 try:
     from paypal.settings import *

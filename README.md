@@ -20,6 +20,10 @@ qrcode - make two-dimension code:
 pip install qrcode / easy_install qrcode
 download URL:https://github.com/lincolnloop/python-qrcode
 
+django-crontab - for running the job:
+pip install django-crontab
+download URL:https://pypi.python.org/pypi/django-crontab/0.5.1
+
 //sanbox paypal testing account
 username: me_api1.rulong.org
 API Password: 1380869543

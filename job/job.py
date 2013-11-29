@@ -1,12 +1,14 @@
 __author__ = 'Jarvis'
 
+import datetime
 import jobdetail
 
 
 def jobForMidnight(*args, **kwargs):
     """Server invoke the method to do schedule task every night at midnight."""
-    jobdetail.checkServiceDateForApps()
-    jobdetail.checkIfSellApp()
+    print 'jobForMidnight', datetime.datetime.now()
+    # jobdetail.checkServiceDateForApps()
+    # jobdetail.checkIfSellApp()
     return None
 
 
