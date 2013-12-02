@@ -176,6 +176,7 @@ class AppHistory(models.Model):
 class OwnerShip_Scan(models.Model):
     """OwnerShip_Scan table info."""
     app = models.OneToOneField(App)
+    times = models.IntegerField(null=True, default=0)
 
 #Need to init or edit the data by admin.
 admin.site.register(Device)

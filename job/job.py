@@ -4,10 +4,14 @@ import datetime
 import jobdetail
 
 
+def jobVerificationApp(*args, **kwargs):
+    """The task will be done every four hours."""
+    jobdetail.verificationAppForSeller()
+
 def jobForMidnight(*args, **kwargs):
     """Server invoke the method to do schedule task every night at midnight."""
     print 'jobForMidnight', datetime.datetime.now()
-    # jobdetail.checkServiceDateForApps()
+    jobdetail.checkServiceDateForApps()
     # jobdetail.checkIfSellApp()
     return None
 

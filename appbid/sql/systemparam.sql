@@ -18,3 +18,4 @@ insert into system_systemparam(`key`,`value`,`description`) values('cp_buyer_unp
 insert into system_systemparam(`key`,`value`,`description`) values('min_cp_for_bid','50','Buyer credit point need have more than this value.');
 insert into system_systemparam(`key`,`value`,`description`) values('txn_fee_pct','0.01','AppsWalk charge the percent of transaction fee in app trading.');
 insert into system_systemparam(`key`,`value`,`description`) values('support_user','appswalk','The support account for such as user complain.');
+insert into system_systemparam(`key`,`value`,`description`) values('verify_app_times','3','The times of verifying app.');

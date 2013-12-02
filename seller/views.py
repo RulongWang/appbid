@@ -490,9 +490,12 @@ def saveVerification(request, form, model, *args, **kwargs):
     initParam = kwargs.get('initParam')
     try:
         ownerShipScan = appModels.OwnerShip_Scan.objects.get(app_id=model.id)
+        ownerShipScan.times = 0
+        ownerShipScan.save()
     except appModels.OwnerShip_Scan.DoesNotExist:
         ownerShipScan = appModels.OwnerShip_Scan()
         ownerShipScan.app_id = model.id
+        ownerShipScan.times = 0
         ownerShipScan.save()
     initParam['verify_msg'] = _('The verification will be done later. Send the email to you after verified.')
     return None

@@ -265,7 +265,12 @@ EMAIL_HOST_USER = 'support@appswalk.com'#your email username
 EMAIL_HOST_PASSWORD = '20130101' #your email passowrd
 
 CRONJOBS = [
-    ('*/1 * * * *', 'appbid.job.job.jobForMidnight'),
+    #Run every night at midnight
+    ('* 0 * * *', 'appbid.job.job.jobForMidnight'),
+    #Run every four hour
+    ('* */4 * * *', 'appbid.job.job.jobVerificationApp'),
+    #Run every five min
+    ('*/5 * * * *', 'appbid.job.job.jobForScheduleTime'),
 ]
 
 try:

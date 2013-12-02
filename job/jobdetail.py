@@ -18,7 +18,8 @@ def verificationAppForSeller(*args, **kwargs):
         The task will be done in at schedule time, such as: every four hours.
         After Seller creating app clicks verified, verified app owner ship on schedule plan
     """
-    ownerShipScans = appModels.OwnerShip_Scan.objects.all()
+    times = string.atoi(common.getSystemParam(key='verify_app_times', default=3))
+    ownerShipScans = appModels.OwnerShip_Scan.objects.filter(times__lte=times)
     massEmailThread = email.MassEmailThread()
     for ownerShipScan in ownerShipScans:
         app = ownerShipScan.app
@@ -42,7 +43,8 @@ def verificationAppForSeller(*args, **kwargs):
                 subject = ''
                 message = ''
                 massEmailThread.addEmailData(subject=subject, message=message, recipient_list=[app.publisher.email])
-                ownerShipScan.delete()
+                ownerShipScan.times += 1
+                ownerShipScan.save()
     massEmailThread.start()
 
     return None
@@ -66,10 +68,11 @@ def checkServiceDateForApps(*args, **kwargs):
         max_price = app.bidding_set.filter(status=1).aggregate(Max('price'))
         current_price = max_price.get('price__max', 0)
         #If bidding price is more than max price, seller has 7 days to trade or else seller can not trade it.
-        if transaction.status == 1 and app.reserve_price <= current_price:
-            paid_expiry_date = string.atoi(common.getSystemParam(key='sell_expiry_date', default=7))
-            transaction.end_time = app.end_date + datetime.timedelta(days=paid_expiry_date)
-            transaction.save()
+        if transaction and transaction.status == 1 and app.reserve_price <= current_price:
+            if transaction.end_time is None:
+                paid_expiry_date = string.atoi(common.getSystemParam(key='sell_expiry_date', default=7))
+                transaction.end_time = app.end_date + datetime.timedelta(days=paid_expiry_date)
+                transaction.save()
             #Log transaction
             transactionsLog = txnModels.TransactionLog()
             transactionsLog.app = app

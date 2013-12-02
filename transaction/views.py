@@ -78,8 +78,13 @@ def tradeNow(request, *args, **kwargs):
         transaction.seller = request.user
         transaction.save()
     #Remind that seller has 7 days to trade now, if bid price is more than reserve price.
-    if app.status == 3 and bid.price >= app.reserve_price and transaction.status == 1 and transaction.end_time:
-        if transaction.end_time > datetime.datetime.now():
+    cur_time = datetime.datetime.now()
+    if transaction.status == 1 and app.status != 1 and app.end_date <= cur_time and bid.price >= app.reserve_price:
+        if transaction.end_time is None:
+            paid_expiry_date = string.atoi(common.getSystemParam(key='sell_expiry_date', default=7))
+            transaction.end_time = app.end_date + datetime.timedelta(days=paid_expiry_date)
+            transaction.save()
+        if transaction.end_time > cur_time:
             initParam['time_remaining'] = time.mktime(time.strptime(str(transaction.end_time), '%Y-%m-%d %H:%M:%S'))
             initParam['is_expiry_date'] = False
         else:
@@ -98,7 +103,7 @@ def tradeNow(request, *args, **kwargs):
             transaction.buyer = user
             transaction.price = bid.price
             paid_expiry_date = string.atoi(common.getSystemParam(key='paid_expiry_date', default=7))
-            transaction.end_time = datetime.datetime.now() + datetime.timedelta(days=paid_expiry_date)
+            transaction.end_time = cur_time + datetime.timedelta(days=paid_expiry_date)
             transaction.buy_type = 2
             transaction.save()
             #Log transaction
@@ -113,7 +118,7 @@ def tradeNow(request, *args, **kwargs):
             #Update app status and end_date
             if app.status == 2:
                 app.status = 3
-                app.end_date = datetime.datetime.now()
+                app.end_date = cur_time
                 app.save()
             #Send the email of pay to buyer
             notificationViews.tradeNowInformBuyerPayEmail(request, app=app, user=user)
