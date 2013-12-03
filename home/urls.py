@@ -10,4 +10,9 @@ urlpatterns = patterns('',
     url(r'^termsandconditions$',helpView.terms,name='terms'),
     url(r'^siterules',helpView.siterules,name='siterule'),
     url(r'^screw-home$', views.screwHome, name='screw_home'),
+    url(r'^support',helpView.support,name='support'),
+    url(r'^privacy',helpView.privacy,name='privacy'),
+    url(r'^contact',helpView.contact,name='contact'),
+    url(r'^about',helpView.about,name='about'),
+
 )
