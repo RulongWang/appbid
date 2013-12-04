@@ -1,7 +1,7 @@
 # Django settings for appbid project.
 import os
 import datetime
-DEBUG = False
+DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (

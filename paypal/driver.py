@@ -366,10 +366,11 @@ class PayPal(object):
         params['feesPayer'] = 'EACHRECEIVER'
         params['receiverList.receiver(0).email'] = initParam.get('appsWalk_account')
         params['receiverList.receiver(0).amount'] = initParam.get('appsWalk_amount')
-        # params['receiverList.receiver(0).primary'] = 'true'
+        #
 
         params['receiverList.receiver(1).email'] = initParam.get('seller_account')
         params['receiverList.receiver(1).amount'] = initParam.get('seller_amount')
+        params['receiverList.receiver(1).primary'] = 'true'
 
         #Add Client Details
         params['clientDetails.ipAddress'] = '127.0.0.1'
