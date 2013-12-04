@@ -4,7 +4,7 @@ Private project
 
 Prerequisites
 Python 2.7
-Django 1.5
+pip install Django==1.5.6
 MySQL 5.0
 MySQL-python, yum install MySQL-python
 PIL (1.1.7), download URL:http://www.pythonware.com/products/pil/

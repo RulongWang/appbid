@@ -1079,7 +1079,10 @@ fieldset {
 }
 
 .errors_msg{
+    margin:0 auto;
+
     padding:5px;
+    width:800px;
     color:red;
 }
 
