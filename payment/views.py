@@ -316,7 +316,7 @@ def payReturn(request, *args, **kwargs):
                             if success_page:
                                 del request.session['success_page']
                                 initParam['success_page'] = success_page
-                            initParam['msg'] = _('Your pay success. Please check your paypal account. We have email to seller. You also can send message to seller.')
+                            initParam['msg'] = _('You have successfully paid the money. We have already sent an email to the app seller. In the meanwhile you can send private message to seller as well.')
                             log.info(_('User %(param1)s has paid with transaction id %(param2)s.')
                                       % {'param1': request.user.username, 'param2': transaction.id})
                             return render_to_response("payment/paypal_success.html", initParam, context_instance=RequestContext(request))

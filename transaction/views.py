@@ -33,7 +33,7 @@ def initTransaction(request, *args, **kwargs):
     """Init transaction model data, when seller pay the service fee."""
     app = kwargs.get('app')
     if app:
-        transactions = models.Transaction.objects.filter(app_id=app.id, seller_id=request.user.id)
+        transactions = models.Transaction.objects.filter(app_id=app.id, seller_id=request.user.id, is_active=True)
         if transactions:
             transaction = transactions[0]
             transaction.buyer = None
@@ -51,6 +51,7 @@ def initTransaction(request, *args, **kwargs):
             transaction = models.Transaction()
             transaction.app = app
             transaction.seller = request.user
+            transaction.is_active = True
         transaction.status = 1
         transaction.save()
     return transaction
@@ -68,7 +69,7 @@ def tradeNow(request, *args, **kwargs):
     initParam['app'] = app
     initParam['user'] = user
     initParam['bid'] = bid
-    transactions = models.Transaction.objects.filter(app_id=app.id, seller_id=request.user.id)
+    transactions = models.Transaction.objects.filter(app_id=app.id, seller_id=request.user.id, is_active=True)
     if transactions:
         transaction = transactions[0]
     else:
@@ -76,6 +77,7 @@ def tradeNow(request, *args, **kwargs):
         transaction.app = app
         transaction.status = 1
         transaction.seller = request.user
+        transaction.is_active = True
         transaction.save()
     #Remind that seller has 7 days to trade now, if bid price is more than reserve price.
     cur_time = datetime.datetime.now()
@@ -99,6 +101,7 @@ def tradeNow(request, *args, **kwargs):
                 transaction = models.Transaction()
                 transaction.app = app
                 transaction.seller = request.user
+                transaction.is_active = True
             transaction.status = 2
             transaction.buyer = user
             transaction.price = bid.price
@@ -108,6 +111,7 @@ def tradeNow(request, *args, **kwargs):
             transaction.save()
             #Log transaction
             transactionsLog = models.TransactionLog()
+            transactionsLog.transaction = transaction
             transactionsLog.app = transaction.app
             transactionsLog.status = transaction.status
             transactionsLog.seller = transaction.seller
@@ -139,7 +143,7 @@ def tradeAction(request, *args, **kwargs):
     app_id = kwargs.get('app_id')
     action = kwargs.get('action')
     if 'sell' == action and user_id == request.user.id:
-        transaction = get_object_or_404(models.Transaction, app_id=app_id, seller_id=user_id)
+        transaction = get_object_or_404(models.Transaction, app_id=app_id, seller_id=user_id, is_active=True)
     elif 'buy' == action and user_id == request.user.id:
         transaction = get_object_or_404(models.Transaction, app_id=app_id, buyer_id=user_id)
         if transaction.status == 2:
@@ -182,6 +186,7 @@ def tradeOperation(request, *args, **kwargs):
                 transaction.save()
                 #Log transaction
                 transactionsLog = models.TransactionLog()
+                transactionsLog.transaction = transaction
                 transactionsLog.app = transaction.app
                 transactionsLog.status = transaction.status
                 transactionsLog.buyer = transaction.buyer
@@ -207,12 +212,13 @@ def tradeOperation(request, *args, **kwargs):
 def closedTrade(request, *args, **kwargs):
     """Need update end_time to now."""
     initParam = {}
-    transaction = get_object_or_404(models.Transaction, pk=kwargs.get('txn_id'), buyer_id=kwargs.get('buyer_id'))
+    transaction = get_object_or_404(models.Transaction, pk=kwargs.get('txn_id'), buyer_id=kwargs.get('buyer_id'), is_active=True)
     transaction.status = 4
     transaction.end_date = datetime.datetime.now()
     transaction.save()
     #Log transaction
     transactionsLog = models.TransactionLog()
+    transactionsLog.transaction = transaction
     transactionsLog.app = transaction.app
     transactionsLog.status = transaction.status
     transactionsLog.buyer = transaction.buyer
@@ -240,7 +246,37 @@ def onePriceBuy(request, *args, **kwargs):
     app_id = kwargs.get('app_id')
     publisher_id = kwargs.get('publisher_id')
     app = get_object_or_404(appModels.App, pk=app_id, publisher_id=publisher_id, status=2)
-    initParam['app'] = app
+    # initParam['app'] = app
+
+    transactions = models.Transaction.objects.filter(app_id=app.id, seller_id=publisher_id, status=1)
+    if transactions:
+        transaction = transactions[0]
+    else:
+        transaction = models.Transaction()
+        transaction.app = app
+        transaction.seller = app.publisher
+        transaction.status = 1
+        transaction.is_active = True
+        transaction.buyer = request.user
+        transaction.price = app.one_price
+        transaction.buy_type = 1
+        paid_expiry_date = string.atoi(common.getSystemParam(key='paid_expiry_date', default=7))
+        transaction.end_time = datetime.datetime.now() + datetime.timedelta(days=paid_expiry_date)
+        transaction.save()
+
+        #Log transaction
+        transactionsLog = models.TransactionLog()
+        transactionsLog.transaction = transaction
+        transactionsLog.app = transaction.app
+        transactionsLog.status = transaction.status
+        transactionsLog.buyer = transaction.buyer
+        transactionsLog.price = transaction.price
+        transactionsLog.buy_type = transaction.buy_type
+        transactionsLog.save()
+
+    initParam['transaction'] = transaction
+    initParam['page_source'] = 'one-price'
+    # initParam['time_remaining'] = time.mktime(time.strptime(str(transaction.end_time), '%Y-%m-%d %H:%M:%S'))
 
     if request.method == 'POST':
         #Buyer credit point judge for bidding.
@@ -249,28 +285,6 @@ def onePriceBuy(request, *args, **kwargs):
         if cp == -1 or cp < string.atoi(min_cp):
             initParam['error_msg'] = _('You are allowed to buy, because your credit points is too low.')
         else:
-            transactions = models.Transaction.objects.filter(app_id=app.id, seller_id=publisher_id, status=1)
-            if transactions:
-                transaction = transactions[0]
-            else:
-                transaction = models.Transaction()
-                transaction.app = app
-                transaction.seller = app.publisher
-                transaction.status = 1
-            transaction.buyer = request.user
-            transaction.price = app.one_price
-            transaction.buy_type = 1
-            transaction.save()
-
-            #Log transaction
-            transactionsLog = models.TransactionLog()
-            transactionsLog.app = transaction.app
-            transactionsLog.status = transaction.status
-            transactionsLog.buyer = transaction.buyer
-            transactionsLog.price = transaction.price
-            transactionsLog.buy_type = transaction.buy_type
-            transactionsLog.save()
-
             #Buyser pay for app.
             txn_fee_pct = string.atof(common.getSystemParam(key='txn_fee_pct', default=0.01))
             initParam['currency'] = app.currency.currency
@@ -306,7 +320,7 @@ def buyerPay(request, *args, **kwargs):
     txn_id = kwargs.get('txn_id')
     #TODO:Can use or verify it later.
     token_id = kwargs.get('token')
-    transaction = get_object_or_404(models.Transaction, pk=txn_id, app_id=app_id, buyer_id=request.user.id, status=2)
+    transaction = get_object_or_404(models.Transaction, pk=txn_id, app_id=app_id, buyer_id=request.user.id, status=2, is_active=True)
     app = transaction.app
 
     #Buyser pay for app.
@@ -371,7 +385,7 @@ def checkTransaction(request, *args, **kwargs):
         gateways = paymentModels.Gateway.objects.filter(name__iexact=gateway)
         if gateways:
             transactions = models.Transaction.objects.filter(buyer_id=request.user.id,
-                                                             pay_key=pay_key, gateway_id=gateways[0].id)
+                                                             pay_key=pay_key, gateway_id=gateways[0].id, is_active=True)
             if transactions:
                 return transactions[0]
     return None
@@ -383,7 +397,7 @@ def executePay(*args, **kwargs):
     txn_id = initParam.get('transaction_id')
     pay_key = initParam.get('pay_key')
     if txn_id and pay_key:
-        transactions = models.Transaction.objects.filter(pk=txn_id, pay_key=pay_key)
+        transactions = models.Transaction.objects.filter(pk=txn_id, pay_key=pay_key, is_active=True)
         if transactions:
             initParam['transaction'] = transactions[0]
             if transactions[0].status == 1:
@@ -418,6 +432,7 @@ def executeOnePriceBuy(*args, **kwargs):
         transaction.save()
         #Log transaction
         transactionsLog = models.TransactionLog()
+        transactionsLog.transaction = transaction
         transactionsLog.app = transaction.app
         transactionsLog.status = transaction.status
         transactionsLog.buyer = transaction.buyer
@@ -464,6 +479,7 @@ def executeBuyerPay(*args, **kwargs):
         transaction.save()
         #Log transaction
         transactionsLog = models.TransactionLog()
+        transactionsLog.transaction = transaction
         transactionsLog.app = transaction.app
         transactionsLog.status = transaction.status
         transactionsLog.buyer = transaction.buyer
@@ -493,6 +509,7 @@ def jobCheckPayComplete(*args, **kwargs):
     """
     #Just check pay before 5 min.
     do_time = datetime.datetime.now() + datetime.timedelta(0, -300)
-    transactions = models.Transaction.objects.filter(status=2, create_time__lte=do_time, pay_key__isnull=False, gateway_id__isnull=False)
+    transactions = models.Transaction.objects.filter(status=2, create_time__lte=do_time, pay_key__isnull=False,
+                                                     gateway_id__isnull=False, is_active=True)
     for transaction in transactions:
         paymentViews.checkPayComplete(transaction=transaction, executeMethod=executePay)

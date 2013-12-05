@@ -31,8 +31,9 @@ class Transaction(models.Model):
         (1, 'One Price Buy'),
         (2, 'Won Bidding'),
     )
-    app = models.OneToOneField(appModels.App)
+    app = models.ForeignKey(appModels.App)
     status = models.IntegerField(choices=STATUS, default=1)
+    is_active = models.BooleanField(default=True)
     seller = models.ForeignKey(User, null=True, related_name='txn_seller')
     buyer = models.ForeignKey(User, null=True, related_name='txn_buyer')
     price = models.FloatField(null=True)
@@ -61,6 +62,7 @@ class TransactionLog(models.Model):
         (1, 'one-price-buy'),
         (2, 'bid-win'),
     )
+    transaction = models.ForeignKey(Transaction)
     app = models.ForeignKey(appModels.App)
     status = models.IntegerField(choices=STATUS)
     seller = models.ForeignKey(User, null=True, related_name='txn_log_seller')
@@ -74,13 +76,4 @@ class TransactionLog(models.Model):
     seller_account = models.CharField(max_length=255, null=True)
     appswalk_account = models.CharField(max_length=255, null=True)
     pay_key = models.CharField(max_length=255, null=True)
-    create_time = models.DateTimeField(auto_now_add=True)
-
-
-class CreditRating(models.Model):
-    app = models.ForeignKey(appModels.App)
-    rator = models.ForeignKey(User, related_name='credit_rating_rator')
-    target = models.ForeignKey(User, related_name='credit_rating_target')
-    level = models.IntegerField(default=5)
-    content = models.TextField(null=True)
     create_time = models.DateTimeField(auto_now_add=True)

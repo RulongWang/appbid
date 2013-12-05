@@ -34,6 +34,8 @@ def initCreditPoint(*args, **kwargs):
 def increaseCreditPoint(*args, **kwargs):
     user = kwargs.get('user')
     point = kwargs.get('point')
+    type = kwargs.get('type')
+    ref_id = kwargs.get('ref_id')
     if user and point:
         creditPoints = models.CreditPoint.objects.filter(user_id=user.id)
         if creditPoints:
@@ -44,6 +46,8 @@ def increaseCreditPoint(*args, **kwargs):
             creditLog.user = user
             creditLog.credit_point = creditPoints[0]
             creditLog.points = point
+            creditLog.type = type
+            creditLog.ref_id = ref_id
             creditLog.change_reason = _('Increase credit point.')
             creditLog.save()
         else:
@@ -58,6 +62,8 @@ def increaseCreditPoint(*args, **kwargs):
 def decreaseCreditPoint(*args, **kwargs):
     user = kwargs.get('user')
     point = kwargs.get('point')
+    type = kwargs.get('type')
+    ref_id = kwargs.get('ref_id')
     if user and point:
         if point > 0:
             point = -point
@@ -70,6 +76,8 @@ def decreaseCreditPoint(*args, **kwargs):
             creditLog.user = user
             creditLog.credit_point = creditPoints[0]
             creditLog.points = point
+            creditLog.type = type
+            creditLog.ref_id = ref_id
             creditLog.change_reason = _('Decrease credit point.')
             creditLog.save()
         else:

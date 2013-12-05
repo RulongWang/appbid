@@ -35,10 +35,26 @@
                 {% csrf_token %}
                 <div>
                     <!-- TODO: will change to pay url for buyer. -->
+                    {% if page_source == 'one-price' %}
+                        <div id="msg_new" style="color: red;"></div>
+                        <div id="bid_agreement">
+                        <input id="agreement" name="agreement" type="checkbox"/>I have read <a href="#"><b>the Bidding Terms and Conditions</b></a> and I agree to them.
+                        </div>
+                        <input id="pay_it_now" type="submit" value="Pay It Now" class="button_s">
+                    {% else %}
                     <a href="{{ pay_url }}">
                         <input id="id_pay" type="button" value="Pay It Now" class="button_s">
                     </a>
+                    {% endif %}
                 </div>
             </form>
         </div>
     </div>
+<script type="text/javascript" language="javascript">
+    $("#pay_it_now").click(function() {
+        if ($("#agreement").is(':checked') == false) {
+             $("#msg_new").text("You must be read and agreed the Bidding Terms and Conditions.");
+            return false;
+        }
+    });
+</script>

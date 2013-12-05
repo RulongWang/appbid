@@ -16,10 +16,16 @@ class CreditPoint(models.Model):
 
 
 class CreditLog(models.Model):
+    type = (
+        (1, 'transaction'),
+        (2, 'buy-credit'),#TODO:use it later.
+    )
     user = models.ForeignKey(User)
     credit_point = models.ForeignKey(CreditPoint)
     change_reason = models.TextField(null=True, blank=True)
     points = models.IntegerField()
+    type = models.IntegerField(null=True, choices=type)
+    ref_id = models.IntegerField()
     create_time = models.DateTimeField(auto_now_add=True)
 
     def __unicode__(self):
