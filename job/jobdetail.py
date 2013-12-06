@@ -8,6 +8,7 @@ from django.db.models import Max
 from appbid import models as appModels
 from notification import models as notificationModels
 from transaction import models as txnModels
+from bid import models as bidModels
 from utilities import common, email
 from credit import views as creditViews
 from transaction import views as txnViews
@@ -122,16 +123,49 @@ def taskForBuyUnpaid(*args, **kwargs):
     """
         The task will be done in at schedule time, such as: every hour.
         Do something, if buy still unpaid after 7 days of paid_expiry_date set in system-param table.
-        1. Buyer will be subtracted 50 credit point, and put into blacklist.
-        2. Buyer's all bidding status is changed from approved to rejected.(Note: All bidding for this buyer.)
-        3. For transaction data, status be changed from Unpaid to Unsold, and set buyer, price, end_time to None.
-          (Invoke initTransaction method.)
+        1. Change transaction is_active from True to False.
+        2. Buyer will be subtracted 50 credit point, and put into blacklist.
+        3. Buyer's all bidding status is changed from approved to rejected.(Note: All bidding for this buyer.)
         4. Send email to buyer.(The email: 1.Subtract his 50 credit point; 2.Put him into blacklist.)
         5. Send email to seller.(The email: 1.Seller may choice the buyer bidding with second max price to trade again;
                                             2.The unpaid buyer has been put into blacklist.)
         6. Send email to new buyer bidding with second max price. (The email: 1. He is the max bidding one now;
                                             2. Seller will trade with you later.)
     """
+    points = string.atoi(common.getSystemParam(key='cp_no_closed_trade', default=50))
+    templates_buyer = notificationModels.NotificationTemplate.objects.filter(name='buyer_unpaid_inform_buyer')
+    templates_seller = notificationModels.NotificationTemplate.objects.filter(name='buyer_unpaid_inform_seller')
+    templates_second_buyer = notificationModels.NotificationTemplate.objects.filter(name='buyer_unpaid_inform_second_buyer')
+    templates_seller_no_bidding = notificationModels.NotificationTemplate.objects.filter(name='buyer_unpaid_inform_seller_no_bidding')
+
+    transactions = txnModels.Transaction.objects.filter(is_active=True, status=2, end_time__lte=datetime.datetime.now())
+    massEmailThread = email.MassEmailThread()
+    for transaction in transactions:
+        transaction.is_active = False
+        transaction.save()
+        creditViews.decreaseCreditPoint(user=transaction.buyer, points, type=1, ref_id=transaction.id)
+        bidModels.Bidding.objects.filter(app_id=transaction.app.id, buyer_id=transaction.buyer.id).update(status=False)
+        if templates_buyer:
+            subject = ''
+            message = ''
+            massEmailThread.addEmailData(subject=subject, message=message, recipient_list=[transaction.buyer.email])
+        bidding = bidModels.Bidding.objects.filter(app_id=transaction.app.id, status=1).order_by('-price')
+        if bidding:
+            if templates_seller:
+                subject = ''
+                message = ''
+                massEmailThread.addEmailData(subject=subject, message=message, recipient_list=[transaction.seller.email])
+            if templates_second_buyer:
+                subject = ''
+                message = ''
+                massEmailThread.addEmailData(subject=subject, message=message, recipient_list=[bidding[0].buyer.email])
+        else:
+            if templates_seller_no_bidding:
+                subject = ''
+                message = ''
+                massEmailThread.addEmailData(subject=subject, message=message, recipient_list=[transaction.seller.email])
+    massEmailThread.start()
+
     return None
 
 

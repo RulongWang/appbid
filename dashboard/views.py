@@ -195,7 +195,7 @@ def myBidding(request, *args, **kwargs):
                                                          obj=info_list, query_method=queryJoinedBidInfo)
 
     #For won bidding
-    transactions = txnModels.Transaction.objects.filter(buyer_id=user.id, is_active=True).exclude(status=1)
+    transactions = txnModels.Transaction.objects.filter(buyer_id=user.id).exclude(status=1)
     initParam['transactions'] = common.queryWithPaginator(request, page_range=page_range, page=won_page,
                                                           obj=transactions, query_method=queryTxnInfo)
 

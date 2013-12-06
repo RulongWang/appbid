@@ -77,7 +77,7 @@ def tradeNow(request, *args, **kwargs):
         transaction.app = app
         transaction.status = 1
         transaction.seller = request.user
-        transaction.is_active = False
+        transaction.is_active = True
         transaction.save()
     #Remind that seller has 7 days to trade now, if bid price is more than reserve price.
     cur_time = datetime.datetime.now()
@@ -103,7 +103,6 @@ def tradeNow(request, *args, **kwargs):
                 transaction.seller = request.user
                 transaction.is_active = True
             transaction.status = 2
-            transaction.is_active = True
             transaction.buyer = user
             transaction.price = bid.price
             paid_expiry_date = string.atoi(common.getSystemParam(key='paid_expiry_date', default=7))
@@ -155,7 +154,11 @@ def tradeAction(request, *args, **kwargs):
 
     initParam['transaction'] = transaction
     if transaction.status == 2 or transaction.status == 3:
-        initParam['time_remaining'] = time.mktime(time.strptime(str(transaction.end_time), '%Y-%m-%d %H:%M:%S'))
+        if transaction.end_time > datetime.datetime.now():
+            initParam['time_remaining'] = time.mktime(time.strptime(transaction.end_time.strftime('%Y-%m-%d %H:%M:%S'), '%Y-%m-%d %H:%M:%S'))
+        else:
+            initParam['time_remaining'] = "Deal Closed"
+            initParam['paid_expiry'] = True
         if tradeOperation(request, transaction=transaction, initParam=initParam):
             return redirect(request.path)
     elif transaction.status == 4:
@@ -248,7 +251,7 @@ def onePriceBuy(request, *args, **kwargs):
     publisher_id = kwargs.get('publisher_id')
     app = get_object_or_404(appModels.App, pk=app_id, publisher_id=publisher_id, status=2)
 
-    transactions = models.Transaction.objects.filter(app_id=app.id, seller_id=publisher_id, status=1)
+    transactions = models.Transaction.objects.filter(app_id=app.id, seller_id=publisher_id, buyer_id=request.user.id, status=1)
     if transactions:
         transaction = transactions[0]
     else:
@@ -276,7 +279,11 @@ def onePriceBuy(request, *args, **kwargs):
 
     initParam['transaction'] = transaction
     initParam['page_source'] = 'one-price'
-    # initParam['time_remaining'] = time.mktime(time.strptime(str(transaction.end_time), '%Y-%m-%d %H:%M:%S'))
+    if transaction.end_time > datetime.datetime.now():
+        initParam['time_remaining'] = time.mktime(time.strptime(transaction.end_time.strftime('%Y-%m-%d %H:%M:%S'), '%Y-%m-%d %H:%M:%S'))
+    else:
+        initParam['time_remaining'] = "Deal Closed"
+        initParam['paid_expiry'] = True
 
     if request.method == 'POST':
         #Buyer credit point judge for bidding.

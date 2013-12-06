@@ -4,10 +4,17 @@
                 <div style="line-height: 1.5em;">
                     Currently ,you need to pay <span style="color: red;"><b>{{transaction.price|floatformat }} {{ transaction.app.currency.currency }}</b></span> to <b>{{ transaction.seller.username }}</b>.
                     After your payment, we will help you inform seller to start the delivery process immediately.<br/>
-                    The remaining time for your payment: {% include "bid/remaintime.html" %} <br/>
-
-
-
+                    The remaining time for your payment:
+                    {% if paid_expiry and paid_expiry == True %}
+                        <br/><span style="color: red;font-weight: bold;font-size: 17px;">
+                            &nbsp;&nbsp;{{ time_remaining }}
+                        </span><br/>
+                        <span style="color: red;">
+                        You lost 50 credit points, because you didn't pay money to the seller.
+                        </span>
+                    {% else %}
+                        {% include "bid/remaintime.html" %} <br/>
+                    {% endif %}
                 </div>
             <div style="padding: 3px;"><h2 style="font-weight: bold;">The promised things you will get after payment from the app seller ({{ transaction.seller.username }}):</h2></div>
             <div>
@@ -34,17 +41,18 @@
             <form action="" method="post">
                 {% csrf_token %}
                 <div>
-                    <!-- TODO: will change to pay url for buyer. -->
-                    {% if page_source == 'one-price' %}
-                        <div id="msg_new" style="color: red;"></div>
-                        <div id="bid_agreement">
-                        <input id="agreement" name="agreement" type="checkbox"/>I have read <a href="#"><b>the Bidding Terms and Conditions</b></a> and I agree to them.
-                        </div>
-                        <input id="pay_it_now" type="submit" value="Pay It Now" class="button_s">
-                    {% else %}
-                    <a href="{{ pay_url }}">
-                        <input id="id_pay" type="button" value="Pay It Now" class="button_s">
-                    </a>
+                    {% if paid_expiry == None %}
+                        {% if page_source == 'one-price' %}
+                            <div id="msg_new" style="color: red;"></div>
+                            <div id="bid_agreement">
+                            <input id="agreement" name="agreement" type="checkbox"/>I have read <a href="#"><b>the Bidding Terms and Conditions</b></a> and I agree to them.
+                            </div>
+                            <input id="pay_it_now" type="submit" value="Pay It Now" class="button_s">
+                        {% else %}
+                            <a href="{{ pay_url }}">
+                                <input id="id_pay" type="button" value="Pay It Now" class="button_s">
+                            </a>
+                        {% endif %}
                     {% endif %}
                 </div>
             </form>
