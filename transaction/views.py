@@ -77,7 +77,7 @@ def tradeNow(request, *args, **kwargs):
         transaction.app = app
         transaction.status = 1
         transaction.seller = request.user
-        transaction.is_active = True
+        transaction.is_active = False
         transaction.save()
     #Remind that seller has 7 days to trade now, if bid price is more than reserve price.
     cur_time = datetime.datetime.now()
@@ -103,6 +103,7 @@ def tradeNow(request, *args, **kwargs):
                 transaction.seller = request.user
                 transaction.is_active = True
             transaction.status = 2
+            transaction.is_active = True
             transaction.buyer = user
             transaction.price = bid.price
             paid_expiry_date = string.atoi(common.getSystemParam(key='paid_expiry_date', default=7))
@@ -246,7 +247,6 @@ def onePriceBuy(request, *args, **kwargs):
     app_id = kwargs.get('app_id')
     publisher_id = kwargs.get('publisher_id')
     app = get_object_or_404(appModels.App, pk=app_id, publisher_id=publisher_id, status=2)
-    # initParam['app'] = app
 
     transactions = models.Transaction.objects.filter(app_id=app.id, seller_id=publisher_id, status=1)
     if transactions:
@@ -256,7 +256,7 @@ def onePriceBuy(request, *args, **kwargs):
         transaction.app = app
         transaction.seller = app.publisher
         transaction.status = 1
-        transaction.is_active = True
+        transaction.is_active = False
         transaction.buyer = request.user
         transaction.price = app.one_price
         transaction.buy_type = 1
@@ -420,6 +420,7 @@ def executeOnePriceBuy(*args, **kwargs):
     transaction = initParam.get('transaction')
     if transaction:
         transaction.status = 3
+        transaction.is_active = True
         txn_expiry_date = string.atoi(common.getSystemParam(key='txn_expiry_date', default=15))
         transaction.end_time = datetime.datetime.now() + datetime.timedelta(days=txn_expiry_date)
         transaction.buyer_account = initParam.get('buyer_account')

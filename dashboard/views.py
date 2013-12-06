@@ -155,7 +155,7 @@ def queryAppTxnInfo(request, *args, **kwargs):
     """
     app = kwargs.get('obj_param')
     if app:
-        transactions = txnModels.Transaction.objects.filter(app_id=app.id)
+        transactions = txnModels.Transaction.objects.filter(app_id=app.id, is_active=True)
         if transactions:
             status_id = app.transaction.status
             status = txnModels.SELLER_STATUS[status_id-1][1]
@@ -195,7 +195,7 @@ def myBidding(request, *args, **kwargs):
                                                          obj=info_list, query_method=queryJoinedBidInfo)
 
     #For won bidding
-    transactions = txnModels.Transaction.objects.filter(buyer_id=user.id).exclude(status=1)
+    transactions = txnModels.Transaction.objects.filter(buyer_id=user.id, is_active=True).exclude(status=1)
     initParam['transactions'] = common.queryWithPaginator(request, page_range=page_range, page=won_page,
                                                           obj=transactions, query_method=queryTxnInfo)
 
@@ -451,7 +451,7 @@ def pastTransactions(request, *args, **kwargs):
     page = request.GET.get('page', 1)
     initParam['page'] = page
 
-    transactions = txnModels.Transaction.objects.filter(buyer_id=request.user.id).order_by('-pk')
+    transactions = txnModels.Transaction.objects.filter(buyer_id=request.user.id, is_active=True).order_by('-pk')
     initParam['transactions'] = common.queryWithPaginator(request, page=page, obj=transactions)
     initParam['buy_type'] = txnModels.Transaction.BUY_TYPE
     initParam['buyer_status'] = txnModels.BUYER_STATUS
