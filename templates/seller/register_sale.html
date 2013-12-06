@@ -6,54 +6,101 @@
         {% csrf_token %}
     <div class="dash_title">Price Setting</div>
     <div class="field_block_sale">
-        *{{ form.begin_price.label_tag }}
         {% if form.begin_price.errors %}
             <div>
             {{ form.begin_price.errors }}
             </div>
         {% endif %}
-        {{ form.begin_price }}
+
+         <div class="left" style="width:300px;">
+            <div style="width:300px:height:20px;"> *{{ form.begin_price.label_tag }}</div>
+            <div class="help_text">The begin price for your auction.</div>
+         </div>
+         <div class="right">
+                {{ form.begin_price }}
+         </div>
+
+
+
+
     </div>
 
     <div class="field_block_sale">
-        &nbsp;&nbsp;{{ form.one_price.label_tag }}
+
         {% if form.one_price.errors %}
             <div>
             {{ form.one_price.errors }}
             </div>
         {% endif %}
-        {{ form.one_price }}
+
+         <div class="left" style="width:300px;">
+            <div style="width:300px:height:20px;">Buy it now price</div>
+            <div class="help_text">The buy it now price for your app.</div>
+         </div>
+         <div class="right">
+                {{ form.one_price }}
+         </div>
+
     </div>
 
     <div class="field_block_sale">
-        &nbsp;&nbsp;{{ form.reserve_price.label_tag }}
+
         {% if form.reserve_price.errors %}
             <div>
             {{ form.reserve_price.errors }}
             </div>
         {% endif %}
-        {{ form.reserve_price }}
+
+
+         <div class="left" style="width:300px;">
+            <div style="width:300px:height:20px;">{{ form.reserve_price.label_tag }}</div>
+            <div class="help_text">The reserved auction target price for your app. </div>
+         </div>
+         <div class="right">
+                {{ form.reserve_price }}
+         </div>
+
     </div>
 
     <div class="field_block_sale">
-        *{{ form.currency.label_tag }}
+
         {% if form.currency.errors %}
             <div>
             {{ form.currency.errors }}
             </div>
         {% endif %}
-        {{ form.currency }}
+
+
+         <div class="left" style="width:300px;">
+            <div style="width:300px:height:20px;">*{{ form.currency.label_tag }}</div>
+            <div class="help_text">Please choose the currency for your auction.</div>
+         </div>
+         <div class="right">
+                {{ form.currency }}
+         </div>
     </div>
     <div class="field_block_sale">
-        *{{ form.minimum_bid.label_tag }}
+
         {% if form.minimum_bid.errors %}
             <div>
             {{ form.minimum_bid.errors }}
             </div>
         {% endif %}
-        {{ form.minimum_bid }}
-    </div>
 
+         <div class="left" style="width:300px;">
+            <div style="width:300px:height:20px;">*{{ form.minimum_bid.label_tag }}</div>
+            <div class="help_text">The minimum increment of bid price.</div>
+         </div>
+         <div class="right">
+                {{ form.minimum_bid }}
+         </div>
+
+    </div>
+    <div style="padding:20px 0 0 30px; font-size: 12px;color: #00b0b0;;">
+        * indicate the filed is mandatory.<br/>
+        The reserved price must be greater than the 'buy it now price'.<br/>
+
+    </div>
     <div class="button_block">
             <input id="next" class="nextbutton" type="submit" name="next" value="Next"/>
     </div>
