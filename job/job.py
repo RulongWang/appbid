@@ -4,11 +4,12 @@ import datetime
 import jobdetail
 
 
-def jobVerificationApp(*args, **kwargs):
+def jobByFourHour(*args, **kwargs):
     """The task will be done every four hours."""
     jobdetail.verificationAppForSeller()
 
-def jobForMidnight(*args, **kwargs):
+
+def jobByMidnight(*args, **kwargs):
     """Server invoke the method to do schedule task every night at midnight."""
     print 'jobForMidnight', datetime.datetime.now()
     jobdetail.checkServiceDateForApps()
@@ -16,7 +17,13 @@ def jobForMidnight(*args, **kwargs):
     return None
 
 
-def jobForScheduleTime(*args, **kwargs):
+def jobByEveryHour(*args, **kwargs):
     """Server invoke the method to do schedule task at schedule time, such as: every hour."""
     jobdetail.taskForBuyUnpaid()
+    return None
+
+
+def jobByFiveMin(*args, **kwargs):
+    """Server invoke the method to do schedule task at schedule time, such as: every five min."""
+    jobdetail.jobPayStatus()
     return None

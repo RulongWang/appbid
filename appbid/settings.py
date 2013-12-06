@@ -266,11 +266,13 @@ EMAIL_HOST_PASSWORD = '20130101' #your email passowrd
 
 CRONJOBS = [
     #Run every night at midnight
-    ('* 0 * * *', 'appbid.job.job.jobForMidnight'),
+    ('* 0 * * *', 'appbid.job.job.jobByMidnight'),
     #Run every four hour
-    ('* */4 * * *', 'appbid.job.job.jobVerificationApp'),
+    ('* */4 * * *', 'appbid.job.job.jobByFourHour'),
+    #Run every hour
+    ('* */1 * * *', 'appbid.job.job.jobByEveryHour'),
     #Run every five min
-    ('*/5 * * * *', 'appbid.job.job.jobForScheduleTime'),
+    ('*/5 * * * *', 'appbid.job.job.jobByFiveMin'),
 ]
 
 try:
