@@ -12,14 +12,16 @@ def jobByFourHour(*args, **kwargs):
 def jobByMidnight(*args, **kwargs):
     """Server invoke the method to do schedule task every night at midnight."""
     print 'jobForMidnight', datetime.datetime.now()
-    jobdetail.checkServiceDateForApps()
+    # jobdetail.checkServiceDateForApps()
     # jobdetail.checkIfSellApp()
     return None
 
 
 def jobByEveryHour(*args, **kwargs):
     """Server invoke the method to do schedule task at schedule time, such as: every hour."""
+    jobdetail.checkServiceDateForApps()
     jobdetail.taskForBuyUnpaid()
+    jobdetail.checkIfSellApp()
     return None
 
 
