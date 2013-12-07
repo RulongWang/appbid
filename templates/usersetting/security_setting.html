@@ -45,24 +45,22 @@
 
 
         </div>
-        <div class="setting_item">
-            <div class="setting_item_left
-             {% if phone_info and phone_info.is_verified == True%}
-             correct_icon
-             {% else %}
-             incorrect_icon
-             {% endif %}
-            ">Cell Verification <a id="phone_update" class="setting_item_right" href="{% url 'usersetting:security_verification_phone' %}"><img src="{% static "images/edit20x20.png" %}"/></a></div>
-            <div>
-                {% if phone_info %}
-                <div class="help_text">Your phone: {{ phone_info.value }}</div>
-                {% else %}
-                <div class="help_text">Your still have no phone. Please provide and verify it ASAP.</div>
-                {% endif %}
-            </div>
-
-
-        </div>
+{#        <div class="setting_item">#}
+{#            <div class="setting_item_left#}
+{#             {% if phone_info and phone_info.is_verified == True%}#}
+{#             correct_icon#}
+{#             {% else %}#}
+{#             incorrect_icon#}
+{#             {% endif %}#}
+{#            ">Cell Verification <a id="phone_update" class="setting_item_right" href="{% url 'usersetting:security_verification_phone' %}"><img src="{% static "images/edit20x20.png" %}"/></a></div>#}
+{#            <div>#}
+{#                {% if phone_info %}#}
+{#                <div class="help_text">Your phone: {{ phone_info.value }}</div>#}
+{#                {% else %}#}
+{#                <div class="help_text">Your still have no phone. Please provide and verify it ASAP.</div>#}
+{#                {% endif %}#}
+{#            </div>#}
+{#        </div>#}
     </div>
 
 {% endblock %}
