@@ -20,6 +20,7 @@ from bid import forms
 from query.views import initBidInfo
 from message.views import sendMessage
 from credit import views as creditViews
+from notification import  views as notificationViews
 from utilities import common
 
 
@@ -68,11 +69,13 @@ def createBid(request, *args, **kwargs):
                             send_message = request.POST.get('send_message')
                             if send_message and send_message == 'yes':
                                 if sendMessage(request, initParam=initParam):
+                                    notificationViews(request, bid=bid, app=app)
                                     return redirect(reverse('bid:bid_list', kwargs={'pk': app.id}))
                                 else:
                                     initParam['biddingForm'] = biddingForm
                                     initParam['bid_error'] = initParam['message_error']
                             else:
+                                notificationViews(request, bid=bid, app=app)
                                 return redirect(reverse('bid:bid_list', kwargs={'pk': app.id}))
                         else:
                             initParam['biddingForm'] = biddingForm

@@ -40,3 +40,5 @@ values('reset_password_email',1,1,'{param1} has bought your app {param2} from Ap
 #name = 'buyer_unpaid_inform_second_buyer'
 #name = 'buyer_unpaid_inform_seller_no_bidding'
 #name = 'service_end_inform_seller_lt_reserve_price'
+#name = 'new_bid_inform_seller'
+#name = 'new_bid_inform_buyer' -> 'Notify me when a bid is placed above one of my bids'

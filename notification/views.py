@@ -141,3 +141,27 @@ def sendResetPasswordEmail(request, *args, **kwargs):
         sendCommonEmail(temp_name=temp_name, sub_params=sub_params, temp_params=temp_params, recipient_list=recipient_list)
     return None
 
+
+def sendNewBidEmail(request, *args, **kwargs):
+    """Send email when new bidding."""
+    app = kwargs.get('app')
+    bid = kwargs.get('bid')
+    massEmailThread = email.MassEmailThread()
+    templates_seller = models.NotificationTemplate.objects.filter(name='new_bid_inform_seller')
+    templates_buyer = models.NotificationTemplate.objects.filter(name='new_bid_inform_buyer')
+    item_seller = app.publisher.subscriptionitem_set.filter(key='new_bid')
+    if item_seller and templates_seller:
+        subject = ''
+        message = ''
+        massEmailThread.addEmailData(subject=subject, message=message, recipient_list=[app.publisher.email])
+    user_ids = []
+    bids = app.bidding_set.exclude(buyer_id=bid.buyer.id)
+    for bidding in bids:
+        if bidding.buyer.id not in user_ids:
+            user_ids.append(bidding.buyer.id)
+            item_buyer = bidding.buyer.subscriptionitem_set.filter(key='new_bid_above_mine')
+            if item_buyer and templates_buyer:
+                subject = ''
+                message = ''
+                massEmailThread.addEmailData(subject=subject, message=message, recipient_list=[bidding.buyer.email])
+    massEmailThread.start()

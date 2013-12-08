@@ -54,5 +54,3 @@ class MassEmailThread(threading.Thread):
                 log.info('Send mass email successfully.')
             except Exception, e:
                 log.error('Send mass email failed. '+e.message)
-        else:
-            log.error('No email data.')

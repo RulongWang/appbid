@@ -194,15 +194,6 @@ def taskForBuyUnpaid(*args, **kwargs):
     return None
 
 
-def taskForTradeFinished(*args, **kwargs):
-    """
-        The task will be done in at schedule time, such as: every hour.
-        Do something, if buyer still click finish trade button on time after 15 days of txn_expiry_date set in system-param table.
-        1.
-    """
-    return None
-
-
 def jobPayStatus(*args, **kwargs):
     """
         The task will be done in at schedule time, such as: every 5 min..
