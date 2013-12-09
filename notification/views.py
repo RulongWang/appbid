@@ -154,7 +154,7 @@ def sendNewBidEmail(request, *args, **kwargs):
         subject = ''
         message = ''
         massEmailThread.addEmailData(subject=subject, message=message, recipient_list=[app.publisher.email])
-    user_ids = []
+    user_ids = [bid.buyer.id]
     bids = app.bidding_set.exclude(buyer_id=bid.buyer.id)
     for bidding in bids:
         if bidding.buyer.id not in user_ids:
