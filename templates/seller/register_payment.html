@@ -29,10 +29,9 @@
          <div class="clear"></div>
     {% endfor %}
     <div class="field_block_payment">
-        <div class="right" style="width:100px;">
-        <label>Total:</label><label id="total">
-        {{ amount|default:0 }}$
-        </label>
+        <div class="right" style="width:120px;">
+        <label>Total:</label>
+        <label id="total">{{ amount|default:0 }}</label><b>$</b>
         </div>
     </div>
     <div class="right" style="width:250px;">
