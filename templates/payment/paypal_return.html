@@ -19,7 +19,7 @@
                     <div class="item_desc">{{ serviceItem.long_text }}</div>
                 </div>
                 <div class="item_amount">
-                    {{ serviceItem.price }}{{ serviceDetail.app.currency.currency }}
+                    {{ serviceItem.price|floatformat }}{{ serviceDetail.app.currency.currency }}
                 </div>
             </li>
             {% endfor %}
@@ -27,7 +27,7 @@
         <div class="item_summary">
 
             <div class="item_summary_sum">
-                  Total:{{ serviceDetail.amount }}{{ serviceDetail.app.currency.currency }}
+                  Total:{{ serviceDetail.amount|floatformat }}{{ serviceDetail.app.currency.currency }}
             </div>
 
             <div class="item_summary_sum">
@@ -35,7 +35,7 @@
             </div>
 
             <div class="item_summary_sum">
-                  Actual Amount:{{ serviceDetail.actual_amount }}{{ serviceDetail.app.currency.currency }}
+                  Actual Amount:{{ serviceDetail.actual_amount|floatformat }}{{ serviceDetail.app.currency.currency }}
             </div>
             <div class="item_summary_sum">
                             <form action="/payment/paypal_checkout" method="get">
