@@ -7,10 +7,10 @@
            <div class="table_form" style="clear:both;margin-top:10px;font-weight: bold;">
             <div class="table_row">
               <div class="table_left">
-                 You paid: {{ transaction.price|floatformat }} {{ transaction.app.currency.currency }}
+                 You paid: {{ price|floatformat }} {{ app.currency.currency }}
               </div>
               <div class="table_form">
-                 The name of the App: <a href="{% url 'query:app_detail' transaction.app.id %}">{{ transaction.app.app_name }}</a>
+                 The name of the App: <a href="{% url 'query:app_detail' app.id %}">{{ app.app_name }}</a>
               </div>
             </div>
             <div class="table_desc">
