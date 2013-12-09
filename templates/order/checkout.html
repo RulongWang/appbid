@@ -19,13 +19,20 @@
         $("#id_end_date").val(end_date.format('yyyy-MM-dd hh:mm:ss'));
     }
     else {
-        $( "#id_start_date" ).datepicker({
+        $("#id_start_date").datetimepicker({
             showOtherMonths: true,
             selectOtherMonths: true,
             changeMonth: true,
             changeYear: true,
             dateFormat: 'yy-mm-dd'//'yy-mm-dd hh:mm:ss'
         });
+{#        $( "#id_start_date" ).datepicker({#}
+{#            showOtherMonths: true,#}
+{#            selectOtherMonths: true,#}
+{#            changeMonth: true,#}
+{#            changeYear: true,#}
+{#            dateFormat: 'yy-mm-dd'//'yy-mm-dd hh:mm:ss'#}
+{#        });#}
     }
     if (select == 'true') {
         $("#id_select").attr("checked", true);
