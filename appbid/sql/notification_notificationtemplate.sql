@@ -38,7 +38,7 @@ INSERT INTO appbid.notification_notificationtemplate (id, name, language, type, 
  {param4}
 Thanks 
 Appswalk Ltd. ', 'Buyer pay email.', '1.0', '2013-12-08 20:11:12', '2013-12-08 22:34:06', 1);
-INSERT INTO appbid.notification_notificationtemplate (id, name, language, type, subject, template, description, version, create_time, last_modify, modifier_id) VALUES (6, 'buyer_paid_inform_seller', 1, 1, 'Please start to transfer your app to { param2 }', 'Dear {param1},
+INSERT INTO appbid.notification_notificationtemplate (id, name, language, type, subject, template, description, version, create_time, last_modify, modifier_id) VALUES (6, 'buyer_paid_inform_seller', 1, 1, 'Please start to transfer your app to { param1 }', 'Dear {param1},
 
   {param2} already paid you with Paypal. You should start to deliver everything to { param2 } as you claimed on Appswalk.
   This transaction is guaranteed  by Paypal. 
@@ -82,7 +82,8 @@ Your listing for App {appname} will be ended soon, please logon on www.appswalk.
 Thank you very much.
 Appswalk Ltd', 'Tell seller after buyer paid..', '1.0', '2013-12-08 20:11:12', '2013-12-08 22:49:35', 1);
 INSERT INTO appbid.notification_notificationtemplate (id, name, language, type, subject, template, description, version, create_time, last_modify, modifier_id) VALUES (13, 'unsold_end_inform_seller', 1, 1, '{param1} has bought your app {param2} from AppsWalk', 'Hi {param1},
- User {param2} has bought your app {param3}. You can begin to delivery your content to buyer now.', 'Tell seller after buyer paid..', '1.0', '2013-12-08 20:11:12', '2013-12-08 20:11:12', 1);
+
+ User {param2} has bought your app {param3}. You can begin to delivery your content to buyer now.', 'Tell seller after buyer paid..', '1.0', '2013-12-08 20:11:12', '2013-12-08 20:11:12', 1);
 INSERT INTO appbid.notification_notificationtemplate (id, name, language, type, subject, template, description, version, create_time, last_modify, modifier_id) VALUES (14, 'reset_password_email', 1, 1, 'Your Appswalk Password has been reset', 'Dear  {param1},
 
 The password for your Appswalk ID {param2 } has been successfully reset.

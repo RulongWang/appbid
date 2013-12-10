@@ -71,13 +71,12 @@ def tradeNowInformBuyerPayEmail(request, *args, **kwargs):
     user = kwargs.get('user')
     if app and user:
         temp_name = 'buyer_trade_now'
-        sub_params = [app.app_name]
         link_header = common.getHttpHeader(request)
         app_detail_url = '/'.join([link_header, 'query/app-detail', str(app.id)])
         pay_url = '/'.join([link_header, 'dashboard/my-bidding'])
         temp_params = [user.username, app_detail_url, app.app_name, pay_url]
         recipient_list = [user.email]
-        sendCommonEmail(temp_name=temp_name, sub_params=sub_params, temp_params=temp_params, recipient_list=recipient_list)
+        sendCommonEmail(temp_name=temp_name, temp_params=temp_params, recipient_list=recipient_list)
     return None
 
 
@@ -88,15 +87,14 @@ def closedTradeInform(*args, **kwargs):
         massEmailThread = email.MassEmailThread()
         templates_seller = models.NotificationTemplate.objects.filter(name='closed_trade_inform_seller')
         if templates_seller:
-            #TODO:will do it by template
-            subject = 'The email to seller.'
-            message = 'The email to seller..'
+            subject = templates_seller[0].subject
+            message = templates_seller[0].template.replace('{param1}', transaction.seller.username)
             recipient_list = [transaction.seller.email]
             massEmailThread.addEmailData(subject=subject, message=message, recipient_list=recipient_list)
         templates_buyer = models.NotificationTemplate.objects.filter(name='closed_trade_inform_buyer')
         if templates_buyer:
-            subject = 'The email to buyer.'
-            message = 'The email to buyer....'
+            subject = templates_buyer[0].subject
+            message = templates_buyer[0].template.replace('{param1}', transaction.buyer.username)
             recipient_list = [transaction.seller.email]
             massEmailThread.addEmailData(subject=subject, message=message, recipient_list=recipient_list)
         #Notify user when new auctions appear for user's watched categories
@@ -130,7 +128,7 @@ def buyerPayInformSellerEmail(*args, **kwargs):
     if transaction:
         temp_name = 'buyer_paid_inform_seller'
         sub_params = [transaction.app.app_name]
-        temp_params = [transaction.app.app_name, transaction.buyer.username]
+        temp_params = [transaction.seller.username, transaction.buyer.username, transaction.app.app_name]
         recipient_list = [transaction.app.publisher.username]
         sendCommonEmail(temp_name=temp_name, sub_params=sub_params, temp_params=temp_params, recipient_list=recipient_list)
     return None
