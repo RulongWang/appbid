@@ -86,19 +86,28 @@ def closedTradeInform(*args, **kwargs):
     transaction = kwargs.get('transaction')
     if transaction:
         massEmailThread = email.MassEmailThread()
-        templates = models.NotificationTemplate.objects.filter(name='closed_trade_inform_seller')
-        if templates:
+        templates_seller = models.NotificationTemplate.objects.filter(name='closed_trade_inform_seller')
+        if templates_seller:
             #TODO:will do it by template
             subject = 'The email to seller.'
             message = 'The email to seller..'
             recipient_list = [transaction.seller.email]
             massEmailThread.addEmailData(subject=subject, message=message, recipient_list=recipient_list)
-        templates = models.NotificationTemplate.objects.filter(name='closed_trade_inform_buyer')
-        if templates:
+        templates_buyer = models.NotificationTemplate.objects.filter(name='closed_trade_inform_buyer')
+        if templates_buyer:
             subject = 'The email to buyer.'
             message = 'The email to buyer....'
             recipient_list = [transaction.seller.email]
             massEmailThread.addEmailData(subject=subject, message=message, recipient_list=recipient_list)
+        #Notify user when new auctions appear for user's watched categories
+        categories = transaction.app.category.all()
+        watchCategories = dashboardModels.WatchCategory.objects.filter(category__in=categories)
+        templates_watch = models.NotificationTemplate.objects.filter(name='closed_trade_inform_buyer_watched_category')
+        for watchCategory in watchCategories:
+            if templates_watch:
+                subject = ''
+                message = ''
+                massEmailThread.addEmailData(subject=subject, message=message, recipient_list=[watchCategory.buyer.email])
         massEmailThread.start()
     return None
 
@@ -171,15 +180,15 @@ def sendNewBidEmail(request, *args, **kwargs):
 def sendNewAppEmail(request, *args, **kwargs):
     """Send email to user, when the new app whose publisher watched by user is created."""
     app = kwargs.get('app')
-    buyers = dashboardModels.WatchSeller.objects.filter(seller_id=app.publisher.id)
-    if app and buyers:
+    watchSellers = dashboardModels.WatchSeller.objects.filter(seller_id=app.publisher.id)
+    if app and watchSellers:
         massEmailThread = email.MassEmailThread()
         templates = models.NotificationTemplate.objects.filter(name='new_app_inform_buyer')
-        for buyer in buyers:
+        for watchSeller in watchSellers:
             if templates:
                 subject = ''
                 message = ''
-                massEmailThread.addEmailData(subject=subject, message=message, recipient_list=[buyer.email])
+                massEmailThread.addEmailData(subject=subject, message=message, recipient_list=[watchSeller.buyer.email])
         massEmailThread.start()
 
 
@@ -195,10 +204,10 @@ def sendNewCommentEmail(request, *args, **kwargs):
             subject = ''
             message = ''
             massEmailThread.addEmailData(subject=subject, message=message, recipient_list=[app.publisher.email])
-    buyers = dashboardModels.WatchApp.objects.filter(app_id=app.id)
-    for buyer in buyers:
+    watchApps = dashboardModels.WatchApp.objects.filter(app_id=app.id)
+    for watchApp in watchApps:
         if templates_buyer:
             subject = ''
             message = ''
-            massEmailThread.addEmailData(subject=subject, message=message, recipient_list=[buyer.email])
+            massEmailThread.addEmailData(subject=subject, message=message, recipient_list=[watchApp.buyer.email])
     massEmailThread.start()

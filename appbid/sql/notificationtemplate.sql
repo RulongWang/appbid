@@ -45,3 +45,4 @@ values('reset_password_email',1,1,'{param1} has bought your app {param2} from Ap
 #name = 'new_app_inform_buyer'
 #name = 'new_comment_inform_seller'
 #name = 'new_comment_inform_buyer'
+#name ='closed_trade_inform_buyer_watched_category'
