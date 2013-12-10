@@ -4,11 +4,13 @@ import datetime
 import string
 import urllib
 
-from django.shortcuts import render_to_response, RequestContext, get_object_or_404, HttpResponse, Http404
+from django.shortcuts import render_to_response, RequestContext, get_object_or_404, HttpResponse, Http404, redirect
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.utils.translation import ugettext as _
 from django.views.decorators.csrf import csrf_protect
-from django.db.models import Max
+from django.contrib.auth.decorators import login_required
+from django.core.urlresolvers import reverse
+from django.db.models import Max, Q
 from django.contrib.auth.models import User
 
 from appbid import settings
@@ -18,6 +20,7 @@ from dashboard import models as dashboardModels
 from usersetting import models as userSettingModels
 from utilities import common
 from auth import views as authViews
+from notification import views as notificationViews
 
 
 def listLatest(request):
@@ -282,8 +285,13 @@ def getAppDetail(request, *args, **kwargs):
     if kwargs.get('pk'):
         initParam = {}
         app = get_object_or_404(appModels.App, pk=kwargs.get('pk'))
-        if request.user.username == 'jarvis' or request.user.username == 'test':
-            authViews.shareToTwitter(request, app=app)
+        # transactions = txnModels.Transaction.objects.filter(end_time__isnull=False, end_time__lte=datetime.datetime.now())
+        # transactions = txnModels.Transaction.objects.filter(end_time__isnull=False, end_time__year=2013, end_time__month=12, Q(end_time__day=3) | Q(end_time__day=13))
+        # for txn in transactions:
+        #     print txn.id, txn.end_time
+        # print datetime.date(datetime.datetime.now())
+        # if request.user.username == 'jarvis' or request.user.username == 'test':
+        #     authViews.shareToTwitter(request, app=app)
         #     authViews.shareToWeiBo(request, app=app)
         appInfo = app.appinfo
         initParam['app'] = app
@@ -353,6 +361,16 @@ def getAppDetail(request, *args, **kwargs):
 
         return render_to_response('query/listing_detail.html', initParam, context_instance=RequestContext(request))
     raise Http404
+
+
+@csrf_protect
+@login_required(login_url='/usersetting/home/')
+def addCommentForApp(request, *args, **kwargs):
+    """Do operation, when add comment for App"""
+    if kwargs.get('pk'):
+        app = get_object_or_404(appModels.App, pk=kwargs.get('pk'))
+        notificationViews.sendNewCommentEmail(request,app=app)
+        return redirect(reverse('query:app_detail', kwargs={'pk': app.id}))
 
 
 def initBidInfo(request, *args, **kwargs):

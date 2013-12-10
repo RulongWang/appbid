@@ -4,6 +4,7 @@ import logging
 
 from django.utils.translation import ugettext as _
 from notification import models
+from dashboard import models as dashboardModels
 from utilities import email
 from utilities import common
 
@@ -164,4 +165,40 @@ def sendNewBidEmail(request, *args, **kwargs):
                 subject = ''
                 message = ''
                 massEmailThread.addEmailData(subject=subject, message=message, recipient_list=[bidding.buyer.email])
+    massEmailThread.start()
+
+
+def sendNewAppEmail(request, *args, **kwargs):
+    """Send email to user, when the new app whose publisher watched by user is created."""
+    app = kwargs.get('app')
+    buyers = dashboardModels.WatchSeller.objects.filter(seller_id=app.publisher.id)
+    if app and buyers:
+        massEmailThread = email.MassEmailThread()
+        templates = models.NotificationTemplate.objects.filter(name='new_app_inform_buyer')
+        for buyer in buyers:
+            if templates:
+                subject = ''
+                message = ''
+                massEmailThread.addEmailData(subject=subject, message=message, recipient_list=[buyer.email])
+        massEmailThread.start()
+
+
+def sendNewCommentEmail(request, *args, **kwargs):
+    """Send email to seller and buyer, when user add comment."""
+    app = kwargs.get('app')
+    massEmailThread = email.MassEmailThread()
+    if request.user.id != app.publisher.id:
+        templates_seller = models.NotificationTemplate.objects.filter(name='new_comment_inform_seller')
+        templates_buyer = models.NotificationTemplate.objects.filter(name='new_comment_inform_buyer')
+        item_seller = app.publisher.subscriptionitem_set.filter(key='new_comment')
+        if item_seller and templates_seller:
+            subject = ''
+            message = ''
+            massEmailThread.addEmailData(subject=subject, message=message, recipient_list=[app.publisher.email])
+    buyers = dashboardModels.WatchApp.objects.filter(app_id=app.id)
+    for buyer in buyers:
+        if templates_buyer:
+            subject = ''
+            message = ''
+            massEmailThread.addEmailData(subject=subject, message=message, recipient_list=[buyer.email])
     massEmailThread.start()
