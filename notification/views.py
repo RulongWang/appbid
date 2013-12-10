@@ -4,6 +4,7 @@ import logging
 
 from django.utils.translation import ugettext as _
 from notification import models
+from dashboard import models as dashboardModels
 from utilities import email
 from utilities import common
 
@@ -85,19 +86,28 @@ def closedTradeInform(*args, **kwargs):
     transaction = kwargs.get('transaction')
     if transaction:
         massEmailThread = email.MassEmailThread()
-        templates = models.NotificationTemplate.objects.filter(name='closed_trade_inform_seller')
-        if templates:
+        templates_seller = models.NotificationTemplate.objects.filter(name='closed_trade_inform_seller')
+        if templates_seller:
             #TODO:will do it by template
             subject = 'The email to seller.'
             message = 'The email to seller..'
             recipient_list = [transaction.seller.email]
             massEmailThread.addEmailData(subject=subject, message=message, recipient_list=recipient_list)
-        templates = models.NotificationTemplate.objects.filter(name='closed_trade_inform_buyer')
-        if templates:
+        templates_buyer = models.NotificationTemplate.objects.filter(name='closed_trade_inform_buyer')
+        if templates_buyer:
             subject = 'The email to buyer.'
             message = 'The email to buyer....'
             recipient_list = [transaction.seller.email]
             massEmailThread.addEmailData(subject=subject, message=message, recipient_list=recipient_list)
+        #Notify user when new auctions appear for user's watched categories
+        categories = transaction.app.category.all()
+        watchCategories = dashboardModels.WatchCategory.objects.filter(category__in=categories)
+        templates_watch = models.NotificationTemplate.objects.filter(name='closed_trade_inform_buyer_watched_category')
+        for watchCategory in watchCategories:
+            if templates_watch:
+                subject = ''
+                message = ''
+                massEmailThread.addEmailData(subject=subject, message=message, recipient_list=[watchCategory.buyer.email])
         massEmailThread.start()
     return None
 
@@ -154,7 +164,7 @@ def sendNewBidEmail(request, *args, **kwargs):
         subject = ''
         message = ''
         massEmailThread.addEmailData(subject=subject, message=message, recipient_list=[app.publisher.email])
-    user_ids = []
+    user_ids = [bid.buyer.id]
     bids = app.bidding_set.exclude(buyer_id=bid.buyer.id)
     for bidding in bids:
         if bidding.buyer.id not in user_ids:
@@ -164,4 +174,40 @@ def sendNewBidEmail(request, *args, **kwargs):
                 subject = ''
                 message = ''
                 massEmailThread.addEmailData(subject=subject, message=message, recipient_list=[bidding.buyer.email])
+    massEmailThread.start()
+
+
+def sendNewAppEmail(request, *args, **kwargs):
+    """Send email to user, when the new app whose publisher watched by user is created."""
+    app = kwargs.get('app')
+    watchSellers = dashboardModels.WatchSeller.objects.filter(seller_id=app.publisher.id)
+    if app and watchSellers:
+        massEmailThread = email.MassEmailThread()
+        templates = models.NotificationTemplate.objects.filter(name='new_app_inform_buyer')
+        for watchSeller in watchSellers:
+            if templates:
+                subject = ''
+                message = ''
+                massEmailThread.addEmailData(subject=subject, message=message, recipient_list=[watchSeller.buyer.email])
+        massEmailThread.start()
+
+
+def sendNewCommentEmail(request, *args, **kwargs):
+    """Send email to seller and buyer, when user add comment."""
+    app = kwargs.get('app')
+    massEmailThread = email.MassEmailThread()
+    if request.user.id != app.publisher.id:
+        templates_seller = models.NotificationTemplate.objects.filter(name='new_comment_inform_seller')
+        templates_buyer = models.NotificationTemplate.objects.filter(name='new_comment_inform_buyer')
+        item_seller = app.publisher.subscriptionitem_set.filter(key='new_comment')
+        if item_seller and templates_seller:
+            subject = ''
+            message = ''
+            massEmailThread.addEmailData(subject=subject, message=message, recipient_list=[app.publisher.email])
+    watchApps = dashboardModels.WatchApp.objects.filter(app_id=app.id)
+    for watchApp in watchApps:
+        if templates_buyer:
+            subject = ''
+            message = ''
+            massEmailThread.addEmailData(subject=subject, message=message, recipient_list=[watchApp.buyer.email])
     massEmailThread.start()

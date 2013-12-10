@@ -15,6 +15,7 @@ from appbid import models as appModels
 from payment import models as paymentModels
 from order import models, forms
 from payment import views as paymentViews
+from notification import views as notificationViews
 from transaction import views as transactionViews
 from utilities import common
 
@@ -189,6 +190,7 @@ def executeCheckOut(request, *args, **kwargs):
         serviceDetails = models.ServiceDetail.objects.filter(pk=id, pay_token=token, is_payed=False)
         if serviceDetails:
             serviceDetail = checkOutSuccess(request, serviceDetail=serviceDetails[0])
+            notificationViews.sendNewAppEmail(request, app=serviceDetail.app)
             log.info(_('User:%(param1)s, ServiceDetail with id %(param2)s, pay_token %(param3)s is payed.')
                      % {'param1': request.user.username, 'param2': serviceDetail.id, 'param3': token})
             return serviceDetail
