@@ -11,7 +11,7 @@ log = logging.getLogger('email')
 
 class EmailThread(threading.Thread):
     """The new thread to send the email."""
-    def __init__(self, subject, message, recipient_list, from_email=settings.EMAIL_HOST_USER, fail_silently=False):
+    def __init__(self, subject, message, recipient_list, from_email=settings.EMAIL_SENDER, fail_silently=False):
         self.subject = subject
         self.message = message
         self.from_email = from_email
@@ -24,6 +24,7 @@ class EmailThread(threading.Thread):
             #subject or message can not be filled.
             if isinstance(self.recipient_list, list) and len(self.recipient_list) > 0:
                 send_mail(self.subject, self.message, self.from_email, self.recipient_list, self.fail_silently)
+                print('*********************'+self.from_email)
                 email_str = ''
                 for email in self.recipient_list:
                     email_str += email + ' '
@@ -41,7 +42,7 @@ class MassEmailThread(threading.Thread):
         self.dataTuple = []
         threading.Thread.__init__(self)
 
-    def addEmailData(self, subject, message, recipient_list, from_email=settings.EMAIL_HOST_USER):
+    def addEmailData(self, subject, message, recipient_list, from_email=settings.EMAIL_SENDER):
         if isinstance(recipient_list, list) and len(recipient_list) > 0:
             self.dataTuple.append((subject, message, from_email, recipient_list))
         else:

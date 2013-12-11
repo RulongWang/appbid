@@ -134,6 +134,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     # Uncomment the next line to enable the admin:
     'django.contrib.admin',
+    'django_ses',
     'django.contrib.flatpages',
     # Uncomment the next line to enable admin documentation:
     'django.contrib.admindocs',
@@ -258,13 +259,16 @@ SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 #Set email config
 #EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'#Send the mail actually
 EMAIL_BACKEND = 'django_smtp_ssl.SSLEmailBackend'
+#EMAIL_BACKEND = 'django_ses.SESBackend'
+#AWS_ACCESS_KEY_ID = 'AKIAIZOLHXT23DTCJ7LQ'
+#AWS_SECRET_ACCESS_KEY = 'AoW+7BtPEXWG1RQRnPAfpupateV4r0YEV42ggANfG7mU'
 # EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'#Show by console
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'email-smtp.us-east-1.amazonaws.com'
 EMAIL_PORT = '465'
-EMAIL_HOST_USER = 'AKIAJKHROLLKSC4YSZNA'#your email username
-EMAIL_HOST_PASSWORD = 'Amdcw5uhlVWpJWsj7jYMJ2dVQZPP5F3+NDW+EWhlmMKI' #your email passowrd
-
+EMAIL_HOST_USER = 'AKIAIZOLHXT23DTCJ7LQ'#your email username
+EMAIL_HOST_PASSWORD = 'AoW+7BtPEXWG1RQRnPAfpupateV4r0YEV42ggANfG7mU' #your email passowrd
+EMAIL_SENDER = 'support@appswalk.com'
 CRONJOBS = [
     #Run every night at midnight
     ('* 0 * * *', 'appbid.job.job.jobByMidnight'),

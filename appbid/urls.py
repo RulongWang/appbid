@@ -30,6 +30,8 @@ urlpatterns = patterns('',
 
     url(r'^', include('favicon.urls')),
 )
+
+urlpatterns += (url(r'^admin/django-ses/', include('django_ses.urls')),)
 # urlpatterns += patterns('django.contrib.flatpages.views',
 #     url(r'^about-us/$', 'flatpage', {'url': '/about-us/'}, name='about'),
 #     url(r'^license/$', 'flatpage', {'url': '/license/'}, name='license'),
