@@ -30,7 +30,7 @@ class EmailThread(threading.Thread):
                 log.info('Send email successfully. [' + ','.join(self.recipient_list) + '] ' + self.subject)
             else:
                 log.error('Email recipient_list is not correct.')
-        except Exception, e:
+        except Exception as e:
             log.error('Send email failed. '+e.message)
 
 
@@ -52,5 +52,5 @@ class MassEmailThread(threading.Thread):
             try:
                 send_mass_mail(self.dataTuple, self.fail_silently)
                 log.info('Send mass email successfully.')
-            except Exception, e:
+            except Exception as e:
                 log.error('Send mass email failed. '+e.message)
