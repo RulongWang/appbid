@@ -32,9 +32,9 @@ class EmailThread(threading.Thread):
             else:
                 log.error('Email recipient_list is not correct.')
         except BadHeaderError as e:
-            log.error('Send email failed. '+e.message)
+            log.error('Send email failed. ' + str(e))
         except Exception as e:
-            log.error('Send email failed. '+e.message)
+            log.error('Send email failed. ' + str(e))
 
 
 class MassEmailThread(threading.Thread):
@@ -56,6 +56,6 @@ class MassEmailThread(threading.Thread):
                 send_mass_mail(self.dataTuple, self.fail_silently)
                 log.info('Send mass email successfully.')
             except BadHeaderError as e:
-                log.error('Send mass email failed. '+e.message)
+                log.error('Send mass email failed. ' + str(e))
             except Exception as e:
-                log.error('Send email failed. '+e.message)
+                log.error('Send email failed. ' + str(e))
