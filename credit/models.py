@@ -25,7 +25,7 @@ class CreditLog(models.Model):
     change_reason = models.TextField(null=True, blank=True)
     points = models.IntegerField()
     type = models.IntegerField(null=True, choices=type)
-    ref_id = models.IntegerField()
+    ref_id = models.IntegerField(null=True)
     create_time = models.DateTimeField(auto_now_add=True)
 
     def __unicode__(self):
