@@ -3,7 +3,7 @@ __author__ = 'Jarvis'
 import threading
 import logging
 
-from django.core.mail import send_mail, send_mass_mail
+from django.core.mail import send_mail, send_mass_mail, BadHeaderError
 from appbid import settings
 
 log = logging.getLogger('email')
@@ -30,7 +30,7 @@ class EmailThread(threading.Thread):
                 log.info('Send email successfully. [' + ','.join(self.recipient_list) + '] ' + self.subject)
             else:
                 log.error('Email recipient_list is not correct.')
-        except Exception as e:
+        except BadHeaderError as e:
             log.error('Send email failed. '+e.message)
 
 
@@ -52,5 +52,5 @@ class MassEmailThread(threading.Thread):
             try:
                 send_mass_mail(self.dataTuple, self.fail_silently)
                 log.info('Send mass email successfully.')
-            except Exception as e:
+            except BadHeaderError as e:
                 log.error('Send mass email failed. '+e.message)
