@@ -256,13 +256,14 @@ DEFAULT_CHARSET = 'utf-8'
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 
 #Set email config
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'#Send the mail actually
+#EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'#Send the mail actually
+EMAIL_BACKEND = 'django_smtp_ssl.SSLEmailBackend'
 # EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'#Show by console
 EMAIL_USE_TLS = True
-EMAIL_HOST = 'smtp.live.com'
-EMAIL_PORT = '25'
-EMAIL_HOST_USER = 'support@appswalk.com'#your email username
-EMAIL_HOST_PASSWORD = '20130101' #your email passowrd
+EMAIL_HOST = 'email-smtp.us-east-1.amazonaws.com'
+EMAIL_PORT = '465'
+EMAIL_HOST_USER = 'AKIAJKHROLLKSC4YSZNA'#your email username
+EMAIL_HOST_PASSWORD = 'Amdcw5uhlVWpJWsj7jYMJ2dVQZPP5F3+NDW+EWhlmMKI' #your email passowrd
 
 CRONJOBS = [
     #Run every night at midnight
