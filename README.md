@@ -66,3 +66,11 @@ need run command: python manage.py migrate
 #installed https://pypi.python.org/pypi/django-favicon
 
 pip install django-favicon
+
+Inorder to send email with AWS-SES:
+https://github.com/RulongWang/django-smtp-ssl
+Python setup.py install
+
+
+
+
