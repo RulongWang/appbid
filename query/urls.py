@@ -11,5 +11,5 @@ urlpatterns = patterns('',
     url(r'^most-active/$', views.mostActive, name='most_active'),
     url(r'^ending-soon/$', views.endingSoon, name='ending_soon'),
     url(r'^just-sold/$', views.justSold, name='just_sold'),
-    url(r'^list-closed/$', views.listClosed, name='list_closed'),
+    url(r'^list-all/$', views.listAll, name='list_all'),
 )
