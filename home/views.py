@@ -1,5 +1,7 @@
 __author__ = 'Jarvis'
 
+import datetime
+
 from django.views.decorators.csrf import csrf_protect
 from django.shortcuts import render_to_response, RequestContext
 from appbid import models as appModels
@@ -11,8 +13,8 @@ def home(request, *args, **kwargs):
     """Query the apps info in home page."""
     initParam = {}
     page = request.GET.get('page', 1)
-    page_range = 2
-    apps = appModels.App.objects.filter(status=2)
+    page_range = 10
+    apps = appModels.App.objects.filter(status=2, end_date__gt=datetime.datetime.now())
 
     initParam['apps'] = queryViews.queryAppsWithPaginator(request, page_range=page_range, page=page, apps=apps)
 
@@ -24,8 +26,8 @@ def screwHome(request, *args, **kwargs):
     """Query the apps info in screw home page."""
     initParam = {}
     page = request.GET.get('page', 1)
-    page_range = 2
-    apps = appModels.App.objects.filter(status=2)
+    page_range = 10
+    apps = appModels.App.objects.filter(status=2, end_date__gt=datetime.datetime.now())
 
     initParam['apps'] = queryViews.queryAppsWithPaginator(request, page_range=page_range, page=page, apps=apps)
 

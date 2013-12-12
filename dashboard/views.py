@@ -157,9 +157,9 @@ def queryAppTxnInfo(request, *args, **kwargs):
     if app:
         transactions = txnModels.Transaction.objects.filter(app_id=app.id, is_active=True)
         if transactions:
-            status_id = app.transaction.status
+            status_id = transactions[0].status
             status = txnModels.SELLER_STATUS[status_id-1][1]
-            price = app.transaction.price
+            price = transactions[0].price
         else:
             status_id = 1
             status = txnModels.SELLER_STATUS[0][1]
