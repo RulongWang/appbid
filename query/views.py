@@ -38,16 +38,16 @@ def listLatest(request):
     initParam['currency'] = get_object_or_404(appModels.Currency, pk=currency_id)
 
     if revenue_min is None and category is None and subcategory is None and monetize is None and device is None and seller is None:
-        apps = appModels.App.objects.filter(status=2).order_by('-publish_date')
+        apps = appModels.App.objects.filter(status=2, end_date__gt=datetime.datetime.now()).order_by('-end_date')
 
     #Revenue Part
     REVENUE_LIST = [2000, 1000, 500, 100, 0]
     initParam['revenue_list'] = []
     for i in range(len(REVENUE_LIST)):
         if i == 0:
-            temp_apps = appModels.App.objects.filter(status=2, revenue__gte=REVENUE_LIST[i]).order_by('-publish_date')
+            temp_apps = appModels.App.objects.filter(status=2, end_date__gt=datetime.datetime.now(), revenue__gte=REVENUE_LIST[i]).order_by('-end_date')
         else:
-            temp_apps = appModels.App.objects.filter(status=2, revenue__lt=REVENUE_LIST[i-1], revenue__gte=REVENUE_LIST[i]).order_by('-publish_date')
+            temp_apps = appModels.App.objects.filter(status=2, end_date__gt=datetime.datetime.now(), revenue__lt=REVENUE_LIST[i-1], revenue__gte=REVENUE_LIST[i]).order_by('-end_date')
         if revenue_min and string.atoi(revenue_min) == REVENUE_LIST[i]:
             apps = temp_apps
             title = _('Revenue(%(param)s/Month)') % {'param': initParam['currency'].currency}
@@ -61,11 +61,11 @@ def listLatest(request):
         monetizeModel = get_object_or_404(appModels.Monetize, pk=monetize)
     for temp_monetize in appModels.Monetize.objects.all():
         if monetize and monetizeModel == temp_monetize:
-            apps = monetizeModel.app_set.filter(status=2).order_by('-publish_date')
+            apps = monetizeModel.app_set.filter(status=2, end_date__gt=datetime.datetime.now()).order_by('-end_date')
             initParam['monetize_list'].append([temp_monetize, len(apps)])
             initParam['query_tile'] = [_('Monetize'), temp_monetize.method, ''.join(['?monetize=', monetize])]
         else:
-            initParam['monetize_list'].append([temp_monetize, temp_monetize.app_set.filter(status=2).count()])
+            initParam['monetize_list'].append([temp_monetize, temp_monetize.app_set.filter(status=2, end_date__gt=datetime.datetime.now()).count()])
 
     #Device Part
     initParam['device_list'] = []
@@ -73,11 +73,11 @@ def listLatest(request):
         deviceModel = get_object_or_404(appModels.Device, pk=device)
     for tem_device in appModels.Device.objects.all():
         if device and deviceModel == tem_device:
-            apps = deviceModel.app_set.filter(status=2).order_by('-publish_date')
+            apps = deviceModel.app_set.filter(status=2, end_date__gt=datetime.datetime.now()).order_by('-end_date')
             initParam['device_list'].append([tem_device, len(apps)])
             initParam['query_tile'] = [_('Device'), tem_device.device, ''.join(['?device=', device])]
         else:
-            initParam['device_list'].append([tem_device, tem_device.app_set.filter(status=2).count()])
+            initParam['device_list'].append([tem_device, tem_device.app_set.filter(status=2, end_date__gt=datetime.datetime.now()).count()])
 
     #Category Part
     initParam['category_list'] = []
@@ -85,11 +85,11 @@ def listLatest(request):
         categoryModel = get_object_or_404(appModels.Category, apple_id=category)
     for temp_category in appModels.Category.objects.all():
         if category and categoryModel == temp_category:
-            apps = categoryModel.app_set.filter(status=2).order_by('-publish_date')
+            apps = categoryModel.app_set.filter(status=2, end_date__gt=datetime.datetime.now()).order_by('-end_date')
             initParam['category_list'].append([temp_category, len(apps)])
             initParam['query_tile'] = [_('Category'), temp_category.name, ''.join(['?category=', category])]
         else:
-            initParam['category_list'].append([temp_category, temp_category.app_set.filter(status=2).count()])
+            initParam['category_list'].append([temp_category, temp_category.app_set.filter(status=2, end_date__gt=datetime.datetime.now()).count()])
     common.sortWithIndexLie(initParam['category_list'], 1, order='desc')
 
     #Query data
@@ -192,16 +192,16 @@ def endingSoon(request):
     initParam['currency'] = get_object_or_404(appModels.Currency, pk=currency_id)
 
     if revenue_min is None and category is None and subcategory is None and monetize is None and device is None and seller is None:
-        apps = appModels.App.objects.filter(status=2).order_by('publish_date')
+        apps = appModels.App.objects.filter(status=2, end_date__gt=datetime.datetime.now()).order_by('end_date')
 
     #Revenue Part
     REVENUE_LIST = [2000, 1000, 500, 100, 0]
     initParam['revenue_list'] = []
     for i in range(len(REVENUE_LIST)):
         if i == 0:
-            temp_apps = appModels.App.objects.filter(status=2, revenue__gte=REVENUE_LIST[i]).order_by('publish_date')
+            temp_apps = appModels.App.objects.filter(status=2, end_date__gt=datetime.datetime.now(), revenue__gte=REVENUE_LIST[i]).order_by('end_date')
         else:
-            temp_apps = appModels.App.objects.filter(status=2, revenue__lt=REVENUE_LIST[i-1], revenue__gte=REVENUE_LIST[i]).order_by('publish_date')
+            temp_apps = appModels.App.objects.filter(status=2, end_date__gt=datetime.datetime.now(), revenue__lt=REVENUE_LIST[i-1], revenue__gte=REVENUE_LIST[i]).order_by('end_date')
         if revenue_min and string.atoi(revenue_min) == REVENUE_LIST[i]:
             apps = temp_apps
             title = _('Revenue(%(param)s/Month)') % {'param': initParam['currency'].currency}
@@ -215,11 +215,11 @@ def endingSoon(request):
         monetizeModel = get_object_or_404(appModels.Monetize, pk=monetize)
     for temp_monetize in appModels.Monetize.objects.all():
         if monetize and monetizeModel == temp_monetize:
-            apps = monetizeModel.app_set.filter(status=2).order_by('publish_date')
+            apps = monetizeModel.app_set.filter(status=2, end_date__gt=datetime.datetime.now()).order_by('end_date')
             initParam['monetize_list'].append([temp_monetize, len(apps)])
             initParam['query_tile'] = [_('Monetize'), temp_monetize.method, ''.join(['?monetize=', monetize])]
         else:
-            initParam['monetize_list'].append([temp_monetize, temp_monetize.app_set.filter(status=2).count()])
+            initParam['monetize_list'].append([temp_monetize, temp_monetize.app_set.filter(status=2, end_date__gt=datetime.datetime.now()).count()])
 
     #Device Part
     initParam['device_list'] = []
@@ -227,11 +227,11 @@ def endingSoon(request):
         deviceModel = get_object_or_404(appModels.Device, pk=device)
     for tem_device in appModels.Device.objects.all():
         if device and deviceModel == tem_device:
-            apps = deviceModel.app_set.filter(status=2).order_by('publish_date')
+            apps = deviceModel.app_set.filter(status=2, end_date__gt=datetime.datetime.now()).order_by('end_date')
             initParam['device_list'].append([tem_device, len(apps)])
             initParam['query_tile'] = [_('Device'), tem_device.device, ''.join(['?device=', device])]
         else:
-            initParam['device_list'].append([tem_device, tem_device.app_set.filter(status=2).count()])
+            initParam['device_list'].append([tem_device, tem_device.app_set.filter(status=2, end_date__gt=datetime.datetime.now()).count()])
 
     #Category Part
     initParam['category_list'] = []
@@ -239,11 +239,11 @@ def endingSoon(request):
         categoryModel = get_object_or_404(appModels.Category, apple_id=category)
     for temp_category in appModels.Category.objects.all():
         if category and categoryModel == temp_category:
-            apps = categoryModel.app_set.filter(status=2).order_by('publish_date')
+            apps = categoryModel.app_set.filter(status=2, end_date__gt=datetime.datetime.now()).order_by('end_date')
             initParam['category_list'].append([temp_category, len(apps)])
             initParam['query_tile'] = [_('Category'), temp_category.name, ''.join(['?category=', category])]
         else:
-            initParam['category_list'].append([temp_category, temp_category.app_set.filter(status=2).count()])
+            initParam['category_list'].append([temp_category, temp_category.app_set.filter(status=2, end_date__gt=datetime.datetime.now()).count()])
     common.sortWithIndexLie(initParam['category_list'], 1, order='desc')
 
     #Query data
@@ -264,7 +264,7 @@ def justSold(request):
     currency_id = common.getSystemParam(key='currency', default=2)
     initParam['currency'] = get_object_or_404(appModels.Currency, pk=currency_id)
 
-    app_id = txnModels.Transaction.objects.filter(status__gte=1, is_active=True).values_list('app_id')
+    app_id = txnModels.Transaction.objects.filter(status__gte=2, is_active=True).values_list('app_id')
 
     if revenue_min is None and category is None and subcategory is None and monetize is None and device is None and seller is None:
         apps = appModels.App.objects.filter(pk__in=app_id)
@@ -327,11 +327,78 @@ def justSold(request):
     return render_to_response('query/listing_base.html', initParam, context_instance=RequestContext(request))
 
 
-def listClosed(request):
-    list_apps = []
-    list_apps = appModels.App.objects.all()
+def listAll(request):
+    """Query the apps info in all page."""
+    initParam = {}
+    page = request.GET.get('page', 1)
+    revenue_min = request.GET.get('revenue_min', None)
+    category = request.GET.get('category', None)
+    subcategory = request.GET.get('subcategory', None)
+    monetize = request.GET.get('monetize', None)
+    device = request.GET.get('device', None)
+    seller = request.GET.get('seller', None)
+    currency_id = common.getSystemParam(key='currency', default=2)
+    initParam['currency'] = get_object_or_404(appModels.Currency, pk=currency_id)
 
-    return render_to_response('query/listing_base.html', {"list_latest": list_apps}, context_instance=RequestContext(request))
+    if revenue_min is None and category is None and subcategory is None and monetize is None and device is None and seller is None:
+        apps = appModels.App.objects.exclude(status=1).order_by("-end_date")
+
+    #Revenue Part
+    REVENUE_LIST = [2000, 1000, 500, 100, 0]
+    initParam['revenue_list'] = []
+    for i in range(len(REVENUE_LIST)):
+        if i == 0:
+            temp_apps = appModels.App.objects.exclude(status=1).filter(revenue__gte=REVENUE_LIST[i]).order_by("-end_date")
+        else:
+            temp_apps = appModels.App.objects.exclude(status=1).filter(revenue__lt=REVENUE_LIST[i-1], revenue__gte=REVENUE_LIST[i]).order_by("-end_date")
+        if revenue_min and string.atoi(revenue_min) == REVENUE_LIST[i]:
+            apps = temp_apps
+            title = _('Revenue(%(param)s/Month)') % {'param': initParam['currency'].currency}
+            subTitle = _('Over %(param)s') % {'param': revenue_min}
+            initParam['query_tile'] = [title, subTitle, ''.join(['?revenue_min=', revenue_min])]
+        initParam['revenue_list'].append([REVENUE_LIST[i], len(temp_apps)])
+
+    #Monetize Part
+    initParam['monetize_list'] = []
+    if monetize:
+        monetizeModel = get_object_or_404(appModels.Monetize, pk=monetize)
+    for temp_monetize in appModels.Monetize.objects.all():
+        if monetize and monetizeModel == temp_monetize:
+            apps = monetizeModel.app_set.exclude(status=1).order_by("-end_date")
+            initParam['monetize_list'].append([temp_monetize, len(apps)])
+            initParam['query_tile'] = [_('Monetize'), temp_monetize.method, ''.join(['?monetize=', monetize])]
+        else:
+            initParam['monetize_list'].append([temp_monetize, temp_monetize.app_set.exclude(status=1).count()])
+
+    #Device Part
+    initParam['device_list'] = []
+    if device:
+        deviceModel = get_object_or_404(appModels.Device, pk=device)
+    for tem_device in appModels.Device.objects.all():
+        if device and deviceModel == tem_device:
+            apps = deviceModel.app_set.exclude(status=1).order_by("-end_date")
+            initParam['device_list'].append([tem_device, len(apps)])
+            initParam['query_tile'] = [_('Device'), tem_device.device, ''.join(['?device=', device])]
+        else:
+            initParam['device_list'].append([tem_device, tem_device.app_set.exclude(status=1).count()])
+
+    #Category Part
+    initParam['category_list'] = []
+    if category:
+        categoryModel = get_object_or_404(appModels.Category, apple_id=category)
+    for temp_category in appModels.Category.objects.all():
+        if category and categoryModel == temp_category:
+            apps = categoryModel.app_set.exclude(status=1).order_by("-end_date")
+            initParam['category_list'].append([temp_category, len(apps)])
+            initParam['query_tile'] = [_('Category'), temp_category.name, ''.join(['?category=', category])]
+        else:
+            initParam['category_list'].append([temp_category, temp_category.app_set.exclude(status=1).count()])
+    common.sortWithIndexLie(initParam['category_list'], 1, order='desc')
+
+    #Query data
+    initParam['apps'] = queryAppsWithPaginator(request, page=page, apps=apps)
+
+    return render_to_response('query/listing_base.html', initParam, context_instance=RequestContext(request))
 
 
 @csrf_protect
@@ -349,16 +416,16 @@ def listFeatured(request, *args, **kwargs):
     initParam['currency'] = get_object_or_404(appModels.Currency, pk=currency_id)
 
     if revenue_min is None and category is None and subcategory is None and monetize is None and device is None and seller is None:
-        apps = appModels.App.objects.exclude(status=1).order_by('status')
+        apps = appModels.App.objects.filter(status=2, end_date__gt=datetime.datetime.now())
 
     #Revenue Part
     REVENUE_LIST = [2000, 1000, 500, 100, 0]
     initParam['revenue_list'] = []
     for i in range(len(REVENUE_LIST)):
         if i == 0:
-            temp_apps = appModels.App.objects.exclude(status=1).filter(revenue__gte=REVENUE_LIST[i]).order_by('status')
+            temp_apps = appModels.App.objects.filter(status=2, end_date__gt=datetime.datetime.now(), revenue__gte=REVENUE_LIST[i]).order_by('status')
         else:
-            temp_apps = appModels.App.objects.exclude(status=1).filter(revenue__lt=REVENUE_LIST[i-1], revenue__gte=REVENUE_LIST[i]).order_by('status')
+            temp_apps = appModels.App.objects.filter(status=2, end_date__gt=datetime.datetime.now(), revenue__lt=REVENUE_LIST[i-1], revenue__gte=REVENUE_LIST[i]).order_by('status')
         if revenue_min and string.atoi(revenue_min) == REVENUE_LIST[i]:
             apps = temp_apps
             title = _('Revenue(%(param)s/Month)') % {'param': initParam['currency'].currency}
@@ -372,11 +439,11 @@ def listFeatured(request, *args, **kwargs):
         monetizeModel = get_object_or_404(appModels.Monetize, pk=monetize)
     for temp_monetize in appModels.Monetize.objects.all():
         if monetize and monetizeModel == temp_monetize:
-            apps = monetizeModel.app_set.exclude(status=1).order_by('status')
+            apps = monetizeModel.app_set.filter(status=2, end_date__gt=datetime.datetime.now())
             initParam['monetize_list'].append([temp_monetize, len(apps)])
             initParam['query_tile'] = [_('Monetize'), temp_monetize.method, ''.join(['?monetize=', monetize])]
         else:
-            initParam['monetize_list'].append([temp_monetize, temp_monetize.app_set.exclude(status=1).count()])
+            initParam['monetize_list'].append([temp_monetize, temp_monetize.app_set.filter(status=2, end_date__gt=datetime.datetime.now()).count()])
 
     #Device Part
     initParam['device_list'] = []
@@ -384,11 +451,11 @@ def listFeatured(request, *args, **kwargs):
         deviceModel = get_object_or_404(appModels.Device, pk=device)
     for tem_device in appModels.Device.objects.all():
         if device and deviceModel == tem_device:
-            apps = deviceModel.app_set.exclude(status=1).order_by('status')
+            apps = deviceModel.app_set.filter(status=2, end_date__gt=datetime.datetime.now())
             initParam['device_list'].append([tem_device, len(apps)])
             initParam['query_tile'] = [_('Device'), tem_device.device, ''.join(['?device=', device])]
         else:
-            initParam['device_list'].append([tem_device, tem_device.app_set.exclude(status=1).count()])
+            initParam['device_list'].append([tem_device, tem_device.app_set.filter(status=2, end_date__gt=datetime.datetime.now()).count()])
 
     #Category Part
     initParam['category_list'] = []

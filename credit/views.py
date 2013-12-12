@@ -1,6 +1,7 @@
 __author__ = 'Jarvis'
 
 import logging
+import string
 
 from django.utils.translation import ugettext as _
 
@@ -102,12 +103,17 @@ def createAppraisement(request, *args, **kwargs):
     initParam = kwargs.get('initParam')
     form = forms.AppraisementForm()
     if request.method == 'POST':
+        transaction = initParam.get('transaction')
         appraisementForm = forms.AppraisementForm(request.POST)
         if appraisementForm.is_valid():
             appraisement = appraisementForm.save(commit=False)
             appraisement.user_id = request.user.id
-            appraisement.transaction_id = initParam.get('transaction').id
+            appraisement.transaction_id = transaction.id
             appraisement.save()
+
+            point = string.atoi(common.getSystemParam(key='cp_closed_trade', default=50))
+            increaseCreditPoint(user=request.user, point=point, type=1, ref_id=transaction.id)
+
             return appraisement
         else:
             initParam['error_msg'] = _("Appraisement failed. Please try again.")
