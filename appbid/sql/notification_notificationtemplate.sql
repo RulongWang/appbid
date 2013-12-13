@@ -24,10 +24,10 @@ Thanks
 Appswalk Ltd. ', 'Buyer pay email after seller click trade now', '1.0', '2013-12-08 20:11:12', '2013-12-11 22:55:23', 1);
 INSERT INTO appbid.notification_notificationtemplate (id, name, language, type, subject, template, description, version, create_time, last_modify, modifier_id) VALUES (6, 'buyer_paid_inform_seller', 1, 1, 'Please start to transfer your app to { param1 }', 'Dear {param1},
 
-{param2} already paid you with Paypal. You should start to deliver everything to the buyer{ param2 } as you claimed on Appswalk.
+{param2} already paid you with Paypal. You should start to deliver everything to the buyer { param2 } as you claimed on Appswalk about APP { param3 }.
 This transaction is guaranteed  by Paypal. 
 Thanks 
-Appswalk Ltd. ', 'Tell seller after buyer paid..', '1.0', '2013-12-08 20:11:12', '2013-12-11 22:57:16', 1);
+Appswalk Ltd. ', 'Tell seller after buyer paid..', '1.0', '2013-12-08 20:11:12', '2013-12-13 14:53:49', 1);
 INSERT INTO appbid.notification_notificationtemplate (id, name, language, type, subject, template, description, version, create_time, last_modify, modifier_id) VALUES (7, 'buyer_one_price_inform_seller', 1, 1, '{param1} decised to buy your app {param2} from AppsWalk', 'Dear  {param1},
 
 User {param2} has bought your app {param3} via ''Buy it now''. You should start to deliver everything to  { param2 } as you claimed on Appswalk.
@@ -48,11 +48,11 @@ Thanks
 Appswalk Ltd. ', 'Tell seller after buyer paid..', '1.0', '2013-12-08 20:11:12', '2013-12-08 22:56:26', 1);
 INSERT INTO appbid.notification_notificationtemplate (id, name, language, type, subject, template, description, version, create_time, last_modify, modifier_id) VALUES (10, 'verified_app_success_inform_seller', 1, 1, 'Congratulations! Your app ownership has been verified.', 'Dear {param1},
 
-We are happy to inform you that your app has been verified at Appswalk. 
+We are happy to inform you that your app {param2} has been verified at Appswalk. 
 Please kindly logon to appswalk.com , and check your account details.
 The last step is to finish your payment for your listing, and then your app could be listed on Appswalk.
 Thank you very much.
-Appswalk Ltd', 'Tell seller after buyer paid..', '1.0', '2013-12-08 20:11:12', '2013-12-08 22:47:38', 1);
+Appswalk Ltd', 'Tell seller after buyer paid..', '1.0', '2013-12-08 20:11:12', '2013-12-13 14:55:42', 1);
 INSERT INTO appbid.notification_notificationtemplate (id, name, language, type, subject, template, description, version, create_time, last_modify, modifier_id) VALUES (11, 'verified_app_failed_inform_seller', 1, 1, 'Failed to validate your app ownership', 'Dear {param1},
 
 We are not able to verify your app ownership. Please ensure if have copied and pasted the verification code at your app description on AppleStore. 
@@ -113,3 +113,20 @@ INSERT INTO appbid.notification_notificationtemplate (id, name, language, type, 
 Other bidder just placed a new price for the app {appname}. You can place a higher price there.
 Regards,
 Appswalk Ltd', 'Notify me when a bid is placed above one of my bids', '1.0', '2013-12-10 22:20:29', '2013-12-11 23:32:29', 1);
+INSERT INTO appbid.notification_notificationtemplate (id, name, language, type, subject, template, description, version, create_time, last_modify, modifier_id) VALUES (22, 'new_comment_inform_seller', 1, 1, 'You got a new comment ', 'Dear {param1},
+You just got a new comment regarding your auction {param2}.
+Please login www.appswalk.com ,and check comment details.
+Best regards,
+Appswalk Ltd', 'Inform seller there is new comment from buyer', '1.0', '2013-12-13 14:59:29', '2013-12-13 14:59:29', 1);
+INSERT INTO appbid.notification_notificationtemplate (id, name, language, type, subject, template, description, version, create_time, last_modify, modifier_id) VALUES (23, 'new_comment_inform_buyer', 1, 1, 'You just got a reply regarding APP {appname}', 'Dear {param2},
+The seller just replied you at Appswalk, please login and check details.
+Best regards,
+Appswalk Ltd', 'Seller replied buyer, inform buyer', '1.0', '2013-12-13 15:01:47', '2013-12-13 15:01:47', 1);
+INSERT INTO appbid.notification_notificationtemplate (id, name, language, type, subject, template, description, version, create_time, last_modify, modifier_id) VALUES (24, 'closed_trade_inform_buyer_watched_category', 1, 1, 'There is new auction in your watching category', 'Dear {param1},
+There is new auction {applink} in your watching category, please login and check details.
+Best regards,
+Appswalk Ltd', 'Newlisting at watching category, inform buyer', '1.0', '2013-12-13 15:06:19', '2013-12-13 15:06:19', 1);
+INSERT INTO appbid.notification_notificationtemplate (id, name, language, type, subject, template, description, version, create_time, last_modify, modifier_id) VALUES (25, 'new_app_inform_buyer', 1, 1, 'Your watching seller just list a new APP', 'Dear {param1},
+Your watching seller just list a new APP {applink }on Appswalk
+Best regards,
+Appswalk Ltd', 'Your watching seller just list a new APP', '1.0', '2013-12-13 15:10:16', '2013-12-13 15:10:16', 1);
