@@ -20,7 +20,8 @@ from bid import forms
 from query.views import initBidInfo
 from message.views import sendMessage
 from credit import views as creditViews
-from notification import  views as notificationViews
+from notification import views as notificationViews
+from query import views as queryViews
 from utilities import common
 
 
@@ -37,6 +38,7 @@ def createBid(request, *args, **kwargs):
         #Do something, when the time is app end date.
         if app.status == 2 and initParam['begin_bid']:
             initParam['is_callback'] = True
+
         if request.method == "POST":
             biddingForm = forms.BiddingForm(request.POST)
             #Buyer credit point judge for bidding.
@@ -90,6 +92,9 @@ def createBid(request, *args, **kwargs):
             initParam['transaction'] = transactions[0]
         #Comment the message
         # sendMessage(request, initParam=initParam)
+
+        queryViews.shareSocial(request, initParam=initParam, app=app)
+
         return render_to_response('bid/bid_create.html', initParam, context_instance=RequestContext(request))
     raise Http404
 
@@ -126,6 +131,8 @@ def bidList(request, *args, **kwargs):
         transactions = txnModels.Transaction.objects.filter(app_id=app.id).exclude(status=1)
         if transactions:
             initParam['transaction'] = transactions[0]
+
+        queryViews.shareSocial(request, initParam=initParam, app=app)
 
         return render_to_response('bid/bid_list.html', initParam, context_instance=RequestContext(request))
     raise Http404
