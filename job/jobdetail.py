@@ -31,8 +31,8 @@ def verificationAppForSeller(*args, **kwargs):
         if app.verify_token in description:
             templates = notificationModels.NotificationTemplate.objects.filter(name='verified_app_success_inform_seller')
             if templates:
-                subject = ''
-                message = ''
+                subject = templates[0].subject
+                message = templates[0].template.replace('{param1}', app.publisher.username).replace('{param2}', app.app_name)
                 massEmailThread.addEmailData(subject=subject, message=message, recipient_list=[app.publisher.email])
                 ownerShipScan.delete()
                 #Update app is_verified value
@@ -41,8 +41,8 @@ def verificationAppForSeller(*args, **kwargs):
         else:
             templates = notificationModels.NotificationTemplate.objects.filter(name='verified_app_failed_inform_seller')
             if templates:
-                subject = ''
-                message = ''
+                subject = templates[0].subject
+                message = templates[0].template.replace('{param1}', app.publisher.username).replace('{param2}', app.app_name)
                 massEmailThread.addEmailData(subject=subject, message=message, recipient_list=[app.publisher.email])
                 ownerShipScan.times += 1
                 ownerShipScan.save()
@@ -95,8 +95,8 @@ def checkServiceDateForApps(*args, **kwargs):
         else:
             templates = notificationModels.NotificationTemplate.objects.filter(name='service_end_inform_seller_lt_reserve_price')
             if templates:
-                subject = ''
-                message = ''
+                subject = templates[0].subject
+                message = templates[0].template.replace('{param1}', app.publisher.username)
                 massEmailThread.addEmailData(subject=subject, message=message, recipient_list=[app.publisher.email])
     massEmailThread.start()
     return None
@@ -110,13 +110,14 @@ def checkIfSellApp(*args, **kwargs):
     """
     transactions = txnModels.Transaction.objects.filter(status=1, end_time__isnull=False, end_time__lte=datetime.datetime.now())
     massEmailThread = email.MassEmailThread()
+    points = common.getSystemParam(key='cp_buyer_unpaid', default=50)
     for transaction in transactions:
         #Decrease seller's credit points
-        creditViews.decreaseCreditPoint(user=transaction.seller)
+        creditViews.decreaseCreditPoint(user=transaction.seller, string.atoi(points), type=1, ref_id=transaction.id)
         templates = notificationModels.NotificationTemplate.objects.filter(name='unsold_end_inform_seller')
         if templates:
-            subject = ''
-            message = ''
+            subject = templates[0].subject
+            message = templates[0].template.replace('{param1}', transaction.seller.username).replace('{creditamount}', points)
             massEmailThread.addEmailData(subject=subject, message=message, recipient_list=[transaction.seller.email])
     massEmailThread.start()
     return None
@@ -171,23 +172,23 @@ def taskForBuyUnpaid(*args, **kwargs):
         creditViews.decreaseCreditPoint(user=transaction.buyer, points, type=1, ref_id=transaction.id)
         bidModels.Bidding.objects.filter(app_id=transaction.app.id, buyer_id=transaction.buyer.id).update(status=False)
         if templates_buyer:
-            subject = ''
-            message = ''
+            subject = templates_buyer[0].subject
+            message = templates_buyer[0].template.replace('{param1}', transaction.buyer.username)
             massEmailThread.addEmailData(subject=subject, message=message, recipient_list=[transaction.buyer.email])
         bidding = bidModels.Bidding.objects.filter(app_id=transaction.app.id, status=1).order_by('-price')
         if bidding:
             if templates_seller:
-                subject = ''
-                message = ''
+                subject = templates_seller[0].subject
+                message = templates_seller[0].template.replace('{param1}', transaction.seller.username).replace('{param2}', transaction.buyer.username)
                 massEmailThread.addEmailData(subject=subject, message=message, recipient_list=[transaction.seller.email])
             if templates_second_buyer:
-                subject = ''
-                message = ''
+                subject = templates_second_buyer[0].subject
+                message = templates_second_buyer[0].template.replace('{param1}', bidding[0].buyer.username).replace('{param2}', transaction.app.app_name)
                 massEmailThread.addEmailData(subject=subject, message=message, recipient_list=[bidding[0].buyer.email])
         else:
             if templates_seller_no_bidding:
-                subject = ''
-                message = ''
+                subject = templates_seller_no_bidding[0].subject
+                message = templates_seller_no_bidding[0].template.replace('{param1}', transaction.seller.username)
                 massEmailThread.addEmailData(subject=subject, message=message, recipient_list=[transaction.seller.email])
     massEmailThread.start()
 

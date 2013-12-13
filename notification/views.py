@@ -143,10 +143,9 @@ def sendResetPasswordEmail(request, *args, **kwargs):
         token = common.getToken(key='token_length', default=30)
         url = '/'.join([header, 'usersetting/reset-password', str(type), str(user.id), user.username, token])
         temp_name = 'reset_password_email'
-        sub_params = ['']
         temp_params = [user.username, url]
         recipient_list = [user.email]
-        sendCommonEmail(temp_name=temp_name, sub_params=sub_params, temp_params=temp_params, recipient_list=recipient_list)
+        sendCommonEmail(temp_name=temp_name, temp_params=temp_params, recipient_list=recipient_list)
     return None
 
 
@@ -159,8 +158,8 @@ def sendNewBidEmail(request, *args, **kwargs):
     templates_buyer = models.NotificationTemplate.objects.filter(name='new_bid_inform_buyer')
     item_seller = app.publisher.subscriptionitem_set.filter(key='new_bid')
     if item_seller and templates_seller:
-        subject = ''
-        message = ''
+        subject = templates_seller[0].subject
+        message = templates_seller[0].template.replace('{param1}', app.publisher.username).replace('{param2}', app.app_name)
         massEmailThread.addEmailData(subject=subject, message=message, recipient_list=[app.publisher.email])
     user_ids = [bid.buyer.id]
     bids = app.bidding_set.exclude(buyer_id=bid.buyer.id)
@@ -169,8 +168,8 @@ def sendNewBidEmail(request, *args, **kwargs):
             user_ids.append(bidding.buyer.id)
             item_buyer = bidding.buyer.subscriptionitem_set.filter(key='new_bid_above_mine')
             if item_buyer and templates_buyer:
-                subject = ''
-                message = ''
+                subject = templates_seller[0].subject
+                message = templates_seller[0].template.replace('{param1}', bidding.buyer.username).replace('{param2}', app.app_name)
                 massEmailThread.addEmailData(subject=subject, message=message, recipient_list=[bidding.buyer.email])
     massEmailThread.start()
 
