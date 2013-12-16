@@ -11,7 +11,7 @@ log = logging.getLogger('email')
 
 class EmailThread(threading.Thread):
     """The new thread to send the email."""
-    def __init__(self, subject, message, recipient_list, from_email=settings.EMAIL_SENDER, fail_silently=False):
+    def __init__(self, subject, message, recipient_list, from_email, fail_silently=False):
         self.subject = subject
         self.message = message
         self.from_email = from_email
@@ -32,7 +32,7 @@ class EmailThread(threading.Thread):
             else:
                 log.error('Email recipient_list is not correct.')
         except BadHeaderError as e:
-            log.error('Send email failed. ' + str(e))
+            log.error('Send email failed from BadHeaderError. ' + str(e))
         except Exception as e:
             log.error('Send email failed. ' + str(e))
 
