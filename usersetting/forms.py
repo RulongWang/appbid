@@ -14,6 +14,7 @@ class RegisterForm(forms.Form):
     password = forms.CharField(
         max_length=30,
         widget=forms.PasswordInput(attrs={'size': 20, 'class': "logon_input", 'placeholder': "Password",'title':"At least 6 characters"}),
+        help_text='The password length must be more than 6.'
     )
     username = forms.CharField(
         max_length=30,
