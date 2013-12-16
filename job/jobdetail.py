@@ -117,7 +117,7 @@ def checkIfSellApp(*args, **kwargs):
         templates = notificationModels.NotificationTemplate.objects.filter(name='unsold_end_inform_seller')
         if templates:
             subject = templates[0].subject
-            message = templates[0].template.replace('{param1}', transaction.seller.username).replace('{creditamount}', points)
+            message = templates[0].template.replace('{param1}', transaction.seller.username).replace('{param2}', points)
             massEmailThread.addEmailData(subject=subject, message=message, recipient_list=[transaction.seller.email])
     massEmailThread.start()
     return None
