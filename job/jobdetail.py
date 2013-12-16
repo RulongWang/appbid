@@ -39,13 +39,13 @@ def verificationAppForSeller(*args, **kwargs):
                 app.is_verified = True
                 app.save()
         else:
+            ownerShipScan.times += 1
+            ownerShipScan.save()
             templates = notificationModels.NotificationTemplate.objects.filter(name='verified_app_failed_inform_seller')
-            if templates:
+            if ownerShipScan.times == 3 and templates:
                 subject = templates[0].subject
-                message = templates[0].template.replace('{param1}', app.publisher.username).replace('{param2}', app.app_name)
+                message = templates[0].template.replace('{param1}', app.publisher.username)
                 massEmailThread.addEmailData(subject=subject, message=message, recipient_list=[app.publisher.email])
-                ownerShipScan.times += 1
-                ownerShipScan.save()
     massEmailThread.start()
 
     return None
