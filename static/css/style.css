@@ -1091,13 +1091,11 @@ fieldset {
     padding:5px;
     font-size: 12px;
 }
-.errors_block ul{
+.errors_block{
     margin-left:10px;
-    list-style: none;
+    margin-top:10px;
 }
-.errors_block ul li{
-    background:url("../images/error_icon20x20.png") no-repeat left;
-}
+
 .nextbutton{
     margin-top:10px;
     margin-left:30px;
