@@ -1,6 +1,6 @@
 INSERT INTO appbid.notification_notificationtemplate (id, name, language, type, subject, template, description, version, create_time, last_modify, modifier_id) VALUES (3, 'register_active', 1, 1, 'Please activate your Appswalk account ', 'Dear {param1},
 
- Please click the blow link to active your account 
+ Please copy the blow link to your browser and active your account
 
  {param2}
 
@@ -8,7 +8,7 @@ Thanks
 Appswalk Ltd. ', 'active account email', '1.0', '2013-12-08 20:11:12', '2013-12-08 22:35:42', 1);
 INSERT INTO appbid.notification_notificationtemplate (id, name, language, type, subject, template, description, version, create_time, last_modify, modifier_id) VALUES (4, 'email_security_verification', 1, 1, 'Appswalk email verification', 'Dear {param1},
 
- Please click the blow link to verify your new email 
+ Please copy the blow link to your browser and verify your new email
 
  {param2}
 Thanks 
