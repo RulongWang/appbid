@@ -18,11 +18,11 @@
 <script type="text/javascript" language="javascript">
     $("#submit").click(function() {
         if ($("#id_email").val().trim() == "") {
-            $("#account_error").html("<ul><li>Email is required.</li></ul>");//TODO:it will be set in message.properties.
+            $("#account_error").html("Email is required.");
             return false;
         }
         if (!valid_email($("#id_email").val().trim())) {
-            $("#account_error").html("<ul><li>Email is not correct.</li></ul>");//TODO:it will be set in message.properties.
+            $("#account_error").html("Email is not correct.");
             return false;
         }
     });

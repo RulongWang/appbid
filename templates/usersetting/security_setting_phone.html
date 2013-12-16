@@ -65,19 +65,19 @@
 
     $("#submit").click(function() {
         if ($("#id_phone").val().trim() == "") {
-            $("#account_error").html("<ul><li>Phone number is required.</li></ul>");//TODO:it will be set in message.properties.
+            $("#account_error").html("Phone number is required.");
             return false;
         }
         if (!valid_phone($("#id_phone").val().trim())) {
-            $("#account_error").html("<ul><li>Phone number is not correct.</li></ul>");//TODO:it will be set in message.properties.
+            $("#account_error").html("Phone number is not correct.");
             return false;
         }
         if ($("#id_pin").val().trim() == "") {
-            $("#account_error").html("<ul><li>PIN is required.</li></ul>");//TODO:it will be set in message.properties.
+            $("#account_error").html("PIN is required.");
             return false;
         }
         if (isNaN($("#id_pin").val()) || $("#id_pin").val().trim().length != 6) {
-            $("#account_error").html("<ul><li>PIN is not correct.</li></ul>");//TODO:it will be set in message.properties.
+            $("#account_error").html("PIN is not correct.");
             return false;
         }
     });
