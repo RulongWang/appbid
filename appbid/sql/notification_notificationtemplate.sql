@@ -1,6 +1,6 @@
 INSERT INTO appbid.notification_notificationtemplate (id, name, language, type, subject, template, description, version, create_time, last_modify, modifier_id) VALUES (3, 'register_active', 1, 1, 'Please activate your Appswalk account ', 'Dear {param1},
 
- Please click the blow link to active your account 
+ Please copy the blow link to your browser and active your account
 
  {param2}
 
