@@ -28,7 +28,7 @@
     <div class="field_block_sale">
 
         {% if form.one_price.errors %}
-            <div>
+            <div class="return_error">
             {{ form.one_price.errors }}
             </div>
         {% endif %}
@@ -46,7 +46,7 @@
     <div class="field_block_sale">
 
         {% if form.reserve_price.errors %}
-            <div>
+            <div class="return_error">
             {{ form.reserve_price.errors }}
             </div>
         {% endif %}
@@ -65,7 +65,7 @@
     <div class="field_block_sale">
 
         {% if form.currency.errors %}
-            <div>
+            <div class="return_error">
             {{ form.currency.errors }}
             </div>
         {% endif %}
@@ -82,7 +82,7 @@
     <div class="field_block_sale">
 
         {% if form.minimum_bid.errors %}
-            <div>
+            <div class="return_error">
             {{ form.minimum_bid.errors }}
             </div>
         {% endif %}
@@ -113,35 +113,35 @@
         var reserve_price = $("#id_reserve_price").val().trim();
         var minimum_bid = $("#id_minimum_bid").val().trim();
         if (begin_price == "") {
-            $(".errors_block").html("<ul><li>Begin price is required.</li></ul>");//TODO:it will be set in message.properties.
+            $(".errors_block").html("Begin price is required.");
             return false;
         }
         if (isNaN(begin_price)) {
-            $(".errors_block").html("<ul><li>Begin price should be number.</li></ul>");//TODO:it will be set in message.properties.
+            $(".errors_block").html("Begin price should be number.");
             return false;
         }
         if ($("#id_currency").val().trim() == "") {
-            $(".errors_block").html("<ul><li>Currency is required.</li></ul>");//TODO:it will be set in message.properties.
+            $(".errors_block").html("Currency is required.");
             return false;
         }
         if (one_price != "" && isNaN(one_price)) {
-            $(".errors_block").html("<ul><li>One price should be number.</li></ul>");//TODO:it will be set in message.properties.
+            $(".errors_block").html("One price should be number.");
             return false;
         }
         if (reserve_price != "" && isNaN(reserve_price)) {
-            $(".errors_block").html("<ul><li>Reserve price should be number.</li></ul>");//TODO:it will be set in message.properties.
+            $(".errors_block").html("Reserve price should be number.");
             return false;
         }
         if (one_price != "" && reserve_price != "" && parseFloat(one_price) > parseFloat(reserve_price)) {
-            $(".errors_block").html("<ul><li>Reserve price should be greater than one price.</li></ul>");//TODO:it will be set in message.properties.
+            $(".errors_block").html("Reserve price should be greater than one price.");
             return false;
         }
         if (minimum_bid == "") {
-            $(".errors_block").html("<ul><li>Minimum bid is required.</li></ul>");//TODO:it will be set in message.properties.
+            $(".errors_block").html("Minimum bid is required.");
             return false;
         }
         if (isNaN(minimum_bid)) {
-            $(".errors_block").html("<ul><li>Minimum bid should be number.</li></ul>");//TODO:it will be set in message.properties.
+            $(".errors_block").html("Minimum bid should be number.");
             return false;
         }
     });
