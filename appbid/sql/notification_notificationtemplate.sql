@@ -1,4 +1,4 @@
-INSERT INTO appbid.notification_notificationtemplate (id, name, language, type, subject, template, description, version, create_time, last_modify, modifier_id) VALUES (3, 'register_active', 1, 1, 'Please activate your Appswalk account ', 'Dear {param1},
+INSERT INTO appbid.notification_notificationtemplate (id, name, language, type, subject, template, description, version, create_time, last_modify, modifier_id) VALUES (3, 'register_active', 1, 1, 'Please activate your Appswalk account', 'Dear {param1},
 
  Please copy the blow link to your browser and active your account
 
@@ -104,8 +104,7 @@ The bidding price doesn''t reach your reserved price.  However you can start you
 Please logon to www.appswalk.com for more details.
 Regards,
 Appswalk Ltd', 'Service end, and reserve price not reach, seller can start the transaction', '1.0', '2013-12-10 22:18:29', '2013-12-11 23:14:56', 1);
-INSERT INTO appbid.notification_notificationtemplate (id, name, language, type, subject, template, description, version, create_time, last_modify, modifier_id) VALUES (20, 'new_bid_inform_seller', 1, 1, '  Your auction  just got a new bidding
-', ' Dear {param1},
+INSERT INTO appbid.notification_notificationtemplate (id, name, language, type, subject, template, description, version, create_time, last_modify, modifier_id) VALUES (20, 'new_bid_inform_seller', 1, 1, 'Your auction  just got a new bidding', 'Dear {param1},
  Your auction of app {param2} just got a new bidding. Please logon to www.appswalk.com for more details.
  Regards,
  Appswalk Ltd', '', '1.0', '2013-12-10 22:18:56', '2013-12-11 23:27:43', 1);
