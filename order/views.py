@@ -73,6 +73,7 @@ def checkout(request, *args, **kwargs):
                     if checkOutSuccess(request, serviceDetail=serviceDetail):
                         initParam['msg'] = _('The payment is successful.')
                         initParam['success_page'] = '/'.join([common.getHttpHeader(request), 'query/app-detail', str(app.id)])
+                        initParam['success_page_msg'] = 'App Detail'
                         log.info(_('Seller %(param1)s has paid service fee - %(param2)s with service detail id %(param3)s.')
                                  % {'param1': request.user.username, 'param2': serviceDetail.actual_amount, 'param3': serviceDetail.id})
                         return render_to_response('payment/paypal_success.html', initParam, context_instance=RequestContext(request))
@@ -95,11 +96,17 @@ def checkout(request, *args, **kwargs):
                     #The back page, when payment has error.
                     if request.session.get('back_page', None):
                         del request.session['back_page']
+                    if request.session.get('back_page_msg', None):
+                        del request.session['back_page_msg']
                     request.session['back_page'] = '/'.join([common.getHttpHeader(request), 'seller/payment', str(app.id)])
+                    request.session['back_page_msg'] = 'Payment'
                     #The success return page, when payment finish.
                     if request.session.get('success_page', None):
                         del request.session['success_page']
+                    if request.session.get('success_page_msg', None):
+                        del request.session['success_page_msg']
                     request.session['success_page'] = '/'.join([common.getHttpHeader(request), 'query/app-detail', str(app.id)])
+                    request.session['success_page_msg'] = 'App Detail'
                     return paymentViews.payment(request, initParam=initParam)
     #Init data
     initParam['form'] = forms.ServiceDetailForm(instance=serviceDetail)

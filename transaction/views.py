@@ -306,13 +306,19 @@ def onePriceBuy(request, *args, **kwargs):
             #The needed operation method in pay.
             initParam['executeMethod'] = updateTransaction
             #The back page, when pay has error.
-            back_page = request.session.get('back_page', None)
-            if not back_page:
-                request.session['back_page'] = '/'.join([common.getHttpHeader(request), 'query/app-detail', str(app.id)])
+            if request.session.get('back_page', None):
+                del request.session['back_page']
+            if request.session.get('back_page_msg', None):
+                del request.session['back_page_msg']
+            request.session['back_page'] = '/'.join([common.getHttpHeader(request), 'query/app-detail', str(app.id)])
+            request.session['back_page_msg'] = 'App Detail'
             #The success return page, when pay finish.
-            success_page = request.session.get('success_page', None)
-            if not success_page:
-                request.session['success_page'] = '/'.join([common.getHttpHeader(request), 'transaction/trade-action/buy', str(app.id), str(request.user.id)])
+            if request.session.get('success_page', None):
+                del request.session['success_page']
+            if request.session.get('success_page_msg', None):
+                del request.session['success_page_msg']
+            request.session['success_page'] = '/'.join([common.getHttpHeader(request), 'transaction/trade-action/buy', str(app.id), str(request.user.id)])
+            request.session['success_page_msg'] = 'Trade Action'
             return paymentViews.pay(request, initParam=initParam)
     return render_to_response('transaction/one_price_buy.html', initParam, context_instance=RequestContext(request))
 
@@ -344,14 +350,20 @@ def buyerPay(request, *args, **kwargs):
     #The needed operation method in pay.
     initParam['executeMethod'] = updateTransaction
     #The back page, when pay has error.
-    back_page = request.session.get('back_page', None)
+    if request.session.get('back_page', None):
+        del request.session['back_page']
+    if request.session.get('back_page_msg', None):
+        del request.session['back_page_msg']
     url = '/'.join([common.getHttpHeader(request), 'transaction/trade-action/buy', str(app.id), str(request.user.id)])
-    if not back_page:
-        request.session['back_page'] = url
+    request.session['back_page'] = url
+    request.session['back_page_msg'] = 'Trade Action'
     #The success return page, when pay finish.
-    success_page = request.session.get('success_page', None)
-    if not success_page:
-        request.session['success_page'] = url
+    if request.session.get('success_page', None):
+        del request.session['success_page']
+    if request.session.get('success_page_msg', None):
+        del request.session['success_page_msg']
+    request.session['success_page'] = url
+    request.session['success_page_msg'] = 'Trade Action'
     return paymentViews.pay(request, initParam=initParam)
 
 
