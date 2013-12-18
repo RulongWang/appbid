@@ -231,5 +231,20 @@ def checkOutSuccess(request, *args, **kwargs):
         app.save()
         #Init transaction model data
         # transactionViews.initTransaction(request, app=app)
+
+        #Share app to social system.
+        shareApp(request, serviceDetail=serviceDetail, app=app)
         return serviceDetail
     return None
+
+
+def shareApp(request, *args, **kwargs):
+    """Share App to Twitter or WeiBo, if user select the service."""
+    app = kwargs.get('app')
+    serviceDetail = kwargs.get("serviceDetail")
+    serviceItems = serviceDetail.serviceitem.all()
+    for serviceItem in serviceItems:
+        if serviceItem.name == 'Share_to_Weibo':
+            print 'Share_to_Weibo'
+        if serviceItem.name == 'Basic_service_package':
+            print 'Basic_service_package'

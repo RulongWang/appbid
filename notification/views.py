@@ -192,6 +192,8 @@ def sendNewAppEmail(request, *args, **kwargs):
 def sendNewCommentEmail(request, *args, **kwargs):
     """Send email to seller and buyer, when user add comment."""
     app = kwargs.get('app')
+    comment = kwargs.get('comment')
+    common_msg = comment.comment
     massEmailThread = email.MassEmailThread()
     if request.user.id != app.publisher.id:
         templates_seller = models.NotificationTemplate.objects.filter(name='new_comment_inform_seller')
@@ -208,3 +210,14 @@ def sendNewCommentEmail(request, *args, **kwargs):
             message = ''
             massEmailThread.addEmailData(subject=subject, message=message, recipient_list=[watchApp.buyer.email])
     massEmailThread.start()
+
+
+def sendNewMessageEmail(request, *args, **kwargs):
+    """Send email to seller or buyer, when user send message to seller or buyer."""
+    message = kwargs.get('message')
+    item_user = message.receiver.subscriptionitem_set.filter(key='private_msg')
+    if item_user:
+        temp_name = 'new_message_inform_user'
+        temp_params = ''#[user.username, active_link]
+        recipient_list = [message.receiver.email]
+        sendCommonEmail(temp_name=temp_name, temp_params=temp_params, recipient_list=recipient_list)

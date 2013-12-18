@@ -9,6 +9,7 @@ from payment import models as paymentModels
 
 class ServiceItem(models.Model):
     """ServiceItem table info, include many payment items."""
+    name = models.CharField(max_length=255)
     short_text = models.CharField(max_length=255)
     long_text = models.TextField()
     price = models.FloatField()

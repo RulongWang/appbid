@@ -12,6 +12,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 from django.db.models import Max, Q, Count
 from django.contrib.auth.models import User
+from django.contrib.comments.models import Comment
 
 from appbid import settings
 from appbid import models as appModels
@@ -589,7 +590,13 @@ def addCommentForApp(request, *args, **kwargs):
     """Do operation, when add comment for App"""
     if kwargs.get('pk'):
         app = get_object_or_404(appModels.App, pk=kwargs.get('pk'))
-        notificationViews.sendNewCommentEmail(request,app=app)
+        commentId = request.GET.get('c')
+        comments = Comment.objects.filter(pk=commentId)
+        if comments:
+            comment = comments[0]
+            notificationViews.sendNewCommentEmail(request,app=app, comment=comment)
+        # else:
+        #     notificationViews.sendNewCommentEmail(request,app=app)
         return redirect(reverse('query:app_detail', kwargs={'pk': app.id}))
 
 
