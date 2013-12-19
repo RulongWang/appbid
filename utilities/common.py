@@ -11,6 +11,7 @@ import httplib
 import ssl
 import socket
 import qrcode
+import threading
 
 from PIL import Image
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -263,6 +264,20 @@ def getUserClientIP(request, *args, **kwargs):
     else:
         ip = request.META.get('REMOTE_ADDR')
     return ip
+
+
+class CommonThread(threading.Thread):
+    """The common thread to do something."""
+    def __init__(self, executeMethod, **kwargs):
+        self.executeMethod = executeMethod
+        self.initParam = kwargs.get('initParam')
+        threading.Thread.__init__(self)
+
+    def run(self):
+        if self.initParam:
+            self.executeMethod(initParam=self.initParam)
+        else:
+            self.executeMethod()
 
 
 # For social auth function

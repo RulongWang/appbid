@@ -11,13 +11,14 @@ from django.utils.translation import ugettext as _
 from django.db import transaction
 from django.contrib.auth.models import User
 
+from utilities import common
 from appbid import models as appModels
 from payment import models as paymentModels
 from order import models, forms
 from payment import views as paymentViews
 from notification import views as notificationViews
+from auth import views as authViews
 from transaction import views as transactionViews
-from utilities import common
 
 log = logging.getLogger('appbid')
 
@@ -229,6 +230,7 @@ def checkOutSuccess(request, *args, **kwargs):
         else:
             app.end_date = serviceDetail.end_date
         app.save()
+
         #Init transaction model data
         # transactionViews.initTransaction(request, app=app)
 
@@ -243,8 +245,9 @@ def shareApp(request, *args, **kwargs):
     app = kwargs.get('app')
     serviceDetail = kwargs.get("serviceDetail")
     serviceItems = serviceDetail.serviceitem.all()
+    initParam = {'request': request, 'app': app}
     for serviceItem in serviceItems:
         if serviceItem.name == 'Share_to_Weibo':
-            print 'Share_to_Weibo'
-        if serviceItem.name == 'Basic_service_package':
-            print 'Basic_service_package'
+            common.CommonThread(authViews.shareToWeiBo, initParam=initParam).start()
+        if serviceItem.name == 'Share_to_Twitter':
+            common.CommonThread(authViews.shareToTwitter, initParam=initParam).start()

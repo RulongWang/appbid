@@ -35,15 +35,17 @@ def authError(request, *args, **kwargs):
     return None
 
 
-def shareToWeiBo(request, *args, **kwargs):
+def shareToWeiBo(*args, **kwargs):
     """Share App info to WeiBo"""
-    app = kwargs.get('app')
-    if app:
+    initParam = kwargs.get('initParam')
+    request = initParam.get('request')
+    app = initParam.get('app')
+    if app and request:
         try:
             url = 'https://upload.api.weibo.com/2/statuses/upload.json'
             app_url = '/'.join([common.getHttpHeader(request), 'query/app-detail', str(app.id)])
-            # status = ''.join(['App "', app.app_name.encode('utf-8'), '" for sale from AppsWalk. ', app_url])
-            status = ''.join(['App for sale from AppsWalk.'])
+            status = ''.join(['App "', app.app_name.encode('utf-8'), '" for sale from AppsWalk. ', app_url])
+            # status = ''.join(['App for sale from AppsWalk.'])
             data = {'source': settings.WEIBO_CLIENT_KEY, 'access_token': settings.WEIBO_ACCESS_TOKEN, 'status': status}
             path = '/'.join([settings.MEDIA_ROOT, app.appinfo.icon])
             files = {'pic': open(path, mode='rb')}
@@ -58,14 +60,16 @@ def shareToWeiBo(request, *args, **kwargs):
             log.error(_('Share App %(param1)s failed to WeiBo, error:%(param2)s') % {'param1': app.app_name, 'param2': e})
 
 
-def shareToTwitter(request, *args, **kwargs):
+def shareToTwitter(*args, **kwargs):
     """Share App info to Twitter"""
-    app = kwargs.get('app')
-    if app:
-        url = 'https://api.twitter.com/1.1/statuses/update_with_media.json'
+    initParam = kwargs.get('initParam')
+    request = initParam.get('request')
+    app = initParam.get('app')
+    if app and request:
+        # url = 'https://api.twitter.com/1.1/statuses/update_with_media.json'
         app_url = '/'.join([common.getHttpHeader(request), 'query/app-detail', str(app.id)])
-        # status = ''.join(['App "', app.app_name.encode('utf-8'), '" for sale from AppsWalk. ', app_url])
-        status = ''.join(['App for sale from AppsWalk.'])
+        status = ''.join(['App "', app.app_name.encode('utf-8'), '" for sale from AppsWalk. ', app_url])
+        # status = ''.join(['App for sale from AppsWalk.'])
         pic = open('/'.join([settings.MEDIA_ROOT, app.appinfo.icon]), mode='rb')
         twitter = Twython(
             app_key=settings.TWITTER_CONSUMER_KEY,
@@ -73,6 +77,6 @@ def shareToTwitter(request, *args, **kwargs):
             oauth_token=settings.TWITTER_OAUTH_TOKEN,
             oauth_token_secret=settings.TWITTER_OAUTH_TOKEN_SECRET
         )
-        # result = twitter.update_status_with_media(status=status, media=pic)
-        result = twitter.update_status(status='I am jarvis, post message to twitter.')
+        result = twitter.update_status_with_media(status=status, media=pic)
+        # result = twitter.update_status(status='I am jarvis, post message to twitter.')
         print result
