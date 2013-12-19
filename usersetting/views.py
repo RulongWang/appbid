@@ -38,6 +38,13 @@ def loginView(request, *args, **kwargs):
         if redirect_to == url or (url and redirect_to.startswith(str(url))):
             redirect_to = '/'
             break
+    if redirect_to.startswith('/bid/bid-create/'):
+        paths = redirect_to.split('/')
+        if len(paths) == 4:
+            redirect_to = reverse('query:app_detail', kwargs={'pk': str(paths[3])})
+        else:
+            redirect_to = '/'
+
     if user:
         if user.is_active:
             login(request, user)
