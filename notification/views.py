@@ -103,8 +103,8 @@ def closedTradeInform(*args, **kwargs):
         templates_watch = models.NotificationTemplate.objects.filter(name='closed_trade_inform_buyer_watched_category')
         for watchCategory in watchCategories:
             if templates_watch:
-                subject = ''
-                message = ''
+                subject = templates_watch[0].subject
+                message = templates_watch[0].template.replace('{param1}', transaction.buyer.username).replace('{param2}', transaction.app.app_name)
                 massEmailThread.addEmailData(subject=subject, message=message, recipient_list=[watchCategory.buyer.email])
         massEmailThread.start()
     return None
@@ -183,8 +183,8 @@ def sendNewAppEmail(request, *args, **kwargs):
         templates = models.NotificationTemplate.objects.filter(name='new_app_inform_buyer')
         for watchSeller in watchSellers:
             if templates:
-                subject = ''
-                message = ''
+                subject = templates[0].subject
+                message = templates[0].template.replace('{param1}', watchSeller.buyer.username).replace('{param2}', app.app_name)
                 massEmailThread.addEmailData(subject=subject, message=message, recipient_list=[watchSeller.buyer.email])
         massEmailThread.start()
 
@@ -200,14 +200,14 @@ def sendNewCommentEmail(request, *args, **kwargs):
         templates_buyer = models.NotificationTemplate.objects.filter(name='new_comment_inform_buyer')
         item_seller = app.publisher.subscriptionitem_set.filter(key='new_comment')
         if item_seller and templates_seller:
-            subject = ''
-            message = ''
+            subject = templates_seller[0].subject
+            message = templates_seller[0].template.replace('{param1}', app.publisher.username).replace('{param2}', app.app_name)
             massEmailThread.addEmailData(subject=subject, message=message, recipient_list=[app.publisher.email])
     watchApps = dashboardModels.WatchApp.objects.filter(app_id=app.id)
     for watchApp in watchApps:
         if templates_buyer:
-            subject = ''
-            message = ''
+            subject = templates_buyer[0].subject.replace('{param1}', app.app_name)
+            message = templates_buyer[0].template.replace('{param1}', watchApp.buyer.username).replace('{param2}', app.app_name)
             massEmailThread.addEmailData(subject=subject, message=message, recipient_list=[watchApp.buyer.email])
     massEmailThread.start()
 
@@ -218,6 +218,6 @@ def sendNewMessageEmail(request, *args, **kwargs):
     item_user = message.receiver.subscriptionitem_set.filter(key='private_msg')
     if item_user:
         temp_name = 'new_message_inform_user'
-        temp_params = ''#[user.username, active_link]
+        temp_params = [message.receiver.username]
         recipient_list = [message.receiver.email]
         sendCommonEmail(temp_name=temp_name, temp_params=temp_params, recipient_list=recipient_list)

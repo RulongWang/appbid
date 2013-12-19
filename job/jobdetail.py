@@ -70,6 +70,7 @@ def checkServiceDateForApps(*args, **kwargs):
         current_price = max_price.get('price__max', 0)
         #If bidding price is more than max price, seller has 7 days to trade or else seller can not trade it.
         if app.reserve_price and app.reserve_price <= current_price:
+            bids = bidModels.Bidding.objects.filter(app_id=app.id, price=current_price, status=1)
             transactions = app.transaction_set.filter(is_active=True)
             if transactions:
                 transaction = transactions[0]
@@ -89,8 +90,8 @@ def checkServiceDateForApps(*args, **kwargs):
             transactionsLog.save()
             templates = notificationModels.NotificationTemplate.objects.filter(name='service_end_inform_seller')
             if templates:
-                subject = ''
-                message = ''
+                subject = templates[0].subject.replace('{param1}', bids[0].buyer.username)
+                message = templates[0].template.replace('{param1}', app.publisher.username)
                 massEmailThread.addEmailData(subject=subject, message=message, recipient_list=[app.publisher.email])
         else:
             templates = notificationModels.NotificationTemplate.objects.filter(name='service_end_inform_seller_lt_reserve_price')
