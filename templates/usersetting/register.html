@@ -37,7 +37,7 @@
              <tr>
                  <td></td>
                  <td>{{ register_form.email }}</td>
-                 <td><img id="valid_email_img" hidden="hidden" src=""/><div id="email_msg" class="usg"></div></td>
+                 <td><div id="email_msg" class="usg"></div></td>
              </tr>
              <tr>
                  <td></td>
@@ -109,20 +109,22 @@
                 },
                 success:function(data) {
                     if(data.ok === 'true') {
-                        $("#email_msg").html('');
+                        $("#email_msg").attr('class', 'correct');
                         emailflag = true;
                     }
                     else {
                         $("#email_msg").attr('class', 'incorrect');
-                        $("#email_msg").html(data.message);
                         emailflag = false;
                     }
+                    $("#email_msg").html(data.message);
                     $(".errors_block").html('');
                 }
             });
         }
         else {
-            $("#email_msg").html('');
+            $("#email_msg").attr('class', 'incorrect');
+            $("#email_msg").html(email + ' is invalid.');
+            $(".errors_block").html('');
             emailflag = false;
         }
     });
@@ -137,19 +139,19 @@
             return false;
         }
         if ($("#id_password").val().trim() == "") {
-            $(".errors_block").html("Password is required.");//it will be set in message.properties.
+            $(".errors_block").html("Password is required.");
             return false;
         }
         if ($("#id_password").val().trim().length < 6) {
-            $(".errors_block").html("{{ register_form.password.help_text }}");//it will be set in message.properties.
+            $(".errors_block").html("{{ register_form.password.help_text }}");
             return false;
         }
         if ($("#id_email").val().trim() == "") {
-            $(".errors_block").html("Email is required.");//
+            $(".errors_block").html("Email is required.");
             return false;
         }
         if (!valid_email($("#id_email").val().trim())) {
-            $(".errors_block").html("Email is invalid.");//
+            $(".errors_block").html("Email is invalid.");
             return false;
         }
         if (!usernameflag || !emailflag) return false;
