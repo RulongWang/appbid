@@ -5,6 +5,7 @@ import logging
 
 from django.core.mail import send_mail, send_mass_mail, BadHeaderError
 from appbid import settings
+from utilities import common
 
 log = logging.getLogger('email')
 
@@ -24,11 +25,10 @@ class EmailThread(threading.Thread):
             #subject or message can not be filled.
             if isinstance(self.recipient_list, list) and len(self.recipient_list) > 0:
                 send_mail(self.subject, self.message, self.from_email, self.recipient_list, self.fail_silently)
-                print('*********************'+self.from_email)
                 email_str = ''
                 for email in self.recipient_list:
-                    email_str += email + ' '
-                log.info('Send email successfully. [' + ','.join(self.recipient_list) + '] ' + self.subject)
+                    email_str += common.hiddenEmail(email) + ' '
+                log.info('Send email successfully. [' + email_str + '] ' + self.subject)
             else:
                 log.error('Email recipient_list is not correct.')
         except BadHeaderError as e:

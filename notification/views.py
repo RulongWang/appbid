@@ -55,13 +55,11 @@ def sendCommonEmail(*args, **kwargs):
         if sub_params:
             for i in range(len(sub_params)):
                 param = ''.join(['{param', str(i+1), '}'])
-                subject = subject.replace(param, sub_params[i])
+                subject = subject.replace(param, str(sub_params[i]))
         if temp_params:
             for i in range(len(temp_params)):
                 param = ''.join(['{param', str(i+1), '}'])
-                template = template.replace(param, temp_params[i])
-        print 'subject= ', subject
-        print 'template= ', template
+                template = template.replace(param, str(temp_params[i]))
         email.EmailThread(from_email=from_email, subject=subject, message=template, recipient_list=recipient_list).start()
     else:
         log.error(_('%(param)s does not exist.') % {'param': temp_name})

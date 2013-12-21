@@ -464,7 +464,7 @@ def saveService(request, form, model, *args, **kwargs):
 
     #Check if the app is verified before check out.
     if not model.is_verified:
-        initParam['payment_msg'] = _('The service is made, but can payment after app is verified. Please click verification to send request message to us.')
+        initParam['payment_msg'] = _('The service is made, but can payment after app is verified. Please click \'App Verification\' to send verification request to us.')
         initParam['selectItems'] = serviceDetail.serviceitem.all()
         initParam['serviceDetail'] = serviceDetail
         initParam['amount'] = serviceDetail.amount
