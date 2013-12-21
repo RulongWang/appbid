@@ -32,7 +32,7 @@ Thanks
 Appswalk Ltd. ', 'Tell seller after buyer paid..', '1.0', '2013-12-08 20:11:12', '2013-12-11 22:57:16', 1);
 INSERT INTO appbid.notification_notificationtemplate (id, name, language, type, subject, template, description, version, create_time, last_modify, modifier_id) VALUES (7, 'buyer_one_price_inform_seller', 1, 1, '{param1} decised to buy your app {param2} from AppsWalk', 'Dear  {param1},
 
-User {param2} has bought your app {param3} via ''Buy it now''. You should start to deliver everything to  {param2} as you claimed on Appswalk.
+User {param2} has bought your app {param3} via ''Buy it now''. You should start to deliver everything to {param2} as you claimed on Appswalk.
 This transaction is guaranteed by Paypal.
 Thanks 
 Appswalk Ltd. ', 'Tell seller after buyer paid..', '1.0', '2013-12-08 20:11:12', '2013-12-08 22:33:39', 1);
@@ -62,24 +62,24 @@ If you meet any difficulty , please kindly send a message to us via support@apps
 Thank you very much.
 Appswalk Ltd
 ', 'Tell seller after buyer paid..', '1.0', '2013-12-08 20:11:12', '2013-12-08 22:44:26', 1);
-INSERT INTO appbid.notification_notificationtemplate (id, name, language, type, subject, template, description, version, create_time, last_modify, modifier_id) VALUES (12, 'service_end_inform_seller', 1, 1, 'You need to start the transaction with your auction winner {param1}', 'Dear {param2},
+INSERT INTO appbid.notification_notificationtemplate (id, name, language, type, subject, template, description, version, create_time, last_modify, modifier_id) VALUES (12, 'service_end_inform_seller', 1, 1, 'You need to start the transaction with your auction winner {param1}', 'Dear {param1},
 
 Your listing already ended, you need to start the transaction with your auction winner within 7 days, otherwise your credit points will be deducted. Please logon on www.appswalk.com and check details.
 Thank you very much.
 Appswalk Ltd', 'The bidding price exceed  the reservce price, and listing finished and after 7 days , The seller didn''t start the transaction with the buyer. ', '1.0', '2013-12-08 20:11:12', '2013-12-11 23:12:03', 1);
 INSERT INTO appbid.notification_notificationtemplate (id, name, language, type, subject, template, description, version, create_time, last_modify, modifier_id) VALUES (13, 'unsold_end_inform_seller', 1, 1, 'Need your action immediately ', 'Dear {param1},
 
- 7days has passed, however you didn''t start any transaction with you buyer yet. As an agreement   {param2} points will be deducted from your account. And you can also start your transaction right now.
+7days has passed, however you didn''t start any transaction with you buyer yet. As an agreement {param2} points will be deducted from your account. And you can also start your transaction right now.
 Regards,
 Appswalk Ltd', '7days passed, but the seller didn''t start the transaction , credit points deducted', '1.0', '2013-12-08 20:11:12', '2013-12-11 23:21:25', 1);
 INSERT INTO appbid.notification_notificationtemplate (id, name, language, type, subject, template, description, version, create_time, last_modify, modifier_id) VALUES (14, 'reset_password_email', 1, 1, 'Your Appswalk Password has been reset', 'Dear  {param1},
 
-please go to {param1} to reset your password immediately. Then review and update your security settings at www.appswalk.com
+please go to {param2} to reset your password immediately. Then review and update your security settings at www.appswalk.com
 Thanks,
 Apple Customer Support
 ', 'reset notification email', '1.0', '2013-12-08 20:11:12', '2013-12-11 23:22:38', 1);
 INSERT INTO appbid.notification_notificationtemplate (id, name, language, type, subject, template, description, version, create_time, last_modify, modifier_id) VALUES (15, 'buyer_unpaid_inform_second_buyer', 1, 1, 'The seller decided to make deal with you', 'Dear ｛param1},
- Glad to tell you , you are the winner of the {param2} auction .  Now you can pay the seller, after the payment.
+Glad to tell you, you are the winner of the {param2} auction. Now you can pay the seller, after the payment.
 The seller should start to deliver everything he/she claimed on Appswalk.
 Regards,
 Appswalk Ltd', 'buyer_unpaid_inform_second_buyer,
@@ -96,18 +96,17 @@ Any confusing please send email to support@appswalk.com
 Regards,
 Appswalk Ltd', '', '1.0', '2013-12-10 22:14:49', '2013-12-11 23:26:26', 1);
 INSERT INTO appbid.notification_notificationtemplate (id, name, language, type, subject, template, description, version, create_time, last_modify, modifier_id) VALUES (18, 'buyer_unpaid_inform_seller', 1, 1, 'Information from Appswalk', 'Dear {param1},
-The buyer {param1} didn''t pay you the auction money. We have already take that account as fraud.
+The buyer {param2} didn''t pay you the auction money. We have already take that account as fraud.
 Now you can start your new transaction with your second buyer.
 Please logon to www.appswalk.com and start your new transaction.
 Regards,
 Appswalk Ltd', '', '1.0', '2013-12-10 22:18:03', '2013-12-11 23:26:52', 1);
 INSERT INTO appbid.notification_notificationtemplate (id, name, language, type, subject, template, description, version, create_time, last_modify, modifier_id) VALUES (19, 'service_end_inform_seller_lt_reserve_price', 1, 1, 'Need your action on your listing', 'Dear {param1},
-The bidding price doesn''t reach your reserved price.  However you can start your transaction with your buyer who placed the highest price. Y
+The bidding price doesn''t reach your reserved price.  However you can start your transaction with your buyer who placed the highest price.
 Please logon to www.appswalk.com for more details.
 Regards,
 Appswalk Ltd', 'Service end, and reserve price not reach, seller can start the transaction', '1.0', '2013-12-10 22:18:29', '2013-12-11 23:14:56', 1);
-INSERT INTO appbid.notification_notificationtemplate (id, name, language, type, subject, template, description, version, create_time, last_modify, modifier_id) VALUES (20, 'new_bid_inform_seller', 1, 1, '  Your auction  just got a new bidding
-', ' Dear {param1},
+INSERT INTO appbid.notification_notificationtemplate (id, name, language, type, subject, template, description, version, create_time, last_modify, modifier_id) VALUES (20, 'new_bid_inform_seller', 1, 1, 'Your auction  just got a new bidding', 'Dear {param1},
  Your auction of app {param2} just got a new bidding. Please logon to www.appswalk.com for more details.
  Regards,
  Appswalk Ltd', '', '1.0', '2013-12-10 22:18:56', '2013-12-11 23:27:43', 1);
@@ -115,3 +114,24 @@ INSERT INTO appbid.notification_notificationtemplate (id, name, language, type, 
 Other bidder just placed a new price for the app {param2}. You can place a higher price there.
 Regards,
 Appswalk Ltd', 'Notify me when a bid is placed above one of my bids', '1.0', '2013-12-10 22:20:29', '2013-12-11 23:32:29', 1);
+INSERT INTO appbid.notification_notificationtemplate (id, name, language, type, subject, template, description, version, create_time, last_modify, modifier_id) VALUES (22, 'new_comment_inform_seller', 1, 1, 'You got a new comment ', 'Dear {param1},
+You just got a new comment regarding your auction {param2}.
+Please login www.appswalk.com ,and check comment details.
+Best regards,
+Appswalk Ltd', 'Inform seller there is new comment from buyer', '1.0', '2013-12-13 14:59:29', '2013-12-13 14:59:29', 1);
+INSERT INTO appbid.notification_notificationtemplate (id, name, language, type, subject, template, description, version, create_time, last_modify, modifier_id) VALUES (23, 'new_comment_inform_buyer', 1, 1, 'There is a new comment on APP {param1}', 'Dear {param1},
+There is a new comment on APP {param1} at Appswalk, please login and check details.
+Best regards,
+Appswalk Ltd', 'Seller replied buyer, inform buyer', '1.0', '2013-12-13 15:01:47', '2013-12-13 15:01:47', 1);
+INSERT INTO appbid.notification_notificationtemplate (id, name, language, type, subject, template, description, version, create_time, last_modify, modifier_id) VALUES (24, 'closed_trade_inform_buyer_watched_category', 1, 1, 'There is new auction in your watching category', 'Dear {param1},
+There is new auction {param2} in your watching category, please login and check details.
+Best regards,
+Appswalk Ltd', 'Newlisting at watching category, inform buyer', '1.0', '2013-12-13 15:06:19', '2013-12-13 15:06:19', 1);
+INSERT INTO appbid.notification_notificationtemplate (id, name, language, type, subject, template, description, version, create_time, last_modify, modifier_id) VALUES (25, 'new_app_inform_buyer', 1, 1, 'Your watching seller just list a new APP', 'Dear {param1},
+Your watching seller just list a new APP {param2} on Appswalk
+Best regards,
+Appswalk Ltd', 'Your watching seller just list a new APP', '1.0', '2013-12-13 15:10:16', '2013-12-13 15:10:16', 1);
+INSERT INTO appbid.notification_notificationtemplate (id, name, language, type, subject, template, description, version, create_time, last_modify, modifier_id) VALUES (26, 'new_message_inform_user', 1, 1, 'There is a new message in your Appswalk Inbox', 'Dear {param1},
+There is a new message in your Appswalk Inbox , please login and check details.
+Best regards,
+Appswalk Ltd', 'Your get the private message', '1.0', '2013-12-13 15:10:16', '2013-12-13 15:10:16', 1);

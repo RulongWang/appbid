@@ -268,9 +268,9 @@ EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.mailgun.org'
 EMAIL_PORT = 587 #465
 #EMAIL_HOST_USER = 'AKIAIZOLHXT23DTCJ7LQ'#your email username
-EMAIL_HOST_USER = 'postmaster@appswalk.com'#your email username
+EMAIL_HOST_USER = 'postmaster@webmaster.appswalk.com'#your email username
 #EMAIL_HOST_PASSWORD = 'AoW+7BtPEXWG1RQRnPAfpupateV4r0YEV42ggANfG7mU' #your email passowrdEMAIL_HOST_USER = 'AKIAIZOLHXT23DTCJ7LQ'#your email username
-EMAIL_HOST_PASSWORD = '9vl0ysfc2gm4' #your email passowrd
+EMAIL_HOST_PASSWORD = '2yt7pu-k8jn3' #your email passowrd
 EMAIL_SENDER = 'support@appswalk.com'
 CRONJOBS = [
     #Run every night at midnight
