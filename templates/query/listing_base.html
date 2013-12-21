@@ -158,7 +158,7 @@
                                     <a href="?page={{ apps.previous_page_number }}">previous</a>
                                 {% endif %}
                             {% endif %}
-                            Page {{ apps.number }} of {{ apps.paginator.num_pages }}
+                            {{ apps.number }} of {{ apps.paginator.num_pages }}
                             {% if apps.has_next %}
                                 {% if query_tile %}
                                     <a href="{{ query_tile.2 }}&page={{ apps.next_page_number }}">next</a>

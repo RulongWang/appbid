@@ -36,6 +36,9 @@
                    <div id="account_msg" style="color: green">
                         {{ account_msg }}
                    </div>
+                   <div id="account_error" style="color: red">
+                        {{ account_msg }}
+                   </div>
                    <div class="dash_title">Account Details</div>
                     <form action=""  method="post">
                     {% csrf_token %}
@@ -101,16 +104,16 @@
 <script type="text/javascript" language="javascript">
     $("#submit").click(function() {
         if ($("#id_birthday").val().trim() != "" && !validDate($("#id_birthday").val())) {
-            $("#account_msg").html("<ul><li>The birthday is not correct.</li></ul>");//TODO:it will be set in message.properties.
+            $("#account_error").html("The birthday is not correct.");
             return false;
         }
         if ($("#id_real_name").val().trim() != "" && $("#id_real_name").val().trim().length > 25) {
-            $("#account_msg").html("<ul><li>The length of real name can not more than 25.</li></ul>");//TODO:it will be set in message.properties.
+            $("#account_error").html("The length of real name can not more than 25.");
             return false;
         }
         var tel = /^[0-9]{6}$/;
         if ($("#id_post_code").val().trim() != "" && !tel.test($("#id_post_code").val().trim())) {
-            $("#account_msg").html("<ul><li>Post code is not correct.</li></ul>");//TODO:it will be set in message.properties.
+            $("#account_error").html("Post code is not correct.");
             return false;
         }
     });
