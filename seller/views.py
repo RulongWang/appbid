@@ -488,6 +488,9 @@ def saveVerification(request, form, model, *args, **kwargs):
     if model is None or model.status == 3:
         return None
     initParam = kwargs.get('initParam')
+    if model.is_verified is True:
+        initParam['verify_msg'] = _('The app has been verified successfully. No need verify again.')
+        return None
     try:
         ownerShipScan = appModels.OwnerShip_Scan.objects.get(app_id=model.id)
         ownerShipScan.times = 0
