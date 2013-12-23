@@ -152,6 +152,13 @@ def tradeAction(request, *args, **kwargs):
     else:
         raise Http404
 
+    support_user = common.getSystemParam(key='support_user', default='appswalk')
+    support_users = models.User.objects.filter(username=support_user)
+    if support_users:
+        initParam['support_user'] = support_users[0]
+    else:
+        log.error(_('Support user account does not exist.'))
+
     initParam['transaction'] = transaction
     if transaction.status == 2 or transaction.status == 3:
         if transaction.end_time > datetime.datetime.now():
@@ -162,12 +169,6 @@ def tradeAction(request, *args, **kwargs):
         if tradeOperation(request, transaction=transaction, initParam=initParam):
             return redirect(request.path)
     elif transaction.status == 4:
-        support_user = common.getSystemParam(key='support_user', default='appswalk')
-        support_users = models.User.objects.filter(username=support_user)
-        if support_users:
-            initParam['support_user'] = support_users[0]
-        else:
-            log.error(_('Support user account does not exist.'))
         initParam['time_remaining'] = common.dateBefore(transaction.end_time)
 
         initParam['seller_txn'] = creditViews.getAppraisement(user_id=transaction.seller.id, txn_id=transaction.id)

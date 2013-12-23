@@ -28,12 +28,13 @@
                          Contact Paypal to dispute/reverse this payment, we will help you provide all transaction evidence accordingly.<br/>
                     </li>
                     <li>
-                        Click the button 'Confirm Transaction' to close this transaction. This means you have already got all delivery items from seller.
+                        Click the button 'Confirm Delivery' to close this transaction. This means you have already got all delivery items from seller.
                     </li>
                 </ul>
                 <div>
-                    <a href="">
-                        <input id="id_complain" type="button" value="Complain Seller">
+                    If you think the seller is cheating, you can click 'Complain Seller', raise an incident to Appswalk Support.
+                    <a href="/dashboard/create-message/reply/2/{{ support_user.username }}/{{ support_user.id }}?next={{ request.path }}">
+                        <input id="id_complain" type="button" value="Complain Seller" class="button_s">
                     </a>
                 </div>
             <div style="padding: 3px;"><h2 style="font-weight: bold;">The promised things you should get after payment from the app seller ({{ transaction.seller.username }}):</h2></div>
