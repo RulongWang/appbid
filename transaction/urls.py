@@ -11,4 +11,5 @@ urlpatterns = patterns('',
 
     url(r'^one-price-buy/(?P<app_id>\d+)/(?P<publisher_id>\d+)$', views.onePriceBuy, name='one_price_buy'),
     url(r'^buyer-pay/(?P<app_id>\d+)/(?P<txn_id>\d+)/(?P<token>\w{30})$', views.buyerPay, name='buyer_pay'),
+    url(r'^remind-buyer/(?P<txn_id>\d*)$', views.remindBuyerPay, name='remind_buyer'),
 )

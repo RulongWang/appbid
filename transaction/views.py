@@ -4,9 +4,10 @@ import time
 import datetime
 import string
 import logging
+import json
 
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render_to_response, RequestContext, redirect, get_object_or_404, Http404
+from django.shortcuts import render_to_response, RequestContext, redirect, get_object_or_404, Http404, HttpResponse
 from django.views.decorators.csrf import csrf_protect
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext as _
@@ -534,3 +535,19 @@ def jobCheckPayComplete(*args, **kwargs):
                                                      gateway_id__isnull=False, is_active=True)
     for transaction in transactions:
         paymentViews.checkPayComplete(transaction=transaction, executeMethod=executePay)
+
+
+def remindBuyerPay(request, *args, **kwargs):
+    data = {}
+    try:
+        dict = request.POST
+    except:
+        dict = request.GET
+    txn_id = dict.get('txn_id')
+    transactions = models.Transaction.objects.filter(pk=txn_id)
+    if transactions:
+        # notificationViews.remindBuyerPay()
+        data['ok'] = 'true'
+    else:
+        data['ok'] = 'false'
+    return HttpResponse(json.dumps(data), mimetype=u'application/json')

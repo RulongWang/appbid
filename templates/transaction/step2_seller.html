@@ -16,9 +16,7 @@
             <div><!--TODO: reminder button , send email to buyer -->
                   <!--TODO: when remaining date is 4 days, show the message. -->
                    You can send an email to remind buyer to pay ASAP.
-                   <a href="">
-                        <input id="id_pay" type="button" value="Send Email">
-                   </a>
+                   <input id="id_pay" type="button" value="Send Email" class="button_s">&nbsp;&nbsp;<span id="send_msg" style="color: green;"></span>
             </div>
 
             <div style="padding: 3px;"><h2 style="font-weight: bold;">The promised things you will deliver to the buyer ({{ transaction.buyer.username }}):</h2></div>
@@ -41,22 +39,22 @@
                     {% endif %}
             </div>
         </div>
-
-{#        <div>#}
-{#            <form action="" method="post">#}
-{#                {% csrf_token %}#}
-{#                <input id="submit" type="submit" name="submit" value="Confirm My Delivery" class="button_s"/>#}
-{#            </form>#}
-{#        </div>#}
     </div>
-
-
-
-
-
-
-
-
-
-
-
+<script type="text/javascript" language="javascript">
+    $("#id_pay").click(function() {
+        var id = "{{ transaction.id }}";
+        $.ajax({
+            type:"POST",
+            url:"{% url 'transaction:remind_buyer' id %}",
+            data:{
+                txn_id: id,
+                csrfmiddlewaretoken: "{{ csrf_token }}"
+            },
+            success:function(data) {
+                if(data.ok === 'true') {
+                    $("#send_msg").html("Sent email successfully.");
+                }
+            }
+        });
+    });
+</script>
