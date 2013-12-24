@@ -538,15 +538,16 @@ def jobCheckPayComplete(*args, **kwargs):
 
 
 def remindBuyerPay(request, *args, **kwargs):
+    """Seller click button to remind buyer to pay."""
     data = {}
     try:
         dict = request.POST
     except:
         dict = request.GET
     txn_id = dict.get('txn_id')
-    transactions = models.Transaction.objects.filter(pk=txn_id)
+    transactions = models.Transaction.objects.filter(pk=txn_id, seller_id=request.user.id)
     if transactions:
-        # notificationViews.remindBuyerPay()
+        notificationViews.remindBuyerPay(request, transation=transactions[0])
         data['ok'] = 'true'
     else:
         data['ok'] = 'false'

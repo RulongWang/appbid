@@ -184,7 +184,7 @@ def saveAppStoreLink(request, form, model, *args, **kwargs):
     else:
         model.title = title
         model.app_store_link = app_store_link
-    model.rating = result.get('averageUserRating', None)
+    model.rating = result.get('averageUserRating', 0)
     model.platform_version = result.get('version', None)
     model.apple_id = result.get('trackId', None)
     model.app_name = result.get('trackName', None)

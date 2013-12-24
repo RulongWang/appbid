@@ -221,3 +221,14 @@ def sendNewMessageEmail(request, *args, **kwargs):
         temp_params = [message.receiver.username]
         recipient_list = [message.receiver.email]
         sendCommonEmail(temp_name=temp_name, temp_params=temp_params, recipient_list=recipient_list)
+
+
+def remindBuyerPay(request, *args, **kwargs):
+    """Seller remind buyer to pay."""
+    transaction = kwargs.get('transaction')
+    if transaction:
+        temp_name = 'seller_remind_buyer_pay'
+        sub_params = [transaction.app.app_name]
+        temp_params = [transaction.seller.username, transaction.app.app_name]
+        recipient_list = [transaction.buyer.email]
+        sendCommonEmail(temp_name=temp_name, sub_params=sub_params, temp_params=temp_params, recipient_list=recipient_list)
