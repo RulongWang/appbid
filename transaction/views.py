@@ -547,7 +547,7 @@ def remindBuyerPay(request, *args, **kwargs):
     txn_id = dict.get('txn_id')
     transactions = models.Transaction.objects.filter(pk=txn_id, seller_id=request.user.id)
     if transactions:
-        notificationViews.remindBuyerPay(request, transation=transactions[0])
+        notificationViews.remindBuyerPay(request, transaction=transactions[0])
         data['ok'] = 'true'
     else:
         data['ok'] = 'false'
