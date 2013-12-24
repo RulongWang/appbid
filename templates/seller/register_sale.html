@@ -117,7 +117,7 @@
             return false;
         }
         if (isNaN(begin_price)) {
-            $(".errors_block").html("Begin price should be number.");
+            $(".errors_block").html("Begin price should be a number.");
             return false;
         }
         if ($("#id_currency").val().trim() == "") {
@@ -125,7 +125,7 @@
             return false;
         }
         if (one_price != "" && isNaN(one_price)) {
-            $(".errors_block").html("One price should be number.");
+            $(".errors_block").html("Buy it now field should be a number.");
             return false;
         }
         if (reserve_price != "" && isNaN(reserve_price)) {
@@ -133,7 +133,7 @@
             return false;
         }
         if (one_price != "" && reserve_price != "" && parseFloat(one_price) > parseFloat(reserve_price)) {
-            $(".errors_block").html("Reserve price should be greater than one price.");
+            $(".errors_block").html("Reserve price should be greater than buy it now price.");
             return false;
         }
         if (minimum_bid == "") {

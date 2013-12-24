@@ -41,23 +41,23 @@
 <script type="text/javascript" language="javascript">
     $("#save").click(function() {
         if ({{ app.publisher.id }} == {{ request.user.id }}) {
-            $("#price_msg_new").text("You can not bid your own app.");
+            $("#price_msg_new").text("You can not place bid on your own app.");
             return false;
         }
         if ($("#id_price").val() =="") {
-            $("#price_msg_new").text("The price can not be blank.");
+            $("#price_msg_new").text("The price is mandatory.");
             return false;
         }
         if (isNaN($("#id_price").val())) {
-            $("#price_msg_new").text("The price should be number.");
+            $("#price_msg_new").text("The price should be a number.");
             return false;
         }
         if (parseFloat($("#id_price").val()) < parseFloat($("#bid_price_new").text())) {
-            $("#price_msg_new").text("The price must bid at least the minimum bid.");
+            $("#price_msg_new").text("Please place a number larger than the minimum bidding increment amount.");
             return false;
         }
         if ($("#agreement").is(':checked') == false) {
-             $("#price_msg_new").text("You must be read and agreed the Bidding Terms and Conditions.");
+             $("#price_msg_new").text("You should agree the Bidding Terms and Conditions.");
             return false;
         }
         if (($("#bid_form").is(":visible") || $("#is_send_message").val()=="yes") && $("#id_title").val().trim() == "") {
