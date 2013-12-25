@@ -33,14 +33,16 @@
         <label>Total:</label>
         <label id="total">{{ amount|default:0 }}</label><b>$</b>
         </div>
-    </div>
-    <div>
+        <div class="right" style="width:500px;text-align: right;">
         <label>Discount Rate:</label>
-        <label id="discount_rate">{{ discount_rate }}</label>
-    </div>
-    <div>
+        <label id="total">{{ discount_rate }}</label><b>$</b>
+        </div>
+
+
+        <div class="right" style="width:500px;text-align: right;">
         <label>Actual Total:</label>
         <label id="actual_total"></label><b>$</b>
+        </div>
     </div>
     <div class="right" style="width:250px;">
     {% if serviceDetail == None or serviceDetail and serviceDetail.is_payed != True %}
