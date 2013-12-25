@@ -34,6 +34,14 @@
         <label id="total">{{ amount|default:0 }}</label><b>$</b>
         </div>
     </div>
+    <div>
+        <label>Discount Rate:</label>
+        <label id="discount_rate">{{ discount_rate }}</label>
+    </div>
+    <div>
+        <label>Actual Total:</label>
+        <label id="actual_total"></label><b>$</b>
+    </div>
     <div class="right" style="width:250px;">
     {% if serviceDetail == None or serviceDetail and serviceDetail.is_payed != True %}
         <input id="next" class="nextbutton" type="submit" name="next" value="Checkout"/>
@@ -45,6 +53,8 @@
 
 <script type="text/javascript" language="javascript">
     var total =  parseFloat(($("#total").text()).replace(",", "."));
+    var discount_rate = parseFloat("{{ discount_rate }}");
+    $("#actual_total").html(total*discount_rate);
     function checkServiceItem(obj) {
         var price = $(obj).attr("price");
         if ($(obj).is(':checked') == true) {
@@ -54,6 +64,7 @@
             total -= parseFloat(price.replace(",", "."));
         }
         $("#total").html(total);
+        $("#actual_total").html(total*discount_rate);
     }
 </script>
 </div>

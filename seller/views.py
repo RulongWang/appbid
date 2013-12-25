@@ -56,6 +56,7 @@ def registerApp(request, *args, **kwargs):
                 initParam['appInfoForm'] = forms.AppInfoForm(instance=appInfos[0])
         #For Payment
         if flag == 6:
+            initParam['discount_rate'] = common.getSystemParam(key='discount_rate', default=1)
             initParam['serviceItems'] = orderModels.ServiceItem.objects.filter(end_date__gte=datetime.datetime.now())
             serviceDetails = orderModels.ServiceDetail.objects.filter(app_id=app.id).order_by('-pk')
             sn = kwargs.get('sn', None)
