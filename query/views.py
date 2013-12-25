@@ -117,16 +117,10 @@ def mostActive(request):
     currency_id = common.getSystemParam(key='currency', default=2)
     initParam['currency'] = get_object_or_404(appModels.Currency, pk=currency_id)
 
-    # bidApps = bidModels.Bidding.objects.values('app').annotate(bid_num=Count('app')).filter(app__status=2, app__end_date__gt=datetime.datetime.now()).order_by('-bid_num')
-    # for bid in bidApps:
-    #     # print bid.id, bid.app.id, bid.bid_num
-    #     print bid
-
     app_id = []
     bids = bidModels.Bidding.objects.values('app').annotate(bid_num=Count('app')).order_by('-bid_num')
     for bid in bids:
         app_id.append(bid.get('app'))
-    # apps = appModels.App.objects.raw('select * from appbid_app')
 
     if revenue_min is None and category is None and subcategory is None and monetize is None and device is None and seller is None:
         apps = appModels.App.objects.filter(pk__in=app_id, status=2, end_date__gt=datetime.datetime.now())
@@ -188,8 +182,17 @@ def mostActive(request):
                 pk__in=app_id, status=2, end_date__gt=datetime.datetime.now()).count()])
     common.sortWithIndexLie(initParam['category_list'], 1, order='desc')
 
+    #For sort app by bid numbers
+    app_map = {}
+    for app in apps:
+        app_map[str(app.id)] = app
+    new_app = []
+    for id in app_id:
+        if app_map.get(str(id)):
+            new_app.append(app_map.get(str(id)))
+
     #Query data
-    initParam['apps'] = queryAppsWithPaginator(request, page=page, apps=apps)
+    initParam['apps'] = queryAppsWithPaginator(request, page=page, apps=new_app)
 
     return render_to_response('query/listing_base.html', initParam, context_instance=RequestContext(request))
 
