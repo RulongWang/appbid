@@ -282,7 +282,7 @@ CRONJOBS = [
     # ('* */1 * * *', 'appbid.job.job.jobByEveryHour'),
     #Run every five min
     # ('*/5 * * * *', 'appbid.job.job.jobByFiveMin'),
-    ('*/1 * * * *', 'appbid.job.job.jobByMidnight'),
+    ('*/1 * * * *', 'appbid.job.cron.test'),
 ]
 
 try:
