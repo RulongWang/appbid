@@ -1,6 +1,7 @@
 # Django settings for appbid project.
 import os
 import datetime
+
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
@@ -274,13 +275,14 @@ EMAIL_HOST_PASSWORD = '2yt7pu-k8jn3' #your email passowrd
 EMAIL_SENDER = 'support@appswalk.com'
 CRONJOBS = [
     #Run every night at midnight
-    ('* 0 * * *', 'appbid.job.job.jobByMidnight'),
+    # ('* 0 * * *', 'appbid.job.job.jobByMidnight'),
     #Run every four hour
-    ('* */4 * * *', 'appbid.job.job.jobByFourHour'),
+    # ('* */4 * * *', 'appbid.job.job.jobByFourHour'),
     #Run every hour
-    ('* */1 * * *', 'appbid.job.job.jobByEveryHour'),
+    # ('* */1 * * *', 'appbid.job.job.jobByEveryHour'),
     #Run every five min
-    ('*/5 * * * *', 'appbid.job.job.jobByFiveMin'),
+    # ('*/5 * * * *', 'appbid.job.job.jobByFiveMin'),
+    ('*/1 * * * *', 'appbid.job.jobdetail.verificationAppForSeller'),
 ]
 
 try:

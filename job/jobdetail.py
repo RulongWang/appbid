@@ -114,7 +114,7 @@ def checkIfSellApp(*args, **kwargs):
     points = common.getSystemParam(key='cp_buyer_unpaid', default=50)
     for transaction in transactions:
         #Decrease seller's credit points
-        creditViews.decreaseCreditPoint(user=transaction.seller, string.atoi(points), type=1, ref_id=transaction.id)
+        creditViews.decreaseCreditPoint(user=transaction.seller, point=string.atoi(points), type=1, ref_id=transaction.id)
         templates = notificationModels.NotificationTemplate.objects.filter(name='unsold_end_inform_seller')
         if templates:
             subject = templates[0].subject
@@ -170,7 +170,7 @@ def taskForBuyUnpaid(*args, **kwargs):
     for transaction in transactions:
         transaction.is_active = False
         transaction.save()
-        creditViews.decreaseCreditPoint(user=transaction.buyer, points, type=1, ref_id=transaction.id)
+        creditViews.decreaseCreditPoint(user=transaction.buyer, point=points, type=1, ref_id=transaction.id)
         bidModels.Bidding.objects.filter(app_id=transaction.app.id, buyer_id=transaction.buyer.id).update(status=False)
         if templates_buyer:
             subject = templates_buyer[0].subject
