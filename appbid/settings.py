@@ -1,6 +1,8 @@
 # Django settings for appbid project.
 import os
 import datetime
+import job.job
+
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
@@ -281,7 +283,7 @@ CRONJOBS = [
     # ('* */1 * * *', 'appbid.job.job.jobByEveryHour'),
     #Run every five min
     # ('*/5 * * * *', 'appbid.job.job.jobByFiveMin'),
-    ('*/1 * * * *', 'appbid.job.job.test'),
+    ('*/1 * * * *', job.job.jobByMidnight),
 ]
 
 try:

@@ -1,12 +1,11 @@
 __author__ = 'Jarvis'
 
-# import datetime
-# import jobdetail
+import jobdetail
 
 
-# def jobByFourHour(*args, **kwargs):
-#     """The task will be done every four hours."""
-#     jobdetail.verificationAppForSeller()
+def jobByFourHour(*args, **kwargs):
+    """The task will be done every four hours."""
+    jobdetail.verificationAppForSeller()
 
 
 def jobByMidnight(*args, **kwargs):
@@ -14,16 +13,13 @@ def jobByMidnight(*args, **kwargs):
     print 'jobForMidnight'
 
 
-# def jobByEveryHour(*args, **kwargs):
-#     """Server invoke the method to do schedule task at schedule time, such as: every hour."""
-#     jobdetail.checkServiceDateForApps()
-#     jobdetail.taskForBuyUnpaid()
-#     jobdetail.checkIfSellApp()
+def jobByEveryHour(*args, **kwargs):
+    """Server invoke the method to do schedule task at schedule time, such as: every hour."""
+    jobdetail.checkServiceDateForApps()
+    jobdetail.taskForBuyUnpaid()
+    jobdetail.checkIfSellApp()
 
 
-# def jobByFiveMin(*args, **kwargs):
-#     """Server invoke the method to do schedule task at schedule time, such as: every five min."""
-#     jobdetail.jobPayStatus()
-
-def test():
-    print 'test job.'
+def jobByFiveMin(*args, **kwargs):
+    """Server invoke the method to do schedule task at schedule time, such as: every five min."""
+    jobdetail.jobPayStatus()
