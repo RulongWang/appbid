@@ -1,4 +1,5 @@
 # Django settings for appbid project.
+#!/usr/bin/python
 import os
 import datetime
 
