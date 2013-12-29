@@ -282,7 +282,8 @@ CRONJOBS = [
     # ('* */1 * * *', 'appbid.job.job.jobByEveryHour'),
     #Run every five min
     # ('*/5 * * * *', 'appbid.job.job.jobByFiveMin'),
-    ('*/1 * * * *', 'appbid.job.jobdetail.verificationAppForSeller'),
+    ('*/1 * * * *', 'appbid.job.jobdetail.verificationAppForSeller', '> /var/www/logs/appbid_job.log'),
+    ('*/2 * * * *', 'appbid.job.jobdetail.test', '> /var/www/logs/appbid_job.log'),
 ]
 
 try:
