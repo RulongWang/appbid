@@ -24,7 +24,9 @@ def verificationAppForSeller(*args, **kwargs):
     massEmailThread = email.MassEmailThread()
     print 'running verificationAppForSeller....'
     for ownerShipScan in ownerShipScans:
+        print 'app_id=', ownerShipScan.app_id
         app = ownerShipScan.app
+        print 'app_name=', app.app_name
         result = common.getITunes(app.apple_id)
         if result is None:
             continue
