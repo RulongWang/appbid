@@ -7,7 +7,7 @@ DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
-    # ('Your Name', 'your_email@example.com'),
+    ('AppsWalk', 'support@appswalk.com'),
 )
 
 MANAGERS = ADMINS
@@ -142,6 +142,7 @@ INSTALLED_APPS = (
     'django.contrib.admindocs',
     'django.contrib.comments',
     'django_crontab',
+    # 'django_cron',
     'social_auth',
     'qrcode',
     'requests',
@@ -274,6 +275,7 @@ EMAIL_HOST_USER = 'postmaster@webmaster.appswalk.com'#your email username
 #EMAIL_HOST_PASSWORD = 'AoW+7BtPEXWG1RQRnPAfpupateV4r0YEV42ggANfG7mU' #your email passowrdEMAIL_HOST_USER = 'AKIAIZOLHXT23DTCJ7LQ'#your email username
 EMAIL_HOST_PASSWORD = '2yt7pu-k8jn3' #your email passowrd
 EMAIL_SENDER = 'support@appswalk.com'
+
 CRONJOBS = [
     #Run every night at midnight
     # ('* 0 * * *', 'appbid.job.job.jobByMidnight'),
@@ -284,8 +286,15 @@ CRONJOBS = [
     #Run every five min
     # ('*/5 * * * *', 'appbid.job.job.jobByFiveMin'),
     #('*/1 * * * *', 'appbid.job.jobdetail.verificationAppForSeller', '> /var/www/logs/appbid_job.log 2>&1'),
-    ('*/1 * * * *', 'appbid.cron_test.test', '> /var/www/logs/appbid_job.log 2>&1'),
+    ('*/1 * * * *', 'appbid.cron.test', '> /var/www/logs/appbid_job.log 2>&1'),
 ]
+
+
+# CRON_CLASSES = [
+#     "django_cron.cron.FailedRunsNotificationCronJob",
+#     "appbid.cron.MyCronJobJarvis",
+# ]
+# FAILED_RUNS_CRONJOB_EMAIL_PREFIX = '[Cron Job]: '
 
 try:
     from paypal.settings import *
