@@ -283,16 +283,17 @@ EMAIL_SENDER = 'support@appswalk.com'
 
 CRONJOBS = [
     #Run every night at midnight
-    # ('* 0 * * *', 'appbid.job.job.jobByMidnight'),
+    # ('* 0 * * *', 'appbid.cron.jobByMidnight'),
     #Run every four hour
-    # ('* */4 * * *', 'appbid.job.job.jobByFourHour'),
+    # ('* */4 * * *', 'appbid.cron.jobByFourHour'),
     #Run every hour
-    # ('* */1 * * *', 'appbid.job.job.jobByEveryHour'),
+    # ('* */1 * * *', 'appbid.cron.jobByEveryHour'),
     #Run every five min
-    # ('*/5 * * * *', 'appbid.job.job.jobByFiveMin'),
-    #('*/1 * * * *', 'appbid.job.jobdetail.verificationAppForSeller', '> /var/www/logs/appbid_job.log 2>&1'),
-    # ('*/1 * * * *', 'appbid.cron.test', '> /var/www/logs/appbid_job.log 2>&1'),
-    ('*/1 * * * *', 'appbid.cron.test'),
+    # ('*/5 * * * *', 'appbid.cron.jobByFiveMin'),
+
+    ('*/1 * * * *', 'appbid.cron.jobByMidnight'),
+    ('*/1 * * * *', 'appbid.cron.jobByFourHour'),
+    ('*/1 * * * *', 'appbid.cron.jobByFiveMin'),
 ]
 
 
