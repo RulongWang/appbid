@@ -53,16 +53,16 @@ Your app transaction is completed, for more details please logon to  www.appswal
 
 Thanks 
 Appswalk Ltd. ', 'Tell seller after buyer paid..', '1.0', '2013-12-08 20:11:12', '2013-12-08 22:56:26', 1);
-INSERT INTO appbid.notification_notificationtemplate (name, language, type, subject, template, description, version, create_time, last_modify, modifier_id) VALUES ('verified_app_success_inform_seller', 1, 1, 'Congratulations! Your app ownership has been verified.', 'Dear {param1},
+INSERT INTO appbid.notification_notificationtemplate (name, language, type, subject, template, description, version, create_time, last_modify, modifier_id) VALUES ('verified_app_success_inform_seller', 1, 1, 'Congratulations! Your ownership of app {param2} has been verified.', 'Dear {param1},
 
-We are happy to inform you that your app has been verified at Appswalk. 
+We are happy to inform you that your app {param2} has been verified at Appswalk.
 Please kindly logon to appswalk.com , and check your account details.
 The last step is to finish your payment for your listing, and then your app could be listed on Appswalk.
 Thank you very much.
 Appswalk Ltd', 'Tell seller after buyer paid..', '1.0', '2013-12-08 20:11:12', '2013-12-08 22:47:38', 1);
-INSERT INTO appbid.notification_notificationtemplate (name, language, type, subject, template, description, version, create_time, last_modify, modifier_id) VALUES ('verified_app_failed_inform_seller', 1, 1, 'Failed to validate your app ownership', 'Dear {param1},
+INSERT INTO appbid.notification_notificationtemplate (name, language, type, subject, template, description, version, create_time, last_modify, modifier_id) VALUES ('verified_app_failed_inform_seller', 1, 1, 'Failed to validate your ownership of app {param2} ', 'Dear {param1},
 
-We are not able to verify your app ownership. Please ensure if have copied and pasted the verification code at your app description on AppleStore. 
+We are not able to verify your ownership of app {param2} . Please ensure if have copied and pasted the verification code at your app description on AppleStore.
 If you meet any difficulty , please kindly send a message to us via support@appswalk.com
 Thank you very much.
 Appswalk Ltd
