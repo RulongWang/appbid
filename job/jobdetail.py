@@ -31,7 +31,7 @@ def verificationAppForSeller(*args, **kwargs):
         if app.verify_token in description:
             templates = notificationModels.NotificationTemplate.objects.filter(name='verified_app_success_inform_seller')
             if templates:
-                subject = templates[0].subject
+                subject = templates[0].subject.replace('{param1}', app.app_name)
                 message = templates[0].template.replace('{param1}', app.publisher.username).replace('{param2}', app.app_name)
                 massEmailThread.addEmailData(subject=subject, message=message, recipient_list=[app.publisher.email])
                 ownerShipScan.delete()
@@ -43,8 +43,8 @@ def verificationAppForSeller(*args, **kwargs):
             ownerShipScan.save()
             templates = notificationModels.NotificationTemplate.objects.filter(name='verified_app_failed_inform_seller')
             if ownerShipScan.times == 3 and templates:
-                subject = templates[0].subject
-                message = templates[0].template.replace('{param1}', app.publisher.username)
+                subject = templates[0].subject.replace('{param1}', app.app_name)
+                message = templates[0].template.replace('{param1}', app.publisher.username).replace('{param2}', app.app_name)
                 massEmailThread.addEmailData(subject=subject, message=message, recipient_list=[app.publisher.email])
     massEmailThread.start()
 
@@ -130,19 +130,45 @@ def sendMailForRemind(*args, **kwargs):
         1. The paid_expiry_date set in system-param table is 7 days.
            If buyer does not pay, will send email to buyer in remain 4, 2, 1 days.
         2. The txn_expiry_date set in system-param table is 15 days.
-           If buyer does not finish trade, will send email to buyer in remain 7, 4, 2, 1 days.
+           If buyer does not finish trade, will send email to buyer in remain 7, 4 days.
     """
-    current_date = datetime.datetime.combine(datetime.date.today(), datetime.time())
-    next_date = datetime.datetime.combine(datetime.date.today() + datetime.timedelta(days=1), datetime.time())
-    apps = appModels.App.objects.filter(status=2, end_date__gte=current_date, end_date__lt=next_date)
-
+    massEmailThread = email.MassEmailThread()
     seven_next_date = datetime.datetime.now() + datetime.timedelta(days=7)
     four_next_date = datetime.datetime.now() + datetime.timedelta(days=4)
     two_next_date = datetime.datetime.now() + datetime.timedelta(days=2)
     one_next_date = datetime.datetime.now() + datetime.timedelta(days=1)
 
-    # txnModels.Transaction.objects.filter(status=2, is_active=True, Q(end_time__lte=four_next_date) | Q(end_time__lte=two_next_date) | Q(end_time__lte=one_next_date))
+    remind_template = notificationModels.NotificationTemplate.objects.filter(name='pay_remind_buyer')
+    if remind_template:
+        fourTxn = txnModels.Transaction.objects.filter(status=2, is_active=True, end_time__year=four_next_date.year, end_time__month=four_next_date.month, end_time__day=four_next_date.day)
+        for txn in fourTxn:
+            subject = remind_template[0].subject
+            message = remind_template[0].template
+            massEmailThread.addEmailData(subject=subject, message=message, recipient_list=[txn.buyer.email])
+        twoTxn = txnModels.Transaction.objects.filter(status=2, is_active=True, end_time__year=two_next_date.year, end_time__month=two_next_date.month, end_time__day=two_next_date.day)
+        for txn in twoTxn:
+            subject = remind_template[0].subject
+            message = remind_template[0].template
+            massEmailThread.addEmailData(subject=subject, message=message, recipient_list=[txn.buyer.email])
+        oneTxn = txnModels.Transaction.objects.filter(status=2, is_active=True, end_time__year=one_next_date.year, end_time__month=one_next_date.month, end_time__day=one_next_date.day)
+        for txn in oneTxn:
+            subject = remind_template[0].subject
+            message = remind_template[0].template
+            massEmailThread.addEmailData(subject=subject, message=message, recipient_list=[txn.buyer.email])
 
+    remind_template = notificationModels.NotificationTemplate.objects.filter(name='txn_remind_seller')
+    if remind_template:
+        sevenTxn = txnModels.Transaction.objects.filter(status=3, is_active=True, end_time__year=seven_next_date.year, end_time__month=seven_next_date.month, end_time__day=seven_next_date.day)
+        for txn in sevenTxn:
+            subject = remind_template[0].subject
+            message = remind_template[0].template
+            massEmailThread.addEmailData(subject=subject, message=message, recipient_list=[txn.buyer.email])
+        fourTxn = txnModels.Transaction.objects.filter(status=3, is_active=True, end_time__year=four_next_date.year, end_time__month=four_next_date.month, end_time__day=four_next_date.day)
+        for txn in fourTxn:
+            subject = remind_template[0].subject
+            message = remind_template[0].template
+            massEmailThread.addEmailData(subject=subject, message=message, recipient_list=[txn.buyer.email])
+    massEmailThread.start()
     return None
 
 
