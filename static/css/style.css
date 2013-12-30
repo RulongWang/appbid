@@ -2718,3 +2718,26 @@ input[type="radio"]:checked:after {
     font-size: 11px;
     color:red;
 }
+
+
+.about_us_block{
+    height:200px;
+    width:300px;
+    padding:20px;
+    float: left;
+
+}
+
+.photo{
+    width:120px;
+    float: left;
+    border: 1px solid #dddddd;
+    padding:5px 5px 2px 5px;
+
+
+}
+
+.team_role{
+    width:500px;
+    float:left;
+}

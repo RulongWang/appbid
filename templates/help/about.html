@@ -1,8 +1,31 @@
 {% extends "help/temp.html"%}
+{% load staticfiles %}
+
 {% block mainhelp %}
+<div style="background: #efefef;min-height: 500px;">
 
 
+<div class="about_us_block">
+    <div class="photo">
+        <img src="{% static "images/jarvis.jpg" %}" style="width:120px;height: 160px;" />
+        <caption ><h1>Mr. Jarvis  Co-Founder</h1></caption>
+    </div>
+    <div class="team_role">
 
+    </div>
+</div>
+<div class="about_us_block">
+    <div class="photo">
+        <img src="{% static "images/Raymond.jpg" %}" style="width:120px;height: 160px;" />
+        <caption ><h1>Mr. Rulong  Co-Founder</h1></caption>
+    </div>
+    <div class="team_role">
 
+    </div>
+</div>
+<div style="clear:both;padding:30px;">
+      You can send emails to us via rulong@appswalk.com OR  Jarvis@appswalk.com. We are very happy to receive your email.
+</div>
 
+</div>
 {% endblock %}
