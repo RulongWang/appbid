@@ -2757,3 +2757,14 @@ input[type="radio"]:checked:after {
     color:#00b0b0;
     opacity: 1;
 }
+
+.guide{
+    background: url("../images/book.gif") no-repeat center;
+    margin-left:20px;
+    padding:100px 0;
+    width:450px;
+    text-align: center;
+    float: left;
+    font-weight: bold;
+    opacity: 0.5;
+}
