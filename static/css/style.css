@@ -2741,3 +2741,19 @@ input[type="radio"]:checked:after {
     width:500px;
     float:left;
 }
+
+.contact_us{
+    min-height: 500px;
+    background: url("../images/post.png") no-repeat left center ;
+    opacity: 0.5;
+}
+
+.contact_us_email{
+    position: relative;
+    top:150px;
+    left:700px;
+    font-size: 18px;
+    font-weight: bold;
+    color:#00b0b0;
+    opacity: 1;
+}
