@@ -250,6 +250,11 @@ LOGGING = {
             'level': 'INFO',
             'propagate': True,
         },
+        'django_crontab': {
+            'handlers': ['default', 'console'],
+            'level': 'INFO',
+            'propagate': True,
+        },
     }
 }
 
