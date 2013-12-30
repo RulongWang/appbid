@@ -22,11 +22,8 @@ def verificationAppForSeller(*args, **kwargs):
     times = string.atoi(common.getSystemParam(key='verify_app_times', default=3))
     ownerShipScans = appModels.OwnerShip_Scan.objects.filter(times__lte=times)
     massEmailThread = email.MassEmailThread()
-    print 'running verificationAppForSeller....'
     for ownerShipScan in ownerShipScans:
-        print 'app_id=', ownerShipScan.app_id
         app = ownerShipScan.app
-        print 'app_name=', app.app_name
         result = common.getITunes(app.apple_id)
         if result is None:
             continue
@@ -206,7 +203,3 @@ def jobPayStatus(*args, **kwargs):
         In the case, payReturn (url 'paypal_ap_return') is not executed.
     """
     txnViews.jobCheckPayComplete()
-
-
-def test():
-    print 'Job test ', datetime.datetime.now()

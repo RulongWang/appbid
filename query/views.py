@@ -523,14 +523,6 @@ def getAppDetail(request, *args, **kwargs):
     if kwargs.get('pk'):
         initParam = {}
         app = get_object_or_404(appModels.App, pk=kwargs.get('pk'))
-        # transactions = txnModels.Transaction.objects.filter(end_time__isnull=False, end_time__lte=datetime.datetime.now())
-        # transactions = txnModels.Transaction.objects.filter(end_time__isnull=False, end_time__year=2013, end_time__month=12, Q(end_time__day=3) | Q(end_time__day=13))
-        # for txn in transactions:
-        #     print txn.id, txn.end_time
-        # print datetime.date(datetime.datetime.now())
-        # if request.user.username == 'jarvis' or request.user.username == 'test':
-        #     authViews.shareToTwitter(request, app=app)
-        #     authViews.shareToWeiBo(request, app=app)
         appInfo = app.appinfo
         initParam['app'] = app
         initParam['appInfo'] = appInfo
