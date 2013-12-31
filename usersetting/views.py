@@ -315,7 +315,7 @@ def userPublicProfile(request, *args, **kwargs):
                         if thumbnail:
                             #Shrink image to (50*50) for user thumbnail.
                             path = '/'.join([settings.MEDIA_ROOT, str(userPublicProfile.thumbnail)])
-                            common.imageThumbnail(path=path, size=(50, 50))
+                            common.imageThumbnail(path=path, size=[50, 50])
                         initParam['account_msg'] = _('The public profile has been updated successful.')
                 else:
                     initParam['account_msg'] =  _('The file type of %(param)s is not supported.') % {'param': thumbnail.name}
