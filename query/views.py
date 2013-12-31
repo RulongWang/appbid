@@ -561,7 +561,9 @@ def getAppDetail(request, *args, **kwargs):
         initBidInfo(request, app=app, initParam=initParam)
         #Do something, when the time is app end date.
         if app.status == 2 and initParam['begin_bid']:
-            initParam['is_callback'] = True
+            initParam['callback'] = 'bidding'
+        elif app.status == 2 and app.begin_date > datetime.datetime.now():
+            initParam['callback'] = 'beginBid'
 
         #Check if user watch the app/seller, if user is login.
         if request.user.is_authenticated():
