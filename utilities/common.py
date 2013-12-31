@@ -201,7 +201,7 @@ def imageThumbnail(*args, **kwargs):
     is_delete = kwargs.get('is_delete')
     if path and os.path.exists(path):
         image = Image.open(path)
-        if size and isinstance(size, tuple):
+        if size and isinstance(size, list):
             if image.size[0] >= size[0] and image.size[1] <= size[1]:
                 size[1] = size[0] * image.size[1] / float(image.size[0])
             elif image.size[0] <= size[0] and image.size[1] >= size[1]:
@@ -232,7 +232,18 @@ def imageResize(*args, **kwargs):
     is_delete = kwargs.get('is_delete')
     if path and os.path.exists(path):
         image = Image.open(path)
-        if size and isinstance(size, tuple):
+        if size and isinstance(size, list):
+            if image.size[0] >= size[0] and image.size[1] <= size[1]:
+                size[1] = size[0] * image.size[1] / float(image.size[0])
+            elif image.size[0] <= size[0] and image.size[1] >= size[1]:
+                size[0] = size[1] * image.size[0] / float(image.size[1])
+            elif image.size[0] > size[0] and image.size[1] > size[1]:
+                left = size[0] * image.size[1]
+                right = size[1] * image.size[0]
+                if left > right:
+                    size[0] = size[1] * image.size[0] / float(image.size[1])
+                elif left < right:
+                    size[1] = size[0] * image.size[1] / float(image.size[0])
             new_image = image.resize(size)
         else:
             new_image = image

@@ -217,7 +217,7 @@ def saveAppStoreLink(request, form, model, *args, **kwargs):
                 os.remove(path)
             urllib.urlretrieve(result.get('artworkUrl512', None), path)
             #Shrink image From (1024*1024) to (200*200)
-            common.imageThumbnail(path=path, size=(200, 200))
+            common.imageThumbnail(path=path, size=[200, 200])
         elif result.get('artworkUrl100', None):
             urllib.urlretrieve(result.get('artworkUrl100', None), path)
         elif result.get('artworkUrl60', None):
