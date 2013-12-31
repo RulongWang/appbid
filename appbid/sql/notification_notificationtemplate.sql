@@ -140,11 +140,11 @@ INSERT INTO appbid.notification_notificationtemplate (name, language, type, subj
 There is a new message in your Appswalk Inbox , please login and check details.
 Best regards,
 Appswalk Ltd', 'Your get the private message', '1.0', '2013-12-13 15:10:16', '2013-12-13 15:10:16', 1);
-INSERT INTO appbid.notification_notificationtemplate (id, name, language, type, subject, template, description, version, create_time, last_modify, modifier_id) VALUES (22, 'txn_remind_seller', 1, 1, 'Reminder for your app {param1} delivery', 'Dear {param1},
+INSERT INTO appbid.notification_notificationtemplate (id, name, language, type, subject, template, description, version, create_time, last_modify, modifier_id) VALUES ('txn_remind_seller', 1, 1, 'Reminder for your app {param1} delivery', 'Dear {param1},
 {param2} days passed. Kindly reminder you that you should deliver/transfer your app {param3} to your buyer. Otherwise the buyer could revoke his/her payment from Paypal. And at the meanwhile your account would be put into the blacklist forever.
 Best regards,
 Appswalk Ltd.', '', '1.0', '2013-12-31 20:17:51', '2013-12-31 20:17:51', 1);
-INSERT INTO appbid.notification_notificationtemplate (id, name, language, type, subject, template, description, version, create_time, last_modify, modifier_id) VALUES (23, 'pay_remind_buyer', 1, 1, 'Kind reminder for the payment of app {param1} ', 'Dear {param1},
+INSERT INTO appbid.notification_notificationtemplate (id, name, language, type, subject, template, description, version, create_time, last_modify, modifier_id) VALUES ('pay_remind_buyer', 1, 1, 'Kind reminder for the payment of app {param1} ', 'Dear {param1},
 {param2} days passed, but you didn''t pay any money to the app seller. Please be notice that you already agree the transaction terms before you place the bid.  
 Please be careful about your credit points in Appswalk which is very important for you. Without enough credit points, you can not do any business with your partner or the other developers.
 Best regards,
