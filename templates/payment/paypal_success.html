@@ -3,7 +3,7 @@
 {% load staticfiles %}
     {% if success_page %}
         <div class="service_pay">
-         <div class="payment_dash_title">Your Payment</div>
+         <div class="payment_dash_title">Your {{ type }}</div>
            <div class="table_form" style="clear:both;margin-top:10px;font-weight: bold;">
             <div class="table_row">
               <div class="table_left">
@@ -15,8 +15,8 @@
             </div>
             <div class="table_desc">
                 <img src="{% static "images/pay success32-32.png" %}"/> {{ msg }}<br/>
-                The page will redirect the payment page, after <span id="remain_time" style="font-weight: bold">15</span>s.
-                If the page not redirect, you can click next page.<a href="{{ success_page }}">App payment page</a>
+                The page will be redirected to {{ success_page_msg }} page, after <span id="remain_time" style="font-weight: bold">15</span>s.
+                 Go to <a href="{{ success_page }}" style="color:#00b0b0;">{{ success_page_msg }}</a> page.
             </div>
            </div>
         </div>

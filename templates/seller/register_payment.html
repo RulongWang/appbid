@@ -1,5 +1,5 @@
 <div id="register_app">
-<div>
+<div style="color: red;">
     {{ payment_msg }}
 </div>
     <div class="dash_title">Choose service</div>
@@ -29,9 +29,19 @@
          <div class="clear"></div>
     {% endfor %}
     <div class="field_block_payment">
-        <div class="right" style="width:120px;">
+        <div class="right" style="width:120px;text-align: right">
         <label>Total:</label>
         <label id="total">{{ amount|default:0 }}</label><b>$</b>
+        </div>
+        <div class="right" style="width:500px;text-align: right;">
+        <label>Discount Rate:</label>
+        <label id="total">{{ discount_rate }}</label><b>%</b>
+        </div>
+
+
+        <div class="right" style="width:500px;text-align: right;">
+        <label>Actual Total:</label>
+        <label id="actual_total"></label><b>$</b>
         </div>
     </div>
     <div class="right" style="width:250px;">
@@ -45,6 +55,8 @@
 
 <script type="text/javascript" language="javascript">
     var total =  parseFloat(($("#total").text()).replace(",", "."));
+    var discount_rate = parseFloat("{{ discount_rate }}");
+    $("#actual_total").html(total*discount_rate);
     function checkServiceItem(obj) {
         var price = $(obj).attr("price");
         if ($(obj).is(':checked') == true) {
@@ -54,6 +66,8 @@
             total -= parseFloat(price.replace(",", "."));
         }
         $("#total").html(total);
+        $("#actual_total").html(total*discount_rate);
+        $("#discount_rate").html(1000*discount_rate)
     }
 </script>
 </div>

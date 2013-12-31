@@ -4,9 +4,10 @@ import time
 import datetime
 import string
 import logging
+import json
 
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render_to_response, RequestContext, redirect, get_object_or_404, Http404
+from django.shortcuts import render_to_response, RequestContext, redirect, get_object_or_404, Http404, HttpResponse
 from django.views.decorators.csrf import csrf_protect
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext as _
@@ -152,6 +153,13 @@ def tradeAction(request, *args, **kwargs):
     else:
         raise Http404
 
+    support_user = common.getSystemParam(key='support_user', default='appswalk')
+    support_users = models.User.objects.filter(username=support_user)
+    if support_users:
+        initParam['support_user'] = support_users[0]
+    else:
+        log.error(_('Support user account does not exist.'))
+
     initParam['transaction'] = transaction
     if transaction.status == 2 or transaction.status == 3:
         if transaction.end_time > datetime.datetime.now():
@@ -162,12 +170,6 @@ def tradeAction(request, *args, **kwargs):
         if tradeOperation(request, transaction=transaction, initParam=initParam):
             return redirect(request.path)
     elif transaction.status == 4:
-        support_user = common.getSystemParam(key='support_user', default='appswalk')
-        support_users = models.User.objects.filter(username=support_user)
-        if support_users:
-            initParam['support_user'] = support_users[0]
-        else:
-            log.error(_('Support user account does not exist.'))
         initParam['time_remaining'] = common.dateBefore(transaction.end_time)
 
         initParam['seller_txn'] = creditViews.getAppraisement(user_id=transaction.seller.id, txn_id=transaction.id)
@@ -306,13 +308,19 @@ def onePriceBuy(request, *args, **kwargs):
             #The needed operation method in pay.
             initParam['executeMethod'] = updateTransaction
             #The back page, when pay has error.
-            back_page = request.session.get('back_page', None)
-            if not back_page:
-                request.session['back_page'] = '/'.join([common.getHttpHeader(request), 'query/app-detail', str(app.id)])
+            if request.session.get('back_page', None):
+                del request.session['back_page']
+            if request.session.get('back_page_msg', None):
+                del request.session['back_page_msg']
+            request.session['back_page'] = '/'.join([common.getHttpHeader(request), 'query/app-detail', str(app.id)])
+            request.session['back_page_msg'] = 'App Detail'
             #The success return page, when pay finish.
-            success_page = request.session.get('success_page', None)
-            if not success_page:
-                request.session['success_page'] = '/'.join([common.getHttpHeader(request), 'transaction/trade-action/buy', str(app.id), str(request.user.id)])
+            if request.session.get('success_page', None):
+                del request.session['success_page']
+            if request.session.get('success_page_msg', None):
+                del request.session['success_page_msg']
+            request.session['success_page'] = '/'.join([common.getHttpHeader(request), 'transaction/trade-action/buy', str(app.id), str(request.user.id)])
+            request.session['success_page_msg'] = 'Trade Action'
             return paymentViews.pay(request, initParam=initParam)
     return render_to_response('transaction/one_price_buy.html', initParam, context_instance=RequestContext(request))
 
@@ -344,14 +352,20 @@ def buyerPay(request, *args, **kwargs):
     #The needed operation method in pay.
     initParam['executeMethod'] = updateTransaction
     #The back page, when pay has error.
-    back_page = request.session.get('back_page', None)
+    if request.session.get('back_page', None):
+        del request.session['back_page']
+    if request.session.get('back_page_msg', None):
+        del request.session['back_page_msg']
     url = '/'.join([common.getHttpHeader(request), 'transaction/trade-action/buy', str(app.id), str(request.user.id)])
-    if not back_page:
-        request.session['back_page'] = url
+    request.session['back_page'] = url
+    request.session['back_page_msg'] = 'Trade Action'
     #The success return page, when pay finish.
-    success_page = request.session.get('success_page', None)
-    if not success_page:
-        request.session['success_page'] = url
+    if request.session.get('success_page', None):
+        del request.session['success_page']
+    if request.session.get('success_page_msg', None):
+        del request.session['success_page_msg']
+    request.session['success_page'] = url
+    request.session['success_page_msg'] = 'Trade Action'
     return paymentViews.pay(request, initParam=initParam)
 
 
@@ -521,3 +535,20 @@ def jobCheckPayComplete(*args, **kwargs):
                                                      gateway_id__isnull=False, is_active=True)
     for transaction in transactions:
         paymentViews.checkPayComplete(transaction=transaction, executeMethod=executePay)
+
+
+def remindBuyerPay(request, *args, **kwargs):
+    """Seller click button to remind buyer to pay."""
+    data = {}
+    try:
+        dict = request.POST
+    except:
+        dict = request.GET
+    txn_id = dict.get('txn_id')
+    transactions = models.Transaction.objects.filter(pk=txn_id, seller_id=request.user.id)
+    if transactions:
+        notificationViews.remindBuyerPay(request, transaction=transactions[0])
+        data['ok'] = 'true'
+    else:
+        data['ok'] = 'false'
+    return HttpResponse(json.dumps(data), mimetype=u'application/json')

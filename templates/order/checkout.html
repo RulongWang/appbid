@@ -40,7 +40,7 @@
     }
   });
 </script>
-    <div class="dash_title">Checkout for your selected service</div>
+    <div class="dash_title">Checkout for your selected services</div>
     <div id="order_error">{{ order_error }}</div>
 
     <div class="service_pay">
@@ -100,7 +100,7 @@
         {% if begin_date == None %}
         <div class="table_form" style="clear:both;margin-top:10px;font-weight: bold;">
             <input id="id_select" name="select" type="checkbox" />
-             Auction immediately start  after you finished your payment.
+             Your auction will be immediately started after your payment.
         </div>
         {% endif %}
         <div id="id_begin" class="table_form" style="clear:both;margin-top:10px;font-weight: bold;">
@@ -110,7 +110,9 @@
             <div class="table_left">
             <input id="id_start_date" name="start_date" type="text" value="{{ form.start_date.value|date:'Y-m-d H:i' }}" />
             {% if begin_date %}
-                (*End date of your last valid service:{{ begin_date|date:'Y-m-d H:i' }})
+                <div>
+                (*Datetime for the ending:{{ begin_date|date:'Y-m-d H:i' }})
+                </div>
             {% endif %}
             </div>
         </div>
@@ -153,11 +155,11 @@
                 var end_date = new Date(Date.parse(date_str.replace(/-/g, "/")));
                 var begin_date_str = "{{ begin_date|date:'Y-m-d H:i' }}";
                 if (begin_date_str && new Date(begin_date_str) > end_date) {
-                    $("#order_error").html("Auction start date should be earlier than your auction end date.");//TODO:it will be set in message.properties.
+                    $("#order_error").html("Auction start datetime should be earlier than your auction end datetime.");
                     return false;
                 }
                 if (begin_date_str == "" && new Date().format('yyyy-MM-dd hh:mm') > end_date.format('yyyy-MM-dd hh:mm')) {
-                    $("#order_error").html("Auction start date should be later than current time.");//TODO:it will be set in message.properties.
+                    $("#order_error").html("Auction start datetime should be later than current datetime.");
                     return false;
                 }
                 var service_expiry_date = {{ service_expiry_date }};
@@ -173,12 +175,12 @@
             }
             else {
                 $("#id_end_date").val("");
-                $("#order_error").html("Auction start date is not correct.");//TODO:it will be set in message.properties.
+                $("#order_error").html("Auction start datetime is not correct.");
                 return false;
             }
         }
         else {
-             $("#order_error").html("Auction start date is required.");//TODO:it will be set in message.properties.
+             $("#order_error").html("Auction start datetime is required.");
              return false;
         }
     }

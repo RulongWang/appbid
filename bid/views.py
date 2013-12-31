@@ -46,7 +46,7 @@ def createBid(request, *args, **kwargs):
             cp = creditViews.getUserCreditPoint(user=request.user)
             if cp == -1 or cp < string.atoi(min_cp):
                 initParam['biddingForm'] = biddingForm
-                initParam['bid_error'] = _('You can not bid, because your credit point is too low. You can pay credit point, after our verification.')
+                initParam['bid_error'] = _('You are not allowed to place bid, because your low credit points. But you can buy additional credit points.')
             else:
                 if biddingForm.is_valid():
                     #From bid_create.html

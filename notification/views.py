@@ -55,11 +55,11 @@ def sendCommonEmail(*args, **kwargs):
         if sub_params:
             for i in range(len(sub_params)):
                 param = ''.join(['{param', str(i+1), '}'])
-                subject = subject.replace(param, sub_params[i])
+                subject = subject.replace(param, str(sub_params[i]))
         if temp_params:
             for i in range(len(temp_params)):
                 param = ''.join(['{param', str(i+1), '}'])
-                template = template.replace(param, temp_params[i])
+                template = template.replace(param, str(temp_params[i]))
         email.EmailThread(from_email=from_email, subject=subject, message=template, recipient_list=recipient_list).start()
     else:
         log.error(_('%(param)s does not exist.') % {'param': temp_name})
@@ -103,8 +103,8 @@ def closedTradeInform(*args, **kwargs):
         templates_watch = models.NotificationTemplate.objects.filter(name='closed_trade_inform_buyer_watched_category')
         for watchCategory in watchCategories:
             if templates_watch:
-                subject = ''
-                message = ''
+                subject = templates_watch[0].subject
+                message = templates_watch[0].template.replace('{param1}', transaction.buyer.username).replace('{param2}', transaction.app.app_name)
                 massEmailThread.addEmailData(subject=subject, message=message, recipient_list=[watchCategory.buyer.email])
         massEmailThread.start()
     return None
@@ -143,10 +143,9 @@ def sendResetPasswordEmail(request, *args, **kwargs):
         token = common.getToken(key='token_length', default=30)
         url = '/'.join([header, 'usersetting/reset-password', str(type), str(user.id), user.username, token])
         temp_name = 'reset_password_email'
-        sub_params = ['']
         temp_params = [user.username, url]
         recipient_list = [user.email]
-        sendCommonEmail(temp_name=temp_name, sub_params=sub_params, temp_params=temp_params, recipient_list=recipient_list)
+        sendCommonEmail(temp_name=temp_name, temp_params=temp_params, recipient_list=recipient_list)
     return None
 
 
@@ -159,8 +158,8 @@ def sendNewBidEmail(request, *args, **kwargs):
     templates_buyer = models.NotificationTemplate.objects.filter(name='new_bid_inform_buyer')
     item_seller = app.publisher.subscriptionitem_set.filter(key='new_bid')
     if item_seller and templates_seller:
-        subject = ''
-        message = ''
+        subject = templates_seller[0].subject
+        message = templates_seller[0].template.replace('{param1}', app.publisher.username).replace('{param2}', app.app_name)
         massEmailThread.addEmailData(subject=subject, message=message, recipient_list=[app.publisher.email])
     user_ids = [bid.buyer.id]
     bids = app.bidding_set.exclude(buyer_id=bid.buyer.id)
@@ -169,8 +168,8 @@ def sendNewBidEmail(request, *args, **kwargs):
             user_ids.append(bidding.buyer.id)
             item_buyer = bidding.buyer.subscriptionitem_set.filter(key='new_bid_above_mine')
             if item_buyer and templates_buyer:
-                subject = ''
-                message = ''
+                subject = templates_seller[0].subject
+                message = templates_seller[0].template.replace('{param1}', bidding.buyer.username).replace('{param2}', app.app_name)
                 massEmailThread.addEmailData(subject=subject, message=message, recipient_list=[bidding.buyer.email])
     massEmailThread.start()
 
@@ -184,8 +183,8 @@ def sendNewAppEmail(request, *args, **kwargs):
         templates = models.NotificationTemplate.objects.filter(name='new_app_inform_buyer')
         for watchSeller in watchSellers:
             if templates:
-                subject = ''
-                message = ''
+                subject = templates[0].subject
+                message = templates[0].template.replace('{param1}', watchSeller.buyer.username).replace('{param2}', app.app_name)
                 massEmailThread.addEmailData(subject=subject, message=message, recipient_list=[watchSeller.buyer.email])
         massEmailThread.start()
 
@@ -193,19 +192,43 @@ def sendNewAppEmail(request, *args, **kwargs):
 def sendNewCommentEmail(request, *args, **kwargs):
     """Send email to seller and buyer, when user add comment."""
     app = kwargs.get('app')
+    comment = kwargs.get('comment')
+    common_msg = comment.comment
     massEmailThread = email.MassEmailThread()
     if request.user.id != app.publisher.id:
         templates_seller = models.NotificationTemplate.objects.filter(name='new_comment_inform_seller')
         templates_buyer = models.NotificationTemplate.objects.filter(name='new_comment_inform_buyer')
         item_seller = app.publisher.subscriptionitem_set.filter(key='new_comment')
         if item_seller and templates_seller:
-            subject = ''
-            message = ''
+            subject = templates_seller[0].subject
+            message = templates_seller[0].template.replace('{param1}', app.publisher.username).replace('{param2}', app.app_name)
             massEmailThread.addEmailData(subject=subject, message=message, recipient_list=[app.publisher.email])
     watchApps = dashboardModels.WatchApp.objects.filter(app_id=app.id)
     for watchApp in watchApps:
         if templates_buyer:
-            subject = ''
-            message = ''
+            subject = templates_buyer[0].subject.replace('{param1}', app.app_name)
+            message = templates_buyer[0].template.replace('{param1}', watchApp.buyer.username).replace('{param2}', app.app_name)
             massEmailThread.addEmailData(subject=subject, message=message, recipient_list=[watchApp.buyer.email])
     massEmailThread.start()
+
+
+def sendNewMessageEmail(request, *args, **kwargs):
+    """Send email to seller or buyer, when user send message to seller or buyer."""
+    message = kwargs.get('message')
+    item_user = message.receiver.subscriptionitem_set.filter(key='private_msg')
+    if item_user:
+        temp_name = 'new_message_inform_user'
+        temp_params = [message.receiver.username]
+        recipient_list = [message.receiver.email]
+        sendCommonEmail(temp_name=temp_name, temp_params=temp_params, recipient_list=recipient_list)
+
+
+def remindBuyerPay(request, *args, **kwargs):
+    """Seller remind buyer to pay."""
+    transaction = kwargs.get('transaction')
+    if transaction:
+        temp_name = 'seller_remind_buyer_pay'
+        sub_params = [transaction.app.app_name]
+        temp_params = [transaction.seller.username, transaction.app.app_name]
+        recipient_list = [transaction.buyer.email]
+        sendCommonEmail(temp_name=temp_name, sub_params=sub_params, temp_params=temp_params, recipient_list=recipient_list)

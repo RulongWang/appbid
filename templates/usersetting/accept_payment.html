@@ -2,7 +2,8 @@
 {% block account_detail %}
 {% load staticfiles %}
     <div class="dash_title">Accepted Payment</div>
-    <div id="account_msg">{{ account_msg }}</div>
+    <div id="account_msg" style="color: green;">{{ account_msg }}</div>
+    <div id="account_error" style="color:red;">{{ account_msg }}</div>
     <form action="" method="post">
         {% csrf_token %}
         {% for gateway, acceptGateway in gateways_map.items %}
@@ -36,11 +37,11 @@
 <script type="text/javascript" language="javascript">
     $("#submit").click(function() {
         if ($("#payment_account").val().trim() == "") {
-            $("#account_msg").html("Payment account is required.");//TODO:it will be set in message.properties.
+            $("#account_error").html("Payment account is required.");
             return false;
         }
         if ($("#payment_account").val().trim() != "" && !valid_email($("#payment_account").val().trim())) {
-            $("#account_msg").html("Payment account is not correct.");//TODO:it will be set in message.properties.
+            $("#account_error").html("Payment account is not correct.");
             return false;
         }
     });

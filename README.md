@@ -23,6 +23,10 @@ download URL:https://github.com/lincolnloop/python-qrcode
 django-crontab - for running the job:
 pip install django-crontab
 download URL:https://pypi.python.org/pypi/django-crontab/0.5.1
+Command:
+python manage.py crontab add
+python manage.py crontab show
+python manage.py crontab remove
 
 //sanbox paypal testing account
 username: me_api1.rulong.org

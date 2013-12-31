@@ -7,7 +7,7 @@
 
     <div  class="field_block_market">
         {% if form.dl_amount.errors %}
-            <div>
+            <div class="return_error">
             {{ form.dl_amount.errors }}
             </div>
         {% endif %}
@@ -26,7 +26,7 @@
 
     <div  class="field_block_market">
         {% if form.revenue.errors %}
-            <div>
+            <div class="return_error">
             {{ form.revenue.errors }}
             </div>
         {% endif %}
@@ -47,7 +47,7 @@
 
     <div  class="field_block_selected">
         {% if form.monetize.errors %}
-            <div>
+            <div class="return_error" >
             {{ form.monetize.errors }}
             </div>
         {% endif %}

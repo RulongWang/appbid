@@ -38,6 +38,13 @@ def loginView(request, *args, **kwargs):
         if redirect_to == url or (url and redirect_to.startswith(str(url))):
             redirect_to = '/'
             break
+    if redirect_to.startswith('/bid/bid-create/'):
+        paths = redirect_to.split('/')
+        if len(paths) == 4:
+            redirect_to = reverse('query:app_detail', kwargs={'pk': str(paths[3])})
+        else:
+            redirect_to = '/'
+
     if user:
         if user.is_active:
             login(request, user)
@@ -228,7 +235,7 @@ def registerActiveConfirm(request, *args, **kwargs):
         if securityVerifications:
             securityVerifications[0].is_verified = True
             securityVerifications[0].save()
-        initParam['account_msg'] = _('The account has been activated successfully.')
+        initParam['account_msg'] = _('Your account has been activated successfully.')
     else:
         initParam['account_error'] = _('The activation link is not correct.')
     return render_to_response("usersetting/register_active_confirm.html", initParam, context_instance=RequestContext(request))

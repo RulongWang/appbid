@@ -20,7 +20,8 @@ from bid import models as bidModels
 from transaction import models as txnModels
 from dashboard import models
 from utilities import common
-from message.views import sendMessage
+from message import views as messageViews
+from notification import views as notificationViews
 
 
 @csrf_protect
@@ -104,8 +105,10 @@ def createMessage(request, *args, **kwargs):
     initParam['next'] = request.GET.get('next', None)
     initParam['page'] = request.GET.get('page', 1)
 
-    if sendMessage(request, initParam=initParam):
+    message = messageViews.sendMessage(request, initParam=initParam)
+    if message:
         messages.info(request, _('Send message successfully.'))
+        notificationViews.sendNewMessageEmail(request, message=message)
         return redirect(reverse('dashboard:sent_messages'))
 
     return render_to_response("dashboard/create_message.html", initParam, context_instance=RequestContext(request))

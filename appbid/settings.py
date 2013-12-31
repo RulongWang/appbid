@@ -1,11 +1,13 @@
 # Django settings for appbid project.
+#!/usr/bin/python
 import os
 import datetime
-DEBUG = True
-TEMPLATE_DEBUG = DEBUG
+
+DEBUG = False
+TEMPLATE_DEBUG = False
 
 ADMINS = (
-    # ('Your Name', 'your_email@example.com'),
+    ('AppsWalk', 'support@appswalk.com'),
 )
 
 MANAGERS = ADMINS
@@ -247,6 +249,11 @@ LOGGING = {
             'level': 'INFO',
             'propagate': True,
         },
+        'django_crontab': {
+            'handlers': ['default', 'console'],
+            'level': 'INFO',
+            'propagate': True,
+        },
     }
 }
 
@@ -268,27 +275,30 @@ EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.mailgun.org'
 EMAIL_PORT = 587 #465
 #EMAIL_HOST_USER = 'AKIAIZOLHXT23DTCJ7LQ'#your email username
-EMAIL_HOST_USER = 'postmaster@appswalk.com'#your email username
+EMAIL_HOST_USER = 'postmaster@webmaster.appswalk.com'#your email username
 #EMAIL_HOST_PASSWORD = 'AoW+7BtPEXWG1RQRnPAfpupateV4r0YEV42ggANfG7mU' #your email passowrdEMAIL_HOST_USER = 'AKIAIZOLHXT23DTCJ7LQ'#your email username
-EMAIL_HOST_PASSWORD = '9vl0ysfc2gm4' #your email passowrd
+EMAIL_HOST_PASSWORD = '2yt7pu-k8jn3' #your email passowrd
 EMAIL_SENDER = 'support@appswalk.com'
+
 CRONJOBS = [
     #Run every night at midnight
-    ('* 0 * * *', 'appbid.job.job.jobByMidnight'),
+    # ('* 0 * * *', 'appbid.cron.jobByMidnight'),
     #Run every four hour
-    ('* */4 * * *', 'appbid.job.job.jobByFourHour'),
+    # ('* */4 * * *', 'appbid.cron.jobByFourHour'),
     #Run every hour
-    ('* */1 * * *', 'appbid.job.job.jobByEveryHour'),
+    # ('* */1 * * *', 'appbid.cron.jobByEveryHour'),
     #Run every five min
-    ('*/5 * * * *', 'appbid.job.job.jobByFiveMin'),
+    # ('*/5 * * * *', 'appbid.cron.jobByFiveMin'),
+
+    ('*/1 * * * *', 'job.job.jobByMidnight'),
+    ('*/1 * * * *', 'job.job.jobByFourHour'),
+    ('*/1 * * * *', 'job.job.jobByFiveMin'),
 ]
 
 try:
     from paypal.settings import *
 except Exception, e:
     pass
-
-
 
 #flat page setting
 SITE_ID = 1

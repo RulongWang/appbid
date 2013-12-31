@@ -8,19 +8,13 @@
                 {{ form.app_store_link.errors }}
             {% endif %}
             {% if error_msg %}
-                <ul>
-                    <li>
-                        {{ error_msg }}
-                    </li>
-                </ul>
-
+                    {{ error_msg }}
             {% endif %}
    </div>
 
       <div class="dash_title">Appstore Info</div>
         <form action="" method="post">
             {% csrf_token %}
-
       <div class="field_block_addi">
         <div class="left" style="width:120px;margin-top:15px;">
             <div style="width:100px:height:30px;">*{{ form.title.label_tag }}</div>
@@ -77,11 +71,11 @@
 <script type="text/javascript" language="javascript">
     $("#next").click(function() {
         if ($("#id_title").val().trim() == "") {
-            $(".errors_block").html("<ul><li>Title is required.</li></ul>");//TODO:it will be set in message.properties.
+            $(".errors_block").html("Title is required.");
             return false;
         }
         if ($("#id_app_store_link").val().trim() == "") {
-            $(".errors_block").html("<ul><li>App store link is required.</li></ul>");//TODO:it will be set in message.properties.
+            $(".errors_block").html("App store link is required.");
             return false;
         }
         $("#progressor").show("fast");

@@ -62,11 +62,11 @@
 <script type="text/javascript" language="javascript">
     $("#submit").click(function() {
         if ($("#username").val().trim() == "") {
-            $(".errors_block").html("<ul><li>Username is required.</li></ul>");//TODO:it will be set in message.properties.
+            $(".errors_block").html("Username is required.");
             return false;
         }
         if ($("#password").val().trim() == "") {
-            $(".errors_block").html("<ul><li>Password is required.</li></ul>");//TODO:it will be set in message.properties.
+            $(".errors_block").html("Password is required.");
             return false;
         }
     });

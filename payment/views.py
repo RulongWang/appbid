@@ -55,8 +55,9 @@ def payment(request, *args, **kwargs):
     if back_page:
         del request.session['back_page']
         error_msg = driver.GENERIC_PAYPAL_ERROR
+        page_msg = request.session['back_page_msg']
         return render_to_response('payment/paypal_cancel.html',
-                                  {'error_msg': error_msg, 'back_page': back_page}, context_instance=RequestContext(request))
+          {'error_msg': error_msg, 'back_page': back_page, 'back_page_msg': page_msg}, context_instance=RequestContext(request))
     else:
         error_msg = _('%(param1)s Please payment again.') % {'param1': driver.GENERIC_PAYPAL_ERROR}
         return render_to_response('payment/paypal_error.html',
@@ -117,8 +118,9 @@ def payPalReturn(request, *args, **kwargs):
     if back_page:
         del request.session['back_page']
         error_msg = driver.GENERIC_PAYPAL_ERROR
+        page_msg = request.session['back_page_msg']
         return render_to_response('payment/paypal_cancel.html',
-                                  {'error_msg': error_msg, 'back_page': back_page}, context_instance=RequestContext(request))
+          {'error_msg': error_msg, 'back_page': back_page, 'back_page_msg': page_msg}, context_instance=RequestContext(request))
     else:
         error_msg = _('%(param1)s Please payment again.') % {'param1': driver.GENERIC_PAYPAL_ERROR}
         return render_to_response('payment/paypal_error.html',
@@ -162,8 +164,10 @@ def payPalDoCheckOut(request, *args, **kwargs):
                                 if success_page:
                                     del request.session['success_page']
                                     initParam['success_page'] = success_page
+                                    initParam['success_page_msg'] = request.session['success_page_msg']
                                 #For the value in paypal_success.html
                                 initParam['app'] = serviceDetail.app
+                                initParam['type'] = 'Payment'
                                 initParam['price'] = serviceDetail.actual_amount
                                 initParam['msg'] = _('The payment success. Please check your paypal account.')
                                 log.info(_('Seller %(param1)s has paid service fee with service detail id %(param2)s.')
@@ -199,8 +203,9 @@ def payPalDoCheckOut(request, *args, **kwargs):
     if back_page:
         del request.session['back_page']
         error_msg = driver.GENERIC_PAYPAL_ERROR
+        page_msg = request.session['back_page_msg']
         return render_to_response('payment/paypal_cancel.html',
-                                  {'error_msg': error_msg, 'back_page': back_page}, context_instance=RequestContext(request))
+          {'error_msg': error_msg, 'back_page': back_page, 'back_page_msg': page_msg}, context_instance=RequestContext(request))
     else:
         error_msg = _('%(param1)s Please payment again.') % {'param1': driver.GENERIC_PAYPAL_ERROR}
         return render_to_response('payment/paypal_error.html',
@@ -226,6 +231,7 @@ def payPalCancel(request, *args, **kwargs):
     if back_page:
         initParam['back_page'] = back_page
         del request.session['back_page']
+        initParam['back_page_msg'] = request.session['back_page_msg']
     log.info(_('User %(param1)s cancel the payment.') % {'param1': request.user.username})
     return render_to_response("payment/paypal_cancel.html", initParam, context_instance=RequestContext(request))
 
@@ -276,8 +282,9 @@ def pay(request, *args, **kwargs):
     if back_page:
         del request.session['back_page']
         error_msg = driver.GENERIC_PAYPAL_ERROR
+        page_msg = request.session['back_page_msg']
         return render_to_response('payment/paypal_cancel.html',
-                                  {'error_msg': error_msg, 'back_page': back_page}, context_instance=RequestContext(request))
+          {'error_msg': error_msg, 'back_page': back_page, 'back_page_msg': page_msg}, context_instance=RequestContext(request))
     else:
         error_msg = _('%(param1)s Please transaction again.') % {'param1': driver.GENERIC_PAYPAL_ERROR}
         return render_to_response('payment/paypal_error.html',
@@ -319,9 +326,11 @@ def payReturn(request, *args, **kwargs):
                             if success_page:
                                 del request.session['success_page']
                                 initParam['success_page'] = success_page
+                                initParam['success_page_msg'] = request.session['success_page_msg']
                             #For the value in paypal_success.html
                             initParam['app'] = transaction.app
                             initParam['price'] = transaction.price
+                            initParam['type'] = 'Transaction'
                             initParam['msg'] = _('You have successfully paid the money. We have already sent an email to the app seller. In the meanwhile you can send private message to seller as well.')
                             log.info(_('User %(param1)s has paid with transaction id %(param2)s.')
                                       % {'param1': request.user.username, 'param2': transaction.id})
@@ -351,8 +360,9 @@ def payReturn(request, *args, **kwargs):
     if back_page:
         del request.session['back_page']
         error_msg = driver.GENERIC_PAYPAL_ERROR
+        page_msg = request.session['back_page_msg']
         return render_to_response('payment/paypal_cancel.html',
-                                  {'error_msg': error_msg, 'back_page': back_page}, context_instance=RequestContext(request))
+          {'error_msg': error_msg, 'back_page': back_page, 'back_page_msg': page_msg}, context_instance=RequestContext(request))
     else:
         error_msg = _('%(param1)s Please transaction again.') % {'param1': driver.GENERIC_PAYPAL_ERROR}
         return render_to_response('payment/paypal_error.html',

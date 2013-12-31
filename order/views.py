@@ -11,13 +11,14 @@ from django.utils.translation import ugettext as _
 from django.db import transaction
 from django.contrib.auth.models import User
 
+from utilities import common
 from appbid import models as appModels
 from payment import models as paymentModels
 from order import models, forms
 from payment import views as paymentViews
 from notification import views as notificationViews
+from auth import views as authViews
 from transaction import views as transactionViews
-from utilities import common
 
 log = logging.getLogger('appbid')
 
@@ -73,6 +74,7 @@ def checkout(request, *args, **kwargs):
                     if checkOutSuccess(request, serviceDetail=serviceDetail):
                         initParam['msg'] = _('The payment is successful.')
                         initParam['success_page'] = '/'.join([common.getHttpHeader(request), 'query/app-detail', str(app.id)])
+                        initParam['success_page_msg'] = 'App Detail'
                         log.info(_('Seller %(param1)s has paid service fee - %(param2)s with service detail id %(param3)s.')
                                  % {'param1': request.user.username, 'param2': serviceDetail.actual_amount, 'param3': serviceDetail.id})
                         return render_to_response('payment/paypal_success.html', initParam, context_instance=RequestContext(request))
@@ -95,11 +97,17 @@ def checkout(request, *args, **kwargs):
                     #The back page, when payment has error.
                     if request.session.get('back_page', None):
                         del request.session['back_page']
+                    if request.session.get('back_page_msg', None):
+                        del request.session['back_page_msg']
                     request.session['back_page'] = '/'.join([common.getHttpHeader(request), 'seller/payment', str(app.id)])
+                    request.session['back_page_msg'] = 'Payment'
                     #The success return page, when payment finish.
                     if request.session.get('success_page', None):
                         del request.session['success_page']
+                    if request.session.get('success_page_msg', None):
+                        del request.session['success_page_msg']
                     request.session['success_page'] = '/'.join([common.getHttpHeader(request), 'query/app-detail', str(app.id)])
+                    request.session['success_page_msg'] = 'App Detail'
                     return paymentViews.payment(request, initParam=initParam)
     #Init data
     initParam['form'] = forms.ServiceDetailForm(instance=serviceDetail)
@@ -222,7 +230,24 @@ def checkOutSuccess(request, *args, **kwargs):
         else:
             app.end_date = serviceDetail.end_date
         app.save()
+
         #Init transaction model data
         # transactionViews.initTransaction(request, app=app)
+
+        #Share app to social system.
+        shareApp(request, serviceDetail=serviceDetail, app=app)
         return serviceDetail
     return None
+
+
+def shareApp(request, *args, **kwargs):
+    """Share App to Twitter or WeiBo, if user select the service."""
+    app = kwargs.get('app')
+    serviceDetail = kwargs.get("serviceDetail")
+    serviceItems = serviceDetail.serviceitem.all()
+    initParam = {'request': request, 'app': app}
+    for serviceItem in serviceItems:
+        if serviceItem.name == 'Share_to_Weibo':
+            common.CommonThread(authViews.shareToWeiBo, initParam=initParam).start()
+        if serviceItem.name == 'Share_to_Twitter':
+            common.CommonThread(authViews.shareToTwitter, initParam=initParam).start()

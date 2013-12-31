@@ -25,3 +25,6 @@ values('unsold_end_inform_seller',1,1,'{param1} has bought your app {param2} fro
 #name = 'new_comment_inform_seller'
 #name = 'new_comment_inform_buyer'
 #name ='closed_trade_inform_buyer_watched_category'
+#name = 'new_message_inform_user'
+#name ='txn_remind_seller'
+#name = 'pay_remind_buyer'

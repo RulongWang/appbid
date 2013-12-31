@@ -8,7 +8,7 @@
         <div class="register_icon">
             {{ appInfoForm.icon.label_tag }}
             {% if appInfoForm.icon.errors %}
-                <div>
+                <div class="return_error">
                 {{ appInfoForm.icon.errors }}
                 </div>
             {% endif %}
@@ -22,7 +22,7 @@
         <div class="field_block">
             {{ form.app_name.label_tag }}
             {% if form.app_name.errors %}
-                <div>
+                <div class="return_error">
                 {{ form.app_name.errors }}
                 </div>
             {% endif %}
@@ -32,7 +32,7 @@
         <div class="field_block">
             {{ form.apple_id.label_tag }}
             {% if form.apple_id.errors %}
-                <div>
+                <div class="return_error">
                 {{ form.apple_id.errors }}
                 </div>
             {% endif %}
@@ -42,7 +42,7 @@
         <div class="field_block">
             {{ form.platform_version.label_tag }}
             {% if form.platform_version.errors %}
-                <div>
+                <div class="return_error">
                 {{ form.platform_version.errors }}
                 </div>
             {% endif %}
@@ -52,7 +52,7 @@
         <div class="field_block">
             {{ form.rating.label_tag }}
             {% if form.rating.errors %}
-                <div>
+                <div class="return_error">
                 {{ form.rating.errors }}
                 </div>
             {% endif %}
@@ -62,7 +62,7 @@
         <div class="field_block_selected">
             {{ form.category.label_tag }}
             {% if form.category.errors %}
-                <div>
+                <div class="return_error">
                 {{ form.category.errors }}
                 </div>
             {% endif %}
@@ -72,7 +72,7 @@
         <div class="field_block_selected">
             {{ form.device.label_tag }}
             {% if form.device.errors %}
-                <div>
+                <div class="return_error">
                 {{ form.device.errors }}
                 </div>
             {% endif %}

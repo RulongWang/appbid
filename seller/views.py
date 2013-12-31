@@ -56,6 +56,7 @@ def registerApp(request, *args, **kwargs):
                 initParam['appInfoForm'] = forms.AppInfoForm(instance=appInfos[0])
         #For Payment
         if flag == 6:
+            initParam['discount_rate'] = common.getSystemParam(key='discount_rate', default=1)
             initParam['serviceItems'] = orderModels.ServiceItem.objects.filter(end_date__gte=datetime.datetime.now())
             serviceDetails = orderModels.ServiceDetail.objects.filter(app_id=app.id).order_by('-pk')
             sn = kwargs.get('sn', None)
@@ -184,7 +185,7 @@ def saveAppStoreLink(request, form, model, *args, **kwargs):
     else:
         model.title = title
         model.app_store_link = app_store_link
-    model.rating = result.get('averageUserRating', None)
+    model.rating = result.get('averageUserRating', 0)
     model.platform_version = result.get('version', None)
     model.apple_id = result.get('trackId', None)
     model.app_name = result.get('trackName', None)
@@ -464,7 +465,7 @@ def saveService(request, form, model, *args, **kwargs):
 
     #Check if the app is verified before check out.
     if not model.is_verified:
-        initParam['payment_msg'] = _('The service is made, but can payment after app is verified. Please click verification to send request message to us.')
+        initParam['payment_msg'] = _('The service is made, but can payment after app is verified. Please click \'App Verification\' to send verification request to us.')
         initParam['selectItems'] = serviceDetail.serviceitem.all()
         initParam['serviceDetail'] = serviceDetail
         initParam['amount'] = serviceDetail.amount
@@ -488,6 +489,9 @@ def saveVerification(request, form, model, *args, **kwargs):
     if model is None or model.status == 3:
         return None
     initParam = kwargs.get('initParam')
+    if model.is_verified is True:
+        initParam['verify_msg'] = _('The app has been verified successfully. No need verify again.')
+        return None
     try:
         ownerShipScan = appModels.OwnerShip_Scan.objects.get(app_id=model.id)
         ownerShipScan.times = 0
