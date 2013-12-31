@@ -3,8 +3,8 @@
 import os
 import datetime
 
-DEBUG = False
-TEMPLATE_DEBUG = False
+DEBUG = True
+TEMPLATE_DEBUG = True
 
 ADMINS = (
     ('AppsWalk', 'support@appswalk.com'),
