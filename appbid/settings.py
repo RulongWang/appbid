@@ -142,7 +142,6 @@ INSTALLED_APPS = (
     'django.contrib.admindocs',
     'django.contrib.comments',
     'django_crontab',
-    # 'django_cron',
     'social_auth',
     'qrcode',
     'requests',
@@ -296,19 +295,10 @@ CRONJOBS = [
     ('*/1 * * * *', 'job.job.jobByFiveMin'),
 ]
 
-
-# CRON_CLASSES = [
-#     "django_cron.cron.FailedRunsNotificationCronJob",
-#     "appbid.cron.MyCronJobJarvis",
-# ]
-# FAILED_RUNS_CRONJOB_EMAIL_PREFIX = '[Cron Job]: '
-
 try:
     from paypal.settings import *
 except Exception, e:
     pass
-
-
 
 #flat page setting
 SITE_ID = 1
