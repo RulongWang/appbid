@@ -91,12 +91,12 @@ def checkServiceDateForApps(*args, **kwargs):
             templates = notificationModels.NotificationTemplate.objects.filter(name='service_end_inform_seller')
             if templates:
                 subject = templates[0].subject.replace('{param1}', bids[0].buyer.username)
-                message = templates[0].template.replace('{param1}', app.publisher.username)
+                message = templates[0].template.replace('{param1}', app.publisher.username).replace('{param2}', app.app_name)
                 massEmailThread.addEmailData(subject=subject, message=message, recipient_list=[app.publisher.email])
         else:
             templates = notificationModels.NotificationTemplate.objects.filter(name='service_end_inform_seller_lt_reserve_price')
             if templates:
-                subject = templates[0].subject
+                subject = templates[0].subject.replace('{param1}', app.app_name)
                 message = templates[0].template.replace('{param1}', app.publisher.username)
                 massEmailThread.addEmailData(subject=subject, message=message, recipient_list=[app.publisher.email])
     massEmailThread.start()
