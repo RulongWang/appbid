@@ -1,5 +1,5 @@
 INSERT INTO appbid.notification_notificationtemplate (name, language, type, subject, template, description, version, create_time, last_modify, modifier_id) VALUES ('seller_remind_buyer_pay', 1, 1, 'Payment reminder for auction of {param1}', 'Dear {param1},
-This is the reminder email from seller, since you are the winner of {param1}, you need to pay seller according to the deal agreement.Thank you very much for your cooperation.
+This is the reminder email from seller, since you are the winner of {param2}, you need to pay seller according to the deal agreement.Thank you very much for your cooperation.
 
 Thanks
 Appswalk Ltd. ', 'seller_remind_buyer_pay', '1.0', '2013-12-08 20:11:12', '2013-12-08 22:35:42', 1);
@@ -19,13 +19,13 @@ Please copy the blow link to your browser and verify your new email
 
 Thanks
 Appswalk Ltd. ', 'The security verification email for new email.', '1.0', '2013-12-08 20:11:12', '2013-12-08 22:34:20', 1);
-INSERT INTO appbid.notification_notificationtemplate (name, language, type, subject, template, description, version, create_time, last_modify, modifier_id) VALUES ('buyer_trade_now', 1, 1, 'Congratulations for your bidding at Appswalk', 'Dear {param1},
+INSERT INTO appbid.notification_notificationtemplate (name, language, type, subject, template, description, version, create_time, last_modify, modifier_id) VALUES ('seller_trade_now', 1, 1, 'Congratulations for your bidding at Appswalk', 'Dear {param1},
 
-Congratulations! You are the winner of the auction <a href="{param2}">{param3}</a>.
+Congratulations! You are the winner of the auction {param2}.
 
 Now you can pay the money to the seller by the following link:
 
-{param4}
+{param3}
 
 Thanks
 Appswalk Ltd. ', 'Buyer pay email after seller click trade now', '1.0', '2013-12-08 20:11:12', '2013-12-11 22:55:23', 1);
