@@ -69,7 +69,7 @@ Appswalk Ltd
 ', 'Tell seller after buyer paid..', '1.0', '2013-12-08 20:11:12', '2013-12-08 22:44:26', 1);
 INSERT INTO appbid.notification_notificationtemplate (name, language, type, subject, template, description, version, create_time, last_modify, modifier_id) VALUES ('service_end_inform_seller', 1, 1, 'You need to start the transaction with your auction winner {param1}', 'Dear {param1},
 
-Your listing already ended, you need to start the transaction with your auction winner within 7 days, otherwise your credit points will be deducted. Please logon on www.appswalk.com and check details.
+Your listing of app {param2} has already ended, you need to start the transaction with your auction winner within 7 days, otherwise your credit points will be deducted. Please logon on www.appswalk.com and check details.
 Thank you very much.
 Appswalk Ltd', 'The bidding price exceed  the reservce price, and listing finished and after 7 days , The seller didn''t start the transaction with the buyer. ', '1.0', '2013-12-08 20:11:12', '2013-12-11 23:12:03', 1);
 INSERT INTO appbid.notification_notificationtemplate (name, language, type, subject, template, description, version, create_time, last_modify, modifier_id) VALUES ('unsold_end_inform_seller', 1, 1, 'Need your action immediately ', 'Dear {param1},
@@ -106,7 +106,7 @@ Now you can start your new transaction with your second buyer.
 Please logon to www.appswalk.com and start your new transaction.
 Regards,
 Appswalk Ltd', '', '1.0', '2013-12-10 22:18:03', '2013-12-11 23:26:52', 1);
-INSERT INTO appbid.notification_notificationtemplate (name, language, type, subject, template, description, version, create_time, last_modify, modifier_id) VALUES ('service_end_inform_seller_lt_reserve_price', 1, 1, 'Need your action on your listing', 'Dear {param1},
+INSERT INTO appbid.notification_notificationtemplate (name, language, type, subject, template, description, version, create_time, last_modify, modifier_id) VALUES ('service_end_inform_seller_lt_reserve_price', 1, 1, 'Need your action on your listing of app {param1}', 'Dear {param1},
 The bidding price doesn''t reach your reserved price.  However you can start your transaction with your buyer who placed the highest price.
 Please logon to www.appswalk.com for more details.
 Regards,

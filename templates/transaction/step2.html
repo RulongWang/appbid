@@ -16,12 +16,12 @@
                         {% include "bid/remaintime.html" %} <br/>
                     {% endif %}
                 </div>
-            <div style="padding: 3px;"><h2 style="font-weight: bold;">The promised things you will get after payment from the app seller ({{ transaction.seller.username }}):</h2></div>
+            <div style="padding: 3px;"><h2 style="font-weight: bold;">The promised things you will get from the app seller ({{ transaction.seller.username }}) after your payment:</h2></div>
             <div>
                 <ul class="delivery_list">
                     <li>You should get the ownership of the app (<a href="{% url 'query:app_detail' transaction.app.id %}">{{ transaction.app.app_name }}</a>) at APPSTORE.</li>
                     {% if transaction.app.source_code  %}
-                    <li>You should deliver the source of the app.</li>
+                    <li>You should get the source code of the app.</li>
                     {% endif %}
                     {% if transaction.app.delivery_detail  %}
                     <li>
@@ -45,7 +45,7 @@
                         {% if page_source == 'one-price' %}
                             <div id="msg_new" style="color: red;"></div>
                             <div id="bid_agreement">
-                            <input id="agreement" name="agreement" type="checkbox"/>I have read <a href="#"><b>the Bidding Terms and Conditions</b></a> and I agree to them.
+                            <input id="agreement" name="agreement" type="checkbox"/>I have read <a href="/termsandconditions"><b>the Bidding Terms and Conditions</b></a> and I agree to them.
                             </div>
                             <input id="pay_it_now" type="submit" value="Pay It Now" class="button_s">
                         {% else %}
