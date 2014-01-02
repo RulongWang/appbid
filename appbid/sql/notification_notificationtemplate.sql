@@ -35,7 +35,7 @@ INSERT INTO appbid.notification_notificationtemplate (name, language, type, subj
 This transaction is guaranteed  by Paypal.
 Thanks
 Appswalk Ltd. ', 'Tell seller after buyer paid..', '1.0', '2013-12-08 20:11:12', '2013-12-11 22:57:16', 1);
-INSERT INTO appbid.notification_notificationtemplate (name, language, type, subject, template, description, version, create_time, last_modify, modifier_id) VALUES ('buyer_one_price_inform_seller', 1, 1, '{param1} decised to buy your app {param2} from AppsWalk', 'Dear  {param1},
+INSERT INTO appbid.notification_notificationtemplate (name, language, type, subject, template, description, version, create_time, last_modify, modifier_id) VALUES ('buyer_one_price_inform_seller', 1, 1, '{param1} decided to buy your app {param2} from AppsWalk', 'Dear {param1},
 
 User {param2} has bought your app {param3} via ''Buy it now''. You should start to deliver everything to {param2} as you claimed on Appswalk.
 This transaction is guaranteed by Paypal.
