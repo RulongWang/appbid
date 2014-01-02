@@ -193,8 +193,8 @@ def sendNewAppEmail(request, *args, **kwargs):
         templates = models.NotificationTemplate.objects.filter(name='new_app_inform_buyer')
         for watchSeller in watchSellers:
             if templates:
-                subject = templates[0].subject
-                message = templates[0].template.replace('{param1}', watchSeller.buyer.username).replace('{param2}', app.app_name)
+                subject = templates[0].subject.replace('{param1}', watchSeller.seller.username)
+                message = templates[0].template.replace('{param1}', watchSeller.buyer.username).replace('{param2}', watchSeller.seller.username).replace('{param3}', app.app_name)
                 massEmailThread.addEmailData(subject=subject, message=message, recipient_list=[watchSeller.buyer.email])
         massEmailThread.start()
 

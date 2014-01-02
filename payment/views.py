@@ -246,7 +246,7 @@ def pay(request, *args, **kwargs):
     id = initParam.get('txn_id')
     if currency and id:
         p = driver.PayPal()
-        AP_RETURNURL = '/'.join([common.getHttpHeader(request), 'payment/paypal_ap_return'])
+        AP_RETURNURL = '/'.join(['https://', request.META.get('HTTP_HOST'), 'payment/paypal_ap_return'])
         AP_CANCELURL = '/'.join([common.getHttpHeader(request), 'payment/paypal_cancel'])
         result = p.setAPCall(currency, AP_RETURNURL, AP_CANCELURL, 'PAY', initParam=initParam)
         if result['responseEnvelope.ack'][0] == 'Success':

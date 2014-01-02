@@ -133,7 +133,7 @@ There is new auction {param2} in your watching category, please login and check 
 Best regards,
 Appswalk Ltd', 'Newlisting at watching category, inform buyer', '1.0', '2013-12-13 15:06:19', '2013-12-13 15:06:19', 1);
 INSERT INTO appbid.notification_notificationtemplate (name, language, type, subject, template, description, version, create_time, last_modify, modifier_id) VALUES ('new_app_inform_buyer', 1, 1, 'Your watching seller just list a new APP', 'Dear {param1},
-Your watching seller just list a new APP {param2} on Appswalk
+Your watching seller {param2} just list a new APP {param3} on Appswalk
 Best regards,
 Appswalk Ltd', 'Your watching seller just list a new APP', '1.0', '2013-12-13 15:10:16', '2013-12-13 15:10:16', 1);
 INSERT INTO appbid.notification_notificationtemplate (name, language, type, subject, template, description, version, create_time, last_modify, modifier_id) VALUES ('new_message_inform_user', 1, 1, 'There is a new message in your Appswalk Inbox', 'Dear {param1},
