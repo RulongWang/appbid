@@ -105,6 +105,9 @@ admin.site.register(UserPrivateItem, UserPrivateItemAdmin)
 admin.site.register(UserDetail, UserDetailAdmin)
 admin.site.register(SubscriptionItem, SubscriptionItemAdmin)
 admin.site.register(UserPublicProfile, UserPublicProfileAdmin)
+admin.site.register(UserPrivateSetting)
+admin.site.register(SecurityVerification)
+admin.site.register(UserLoginInfo)
 
 
 

@@ -29,7 +29,7 @@ Now you can pay the money to the seller by the following link:
 
 Thanks
 Appswalk Ltd. ', 'Buyer pay email after seller click trade now', '1.0', '2013-12-08 20:11:12', '2013-12-11 22:55:23', 1);
-INSERT INTO appbid.notification_notificationtemplate (name, language, type, subject, template, description, version, create_time, last_modify, modifier_id) VALUES ('buyer_paid_inform_seller', 1, 1, 'Please start to transfer your app to { param1 }', 'Dear {param1},
+INSERT INTO appbid.notification_notificationtemplate (name, language, type, subject, template, description, version, create_time, last_modify, modifier_id) VALUES ('buyer_paid_inform_seller', 1, 1, 'Please start to transfer your app to {param1}', 'Dear {param1},
 
 {param2} already paid you for app {param3} with Paypal. You should start to deliver everything to the buyer {param2} as you claimed on Appswalk.
 This transaction is guaranteed  by Paypal.

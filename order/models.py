@@ -44,3 +44,4 @@ class ServiceDetail(models.Model):
 
 
 admin.site.register(ServiceItem)
+admin.site.register(ServiceDetail)
