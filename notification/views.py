@@ -73,14 +73,14 @@ def tradeNowInformBuyerPayEmail(request, *args, **kwargs):
     """After seller click button 'Trade Now', send email to buyer inform that he won the bidding, and can pay now."""
     app = kwargs.get('app')
     user = kwargs.get('user')
-    templates = models.NotificationTemplate.objects.filter(name='buyer_trade_now')
+    templates = models.NotificationTemplate.objects.filter(name='seller_trade_now')
     if app and user and templates:
         massEmailThread = email.MassEmailThread()
         link_header = common.getHttpHeader(request)
         app_detail_url = '/'.join([link_header, 'query/app-detail', str(app.id)])
         pay_url = '/'.join([link_header, 'dashboard/my-bidding'])
         subject = templates[0].subject
-        message = templates[0].template.replace('{param1}', user.username).replace('{param2}', app_detail_url).replace('{param3}', app.app_name).replace('{param4}', pay_url)
+        message = templates[0].template.replace('{param1}', user.username).replace('{param2}', app.app_name).replace('{param3}', pay_url)
         massEmailThread.addEmailData(subject=subject, message=message, recipient_list=[user.email])
         massEmailThread.start()
     return None
@@ -193,8 +193,8 @@ def sendNewAppEmail(request, *args, **kwargs):
         templates = models.NotificationTemplate.objects.filter(name='new_app_inform_buyer')
         for watchSeller in watchSellers:
             if templates:
-                subject = templates[0].subject
-                message = templates[0].template.replace('{param1}', watchSeller.buyer.username).replace('{param2}', app.app_name)
+                subject = templates[0].subject.replace('{param1}', watchSeller.seller.username)
+                message = templates[0].template.replace('{param1}', watchSeller.buyer.username).replace('{param2}', watchSeller.seller.username).replace('{param3}', app.app_name)
                 massEmailThread.addEmailData(subject=subject, message=message, recipient_list=[watchSeller.buyer.email])
         massEmailThread.start()
 
@@ -242,6 +242,6 @@ def remindBuyerPay(request, *args, **kwargs):
     if transaction and templates:
         massEmailThread = email.MassEmailThread()
         subject = templates[0].subject.replace('{param1}', transaction.app.app_name)
-        message = templates[0].template.replace('{param1}', transaction.seller.username).replace('{param2}', transaction.app.app_name)
+        message = templates[0].template.replace('{param1}', transaction.buyer.username).replace('{param2}', transaction.app.app_name)
         massEmailThread.addEmailData(subject=subject, message=message, recipient_list=[transaction.buyer.email])
         massEmailThread.start()
