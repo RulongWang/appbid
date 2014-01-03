@@ -146,11 +146,14 @@
               </div>
         </div>
 <script type="text/javascript" language="javascript">
-    function callbackMethodBidding() {
-        $("#bid_part").hide();
-    }
-    function callbackMethodBeginBid() {
-        location.reload();
+    function callbackMethod() {
+        var callback = '{{ callback }}';
+        if (callback && callback == 'bidding') {
+            $("#bid_part").hide();
+        }
+        else if (callback && callback == 'beginBid') {
+            location.reload();
+        }
     }
     $("#price").click(function() {
         if ($("#price").val() ==="") {
