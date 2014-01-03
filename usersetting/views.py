@@ -300,7 +300,7 @@ def userPublicProfile(request, *args, **kwargs):
             if thumbnail:
                 if thumbnail.content_type.startswith('image'):
                     if thumbnail.size > 1000000:
-                        initParam['account_msg'] = _('The image size is larger than 1M.')
+                        initParam['account_error'] = _('The image size is larger than 1M.')
                     else:
                         path = '/'.join([settings.MEDIA_ROOT, str(user.id)])
                         if os.path.exists(path) is False:
@@ -318,7 +318,7 @@ def userPublicProfile(request, *args, **kwargs):
                             common.imageThumbnail(path=path, size=[50, 50])
                         initParam['account_msg'] = _('The public profile has been updated successful.')
                 else:
-                    initParam['account_msg'] =  _('The file type of %(param)s is not supported.') % {'param': thumbnail.name}
+                    initParam['account_error'] = _('The file type of %(param)s is not supported.') % {'param': thumbnail.name}
             else:
                 userPublicProfile.save()
                 initParam['account_msg'] = _('The public profile has been updated successfully.')

@@ -2,7 +2,7 @@
         <div>
             <div><h2 style="font-weight: bold;">Current Status:</h2></div>
                 <div style="line-height: 1.5em;">
-                    Currently ,you need to pay <span style="color: red;"><b>{{transaction.price|floatformat }} {{ transaction.app.currency.currency }}</b></span> to <b>{{ transaction.seller.username }}</b>.
+                    Currently, you need to pay <span style="color: red;"><b>{{transaction.price|floatformat }} {{ transaction.app.currency.currency }}</b></span> to <b>{{ transaction.seller.username }}</b>.
                     After your payment, we will help you inform seller to start the delivery process immediately.<br/>
                     The remaining time for your payment:
                     {% if paid_expiry and paid_expiry == True %}

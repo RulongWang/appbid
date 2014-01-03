@@ -4,7 +4,7 @@
             <div><h2 style="font-weight: bold;">Current Status:</h2></div>
 
                 <div style="line-height: 1.5em;">
-                    Currently ,you have already paid <span style="color: red;"><b>{{ transaction.price|floatformat }} {{ transaction.app.currency.currency }}</b></span> to <b>{{ transaction.seller.username }}</b>.
+                    Currently, you have already paid <span style="color: red;"><b>{{ transaction.price|floatformat }} {{ transaction.app.currency.currency }}</b></span> to <b>{{ transaction.seller.username }}</b>.
                     {{ transaction.seller.username }} is preparing the delivery items to you, he/she could contact you via private message, email or phone.<br/>
                     Please be remember the agreed items {{ transaction.seller.username }} promised to send to you.<br/>
                     If {{ transaction.seller.username }} didn't deliver these items to you , please raise an incident here.<br/>
