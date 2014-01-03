@@ -14,7 +14,7 @@
                 <ul class="delivery_list">
                     <li>You should transfer the ownership of the app (<a href="{% url 'query:app_detail' transaction.app.id %}">{{ transaction.app.app_name }}</a>) to {{ transaction.user.username }}.</li>
                     {% if transaction.app.source_code  %}
-                    <li>You should deliver the source of the app.</li>
+                    <li>You should deliver the source code of the app.</li>
                     {% endif %}
 
                     <li>
