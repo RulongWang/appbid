@@ -101,10 +101,23 @@ class UserLoginInfo(models.Model):
     login_date = models.DateTimeField(auto_now_add=True)
 
 
+class BlackList(models.Model):
+    """Black list."""
+    user = models.ForeignKey(User)
+    comment = models.CharField(max_length=255, null=True)
+    create_time = models.DateTimeField(auto_now_add=True)
+
+
+class BlackListAdmin(admin.ModelAdmin):
+    """The set of SubscriptionItem table displaying in admin page."""
+    list_display = ('user', 'comment', 'create_time')
+
+
 admin.site.register(UserPrivateItem, UserPrivateItemAdmin)
 admin.site.register(UserDetail, UserDetailAdmin)
 admin.site.register(SubscriptionItem, SubscriptionItemAdmin)
 admin.site.register(UserPublicProfile, UserPublicProfileAdmin)
+admin.site.register(BlackList, BlackListAdmin)
 admin.site.register(UserPrivateSetting)
 admin.site.register(SecurityVerification)
 admin.site.register(UserLoginInfo)

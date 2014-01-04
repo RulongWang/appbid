@@ -46,7 +46,10 @@ def loginView(request, *args, **kwargs):
             redirect_to = '/'
 
     if user:
-        if user.is_active:
+        blackList = models.BlackList.objects.filter(user_id=user.id)
+        if blackList:
+            initParam['login_error'] = _('Your account has been listed in blacklist!')
+        elif user.is_active:
             login(request, user)
             #record user login info, such as IP.
             userLoginInfo = models.UserLoginInfo()
