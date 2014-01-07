@@ -164,6 +164,12 @@ def register(request, *args, **kwargs):
                     securityVerification.value = user.email
                     securityVerification.is_verified = False
                     securityVerification.save()
+
+                    #Set the default value of subscription
+                    subItems = models.SubscriptionItem.objects.all()
+                    for subItem in subItems:
+                        user.subscriptionitem_set.add(subItem)
+
                     #Init some setting for the user
                     # privateSet = models.UserPrivateSetting()
                     # privateSet.user = user
