@@ -9,6 +9,6 @@ PAYPAL_AP_APPLICATION_ID = 'APP-5RW64647DB339963H'
 PAYPAL_DEBUG = False # for sandbox. False for real environment.
 
 #AppsWalk paypal account
-APPSWALK_ACCOUNT = 'me@rulong.org'
+APPSWALK_ACCOUNT = 'rulong.wang@yahoo.com'
 
 
