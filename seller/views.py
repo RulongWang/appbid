@@ -146,11 +146,11 @@ def saveAppStoreLink(request, form, model, *args, **kwargs):
     if model:
         if appModels.App.objects.filter(publisher_id=request.user.id, status=1,
                                         app_store_link__iexact=app_store_link).exclude(pk=model.id).count():
-            initParam['error_msg'] = _('App with link %(param1)s has existed in your draft apps.') % {'param1': app_store_link}
+            initParam['error_msg'] = _('App with link has existed in your draft apps.')
             return None
     elif appModels.App.objects.filter(publisher_id=request.user.id, status=1,
                                       app_store_link__iexact=app_store_link).count():
-        initParam['error_msg'] = _('App with link %(param1)s has existed in your draft apps.') % {'param1': app_store_link}
+        initParam['error_msg'] = _('App with link has existed in your draft apps.')
         return None
 
     try:
@@ -162,8 +162,8 @@ def saveAppStoreLink(request, form, model, *args, **kwargs):
         if result is None:
             raise
     except Exception, e:
-        initParam['error_msg'] = _('Link %(param)s is not correct.') % {'param': ''}
-        log.error(_('The app store link %(param)s is not correct.') % {'param': match.group(1)})
+        initParam['error_msg'] = _('App store link is not correct.')
+        log.error(_('App store link %(param)s is not correct.') % {'param': app_store_link})
         log.error(e.message)
         return None
 
@@ -217,7 +217,7 @@ def saveAppStoreLink(request, form, model, *args, **kwargs):
                 os.remove(path)
             urllib.urlretrieve(result.get('artworkUrl512', None), path)
             #Shrink image From (1024*1024) to (200*200)
-            common.imageThumbnail(path=path, size=(200, 200))
+            common.imageThumbnail(path=path, size=[200, 200])
         elif result.get('artworkUrl100', None):
             urllib.urlretrieve(result.get('artworkUrl100', None), path)
         elif result.get('artworkUrl60', None):
@@ -465,7 +465,7 @@ def saveService(request, form, model, *args, **kwargs):
 
     #Check if the app is verified before check out.
     if not model.is_verified:
-        initParam['payment_msg'] = _('The service is made, but can payment after app is verified. Please click \'App Verification\' to send verification request to us.')
+        initParam['payment_msg'] = _('Your app is not verified at the moment. Please goto next step and click \'App Verification\' to request verification.')
         initParam['selectItems'] = serviceDetail.serviceitem.all()
         initParam['serviceDetail'] = serviceDetail
         initParam['amount'] = serviceDetail.amount

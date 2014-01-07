@@ -2,6 +2,7 @@ __author__ = 'Jarvis'
 
 from django.db import models
 from django.contrib.auth.models import User
+from django.contrib import admin
 
 
 class Message(models.Model):
@@ -20,3 +21,4 @@ class Message(models.Model):
     is_read = models.BooleanField(default=False, blank=True)
     submit_date = models.DateTimeField(auto_now_add=True)
 
+admin.site.register(Message)

@@ -406,7 +406,7 @@ def checkTransaction(request, *args, **kwargs):
         gateways = paymentModels.Gateway.objects.filter(name__iexact=gateway)
         if gateways:
             transactions = models.Transaction.objects.filter(buyer_id=request.user.id,
-                                                             pay_key=pay_key, gateway_id=gateways[0].id, is_active=True)
+                                                             pay_key=pay_key, gateway_id=gateways[0].id)
             if transactions:
                 return transactions[0]
     return None
@@ -418,7 +418,7 @@ def executePay(*args, **kwargs):
     txn_id = initParam.get('transaction_id')
     pay_key = initParam.get('pay_key')
     if txn_id and pay_key:
-        transactions = models.Transaction.objects.filter(pk=txn_id, pay_key=pay_key, is_active=True)
+        transactions = models.Transaction.objects.filter(pk=txn_id, pay_key=pay_key)
         if transactions:
             initParam['transaction'] = transactions[0]
             if transactions[0].status == 1:

@@ -3,6 +3,9 @@
     <div id="account_msg" style="color: green">
         {{ account_msg }}
     </div>
+    <div id="account_msg" style="color: red">
+        {{ account_error }}
+    </div>
     <div class="dash_title">Public Profile</div>
     <form action=""  method="post" enctype="multipart/form-data">
     {% csrf_token %}
@@ -14,7 +17,7 @@
                         <div class="thumnail_layout" >
                             {% if form.thumbnail.value %}
                                 <div style="width:50px;padding: 5px;float:left;">
-                                <img style="width: 40px;height: 40px" src="{{ form.thumbnail.value.url }}" />
+                                <img src="{{ form.thumbnail.value.url }}" />
                                 </div>
                             {% endif %}
                                 <input id="id_thumbnail" name="thumbnail" type="file" style="width: 150px;" />(Max size < 1M)

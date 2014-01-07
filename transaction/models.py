@@ -2,6 +2,7 @@ __author__ = 'Jarvis'
 
 from django.db import models
 from django.contrib.auth.models import User
+from django.contrib import admin
 from appbid import models as appModels
 from payment import models as paymentModels
 
@@ -77,3 +78,8 @@ class TransactionLog(models.Model):
     appswalk_account = models.CharField(max_length=255, null=True)
     pay_key = models.CharField(max_length=255, null=True)
     create_time = models.DateTimeField(auto_now_add=True)
+
+
+#Need to init or edit the data by admin.
+admin.site.register(Transaction)
+admin.site.register(TransactionLog)

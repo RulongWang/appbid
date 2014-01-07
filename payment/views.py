@@ -169,7 +169,7 @@ def payPalDoCheckOut(request, *args, **kwargs):
                                 initParam['app'] = serviceDetail.app
                                 initParam['type'] = 'Payment'
                                 initParam['price'] = serviceDetail.actual_amount
-                                initParam['msg'] = _('The payment success. Please check your paypal account.')
+                                initParam['msg'] = _('Thank you for your payment, and your app will be listed according to the effective period your choosed.')
                                 log.info(_('Seller %(param1)s has paid service fee with service detail id %(param2)s.')
                                           % {'param1': request.user.username, 'param2': serviceDetail.id})
                                 return render_to_response("payment/paypal_success.html", initParam, context_instance=RequestContext(request))
@@ -246,7 +246,7 @@ def pay(request, *args, **kwargs):
     id = initParam.get('txn_id')
     if currency and id:
         p = driver.PayPal()
-        AP_RETURNURL = '/'.join([common.getHttpHeader(request), 'payment/paypal_ap_return'])
+        AP_RETURNURL = '/'.join(['https://', request.META.get('HTTP_HOST'), 'payment/paypal_ap_return'])
         AP_CANCELURL = '/'.join([common.getHttpHeader(request), 'payment/paypal_cancel'])
         result = p.setAPCall(currency, AP_RETURNURL, AP_CANCELURL, 'PAY', initParam=initParam)
         if result['responseEnvelope.ack'][0] == 'Success':

@@ -3,7 +3,7 @@
         <div>
             <div><h2 style="font-weight: bold;">Current Status:</h2></div>
             <div style="line-height: 1.5em;">
-                    Currently ,the deal is pending on the 2nd step , we have informed buyer <b>{{ transaction.buyer.username }}</b> to pay the money <b>{{ transaction.price|floatformat }} {{ transaction.app.currency.currency }}</b>.<br/>
+                    Currently,the deal is pending on the 2nd step, we have informed buyer <b>{{ transaction.buyer.username }}</b> to pay the money <b>{{ transaction.price|floatformat }} {{ transaction.app.currency.currency }}</b>.<br/>
                     In the meanwhile, you can send private message to {{ transaction.buyer.username }}
                     <a href="/dashboard/create-message/reply/1/{{ transaction.buyer.username }}/{{ transaction.buyer.id }}?next={{ request.path }}"
                        title="Send private message to buyer" >
@@ -24,7 +24,7 @@
                 <ul class="delivery_list">
                     <li>You should transfer the ownership of the app (<a href="{% url 'query:app_detail' transaction.app.id %}">{{ transaction.app.app_name }}</a>) to <b>{{ transaction.buyer.username }}</b>.</li>
                     {% if transaction.app.source_code  %}
-                    <li>You should deliver the source of the app.</li>
+                    <li>You should deliver the source code of the app.</li>
                     {% endif %}
                     {% if transaction.app.delivery_detail  %}
                     <li>

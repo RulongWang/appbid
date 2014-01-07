@@ -91,12 +91,12 @@ def checkServiceDateForApps(*args, **kwargs):
             templates = notificationModels.NotificationTemplate.objects.filter(name='service_end_inform_seller')
             if templates:
                 subject = templates[0].subject.replace('{param1}', bids[0].buyer.username)
-                message = templates[0].template.replace('{param1}', app.publisher.username)
+                message = templates[0].template.replace('{param1}', app.publisher.username).replace('{param2}', app.app_name)
                 massEmailThread.addEmailData(subject=subject, message=message, recipient_list=[app.publisher.email])
         else:
             templates = notificationModels.NotificationTemplate.objects.filter(name='service_end_inform_seller_lt_reserve_price')
             if templates:
-                subject = templates[0].subject
+                subject = templates[0].subject.replace('{param1}', app.app_name)
                 message = templates[0].template.replace('{param1}', app.publisher.username)
                 massEmailThread.addEmailData(subject=subject, message=message, recipient_list=[app.publisher.email])
     massEmailThread.start()
@@ -142,31 +142,31 @@ def sendMailForRemind(*args, **kwargs):
     if remind_template:
         fourTxn = txnModels.Transaction.objects.filter(status=2, is_active=True, end_time__year=four_next_date.year, end_time__month=four_next_date.month, end_time__day=four_next_date.day)
         for txn in fourTxn:
-            subject = remind_template[0].subject
-            message = remind_template[0].template
+            subject = remind_template[0].subject.replace('{param1}', txn.app.app_name)
+            message = remind_template[0].template.replace('{param1}', txn.buyer.username).replace('{param2}', 4)
             massEmailThread.addEmailData(subject=subject, message=message, recipient_list=[txn.buyer.email])
         twoTxn = txnModels.Transaction.objects.filter(status=2, is_active=True, end_time__year=two_next_date.year, end_time__month=two_next_date.month, end_time__day=two_next_date.day)
         for txn in twoTxn:
-            subject = remind_template[0].subject
-            message = remind_template[0].template
+            subject = remind_template[0].subject.replace('{param1}', txn.app.app_name)
+            message = remind_template[0].template.template.replace('{param1}', txn.buyer.username).replace('{param2}', 2)
             massEmailThread.addEmailData(subject=subject, message=message, recipient_list=[txn.buyer.email])
         oneTxn = txnModels.Transaction.objects.filter(status=2, is_active=True, end_time__year=one_next_date.year, end_time__month=one_next_date.month, end_time__day=one_next_date.day)
         for txn in oneTxn:
-            subject = remind_template[0].subject
-            message = remind_template[0].template
+            subject = remind_template[0].subject.replace('{param1}', txn.app.app_name)
+            message = remind_template[0].template.template.replace('{param1}', txn.buyer.username).replace('{param2}', 1)
             massEmailThread.addEmailData(subject=subject, message=message, recipient_list=[txn.buyer.email])
 
     remind_template = notificationModels.NotificationTemplate.objects.filter(name='txn_remind_seller')
     if remind_template:
         sevenTxn = txnModels.Transaction.objects.filter(status=3, is_active=True, end_time__year=seven_next_date.year, end_time__month=seven_next_date.month, end_time__day=seven_next_date.day)
         for txn in sevenTxn:
-            subject = remind_template[0].subject
-            message = remind_template[0].template
+            subject = remind_template[0].subject.replace('{param1}', txn.app.app_name)
+            message = remind_template[0].template.template.replace('{param1}', txn.seller.username).replace('{param2}', 7).replace('{param3}', txn.app.app_name)
             massEmailThread.addEmailData(subject=subject, message=message, recipient_list=[txn.buyer.email])
         fourTxn = txnModels.Transaction.objects.filter(status=3, is_active=True, end_time__year=four_next_date.year, end_time__month=four_next_date.month, end_time__day=four_next_date.day)
         for txn in fourTxn:
-            subject = remind_template[0].subject
-            message = remind_template[0].template
+            subject = remind_template[0].subject.replace('{param1}', txn.app.app_name)
+            message = remind_template[0].template.template.replace('{param1}', txn.seller.username).replace('{param2}', 4).replace('{param3}', txn.app.app_name)
             massEmailThread.addEmailData(subject=subject, message=message, recipient_list=[txn.buyer.email])
     massEmailThread.start()
     return None

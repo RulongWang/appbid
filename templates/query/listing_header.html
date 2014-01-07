@@ -40,12 +40,12 @@
                 {% else %}
                     {% if app.status == 2 and app.begin_date %}
                         <div class="clear">
-                          Beginning bid in:{% include "bid/remaintime.html" %}
+                          Auction will start in:{% include "bid/remaintime.html" %}
                         </div>
                     {% endif %}
                     {% if app.status == 3 %}
                         <div style="color: red;" class="clear">
-                          Closed in: {{ time_remaining.0|floatformat }} {{ time_remaining.1 }}{{ time_remaining.0|floatformat|pluralize }} {{ time_remaining.2 }}
+                          Closed for: {{ time_remaining.0|floatformat }} {{ time_remaining.1 }}{{ time_remaining.0|floatformat|pluralize }} {{ time_remaining.2 }}
                         </div>
                     {% endif %}
                 {% endif %}
@@ -147,7 +147,13 @@
         </div>
 <script type="text/javascript" language="javascript">
     function callbackMethod() {
-        $("#bid_part").hide();
+        var callback = '{{ callback }}';
+        if (callback && callback == 'bidding') {
+            $("#bid_part").hide();
+        }
+        else if (callback && callback == 'beginBid') {
+            location.reload();
+        }
     }
     $("#price").click(function() {
         if ($("#price").val() ==="") {

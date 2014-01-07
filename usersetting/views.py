@@ -46,7 +46,10 @@ def loginView(request, *args, **kwargs):
             redirect_to = '/'
 
     if user:
-        if user.is_active:
+        blackList = models.BlackList.objects.filter(user_id=user.id)
+        if blackList:
+            initParam['login_error'] = _('Your account has been listed in blacklist!')
+        elif user.is_active:
             login(request, user)
             #record user login info, such as IP.
             userLoginInfo = models.UserLoginInfo()
@@ -300,7 +303,7 @@ def userPublicProfile(request, *args, **kwargs):
             if thumbnail:
                 if thumbnail.content_type.startswith('image'):
                     if thumbnail.size > 1000000:
-                        initParam['account_msg'] = _('The image size is larger than 1M.')
+                        initParam['account_error'] = _('The image size is larger than 1M.')
                     else:
                         path = '/'.join([settings.MEDIA_ROOT, str(user.id)])
                         if os.path.exists(path) is False:
@@ -315,10 +318,10 @@ def userPublicProfile(request, *args, **kwargs):
                         if thumbnail:
                             #Shrink image to (50*50) for user thumbnail.
                             path = '/'.join([settings.MEDIA_ROOT, str(userPublicProfile.thumbnail)])
-                            common.imageThumbnail(path=path, size=(50, 50))
+                            common.imageThumbnail(path=path, size=[50, 50])
                         initParam['account_msg'] = _('The public profile has been updated successful.')
                 else:
-                    initParam['account_msg'] =  _('The file type of %(param)s is not supported.') % {'param': thumbnail.name}
+                    initParam['account_error'] = _('The file type of %(param)s is not supported.') % {'param': thumbnail.name}
             else:
                 userPublicProfile.save()
                 initParam['account_msg'] = _('The public profile has been updated successfully.')

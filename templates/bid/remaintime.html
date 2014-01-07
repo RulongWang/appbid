@@ -2,7 +2,8 @@
                     <span data-time="{{ time_remaining }}" class="kkcount-down"></span>
                  </div>
                     <script type="text/javascript" language="javascript">
-                      var is_callback = '{{ is_callback }}';
+                      var callback = '{{ callback }}';
+                      var kkText = '{{ kkText }}';
                       $(".kkcount-down").kkcountdown({
                         dayText : 'day ',
                         daysText : 'days ',
@@ -10,10 +11,10 @@
                         minutesText : 'm ',
                         secondsText : 's',
                         displayZeroDays : false,
-                        textAfterCount : '<p style="color:red;font-weight:bold;">Bidding Closed</p>',
+                        textAfterCount : '<p style="color:red;font-weight:bold;">'+kkText+'</p>',
                         oneDayClass : 'one-day',
                         callback: function() {
-                            if (is_callback && is_callback == 'True') {
+                            if (callback && callback != '') {
                                 //Do something, when the end of countdown.
                                 callbackMethod();
                             }

@@ -2,7 +2,7 @@
         <div>
             <div><h2 style="font-weight: bold;">Current Status:</h2></div>
                 <div style="line-height: 1.5em;">
-                    Currently ,you are on the first step , you will start the dealing process with bidder <b>({{ user.username }})</b>.<br/>
+                    Currently, you are on the first step, you will start the dealing process with bidder <b>({{ user.username }})</b>.<br/>
                     Please notice that the agreed dealing price is <b>{{ bid.price|floatformat }} {{ transaction.app.currency.currency }}</b>.<br/>
                     After you clicked the button 'Start Transaction', we will help you inform buyer to start the payment process immediately.
                 </div>
@@ -11,7 +11,7 @@
                 <ul class="delivery_list">
                     <li>You should transfer the ownership of the app (<a href="{% url 'query:app_detail' app.id %}">{{ app.app_name }}</a>) to <b>{{ user.username }}</b>.</li>
                     {% if app.source_code  %}
-                    <li>You should deliver the source of the app.</li>
+                    <li>You should deliver the source code of the app.</li>
                     {% endif %}
                     <li>
                         The other things you should deliver:
