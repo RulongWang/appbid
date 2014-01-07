@@ -292,7 +292,7 @@ def onePriceBuy(request, *args, **kwargs):
         min_cp = common.getSystemParam(key='min_cp_for_bid', default=50)
         cp = creditViews.getUserCreditPoint(user=request.user)
         if cp == -1 or cp < string.atoi(min_cp):
-            initParam['error_msg'] = _('You are allowed to buy, because your credit points is too low.')
+            initParam['error_msg'] = _('You are not allowed to buy, because your credit points is too low.')
         else:
             #Buyser pay for app.
             txn_fee_pct = string.atof(common.getSystemParam(key='txn_fee_pct', default=0.01))
