@@ -253,10 +253,12 @@ h1{
 
 }
 .logo_desc{
-    font-family:12 px Calibri;
+    font-family:Calibri;
+    font-size: 20px ;
+    font-weight: bold;
     margin-top: 40px;
     float: left;
-    width:350px;
+    width:380px;
     text-align: left;
     /*color:white;*/
     opacity: 0.7;
