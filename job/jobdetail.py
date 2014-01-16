@@ -2,6 +2,7 @@ __author__ = 'Jarvis'
 
 import string
 import datetime
+import logging
 
 from django.db.models import Max, Q
 
@@ -13,6 +14,8 @@ from utilities import common, email
 from credit import views as creditViews
 from transaction import views as txnViews
 
+
+log = logging.getLogger('appbid')
 
 def verificationAppForSeller(*args, **kwargs):
     """
@@ -112,7 +115,9 @@ def checkIfSellApp(*args, **kwargs):
     transactions = txnModels.Transaction.objects.filter(status=1, end_time__isnull=False, end_time__lte=datetime.datetime.now())
     massEmailThread = email.MassEmailThread()
     points = common.getSystemParam(key='cp_buyer_unpaid', default=50)
+    log.info("----")
     for transaction in transactions:
+        log.info(transaction.id)
         #Decrease seller's credit points
         creditViews.decreaseCreditPoint(user=transaction.seller, point=string.atoi(points), type=1, ref_id=transaction.id)
         templates = notificationModels.NotificationTemplate.objects.filter(name='unsold_end_inform_seller')
