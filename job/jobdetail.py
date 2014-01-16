@@ -112,7 +112,7 @@ def checkIfSellApp(*args, **kwargs):
         When service stop, if bidding price is more than max price, seller has 7 days to trade now. Then seller did not
         trade app in 7 days, seller's credit points will be decreased.
     """
-    transactions = txnModels.Transaction.objects.filter(status=1, end_time__isnull=False, end_time__lte=datetime.datetime.now())
+    transactions = txnModels.Transaction.objects.filter(status=1, end_time__isnull=False, end_time__lte=datetime.datetime.now()).exclude(buy_type=1)
     massEmailThread = email.MassEmailThread()
     points = common.getSystemParam(key='cp_buyer_unpaid', default=50)
     log.info("----")
