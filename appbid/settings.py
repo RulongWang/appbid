@@ -284,16 +284,11 @@ CRONJOBS = [
     #Run every night at midnight
     ('1 0 * * *', 'job.job.jobByMidnight'),
     #Run every four hour
-    ('* */4 * * *', 'job.job.jobByFourHour'),
+    ('0 */4 * * *', 'job.job.jobByFourHour'),
     #Run every hour
-    ('* */1 * * *', 'job.job.jobByEveryHour'),
+    ('0 */1 * * *', 'job.job.jobByEveryHour'),
     #Run every five min
     ('*/5 * * * *', 'job.job.jobByFiveMin'),
-
-    # ('*/5 * * * *', 'job.job.jobByMidnight'),
-    # ('*/5 * * * *', 'job.job.jobByFourHour'),
-    # ('*/5 * * * *', 'job.job.jobByEveryHour'),
-    # ('*/5 * * * *', 'job.job.jobByFiveMin'),
 ]
 
 try:
