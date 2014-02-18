@@ -492,11 +492,12 @@ def listFeatured(request, *args, **kwargs):
         categoryModel = get_object_or_404(appModels.Category, apple_id=category)
     for temp_category in appModels.Category.objects.all():
         if category and categoryModel == temp_category:
-            apps = categoryModel.app_set.exclude(status=1).order_by('status')
+            apps = categoryModel.app_set.filter(status=2, end_date__gt=datetime.datetime.now())
             initParam['category_list'].append([temp_category, len(apps)])
             initParam['query_tile'] = [_('Category'), temp_category.name, ''.join(['?category=', category])]
         else:
-            initParam['category_list'].append([temp_category, temp_category.app_set.exclude(status=1).count()])
+            initParam['category_list'].append([temp_category, temp_category.app_set.filter(
+                status=2, end_date__gt=datetime.datetime.now()).count()])
     common.sortWithIndexLie(initParam['category_list'], 1, order='desc')
 
     #SubCategory Part from app detail page.
