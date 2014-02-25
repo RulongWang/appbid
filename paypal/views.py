@@ -91,12 +91,14 @@ def docheckout(request, error_url, success_url, template = "paypal/docheckout.ht
         if not result:
             # show the error message (comes from PayPal API) and redirect user to the error page
             if request.user.is_authenticated():
-                request.user.message_set.create(message = _("Amount %s has not been charged, server error is '%s'" % (amount, response.error)))
+                request.user.message_set.create(message = _("Amount %(amount)s has not been charged, server error is '%(error)s'"
+                                                            % {'amount': amount, 'error': response.error}))
             return HttpResponseRedirect(error_url)
 
         # Now we are gone, redirect user to success page
         if request.user.is_authenticated():
-            request.user.message_set.create(message = _("Amount %s has been successfully charged, your transaction id is '%s'" % (amount, response.trans_id)))
+            request.user.message_set.create(message = _("Amount %(amount)s has been successfully charged, your transaction id is '%(trans_id)s'"
+                                                        % {'amount': amount, 'trans_id': response.trans_id}))
         
         return HttpResponseRedirect(success_url)
 
@@ -128,12 +130,14 @@ def dorefund(request, error_url, success_url, template = "paypal/dorefund.html")
         if not result:
             # show the error message (comes from PayPal API) and redirect user to the error page
             if request.user.is_authenticated():
-                request.user.message_set.create(message = _("Amount %s has not been charged, server error is '%s'" % (amount, response.error)))
+                request.user.message_set.create(message = _("Amount %(amount)s has not been charged, server error is '%(error)s'"
+                                                            % {'amount': amount, 'error': response.error}))
             return HttpResponseRedirect(error_url)
         
         # Now we are gone, redirect user to success page
         if request.user.is_authenticated():
-            request.user.message_set.create(message = _("Amount %s has been successfully refunded, your transaction id is '%s'" % (amount, response.trans_id)))
+            request.user.message_set.create(message = _("Amount %(amount)s has been successfully refunded, your transaction id is '%(trans_id)s'"
+                                                        % {'amount': amount, 'trans_id': response.trans_id}))
         
         return HttpResponseRedirect(success_url)
 
