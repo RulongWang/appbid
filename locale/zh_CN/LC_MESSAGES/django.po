@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-02-27 17:28+0800\n"
+"POT-Creation-Date: 2014-02-27 22:21+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -488,6 +488,188 @@ msgstr ""
 msgid "The attachment \"%(name)s\" does not exist."
 msgstr ""
 
+#: .\templates\dashboard\activity.html.py:8
+msgid "Activity Overview"
+msgstr ""
+
+#: .\templates\dashboard\activity.html.py:10
+#: .\templates\dashboard\activity.html.py:34
+msgid "Inbox"
+msgstr "收信箱"
+
+#: .\templates\dashboard\activity.html.py:11
+msgid "Sent Messages"
+msgstr "已发信息"
+
+#: .\templates\dashboard\activity.html.py:13
+msgid "My Apps"
+msgstr "我的Apps"
+
+#: .\templates\dashboard\activity.html.py:15
+msgid "My Auctions"
+msgstr "我的竞价"
+
+#: .\templates\dashboard\activity.html.py:16
+msgid "My Bidding"
+msgstr ""
+
+#: .\templates\dashboard\activity.html.py:18
+msgid "Watch List"
+msgstr "关注列表"
+
+#: .\templates\dashboard\activity.html.py:20
+msgid "Watched Apps"
+msgstr "关注的APP"
+
+#: .\templates\dashboard\activity.html.py:21
+msgid "Watched Sellers"
+msgstr "关注的卖家"
+
+#: .\templates\dashboard\activity.html.py:22
+msgid "Watched Categories"
+msgstr "关注的类别"
+
+#: .\templates\dashboard\activity.html.py:24
+#: .\templates\usersetting\account_setting.html.py:31
+msgid "Your Account"
+msgstr "你的账户"
+
+#: .\templates\dashboard\activity.html.py:26
+msgid "Past Transactions"
+msgstr ""
+
+#: .\templates\dashboard\activity.html.py:27
+msgid "Past Orders"
+msgstr ""
+
+#: .\templates\dashboard\activity.html.py:39
+msgid "From"
+msgstr ""
+
+#: .\templates\dashboard\activity.html.py:40
+msgid "Message Subject"
+msgstr ""
+
+#: .\templates\dashboard\activity.html.py:41
+msgid "Received Time"
+msgstr ""
+
+#: .\templates\dashboard\activity.html.py:57
+msgid "No received message."
+msgstr ""
+
+#: .\templates\dashboard\activity.html.py:64
+#: .\templates\dashboard\my_listing.html.py:42
+#: .\templates\dashboard\my_listing.html.py:86
+#: .\templates\dashboard\my_listing.html.py:131
+msgid "previous"
+msgstr "前一页"
+
+#: .\templates\dashboard\activity.html.py:65
+#: .\templates\dashboard\my_listing.html.py:44
+#: .\templates\dashboard\my_listing.html.py:88
+#: .\templates\dashboard\my_listing.html.py:133
+msgid "Page"
+msgstr " "
+
+#: .\templates\dashboard\activity.html.py:65
+#: .\templates\dashboard\my_listing.html.py:44
+#: .\templates\dashboard\my_listing.html.py:88
+#: .\templates\dashboard\my_listing.html.py:133
+msgid "of"
+msgstr "/"
+
+#: .\templates\dashboard\activity.html.py:66
+#: .\templates\dashboard\my_listing.html.py:46
+#: .\templates\dashboard\my_listing.html.py:90
+#: .\templates\dashboard\my_listing.html.py:135
+msgid "next"
+msgstr "下一页"
+
+#: .\templates\dashboard\my_listing.html.py:5
+msgid "Draft Apps"
+msgstr "未发布APP"
+
+#: .\templates\dashboard\my_listing.html.py:8
+#: .\templates\dashboard\my_listing.html.py:54
+#: .\templates\dashboard\my_listing.html.py:97
+msgid "App Name"
+msgstr "App名字"
+
+#: .\templates\dashboard\my_listing.html.py:9
+msgid "Last Modify"
+msgstr "最后修改时间"
+
+#: .\templates\dashboard\my_listing.html.py:10
+msgid "Is Verified"
+msgstr "是否验证"
+
+#: .\templates\dashboard\my_listing.html.py:11
+msgid "Fees"
+msgstr "服务费"
+
+#: .\templates\dashboard\my_listing.html.py:28
+msgid "Verified"
+msgstr "已验证"
+
+#: .\templates\dashboard\my_listing.html.py:29
+msgid "Pay It Now"
+msgstr "现在付款"
+
+#: .\templates\dashboard\my_listing.html.py:31
+#: .\templates\dashboard\my_listing.html.py:32
+msgid "Pending"
+msgstr "未验证"
+
+#: .\templates\dashboard\my_listing.html.py:36
+msgid "No draft app."
+msgstr "没有未发布的APP。"
+
+#: .\templates\dashboard\my_listing.html.py:51
+msgid "Published Apps"
+msgstr "已发布APP"
+
+#: .\templates\dashboard\my_listing.html.py:55
+msgid "Auction Beginning"
+msgstr "竞价开始时间"
+
+#: .\templates\dashboard\my_listing.html.py:56
+msgid "Auction Ending"
+msgstr "竞价结束时间"
+
+#: .\templates\dashboard\my_listing.html.py:57
+msgid "Bids"
+msgstr "竞价数"
+
+#: .\templates\dashboard\my_listing.html.py:80
+msgid "No published app."
+msgstr "没有已发布的APP。"
+
+#: .\templates\dashboard\my_listing.html.py:94
+msgid "Sold/Closed Apps"
+msgstr "已卖/已结束APP"
+
+#: .\templates\dashboard\my_listing.html.py:98
+msgid "Sold Price"
+msgstr "交易价"
+
+#: .\templates\dashboard\my_listing.html.py:99
+#: .\templates\dashboard\my_listing.html.py:117
+msgid "Action"
+msgstr "行为"
+
+#: .\templates\dashboard\my_listing.html.py:100
+msgid "Status"
+msgstr "状态"
+
+#: .\templates\dashboard\my_listing.html.py:113
+msgid "Trade Now"
+msgstr "现在交易"
+
+#: .\templates\dashboard\my_listing.html.py:124
+msgid "No sold/closed app."
+msgstr "没有已卖/已结束的APP。"
+
 #: .\templates\usersetting\account_setting.html.py:20
 msgid "Personal Setting"
 msgstr "个人设置"
@@ -511,10 +693,6 @@ msgstr "安全设置"
 #: .\templates\usersetting\account_setting.html.py:29
 msgid "Account Setting"
 msgstr "账户设置"
-
-#: .\templates\usersetting\account_setting.html.py:31
-msgid "Your Account"
-msgstr "你的账户"
 
 #: .\templates\usersetting\login.html.py:23
 msgid "User Name"

@@ -1,43 +1,44 @@
 {% extends "index.html" %}
 {% block mainContent %}
+{% load i18n %}
 {% load staticfiles %}
        <div class="clear"></div>
        <div id="account_wrapper">
         <div class="pannel_nav">
-        <div class="account_nav_title act_icon">Activity Overview</div>
+        <div class="account_nav_title act_icon">{% trans 'Activity Overview' %}</div>
            <ul class="account_nav">
-			<li><a href="{% url 'dashboard:inbox' %}">Inbox</a></li>
-			<li class="margin10pxbt"><a href="{% url 'dashboard:sent_messages' %}">Sent Messages</a></li>
+			<li><a href="{% url 'dashboard:inbox' %}">{% trans 'Inbox' %}</a></li>
+			<li class="margin10pxbt"><a href="{% url 'dashboard:sent_messages' %}">{% trans 'Sent Messages' %}</a></li>
           </ul>
-        <div class="account_nav_title apps_icon">My Apps</div>
+        <div class="account_nav_title apps_icon">{% trans 'My Apps' %}</div>
             <ul class="account_nav">
-			<li><a href="{% url 'dashboard:my_listing' %}">My Auctions</a></li>
-			<li class="margin10pxbt"><a href="{% url 'dashboard:my_bidding' %}">My Bidding</a></li>
+			<li><a href="{% url 'dashboard:my_listing' %}">{% trans 'My Auctions' %}</a></li>
+			<li class="margin10pxbt"><a href="{% url 'dashboard:my_bidding' %}">{% trans 'My Bidding' %}</a></li>
           </ul>
-        <div class="account_nav_title watch_icon">Watch List</div>
+        <div class="account_nav_title watch_icon">{% trans 'Watch List' %}</div>
             <ul class="account_nav">
-			<li><a href="{% url 'dashboard:watch_apps' %}">Watched Apps</a></li>
-			<li><a href="{% url 'dashboard:watch_sellers' %}">Watched Sellers</a></li>
-			<li class="margin10pxbt"><a href="{% url 'dashboard:watch_categories' %}">Watched Categories</a></li>
+			<li><a href="{% url 'dashboard:watch_apps' %}">{% trans 'Watched Apps' %}</a></li>
+			<li><a href="{% url 'dashboard:watch_sellers' %}">{% trans 'Watched Sellers' %}</a></li>
+			<li class="margin10pxbt"><a href="{% url 'dashboard:watch_categories' %}">{% trans 'Watched Categories' %}</a></li>
             </ul>
-        <div class="account_nav_title people_icon">Your Account</div>
+        <div class="account_nav_title people_icon">{% trans 'Your Account' %}</div>
             <ul class="account_nav">
-			<li><a href="{% url 'dashboard:past_transactions' %}">Past Transactions</a></li>
-			<li><a href="{% url 'dashboard:past_orders' %}">Past Orders</a></li>
+			<li><a href="{% url 'dashboard:past_transactions' %}">{% trans 'Past Transactions' %}</a></li>
+			<li><a href="{% url 'dashboard:past_orders' %}">{% trans 'Past Orders' %}</a></li>
           </ul>
         </div>
 
         <div class="account_details">
                {% block dashboard_detail %}
 
-                   <div class="dash_title">Inbox</div>
+                   <div class="dash_title">{% trans 'Inbox' %}</div>
                    <ul class="inbox_list">
 
 
                        <li class="highlight_li">
-                            <div class="inbox_from">From</div>
-                            <div class="inbox_subject" >Message Subject</div>
-                            <div class="inbox_received_time">Received Time</div>
+                            <div class="inbox_from">{% trans 'From' %}</div>
+                            <div class="inbox_subject" >{% trans 'Message Subject' %}</div>
+                            <div class="inbox_received_time">{% trans 'Received Time' %}</div>
 
                         </li>
                        {% for message in message_list %}
@@ -53,16 +54,16 @@
                            </li>
                        {% empty %}
 
-                           <div class="no_message">No received message.</div>
+                           <div class="no_message">{% trans 'No received message.' %}</div>
                        {% endfor %}
                    </ul>
 
 
                      {% if message_list %}
                      <div class="pagination" >
-                        {% if message_list.has_previous %}<a href="?page={{ message_list.previous_page_number }}">previous</a>{% endif %}
-                        Page {{ message_list.number }} of {{ message_list.paginator.num_pages }}
-                        {% if message_list.has_next %}<a href="?page={{ message_list.next_page_number }}">next</a>{% endif %}
+                        {% if message_list.has_previous %}<a href="?page={{ message_list.previous_page_number }}">{% trans 'previous' %}</a>{% endif %}
+                        {% trans 'Page' %} {{ message_list.number }} {% trans 'of' %} {{ message_list.paginator.num_pages }}
+                        {% if message_list.has_next %}<a href="?page={{ message_list.next_page_number }}">{% trans 'next' %}</a>{% endif %}
                      </div>
                      {% endif %}
                {% endblock %}

@@ -1,13 +1,14 @@
 {% extends "dashboard/activity.html" %}
+{% load i18n %}
 {% load staticfiles %}
 {% block dashboard_detail %}
-          <div class="dash_title">Draft Apps</div>
+          <div class="dash_title">{% trans 'Draft Apps' %}</div>
           <ul class="inbox_list">
             <li class="highlight_li">
-               <div class="app_title" style="width: 140px;;padding-left: 30px;">App Name</div>
-               <div class="app_title" style="padding-left:10px;">Last Modify</div>
-               <div class="app_title" style="padding-left: 10px;">Is Verified</div>
-               <div class="app_title" style="width:120px;">Fees</div>
+               <div class="app_title" style="width: 140px;;padding-left: 30px;">{% trans 'App Name' %}</div>
+               <div class="app_title" style="padding-left:10px;">{% trans 'Last Modify' %}</div>
+               <div class="app_title" style="padding-left: 10px;">{% trans 'Is Verified' %}</div>
+               <div class="app_title" style="width:120px;">{% trans 'Fees' %}</div>
             </li>
            {% for app in draft_apps %}
                <li>
@@ -24,36 +25,36 @@
                        {{ app.0.last_modify|date:"Y-m-d H:i"|default:"N/A" }}
                    </div>
                    {% ifequal app.0.is_verified True %}
-                       <div class="app_list">Verified</div>
-                       <div class="app_list_shorter"><a href="{% url 'seller:payment' app.0.id '' %}" class="pending_style">Pay It Now</a></div>
+                       <div class="app_list">{% trans 'Verified' %}</div>
+                       <div class="app_list_shorter"><a href="{% url 'seller:payment' app.0.id '' %}" class="pending_style">{% trans 'Pay It Now' %}</a></div>
                    {% else %}
-                       <div class="app_list"><a href="{% url 'seller:verification' app.0.id %}" class="pending_style">Pending</a></div>
-                       <div class="app_list_shorter" style="color: #cc3333;">Pending</div>
+                       <div class="app_list"><a href="{% url 'seller:verification' app.0.id %}" class="pending_style">{% trans 'Pending' %}</a></div>
+                       <div class="app_list_shorter" style="color: #cc3333;">{% trans 'Pending' %}</div>
                    {% endifequal %}
                </li>
            {% empty %}
-               <div class="no_message">No draft app.</div>
+               <div class="no_message">{% trans 'No draft app.' %}</div>
            {% endfor %}
           </ul>
            {% if draft_apps %}
              <div class="pagination" >
                 {% if draft_apps.has_previous %}
-                    <a href="?draft_page={{ draft_apps.previous_page_number }}&published_page={{ published_page }}&traded_page={{ traded_page }}">previous</a>
+                    <a href="?draft_page={{ draft_apps.previous_page_number }}&published_page={{ published_page }}&traded_page={{ traded_page }}">{% trans 'previous' %}</a>
                 {% endif %}
-                Page {{ draft_apps.number }} of {{ draft_apps.paginator.num_pages }}
+                {% trans 'Page' %} {{ draft_apps.number }} {% trans 'of' %} {{ draft_apps.paginator.num_pages }}
                 {% if draft_apps.has_next %}
-                    <a href="?draft_page={{ draft_apps.next_page_number }}&published_page={{ published_page }}&traded_page={{ traded_page }}">next</a>
+                    <a href="?draft_page={{ draft_apps.next_page_number }}&published_page={{ published_page }}&traded_page={{ traded_page }}">{% trans 'next' %}</a>
                 {% endif %}
              </div>
            {% endif %}
 
-          <div class="dash_title">Published Apps</div>
+          <div class="dash_title">{% trans 'Published Apps' %}</div>
          <ul class="inbox_list">
            <li class="highlight_li">
-               <div class="app_title" style="width: 140px;;padding-left: 30px;">App Name</div>
-               <div class="app_title" style="padding-left:20px;">Auction Beginning</div>
-               <div class="app_title" style="padding-left: 0px;">Auction Ending</div>
-               <div class="app_title" style="width:120px;">Bids</div>
+               <div class="app_title" style="width: 140px;;padding-left: 30px;">{% trans 'App Name' %}</div>
+               <div class="app_title" style="padding-left:20px;">{% trans 'Auction Beginning' %}</div>
+               <div class="app_title" style="padding-left: 0px;">{% trans 'Auction Ending' %}</div>
+               <div class="app_title" style="width:120px;">{% trans 'Bids' %}</div>
            </li>
            {% for app in published_apps %}
                 <li>
@@ -76,27 +77,27 @@
                    </div>
                </li>
            {% empty %}
-                <div class="no_message">No published app.</div>
+                <div class="no_message">{% trans 'No published app.' %}</div>
            {% endfor %}
            </ul>
            {% if published_apps %}
              <div class="pagination" >
                 {% if published_apps.has_previous %}
-                    <a href="?draft_page={{ draft_page }}&published_page={{ published_apps.previous_page_number }}&traded_page={{ traded_page }}">previous</a>
+                    <a href="?draft_page={{ draft_page }}&published_page={{ published_apps.previous_page_number }}&traded_page={{ traded_page }}">{% trans 'previous' %}</a>
                 {% endif %}
-                Page {{ published_apps.number }} of {{ published_apps.paginator.num_pages }}
+                {% trans 'Page' %} {{ published_apps.number }} {% trans 'of' %} {{ published_apps.paginator.num_pages }}
                 {% if published_apps.has_next %}
-                    <a href="?draft_page={{ draft_page }}&published_page={{ published_apps.next_page_number }}&traded_page={{ traded_page }}">next</a>
+                    <a href="?draft_page={{ draft_page }}&published_page={{ published_apps.next_page_number }}&traded_page={{ traded_page }}">{% trans 'next' %}</a>
                 {% endif %}
              </div>
            {% endif %}
-          <div class="dash_title">Sold/Closed Apps</div>
+          <div class="dash_title">{% trans 'Sold/Closed Apps' %}</div>
            <ul class="inbox_list">
            <li class="highlight_li">
-               <div class="app_title">App Name</div>
-               <div class="app_title">Sold Price</div>
-               <div class="app_title">Action</div>
-               <div class="app_title">Status</div>
+               <div class="app_title">{% trans 'App Name' %}</div>
+               <div class="app_title">{% trans 'Sold Price' %}</div>
+               <div class="app_title">{% trans 'Action' %}</div>
+               <div class="app_title">{% trans 'Status' %}</div>
            </li>
            {% for app in traded_apps %}
                <li>
@@ -109,29 +110,29 @@
                    <div class="app_list">
                        {% if app.1.1 == 1 %}
                            <a href="{% url 'bid:bid_list' app.0.id %}">
-                               <input id="id_trade" type="button" value="Trade Now" class="button_n" />
+                               <input id="id_trade" type="button" value="{% trans 'Trade Now' %}" class="button_n" />
                            </a>
                        {% else %}
                            <a href="{% url 'transaction:trade_action' 'sell' app.0.id request.user.id %}">
-                               <input id="id_action" type="button" value="Action" class="button_n" />
+                               <input id="id_action" type="button" value="{% trans 'Action' %}" class="button_n" />
                            </a>
                        {% endif %}
                    </div>
                    <div class="app_list">{{ app.1.2 }}</div>
                </li>
            {% empty %}
-                           <div class="no_message">No sold/closed app.</div>
+                           <div class="no_message">{% trans 'No sold/closed app.' %}</div>
            {% endfor %}
 
            </ul>
     {% if traded_apps %}
              <div class="pagination" >
                 {% if traded_apps.has_previous %}
-                    <a href="?draft_page={{ draft_page }}&published_page={{ published_page }}&traded_page={{ traded_apps.previous_page_number }}">previous</a>
+                    <a href="?draft_page={{ draft_page }}&published_page={{ published_page }}&traded_page={{ traded_apps.previous_page_number }}">{% trans 'previous' %}</a>
                 {% endif %}
-                Page {{ traded_apps.number }} of {{ traded_apps.paginator.num_pages }}
+                {% trans 'Page' %} {{ traded_apps.number }} {% trans 'of' %} {{ traded_apps.paginator.num_pages }}
                 {% if traded_apps.has_next %}
-                    <a href="?draft_page={{ draft_page }}&published_page={{ published_page }}&traded_page={{ traded_apps.next_page_number }}">next</a>
+                    <a href="?draft_page={{ draft_page }}&published_page={{ published_page }}&traded_page={{ traded_apps.next_page_number }}">{% trans 'next' %}</a>
                 {% endif %}
              </div>
            {% endif %}
