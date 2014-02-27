@@ -1,0 +1,768 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2014-02-27 17:28+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: .\auth\views.py:60 .\auth\views.py:65
+#, python-format
+msgid "Share App %(param1)s failed to WeiBo, error:%(param2)s"
+msgstr ""
+
+#: .\auth\views.py:63
+#, python-format
+msgid "Share App %(param1)s success to WeiBo."
+msgstr ""
+
+#: .\auth\views.py:89
+#, python-format
+msgid "Share App %(param1)s success to Twitter."
+msgstr ""
+
+#: .\auth\views.py:91
+#, python-format
+msgid "Share App %(param1)s failed to Twitter, error:%(param2)s"
+msgstr ""
+
+#: .\bid\views.py:49
+msgid ""
+"You are not allowed to place bid, because your low credit points. But you "
+"can buy additional credit points."
+msgstr ""
+
+#: .\bid\views.py:57
+msgid "The bidding is closed, you can not bid."
+msgstr ""
+
+#: .\bid\views.py:84
+msgid "The new bid has been submitted."
+msgstr ""
+
+#: .\credit\views.py:27
+msgid "Init credit point."
+msgstr ""
+
+#: .\credit\views.py:52
+msgid "Increase credit point."
+msgstr ""
+
+#: .\credit\views.py:82
+msgid "Decrease credit point."
+msgstr ""
+
+#: .\credit\views.py:119 .\credit\views.py:120
+msgid "Appraisement failed. Please try again."
+msgstr ""
+
+#: .\dashboard\views.py:110
+msgid "Send message successfully."
+msgstr ""
+
+#: .\dashboard\views.py:250
+msgid "Watch app failed."
+msgstr ""
+
+#: .\dashboard\views.py:276
+msgid "Unwatch app failed."
+msgstr ""
+
+#: .\dashboard\views.py:326
+msgid "Watch seller failed."
+msgstr ""
+
+#: .\dashboard\views.py:352
+msgid "Unwatch seller failed."
+msgstr ""
+
+#: .\dashboard\views.py:400
+msgid "Watch category failed."
+msgstr ""
+
+#: .\dashboard\views.py:426
+msgid "Unwatch category failed."
+msgstr ""
+
+#: .\message\views.py:35 .\message\views.py:36
+msgid "Save message failed."
+msgstr ""
+
+#: .\notification\views.py:69
+#, python-format
+msgid "%(param)s does not exist."
+msgstr ""
+
+#: .\order\views.py:62
+msgid "The payment is paid."
+msgstr ""
+
+#: .\order\views.py:64
+msgid "The gateway is required.Please choice gateway."
+msgstr ""
+
+#: .\order\views.py:66
+msgid "Service date is not correct."
+msgstr ""
+
+#: .\order\views.py:75
+msgid "The payment is successful."
+msgstr ""
+
+#: .\order\views.py:78
+#, python-format
+msgid ""
+"Seller %(param1)s has paid service fee - %(param2)s with service detail id %"
+"(param3)s."
+msgstr ""
+
+#: .\order\views.py:82
+msgid "The payment is failed. Please payment again."
+msgstr ""
+
+#: .\order\views.py:132
+#, python-format
+msgid ""
+"ServiceDetail with id %(param1)s set pay_token to %(param2)s, gateway to %"
+"(param3)s."
+msgstr ""
+
+#: .\order\views.py:136
+#, python-format
+msgid ""
+"Token:%(param1)s, ServiceDetail ID:%(param2)s. Gateway %(param3)s no exists."
+msgstr ""
+
+#: .\order\views.py:139
+#, python-format
+msgid "Token:%(param1)s, ServiceDetail with id %(param2)s no exists."
+msgstr ""
+
+#: .\order\views.py:142
+msgid "ServiceDetail_id or Token or Gateway no exists."
+msgstr ""
+
+#: .\order\views.py:160 .\order\views.py:182 .\order\views.py:206
+#, python-format
+msgid "User:%(param1)s, ServiceDetail with pay_token %(param2)s no exists."
+msgstr ""
+
+#: .\order\views.py:163
+#, python-format
+msgid "Token:%(param1)s. Gateway %(param2)s no exists."
+msgstr ""
+
+#: .\order\views.py:165
+msgid "Token or Gateway no exists."
+msgstr ""
+
+#: .\order\views.py:185
+#, python-format
+msgid "User:%(param1)s, pay_token:%(param2)s. Gateway no %(param3)s exists."
+msgstr ""
+
+#: .\order\views.py:188
+msgid "Token or ServiceDetail ID or Gateway no exists."
+msgstr ""
+
+#: .\order\views.py:202
+#, python-format
+msgid ""
+"User:%(param1)s, ServiceDetail with id %(param2)s, pay_token %(param3)s is "
+"payed."
+msgstr ""
+
+#: .\order\views.py:209
+msgid "Token no exists."
+msgstr ""
+
+#: .\payment\views.py:42
+#, python-format
+msgid "ServiceDetail with id %(param1)s. Execute method %(param2)s failed."
+msgstr ""
+
+#: .\payment\views.py:45
+#, python-format
+msgid "ServiceDetail with id %(param1)s. ExecuteMethod does not exist."
+msgstr ""
+
+#: .\payment\views.py:47
+#, python-format
+msgid "ServiceDetail with id %(param1)s. %(param2)s"
+msgstr ""
+
+#: .\payment\views.py:49
+msgid "payment. Amount or Currency or ServiceDetail ID no exists."
+msgstr ""
+
+#: .\payment\views.py:62 .\payment\views.py:125 .\payment\views.py:210
+#, python-format
+msgid "%(param1)s Please payment again."
+msgstr ""
+
+#: .\payment\views.py:97 .\payment\views.py:177
+#, python-format
+msgid ""
+"Token %(param1)s, PayerID: %(param2)s, Execute method %(param3)s failed."
+msgstr ""
+
+#: .\payment\views.py:100
+#, python-format
+msgid ""
+"Token %(param1)s, PayerID: %(param2)s. Gateway no exists in request.session."
+msgstr ""
+
+#: .\payment\views.py:103 .\payment\views.py:180
+#, python-format
+msgid "Token %(param1)s, PayerID: %(param2)s, ExecuteMethod does not exist."
+msgstr ""
+
+#: .\payment\views.py:107
+#, python-format
+msgid "Token %(param1)s, PayerID: %(param2)s, %(param3)s."
+msgstr ""
+
+#: .\payment\views.py:110 .\payment\views.py:195
+msgid "Token or PayerID no exists."
+msgstr ""
+
+#: .\payment\views.py:172
+msgid ""
+"Thank you for your payment, and your app will be listed according to the "
+"effective period your choosed."
+msgstr ""
+
+#: .\payment\views.py:173
+#, python-format
+msgid ""
+"Seller %(param1)s has paid service fee with service detail id %(param2)s."
+msgstr ""
+
+#: .\payment\views.py:183
+#, python-format
+msgid "Token %(param1)s, PayerID: %(param2)s, %(param3)s : %(param4)s."
+msgstr ""
+
+#: .\payment\views.py:186
+#, python-format
+msgid ""
+"Token %(param1)s, PayerID: %(param2)s, User: %(param3)s, Execute method %"
+"(param4)s failed."
+msgstr ""
+
+#: .\payment\views.py:189
+#, python-format
+msgid ""
+"Token %(param1)s, PayerID: %(param2)s, Gateway no exists in request.session."
+msgstr ""
+
+#: .\payment\views.py:192
+#, python-format
+msgid "Token %(param1)s, PayerID: %(param2)s, CheckMethod does not exist."
+msgstr ""
+
+#: .\payment\views.py:221
+msgid ""
+"You cancel the payment to finish performing PayPal payment process. We don't "
+"charge your money."
+msgstr ""
+
+#: .\payment\views.py:235
+#, python-format
+msgid "User %(param1)s cancel the payment."
+msgstr ""
+
+#: .\payment\views.py:269
+#, python-format
+msgid "Transaction with id %(param1)s. Execute method %(param2)s failed."
+msgstr ""
+
+#: .\payment\views.py:272
+#, python-format
+msgid "Transaction with id %(param1)s. ExecuteMethod does not exist."
+msgstr ""
+
+#: .\payment\views.py:274
+#, python-format
+msgid "Transaction with id %(param1)s. %(param2)s"
+msgstr ""
+
+#: .\payment\views.py:276
+msgid "Pay. Currency or Transaction ID no exists."
+msgstr ""
+
+#: .\payment\views.py:289 .\payment\views.py:367
+#, python-format
+msgid "%(param1)s Please transaction again."
+msgstr ""
+
+#: .\payment\views.py:334
+msgid ""
+"You have successfully paid the money. We have already sent an email to the "
+"app seller. In the meanwhile you can send private message to seller as well."
+msgstr ""
+
+#: .\payment\views.py:335
+#, python-format
+msgid "User %(param1)s has paid with transaction id %(param2)s."
+msgstr ""
+
+#: .\payment\views.py:339
+#, python-format
+msgid ""
+"User %(param1)s has paid with transaction id %(param2)s, but execute method %"
+"(param3)s failed."
+msgstr ""
+
+#: .\payment\views.py:342
+#, python-format
+msgid ""
+"User %(param1)s has paid with transaction id %(param2)s, but ExecuteMethod "
+"does not exist."
+msgstr ""
+
+#: .\payment\views.py:345
+#, python-format
+msgid "User %(param1)s has no paid with transaction id %(param2)s."
+msgstr ""
+
+#: .\payment\views.py:348
+#, python-format
+msgid ""
+"PayKey %(param1)s, Gateway: %(param2)s, User: %(param3)s, Execute method %"
+"(param4)s failed."
+msgstr ""
+
+#: .\payment\views.py:351
+#, python-format
+msgid "PayKey %(param1)s, Gateway: %(param2)s, CheckMethod does not exist."
+msgstr ""
+
+#: .\payment\views.py:354
+msgid "Pay. PayKey or Gateway no exists."
+msgstr ""
+
+#: .\paypal\models.py:12
+msgid "PayPal Response Status"
+msgstr ""
+
+#: .\paypal\models.py:13
+msgid "PayPal Response Statuses"
+msgstr ""
+
+#: .\paypal\models.py:33
+msgid "PayPal Response"
+msgstr ""
+
+#: .\paypal\models.py:34
+msgid "PayPal Responses"
+msgstr ""
+
+#: .\paypal\models.py:38
+msgid "Sale"
+msgstr ""
+
+#: .\paypal\models.py:44
+msgid "Refund"
+msgstr ""
+
+#: .\paypal\views.py:40 .\paypal\views.py:81 .\paypal\views.py:122
+msgid "No given valid amount. Please check the amount that will be charged."
+msgstr ""
+
+#: .\paypal\views.py:94 .\paypal\views.py:133
+#, python-format
+msgid "Amount %(amount)s has not been charged, server error is '%(error)s'"
+msgstr ""
+
+#: .\paypal\views.py:100
+#, python-format
+msgid ""
+"Amount %(amount)s has been successfully charged, your transaction id is '%"
+"(trans_id)s'"
+msgstr ""
+
+#: .\paypal\views.py:139
+#, python-format
+msgid ""
+"Amount %(amount)s has been successfully refunded, your transaction id is '%"
+"(trans_id)s'"
+msgstr ""
+
+#: .\query\views.py:56 .\query\views.py:140 .\query\views.py:228
+#: .\query\views.py:306 .\query\views.py:381 .\query\views.py:458
+#, python-format
+msgid "Revenue(%(param)s/Month)"
+msgstr ""
+
+#: .\query\views.py:57 .\query\views.py:141 .\query\views.py:229
+#: .\query\views.py:307 .\query\views.py:382 .\query\views.py:459
+#, python-format
+msgid "Over %(param)s"
+msgstr ""
+
+#: .\query\views.py:69 .\query\views.py:153 .\query\views.py:241
+#: .\query\views.py:319 .\query\views.py:394 .\query\views.py:471
+msgid "Monetize"
+msgstr ""
+
+#: .\query\views.py:82 .\query\views.py:166 .\query\views.py:254
+#: .\query\views.py:331 .\query\views.py:406 .\query\views.py:484
+msgid "Device"
+msgstr ""
+
+#: .\query\views.py:95 .\query\views.py:179 .\query\views.py:267
+#: .\query\views.py:343 .\query\views.py:418 .\query\views.py:497
+msgid "Category"
+msgstr ""
+
+#: .\seller\views.py:149 .\seller\views.py:153
+msgid "App with link has existed in your draft apps."
+msgstr ""
+
+#: .\seller\views.py:165
+msgid "App store link is not correct."
+msgstr ""
+
+#: .\seller\views.py:166
+#, python-format
+msgid "App store link %(param)s is not correct."
+msgstr ""
+
+#: .\seller\views.py:226
+#, python-format
+msgid "Link %(param)s is not correct."
+msgstr ""
+
+#: .\seller\views.py:227
+#, python-format
+msgid "The app store link %(param)s is not correct."
+msgstr ""
+
+#: .\seller\views.py:350
+#, python-format
+msgid "The attachment number can not be more than %(number)s."
+msgstr ""
+
+#: .\seller\views.py:370
+#, python-format
+msgid "The file type of %(param)s does not supported."
+msgstr ""
+
+#: .\seller\views.py:373
+msgid "The file can not be more than 50M."
+msgstr ""
+
+#: .\seller\views.py:393
+msgid "Reserve price should be greater than one price."
+msgstr ""
+
+#: .\seller\views.py:468
+msgid ""
+"Your app is not verified at the moment. Please goto next step and click 'App "
+"Verification' to request verification."
+msgstr ""
+
+#: .\seller\views.py:493
+msgid "The app has been verified successfully. No need verify again."
+msgstr ""
+
+#: .\seller\views.py:504
+msgid ""
+"The verification will be done later. Send the email to you after verified."
+msgstr ""
+
+#: .\seller\views.py:523
+#, python-format
+msgid "The attachment \"%(name)s\" does not exist."
+msgstr ""
+
+#: .\templates\usersetting\account_setting.html.py:20
+msgid "Personal Setting"
+msgstr "个人设置"
+
+#: .\templates\usersetting\account_setting.html.py:23
+msgid "Account Details"
+msgstr "账号详情"
+
+#: .\templates\usersetting\account_setting.html.py:24
+msgid "Public Profile"
+msgstr "公共信息"
+
+#: .\templates\usersetting\account_setting.html.py:25
+msgid "Subscription Setting"
+msgstr "订阅设置"
+
+#: .\templates\usersetting\account_setting.html.py:26
+msgid "Security Settings"
+msgstr "安全设置"
+
+#: .\templates\usersetting\account_setting.html.py:29
+msgid "Account Setting"
+msgstr "账户设置"
+
+#: .\templates\usersetting\account_setting.html.py:31
+msgid "Your Account"
+msgstr "你的账户"
+
+#: .\templates\usersetting\login.html.py:23
+msgid "User Name"
+msgstr "用户名"
+
+#: .\templates\usersetting\login.html.py:26
+msgid "Not register"
+msgstr "未注册"
+
+#: .\templates\usersetting\login.html.py:34 .\usersetting\forms.py:16
+msgid "Password"
+msgstr "密码"
+
+#: .\templates\usersetting\login.html.py:37
+msgid "Forget Password"
+msgstr "忘记密码"
+
+#: .\templates\usersetting\login.html.py:47
+msgid "Logon"
+msgstr "登录"
+
+#: .\transaction\views.py:99
+#, python-format
+msgid "You have traded with buyer %(param)s, can not trade again."
+msgstr ""
+
+#: .\transaction\views.py:161
+msgid "Support user account does not exist."
+msgstr ""
+
+#: .\transaction\views.py:204
+msgid "Transaction can not be confirmed delivery."
+msgstr ""
+
+#: .\transaction\views.py:205
+#, python-format
+msgid "Transaction: %(param1)s, status: %(param2)s can not confirm delivery."
+msgstr ""
+
+#: .\transaction\views.py:295
+msgid "You are not allowed to buy, because your credit points is too low."
+msgstr ""
+
+#: .\transaction\views.py:386
+#, python-format
+msgid ""
+"Transaction with id %(param1)s set pay_key to %(param2)s, gateway to %"
+"(param3)s."
+msgstr ""
+
+#: .\transaction\views.py:390
+#, python-format
+msgid ""
+"PayKey: %(param1)s, Transaction ID: %(param2)s. Gateway %(param3)s no exists."
+msgstr ""
+
+#: .\transaction\views.py:393
+#, python-format
+msgid "PayKey: %(param1)s, Transaction with id %(param2)s no exists."
+msgstr ""
+
+#: .\transaction\views.py:396
+msgid "Transaction ID or PayKey or Gateway no exists."
+msgstr ""
+
+#: .\transaction\views.py:429
+#, python-format
+msgid ""
+"The transaction with id %(param1)s status %(param2)s should be payed with "
+"buyer %(param3)s."
+msgstr ""
+
+#: .\transaction\views.py:432
+#, python-format
+msgid "The transaction with id %(param1)s does not exist."
+msgstr ""
+
+#: .\transaction\views.py:480
+#, python-format
+msgid ""
+"The transaction of one price buy with id %(param1)s is payed by %(param2)s."
+msgstr ""
+
+#: .\transaction\views.py:522
+#, python-format
+msgid "The transaction with id %(param1)s is payed by %(param2)s."
+msgstr ""
+
+#: .\usersetting\forms.py:12
+msgid "Email"
+msgstr "邮件地址"
+
+#: .\usersetting\forms.py:16
+msgid "At least 6 characters"
+msgstr "最少6个字符"
+
+#: .\usersetting\forms.py:17
+msgid "The password length must be more than 6."
+msgstr "密码长度必须大于6。"
+
+#: .\usersetting\forms.py:21
+msgid "Username"
+msgstr "用户名"
+
+#: .\usersetting\forms.py:21
+msgid "Only allows Number,Letter,_"
+msgstr "只能包括数字，字母，_"
+
+#: .\usersetting\forms.py:28
+#, python-format
+msgid "%(name)s has been used."
+msgstr "%(name)s已经被使用。"
+
+#: .\usersetting\forms.py:35
+#, python-format
+msgid "%(email)s has been used."
+msgstr "%(email)s已经被使用。"
+
+#: .\usersetting\views.py:51
+msgid "Your account has been listed in blacklist!"
+msgstr "你的账号已被加入黑名单！"
+
+#: .\usersetting\views.py:62
+#, python-format
+msgid "%(name)s is not active. Please active it by %(email)s."
+msgstr ""
+
+#: .\usersetting\views.py:64
+msgid "username or password is not correct."
+msgstr ""
+
+#: .\usersetting\views.py:98
+#, python-format
+msgid ""
+"The password reset link has been sent to %(param)s. Please check your email, "
+"click attached link to change your password ASAP."
+msgstr ""
+
+#: .\usersetting\views.py:100
+#, python-format
+msgid "%(param)s do not exist."
+msgstr ""
+
+#: .\usersetting\views.py:118
+msgid "Password is not the same with the confirm password."
+msgstr ""
+
+#: .\usersetting\views.py:126
+msgid "Your password has been updated successfully."
+msgstr ""
+
+#: .\usersetting\views.py:150 .\usersetting\views.py:199
+msgid "Username only allows 0-9,a-z,A-Z or underline."
+msgstr ""
+
+#: .\usersetting\views.py:152
+#, python-format
+msgid "%(name)s or %(email)s has been used."
+msgstr ""
+
+#: .\usersetting\views.py:183
+msgid "Registration failed, please try again."
+msgstr ""
+
+#: .\usersetting\views.py:202 .\usersetting\views.py:208
+#: .\usersetting\views.py:468 .\usersetting\views.py:537
+#, python-format
+msgid "%(param)s has been used."
+msgstr ""
+
+#: .\usersetting\views.py:205 .\usersetting\views.py:211
+#, python-format
+msgid "%(param)s is valid."
+msgstr ""
+
+#: .\usersetting\views.py:247
+msgid "Your account has been activated successfully."
+msgstr ""
+
+#: .\usersetting\views.py:249
+msgid "The activation link is not correct."
+msgstr ""
+
+#: .\usersetting\views.py:282
+msgid "You account info has been updated successfully."
+msgstr ""
+
+#: .\usersetting\views.py:312
+msgid "The image size is larger than 1M."
+msgstr ""
+
+#: .\usersetting\views.py:328
+msgid "The public profile has been updated successful."
+msgstr ""
+
+#: .\usersetting\views.py:330
+#, python-format
+msgid "The file type of %(param)s is not supported."
+msgstr ""
+
+#: .\usersetting\views.py:333
+msgid "The public profile has been updated successfully."
+msgstr ""
+
+#: .\usersetting\views.py:355
+msgid "The subscription setting has been updated successful."
+msgstr ""
+
+#: .\usersetting\views.py:407
+msgid "Send PIN failed, please try again."
+msgstr ""
+
+#: .\usersetting\views.py:422
+msgid "Old password and new password can not be the same."
+msgstr ""
+
+#: .\usersetting\views.py:426
+msgid "The account password has been updated successful."
+msgstr ""
+
+#: .\usersetting\views.py:429
+msgid "Old password is not correct."
+msgstr ""
+
+#: .\usersetting\views.py:466
+msgid "The new email can not be the same as the old one."
+msgstr ""
+
+#: .\usersetting\views.py:511
+msgid "Your new email verify successfully."
+msgstr ""
+
+#: .\usersetting\views.py:513
+msgid "The email verification failed."
+msgstr ""
+
+#: .\usersetting\views.py:515 .\usersetting\views.py:517
+msgid "The verification link is not correct."
+msgstr ""
+
+#: .\usersetting\views.py:535
+msgid "The new phone number can not be the same as the old one."
+msgstr ""
+
+#: .\usersetting\views.py:542 .\usersetting\views.py:551
+msgid "The phone number has been updated successful."
+msgstr ""
+
+#: .\usersetting\views.py:581
+msgid "Payment account is updated."
+msgstr ""

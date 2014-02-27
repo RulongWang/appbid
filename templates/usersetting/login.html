@@ -1,5 +1,6 @@
 {% extends "usersetting/log_tp.html" %}
 {% block logon %}
+{% load i18n %}
 {% load staticfiles %}
     <div class="errors_block">
         {% if login_error %}
@@ -19,10 +20,10 @@
 {#                           Username:#}
                        </td>
                        <td>
-                           <input id='username' name='username' class="logon_input" type="text" placeholder="User Name" value="{{ user_name }}">
+                           <input id='username' name='username' class="logon_input" type="text" placeholder="{% trans 'User Name' %}" value="{{ user_name }}">
                        </td>
                        <td style="width:200px;">
-                             <a href="{% url 'usersetting:register_view' %}">Not register？</a>
+                             <a href="{% url 'usersetting:register_view' %}">{% trans 'Not register' %}？</a>
                        </td>
                    </tr>
                    <tr>
@@ -30,10 +31,10 @@
 {#                           Password:#}
                        </td>
                        <td >
-                           <input id='password' name='password' class="logon_input" type="password" placeholder="Password">
+                           <input id='password' name='password' class="logon_input" type="password" placeholder="{% trans 'Password' %}">
                        </td>
                        <td>
-                            <a href="{% url 'usersetting:forget_password' %}">Forget Password</a>
+                            <a href="{% url 'usersetting:forget_password' %}">{% trans 'Forget Password' %}</a>
                        </td>
 
                    </tr>
@@ -43,7 +44,7 @@
 
                        </td>
                        <td style="text-align: center;">
-                           <button id="submit" class="newbutton" type="submit">Logon</button>
+                           <button id="submit" class="newbutton" type="submit">{% trans 'Logon' %}</button>
                        </td>
                        <td>
 {#                            <a href="#">Send active email</a>#}

@@ -1,5 +1,6 @@
 {% extends "index.html" %}
 {% block mainContent %}
+{% load i18n %}
 {% load staticfiles %}
     <script>
   $(function() {
@@ -16,18 +17,18 @@
 
        <div id="account_wrapper">
         <div class="pannel_nav">
-            <div class="account_nav_title setting_icon">Personal Setting</div>
+            <div class="account_nav_title setting_icon">{% trans 'Personal Setting' %}</div>
             <ul class="account_nav">
 
-                <li ><a href="{% url 'usersetting:user_detail' %}">Account Details</a></li>
-                <li><a href="{% url 'usersetting:public_profile' %}">Public Profile</a></li>
-                <li><a href="{% url 'usersetting:subscription_setting' %}">Subscription Setting</a></li>
-                <li><a href="{% url 'usersetting:security_setting' %}">Security Settings</a></li>
+                <li ><a href="{% url 'usersetting:user_detail' %}">{% trans 'Account Details' %}</a></li>
+                <li><a href="{% url 'usersetting:public_profile' %}">{% trans 'Public Profile' %}</a></li>
+                <li><a href="{% url 'usersetting:subscription_setting' %}">{% trans 'Subscription Setting' %}</a></li>
+                <li><a href="{% url 'usersetting:security_setting' %}">{% trans 'Security Settings' %}</a></li>
             </ul>
 
-            <div class="account_nav_title payment_icon">Account Setting</div>
+            <div class="account_nav_title payment_icon">{% trans 'Account Setting' %}</div>
             <ul class="account_nav">
-                <li><a href="{% url 'usersetting:payment_setting' '' %}">Your Account</a></li>
+                <li><a href="{% url 'usersetting:payment_setting' '' %}">{% trans 'Your Account' %}</a></li>
             </ul>
         </div>
 

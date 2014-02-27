@@ -1,3 +1,4 @@
+# coding: utf-8
 # Django settings for appbid project.
 #!/usr/bin/python
 import os
@@ -37,6 +38,13 @@ TIME_ZONE = 'Asia/Shanghai'
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
 LANGUAGE_CODE = 'en-us'
+LANGUAGES = (
+    ('zh-cn', u'简体中文'),
+    ('en-us', u'English'),
+)
+LOCALE_PATHS = (
+    os.path.join(os.path.dirname(__file__), '..', 'locale').replace('\\', '/'),
+)
 
 SITE_ID = 1
 
@@ -110,6 +118,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
