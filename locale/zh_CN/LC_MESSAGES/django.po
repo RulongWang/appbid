@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-02-27 22:21+0800\n"
+"POT-Creation-Date: 2014-02-28 17:06+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -486,7 +486,56 @@ msgstr ""
 #: .\seller\views.py:523
 #, python-format
 msgid "The attachment \"%(name)s\" does not exist."
+msgstr "附件\"%(name)s\"不存在。"
+
+#: .\templates\header.html.py:7 .\templates\header.html.py:90
+msgid "Top 1 marketplace to buy and sell apps."
+msgstr "排名第一的APP买卖市场。"
+
+#: .\templates\header.html.py:63 .\templates\header.html.py:88
+msgid "Home"
+msgstr "主页"
+
+#: .\templates\header.html.py:64
+msgid "Buy Apps"
+msgstr "买APP"
+
+#: .\templates\header.html.py:65
+msgid "Sell Apps"
+msgstr "卖APP"
+
+#: .\templates\header.html.py:69
+msgid "Welcome"
+msgstr "欢迎"
+
+#: .\templates\header.html.py:70
+#: .\templates\usersetting\account_setting.html.py:29
+msgid "Account Setting"
+msgstr "账户设置"
+
+#: .\templates\header.html.py:71
+msgid "Activity"
 msgstr ""
+
+#: .\templates\header.html.py:73
+msgid "Logout"
+msgstr "注销"
+
+#: .\templates\header.html.py:75
+msgid "Login"
+msgstr "登录"
+
+#: .\templates\header.html.py:76
+msgid "Sign Up"
+msgstr "注册"
+
+#: .\templates\header.html.py:94
+msgid "search the marketplace"
+msgstr "站内搜索"
+
+#: .\templates\header.html.py:95
+msgid "Search"
+msgstr "搜索"
 
 #: .\templates\dashboard\activity.html.py:8
 msgid "Activity Overview"
@@ -544,19 +593,19 @@ msgstr ""
 
 #: .\templates\dashboard\activity.html.py:39
 msgid "From"
-msgstr ""
+msgstr "来自"
 
 #: .\templates\dashboard\activity.html.py:40
 msgid "Message Subject"
-msgstr ""
+msgstr "信息主题"
 
 #: .\templates\dashboard\activity.html.py:41
 msgid "Received Time"
-msgstr ""
+msgstr "接收时间"
 
 #: .\templates\dashboard\activity.html.py:57
 msgid "No received message."
-msgstr ""
+msgstr "没有信息。"
 
 #: .\templates\dashboard\activity.html.py:64
 #: .\templates\dashboard\my_listing.html.py:42
@@ -690,10 +739,6 @@ msgstr "订阅设置"
 msgid "Security Settings"
 msgstr "安全设置"
 
-#: .\templates\usersetting\account_setting.html.py:29
-msgid "Account Setting"
-msgstr "账户设置"
-
 #: .\templates\usersetting\login.html.py:23
 msgid "User Name"
 msgstr "用户名"
@@ -702,7 +747,8 @@ msgstr "用户名"
 msgid "Not register"
 msgstr "未注册"
 
-#: .\templates\usersetting\login.html.py:34 .\usersetting\forms.py:16
+#: .\templates\usersetting\login.html.py:34
+#: .\templates\usersetting\register.html.py:41
 msgid "Password"
 msgstr "密码"
 
@@ -713,6 +759,30 @@ msgstr "忘记密码"
 #: .\templates\usersetting\login.html.py:47
 msgid "Logon"
 msgstr "登录"
+
+#: .\templates\usersetting\register.html.py:32
+msgid "Username"
+msgstr "用户名"
+
+#: .\templates\usersetting\register.html.py:33
+msgid "Only allows Number,Letter,_"
+msgstr "只能包括数字，字母和下划线"
+
+#: .\templates\usersetting\register.html.py:42
+msgid "At least 6 characters"
+msgstr "最少6个字符"
+
+#: .\templates\usersetting\register.html.py:45
+msgid "The password length must be more than 6."
+msgstr "密码长度必须大于6。"
+
+#: .\templates\usersetting\register.html.py:53
+msgid "Email"
+msgstr "邮件地址"
+
+#: .\templates\usersetting\register.html.py:59
+msgid "register"
+msgstr "注册"
 
 #: .\transaction\views.py:99
 #, python-format
@@ -781,35 +851,12 @@ msgstr ""
 msgid "The transaction with id %(param1)s is payed by %(param2)s."
 msgstr ""
 
-#: .\usersetting\forms.py:12
-msgid "Email"
-msgstr "邮件地址"
-
-#: .\usersetting\forms.py:16
-msgid "At least 6 characters"
-msgstr "最少6个字符"
-
-#: .\usersetting\forms.py:17
-msgid "The password length must be more than 6."
-msgstr "密码长度必须大于6。"
-
-#: .\usersetting\forms.py:21
-msgid "Username"
-msgstr "用户名"
-
-#: .\usersetting\forms.py:21
-msgid "Only allows Number,Letter,_"
-msgstr "只能包括数字，字母，_"
-
-#: .\usersetting\forms.py:28
+#: .\usersetting\forms.py:31 .\usersetting\forms.py:38
+#: .\usersetting\views.py:202 .\usersetting\views.py:208
+#: .\usersetting\views.py:468 .\usersetting\views.py:537
 #, python-format
-msgid "%(name)s has been used."
-msgstr "%(name)s已经被使用。"
-
-#: .\usersetting\forms.py:35
-#, python-format
-msgid "%(email)s has been used."
-msgstr "%(email)s已经被使用。"
+msgid "%(param)s has been used."
+msgstr "%(param)s已经被用。"
 
 #: .\usersetting\views.py:51
 msgid "Your account has been listed in blacklist!"
@@ -818,11 +865,11 @@ msgstr "你的账号已被加入黑名单！"
 #: .\usersetting\views.py:62
 #, python-format
 msgid "%(name)s is not active. Please active it by %(email)s."
-msgstr ""
+msgstr "%(name)s账号没有被激活。请登录%(email)s激活账号。"
 
 #: .\usersetting\views.py:64
 msgid "username or password is not correct."
-msgstr ""
+msgstr "用户名或密码不正确。"
 
 #: .\usersetting\views.py:98
 #, python-format
@@ -830,59 +877,54 @@ msgid ""
 "The password reset link has been sent to %(param)s. Please check your email, "
 "click attached link to change your password ASAP."
 msgstr ""
+"密码重置链接已发送到%(param)s，请尽快检查邮箱，并点击链接修改账号密码。"
 
 #: .\usersetting\views.py:100
 #, python-format
 msgid "%(param)s do not exist."
-msgstr ""
+msgstr "%(param)s账号不存在。"
 
 #: .\usersetting\views.py:118
 msgid "Password is not the same with the confirm password."
-msgstr ""
+msgstr "密码和确认密码不一致。"
 
 #: .\usersetting\views.py:126
 msgid "Your password has been updated successfully."
-msgstr ""
+msgstr "你的密码已更新。"
 
 #: .\usersetting\views.py:150 .\usersetting\views.py:199
-msgid "Username only allows 0-9,a-z,A-Z or underline."
-msgstr ""
+msgid "Username only allows Number,Letter,_."
+msgstr "用户名只能包含数字，字母及下划线。"
 
 #: .\usersetting\views.py:152
 #, python-format
 msgid "%(name)s or %(email)s has been used."
-msgstr ""
+msgstr "%(name)s或者%(email)s已经被用。"
 
 #: .\usersetting\views.py:183
 msgid "Registration failed, please try again."
-msgstr ""
-
-#: .\usersetting\views.py:202 .\usersetting\views.py:208
-#: .\usersetting\views.py:468 .\usersetting\views.py:537
-#, python-format
-msgid "%(param)s has been used."
-msgstr ""
+msgstr "注册失败，请重试。"
 
 #: .\usersetting\views.py:205 .\usersetting\views.py:211
 #, python-format
 msgid "%(param)s is valid."
-msgstr ""
+msgstr "%(param)s是可用的。"
 
 #: .\usersetting\views.py:247
 msgid "Your account has been activated successfully."
-msgstr ""
+msgstr "你的账号已被成功激活。"
 
 #: .\usersetting\views.py:249
 msgid "The activation link is not correct."
-msgstr ""
+msgstr "账号激活链接不正确。"
 
 #: .\usersetting\views.py:282
 msgid "You account info has been updated successfully."
-msgstr ""
+msgstr "你的账号信息已更新。"
 
 #: .\usersetting\views.py:312
-msgid "The image size is larger than 1M."
-msgstr ""
+msgid "The image size must be not larger than 1M."
+msgstr "图片大小不能大于1M。"
 
 #: .\usersetting\views.py:328
 msgid "The public profile has been updated successful."
@@ -891,7 +933,7 @@ msgstr ""
 #: .\usersetting\views.py:330
 #, python-format
 msgid "The file type of %(param)s is not supported."
-msgstr ""
+msgstr "不支持%(param)s文件类型。"
 
 #: .\usersetting\views.py:333
 msgid "The public profile has been updated successfully."
@@ -944,3 +986,9 @@ msgstr ""
 #: .\usersetting\views.py:581
 msgid "Payment account is updated."
 msgstr ""
+
+#~ msgid "%(name)s has been used."
+#~ msgstr "%(name)s已经被使用。"
+
+#~ msgid "%(email)s has been used."
+#~ msgstr "%(email)s已经被使用。"

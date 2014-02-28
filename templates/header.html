@@ -4,7 +4,7 @@
 <html prefix="og: http://ogp.me/ns#">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>{{ title }} The best professional marketplace to buy and sell iOS/Mac apps.</title>
+    <title>{{ title }} {% trans 'Top 1 marketplace to buy and sell apps.' %}</title>
     {% if twitter_url %}
     <meta name="description" content="{{ app.description|truncatewords_html:50 }}" />
     <!-- Facebook start -->
@@ -60,20 +60,20 @@
 <div id="user_bar">
     <div id="row">
         <ul class="user_bar_menu">
-            <li><a href="/" class=""><img src="{% static "images/home18x18.png" %}" title="Home" /></a></li>
-            <li><a href="/query/featured">Buy Apps</a></li>
-            <li><a href="/seller/app-store-link">Sell Apps</a></li>
+            <li><a href="/" class=""><img src="{% static "images/home18x18.png" %}" title="{% trans 'Home' %}" /></a></li>
+            <li><a href="/query/featured">{% trans 'Buy Apps' %}</a></li>
+            <li><a href="/seller/app-store-link">{% trans 'Sell Apps' %}</a></li>
         </ul>
         <ul class="user_bar_menu_link">
             {% if request.user.is_authenticated  %}
-            <li><a href="/" class=""><img src="{% static "images/login18x18.png" %}" title="Welcome {{ request.user }}" /> </a></li>
-            <li><a href="{% url 'usersetting:user_detail' %}" class=""><img src="{% static "images/account18x18.png" %}" title="Account Setting" /></a></li>
-            <li><a href="{% url 'dashboard:my_listing' %}" class=""><img src="{% static "images/act18x18.png" %}" title="Activity" /></a></li>
+            <li><a href="/" class=""><img src="{% static "images/login18x18.png" %}" title="{% trans 'Welcome' %} {{ request.user }}" /> </a></li>
+            <li><a href="{% url 'usersetting:user_detail' %}" class=""><img src="{% static "images/account18x18.png" %}" title="{% trans 'Account Setting' %}" /></a></li>
+            <li><a href="{% url 'dashboard:my_listing' %}" class=""><img src="{% static "images/act18x18.png" %}" title="{% trans 'Activity' %}" /></a></li>
 {#            <li><a href="/" class="">Watchlist</a></li>#}
-            <li><a href="{% url 'usersetting:logout_view' %}" class=""><img src="{% static "images/logout18x18.png" %}" title="Logout" /></a></li>
+            <li><a href="{% url 'usersetting:logout_view' %}" class=""><img src="{% static "images/logout18x18.png" %}" title="{% trans 'Logout' %}" /></a></li>
             {% else %}
-            <li><a href="/usersetting/home/?next={{ request.path }}" class="">Login</a></li>
-            <li><a href="/usersetting/register/?next={{ request.path }}" class="">Sign Up</a></li>
+            <li><a href="/usersetting/home/?next={{ request.path }}" class="">{% trans 'Login' %}</a></li>
+            <li><a href="/usersetting/register/?next={{ request.path }}" class="">{% trans 'Sign Up' %}</a></li>
 
             {% endif %}
         </ul>
@@ -85,14 +85,14 @@
         <div id="company">
             <div id="company_logo">
                 <div class="logo_text">
-                    <img src="{% static "images/appswalk_logo.png" %}" title="Home" />
+                    <img src="{% static "images/appswalk_logo.png" %}" title="{% trans 'Home' %}" />
                 </div>
-                <div class="logo_desc" >Top 1 marketplace to buy and sell apps.</div>
+                <div class="logo_desc" >{% trans 'Top 1 marketplace to buy and sell apps.' %}</div>
             </div>
             <div id="header_search">
                 <form action="" method="get">
-                <input type="text" name="search" id="search_text" placeholder="search the marketplace" />
-                <input type="submit" name="search_button" value="Search" class="search_button" />
+                <input type="text" name="search" id="search_text" placeholder="{% trans 'search the marketplace' %}" />
+                <input type="submit" name="search_button" value="{% trans 'Search' %}" class="search_button" />
                 </form>
             </div>
         </div>

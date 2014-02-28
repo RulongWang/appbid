@@ -147,7 +147,7 @@ def register(request, *args, **kwargs):
             email = (registerForm.cleaned_data["email"]).strip()
             password = (registerForm.cleaned_data["password"]).strip()
             if not bool(re.match(r"^[a-zA-Z0-9_]+$", username)):
-                initParam['register_error'] = _('Username only allows 0-9,a-z,A-Z or underline.')
+                initParam['register_error'] = _('Username only allows Number,Letter,_.')
             elif models.User.objects.filter(Q(username=username) | Q(email=email)):
                 initParam['register_error'] = _('%(name)s or %(email)s has been used.') % {'name': username, 'email': email}
             else:
@@ -196,7 +196,7 @@ def ajaxUserVerified(request, *args, **kwargs):
     try:
         if dict.get('username') is not None:
             if not bool(re.match(r"^[a-zA-Z0-9_]+$", dict.get('username'))):
-                data['message'] = _('Username only allows 0-9,a-z,A-Z or underline.')
+                data['message'] = _('Username only allows Number,Letter,_.')
                 raise
             elif models.User.objects.filter(username=dict.get('username')):
                 data['message'] = _('%(param)s has been used.') % {'param': dict.get('username')}
@@ -309,7 +309,7 @@ def userPublicProfile(request, *args, **kwargs):
             if thumbnail:
                 if thumbnail.content_type.startswith('image'):
                     if thumbnail.size > 1000000:
-                        initParam['account_error'] = _('The image size is larger than 1M.')
+                        initParam['account_error'] = _('The image size must be not larger than 1M.')
                     else:
                         path = '/'.join([settings.MEDIA_ROOT, str(user.id)])
                         if os.path.exists(path) is False:

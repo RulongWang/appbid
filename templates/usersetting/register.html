@@ -1,5 +1,6 @@
 {% extends "usersetting/log_tp.html" %}
 {% block logon %}
+{% load i18n %}
 {% load staticfiles %}
     <div class="errors_block">
         {% if register_form.username.errors %}
@@ -26,22 +27,35 @@
             <table class="user_register">
              <tr>
                  <td></td>
-                 <td>{{ register_form.username }}</td>
+                 <td>
+{#                     {{ register_form.username }}#}
+                     <input class="logon_input" id="id_username" maxlength="30" name="username" placeholder="{% trans 'Username' %}" size="20"
+                            title="{% trans 'Only allows Number,Letter,_' %}" type="text">
+                 </td>
                  <td><div id="username_msg" class="usg"></div></td>
              </tr>
              <tr>
                  <td></td>
-                 <td>{{ register_form.password }}</td>
-                 <td><div id="passowrd_msg">{{ register_form.password.help_text }}</div></td>
+                 <td>
+{#                     {{ register_form.password }}#}
+                     <input class="logon_input" id="id_password" maxlength="30" name="password" placeholder="{% trans 'Password' %}" size="20"
+                            title="{% trans 'At least 6 characters' %}" type="password">
+                 </td>
+                 <td>
+                     <div id="passowrd_msg">{% trans 'The password length must be more than 6.' %}</div>
+                 </td>
              </tr>
              <tr>
                  <td></td>
-                 <td>{{ register_form.email }}</td>
+                 <td>
+{#                     {{ register_form.email }}#}
+                     <input class="logon_input" id="id_email" maxlength="30" name="email" placeholder="{% trans 'Email' %}" size="30" type="text">
+                 </td>
                  <td><div id="email_msg" class="usg"></div></td>
              </tr>
              <tr>
                  <td></td>
-                 <td style="text-align: center;"><button id="submit" class="newbutton" type="submit">submit</button></td>
+                 <td style="text-align: center;"><button id="submit" class="newbutton" type="submit">{% trans 'register' %}</button></td>
                  <td></td>
              </tr>
             </table>
