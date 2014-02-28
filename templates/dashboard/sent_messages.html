@@ -1,5 +1,6 @@
 {% extends "dashboard/activity.html" %}
 {% block dashboard_detail %}
+{% load i18n %}
         {% if messages %}
             <ul class="messages">
             {% for message in messages %}
@@ -9,12 +10,12 @@
             {% endfor %}
             </ul>
         {% endif %}
-        <div class="dash_title">Outbox</div>
+        <div class="dash_title">{% trans 'Outbox' %}</div>
         <ul class="inbox_list">
            <li class="highlight_li">
-           <div class="inbox_from" >To</div>
-           <div class="inbox_subject" >Message Subject</div>
-           <div class="inbox_received_time" >Received Time</div>
+           <div class="inbox_from" >{% trans 'To' %}</div>
+           <div class="inbox_subject" >{% trans 'Message Subject' %}</div>
+           <div class="inbox_received_time" >{% trans 'Received Time' %}</div>
 
            </li>
 
@@ -34,14 +35,14 @@
                 </a>
                </li>
            {% empty %}
-               <div class="no_message">No received message.</div>
+               <div class="no_message">{% trans 'No received message.' %}</div>
            {% endfor %}
 
          {% if message_list %}
          <div class="pagination" style="float: right">
-            {% if message_list.has_previous %}<a href="?page={{ message_list.previous_page_number }}">previous</a>{% endif %}
-            Page {{ message_list.number }} of {{ message_list.paginator.num_pages }}
-            {% if message_list.has_next %}<a href="?page={{ message_list.next_page_number }}">next</a>{% endif %}
+            {% if message_list.has_previous %}<a href="?page={{ message_list.previous_page_number }}">{% trans 'previous' %}</a>{% endif %}
+            {% trans 'Page' %} {{ message_list.number }} {% trans 'of' %} {{ message_list.paginator.num_pages }}
+            {% if message_list.has_next %}<a href="?page={{ message_list.next_page_number }}">{% trans 'next' %}</a>{% endif %}
          </div>
          {% endif %}
 {% endblock %}

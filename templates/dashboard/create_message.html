@@ -1,26 +1,27 @@
 {% extends "dashboard/activity.html" %}
 {% block dashboard_detail %}
+{% load i18n %}
     <div id="message_msg" style="color: red">
     </div>
     <form action="" method="post">
         {% csrf_token %}
-        <div class="dash_title">Send New Message</div>
+        <div class="dash_title">{% trans 'Send New Message' %}</div>
         <ul class="account_detail_items">
             <li>
                 <div class="message_header">
-                    {{ messageForm.receiver.label_tag }}:
+                    <span style="font-weight: bold;">{% trans 'Receiver' %}:</span>
                     <input id="temp_receiver" name="temp_receiver" type="text" value="{{ receiver.username }}" readonly="true" />
                 </div>
             </li>
             <li>
                 <div class="message_header">
-                     <span style="font-weight: bold;">Subject:</span>
+                     <span style="font-weight: bold;">{% trans 'Subject' %}:</span>
                     {{ messageForm.title }}
                 </div>
             </li>
             <li>
                 <div class="message_header">
-                    <span style="font-weight: bold;">Leave your message:</span>
+                    <span style="font-weight: bold;">{% trans 'Leave your message' %}:</span>
                 </div>
             </li>
             <li>
@@ -32,9 +33,9 @@
                 <input id="id_type" name="type" type="text" hidden="hidden" value="{{ type }}" />
                 <input id="id_sender" name="sender" type="text" hidden="hidden" value="{{ sender.id }}" />
                 <input id="id_receiver" name="receiver" type="text" hidden="hidden" value="{{ receiver.id }}" />
-                <input id="submit" name="submit" type="submit" value="Submit" class="newbutton"/>
+                <input id="submit" name="submit" type="submit" value="{% trans 'Send' %}" class="newbutton"/>
                 <a href="{{ next }}{% if page %}?page={{ page }}{% endif %}">
-                    <input id="cancel" name="cancel" type="button" value="Cancel" class="newbutton"/>
+                    <input id="cancel" name="cancel" type="button" value="{% trans 'Cancel' %}" class="newbutton"/>
                 </a>
             </li>
         </ul>

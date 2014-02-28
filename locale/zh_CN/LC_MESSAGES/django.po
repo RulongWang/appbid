@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-02-28 17:06+0800\n"
+"POT-Creation-Date: 2014-02-28 17:31+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -543,12 +543,13 @@ msgstr ""
 
 #: .\templates\dashboard\activity.html.py:10
 #: .\templates\dashboard\activity.html.py:34
+#: .\templates\dashboard\message_detail.html.py:4
 msgid "Inbox"
 msgstr "收信箱"
 
 #: .\templates\dashboard\activity.html.py:11
 msgid "Sent Messages"
-msgstr "已发信息"
+msgstr "发信箱"
 
 #: .\templates\dashboard\activity.html.py:13
 msgid "My Apps"
@@ -592,18 +593,22 @@ msgid "Past Orders"
 msgstr ""
 
 #: .\templates\dashboard\activity.html.py:39
+#: .\templates\dashboard\message_detail.html.py:8
 msgid "From"
-msgstr "来自"
+msgstr "发信人"
 
 #: .\templates\dashboard\activity.html.py:40
+#: .\templates\dashboard\sent_messages.html.py:17
 msgid "Message Subject"
-msgstr "信息主题"
+msgstr "标题"
 
 #: .\templates\dashboard\activity.html.py:41
+#: .\templates\dashboard\sent_messages.html.py:18
 msgid "Received Time"
 msgstr "接收时间"
 
 #: .\templates\dashboard\activity.html.py:57
+#: .\templates\dashboard\sent_messages.html.py:38
 msgid "No received message."
 msgstr "没有信息。"
 
@@ -611,6 +616,7 @@ msgstr "没有信息。"
 #: .\templates\dashboard\my_listing.html.py:42
 #: .\templates\dashboard\my_listing.html.py:86
 #: .\templates\dashboard\my_listing.html.py:131
+#: .\templates\dashboard\sent_messages.html.py:43
 msgid "previous"
 msgstr "前一页"
 
@@ -618,6 +624,7 @@ msgstr "前一页"
 #: .\templates\dashboard\my_listing.html.py:44
 #: .\templates\dashboard\my_listing.html.py:88
 #: .\templates\dashboard\my_listing.html.py:133
+#: .\templates\dashboard\sent_messages.html.py:44
 msgid "Page"
 msgstr " "
 
@@ -625,6 +632,7 @@ msgstr " "
 #: .\templates\dashboard\my_listing.html.py:44
 #: .\templates\dashboard\my_listing.html.py:88
 #: .\templates\dashboard\my_listing.html.py:133
+#: .\templates\dashboard\sent_messages.html.py:44
 msgid "of"
 msgstr "/"
 
@@ -632,8 +640,53 @@ msgstr "/"
 #: .\templates\dashboard\my_listing.html.py:46
 #: .\templates\dashboard\my_listing.html.py:90
 #: .\templates\dashboard\my_listing.html.py:135
+#: .\templates\dashboard\sent_messages.html.py:45
 msgid "next"
 msgstr "下一页"
+
+#: .\templates\dashboard\create_message.html.py:8
+msgid "Send New Message"
+msgstr "写信息"
+
+#: .\templates\dashboard\create_message.html.py:12
+msgid "Receiver"
+msgstr "收信人"
+
+#: .\templates\dashboard\create_message.html.py:18
+#: .\templates\dashboard\message_detail.html.py:6
+msgid "Subject"
+msgstr "标题"
+
+#: .\templates\dashboard\create_message.html.py:24
+msgid "Leave your message"
+msgstr "内容"
+
+#: .\templates\dashboard\create_message.html.py:36
+msgid "Send"
+msgstr "发送"
+
+#: .\templates\dashboard\create_message.html.py:38
+msgid "Cancel"
+msgstr "取消"
+
+#: .\templates\dashboard\message_detail.html.py:11
+#: .\templates\dashboard\sent_messages.html.py:16
+msgid "To"
+msgstr "收信人"
+
+#: .\templates\dashboard\message_detail.html.py:13
+msgid "Received at"
+msgstr "接收时间"
+
+#: .\templates\dashboard\message_detail.html.py:24
+#: .\templates\dashboard\message_detail.html.py:36
+msgid "Back"
+msgstr "返回"
+
+#: .\templates\dashboard\message_detail.html.py:29
+#: .\templates\dashboard\message_detail.html.py:41
+msgid "Reply"
+msgstr "回复"
 
 #: .\templates\dashboard\my_listing.html.py:5
 msgid "Draft Apps"
@@ -719,6 +772,10 @@ msgstr "现在交易"
 msgid "No sold/closed app."
 msgstr "没有已卖/已结束的APP。"
 
+#: .\templates\dashboard\sent_messages.html.py:13
+msgid "Outbox"
+msgstr "发信箱"
+
 #: .\templates\usersetting\account_setting.html.py:20
 msgid "Personal Setting"
 msgstr "个人设置"
@@ -776,11 +833,11 @@ msgstr "最少6个字符"
 msgid "The password length must be more than 6."
 msgstr "密码长度必须大于6。"
 
-#: .\templates\usersetting\register.html.py:53
+#: .\templates\usersetting\register.html.py:52
 msgid "Email"
 msgstr "邮件地址"
 
-#: .\templates\usersetting\register.html.py:59
+#: .\templates\usersetting\register.html.py:58
 msgid "register"
 msgstr "注册"
 

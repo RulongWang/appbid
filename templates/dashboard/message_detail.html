@@ -1,15 +1,16 @@
 {% extends "dashboard/activity.html" %}
 {% block dashboard_detail %}
-           <div class="dash_title">Inbox</div>
+{% load i18n %}
+           <div class="dash_title">{% trans 'Inbox' %}</div>
            {% if message %}
-            <div class="message_header"><b>Subject:</b><span class="msg_header_content">{{ message.title }}</span></div>
+            <div class="message_header"><b>{% trans 'Subject' %}:</b><span class="msg_header_content">{{ message.title }}</span></div>
             {% ifequal msg_action 'reply' %}
-            <div class="message_header"><b>From:</b><span class="msg_header_content">{{ message.sender.username }}</span></div>
+            <div class="message_header"><b>{% trans 'From' %}:</b><span class="msg_header_content">{{ message.sender.username }}</span></div>
             {% endifequal %}
             {% ifequal msg_action 'send' %}
-            <div class="message_header"><b>To:</b><span class="msg_header_content">{{ message.receiver.username }}</span></div>
+            <div class="message_header"><b>{% trans 'To' %}:</b><span class="msg_header_content">{{ message.receiver.username }}</span></div>
             {% endifequal %}
-            <div class="message_header"><b>Received at:</b><span class="msg_header_content">{{ message.submit_date|date:"Y-m-d H:i"|default:"N/A" }}</span></div>
+            <div class="message_header"><b>{% trans 'Received at' %}:</b><span class="msg_header_content">{{ message.submit_date|date:"Y-m-d H:i"|default:"N/A" }}</span></div>
             <div class="message_content">
                 <p>
                     {{ message.content }}
@@ -20,24 +21,24 @@
              {% ifequal msg_action 'reply' %}
                  <span>
                      <a href="/dashboard/inbox?page={{ page }}">
-                         <input id="id_back" name="back" class="general_btn" type="button" value="Back" />
+                         <input id="id_back" name="back" class="general_btn" type="button" value="{% trans 'Back' %}" />
                      </a>
                  </span>
                  <span>
                      <a href="/dashboard/create-message/reply/{{ message.type }}/{{ message.sender.username }}/{{ message.sender.id }}/{{ message.id }}?next={{ request.path }}&page={{ page }}">
-                         <input id="id_reply" name="reply" type="button" class="general_btn" value="Reply" />
+                         <input id="id_reply" name="reply" type="button" class="general_btn" value="{% trans 'Reply' %}" />
                      </a>
                  </span>
              {% endifequal %}
              {% ifequal msg_action 'send' %}
                  <span>
                      <a href="/dashboard/sent-messages?page={{ page }}">
-                        <input id="id_back" name="back" type="button" class="general_btn" value="Back" />
+                        <input id="id_back" name="back" type="button" class="general_btn" value="{% trans 'Back' %}" />
                      </a>
                  </span>
                  <span>
                      <a href="/dashboard/create-message/send/{{ message.type }}/{{ message.receiver.username }}/{{ message.receiver.id }}/{{ message.id }}?next={{ request.path }}&page={{ page }}">
-                         <input id="id_reply" name="reply" type="button" class="general_btn" value="Reply" />
+                         <input id="id_reply" name="reply" type="button" class="general_btn" value="{% trans 'Reply' %}" />
                  </a>
                  </span>
              {% endifequal %}
