@@ -173,6 +173,7 @@ INSTALLED_APPS = (
     'auth',
     'favicon',
     'job',
+    'offer',
 )
 
 try:

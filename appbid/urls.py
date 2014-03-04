@@ -27,6 +27,7 @@ urlpatterns = patterns('',
     url(r'^auth/', include('auth.urls', namespace='auth')),
     url(r'^help/', include('help.urls', namespace='help')),
     url(r'^developer/', include('developer.urls', namespace='developer')),
+    url(r'^job/', include('offer.urls', namespace='offer')),
 
     url(r'^', include('favicon.urls')),
 )
