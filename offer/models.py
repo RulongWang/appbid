@@ -25,15 +25,21 @@ class Offer(models.Model):
         (1, 'Full-time'),
         (2, 'Part-time'),
     )
+    CATEGORY = (
+        (1, 'offer'),
+        (2, 'project'),
+    )
     publisher = models.ForeignKey(User)
     company = models.ForeignKey(Company)
     title = models.CharField(max_length=255, blank=True)
+    category = models.IntegerField(choices=CATEGORY, null=True, blank=True, default=1)
     type = models.IntegerField(choices=OFFER_TYPES, null=True, blank=True, default=1)
     location = models.CharField(max_length=255, null=True, blank=True)
-    position = models.CharField(max_length=255, blank=True)#Need create new table.
+    position = models.ManyToManyField(Position, null=True, blank=True)
     begin_time = models.DateTimeField(null=True, blank=True)
     end_time = models.DateTimeField(null=True, blank=True)
     non_chinese_applicants = models.BooleanField(default=True)
+    salary = models.CharField(max_length=255, blank=True)
     description = models.TextField(null=True, blank=True)
     create_time = models.DateTimeField(auto_now_add=True)
     last_modify = models.DateTimeField(auto_now=True)
@@ -45,6 +51,11 @@ class OfferRecord(models.Model):
     view_count = models.IntegerField(null=True, default=0, blank=True)
     apply_count = models.IntegerField(null=True, default=0, blank=True)
 
+
+class Position(models.Model):
+    """Position table info."""
+    key = models.CharField(max_length=255, blank=True)
+    name = models.CharField(max_length=255, blank=True)
 
 # class OfferApplicants(models.Model):
 #     """Offer applicants table info."""
