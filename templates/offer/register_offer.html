@@ -1,8 +1,111 @@
 {% extends "index.html" %}
 {% block mainContent %}
+{% load i18n %}
 {% load staticfiles %}
+    <script>
+  $(function() {
+    $( "#id_begin_time" ).datepicker({
+        showOtherMonths: true,
+        selectOtherMonths: true,
+        changeMonth: true,
+        changeYear: true,
+        dateFormat: 'yy-mm-dd'
+    });
+   $( "#id_end_time" ).datepicker({
+        showOtherMonths: true,
+        selectOtherMonths: true,
+        changeMonth: true,
+        changeYear: true,
+        dateFormat: 'yy-mm-dd'
+    });
+  });
+  </script>
 <div class="register_block">
-test
+<div id="account_msg" style="color: green">
+    {{ msg }}
+</div>
+<div id="account_msg" style="color: red">
+    {{ error }}
+</div>
+<form action=""  method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <ul>
+        <li>
+            <div>
+                <div>{% trans 'Title' %}</div>
+                <div>{{ form.title }}</div>
+            </div>
+        </li>
+        <li>
+            <div>
+                <div>{% trans 'Category' %}</div>
+                <div>{{ form.category }}</div>
+            </div>
+        </li>
+        <li>
+            <div>
+                <div>{% trans 'Type' %}</div>
+                <div>{{ form.type }}</div>
+            </div>
+        </li>
+        <li>
+            <div>
+                <div>{% trans 'Location' %}</div>
+                <div>{{ form.location }}</div>
+            </div>
+        </li>
+        <li>
+            <div>
+                <div>{% trans 'Position' %}</div>
+                <div>{{ form.position }}</div>
+            </div>
+        </li>
+        <li>
+            <div>
+                <div>{% trans 'Begin Time' %}</div>
+                <div>{{ form.begin_time }}</div>
+            </div>
+        </li>
+        <li>
+            <div>
+                <div>{% trans 'End Time' %}</div>
+                <div>{{ form.end_time }}</div>
+            </div>
+        </li>
+        <li>
+            <div>
+                <div>{% trans 'Non Chinese Applicants' %}</div>
+                <div>{{ form.non_chinese_applicants }}</div>
+            </div>
+        </li>
+        <li>
+            <div>
+                <div>{% trans 'Salary' %}</div>
+                <div>{{ form.salary }}</div>
+            </div>
+        </li>
+        <li>
+            <div>
+                <div>{% trans 'Description' %}</div>
+                <div>{{ form.description }}</div>
+            </div>
+        </li>
+        <li>
+            <div>
+                <div>{% trans 'Company Icon' %}</div>
+                <div>
+                    {% if form.company_icon.value %}
+                        <div style="width:50px;padding: 5px;float:left;">
+                        <img src="{{ form.company_icon.value.url }}" />
+                        </div>
+                    {% endif %}
+                        <input id="id_company_icon" name="company_icon" type="file" style="width: 150px;" />(Max size < 1M)
+                </div>
+            </div>
+        </li>
+    </ul>
+    <div><input id="submit" type="submit" value="Submit"  class="newbutton"/></div>
+</form>
 <div class="clear"></div>
 </div>
 {% endblock %}
