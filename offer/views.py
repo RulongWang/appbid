@@ -4,8 +4,9 @@ import os
 
 from django.views.decorators.csrf import csrf_protect
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render_to_response, RequestContext, redirect, get_object_or_404
+from django.shortcuts import render_to_response, RequestContext, redirect, get_object_or_404, Http404
 from django.utils.translation import ugettext as _
+from django.core.urlresolvers import reverse
 
 from django.conf import settings
 from offer import models as offerModels
@@ -32,6 +33,7 @@ def registerOffer(request, *args, **kwargs):
         if form.is_valid():
             offer = form.save(commit=False)
             offer.publisher = request.user
+            offer.position = form.cleaned_data['position']
             company_icon = request.FILES.get('company_icon')
             if company_icon:
                 if company_icon.content_type.startswith('image'):
@@ -53,12 +55,31 @@ def registerOffer(request, *args, **kwargs):
                             path = '/'.join([settings.MEDIA_ROOT, str(offer.company_icon)])
                             common.imageThumbnail(path=path, size=[50, 50])
                         initParam['msg'] = _('The offer has been created successful.')
-                        return redirect('/'.join(['/job', str(offer.id)]))
+                        return redirect(reverse('offer:offer_detail', kwargs={'pk': offer.id}))
+                        #('/'.join(['/job/offer-detail', str(offer.id)]))
                 else:
                     initParam['error'] = _('The file type of %(param)s is not supported.') % {'param': company_icon.name}
             else:
                 offer.save()
                 initParam['msg'] = _('The offer has been created successfully.')
-                return redirect('/'.join(['/job', str(offer.id)]))
+                return redirect(reverse('offer:offer_detail', kwargs={'pk': offer.id}))
+                #redirect(reverse('job:offer_detail', kwargs={'pk': offer.id}))
+                # '/'.join(['/job/offer-detail', str(offer.id)])
     initParam['form'] = form
     return render_to_response("offer/register_offer.html", initParam, context_instance=RequestContext(request))
+
+
+@csrf_protect
+def offerDetail(request, *args, **kwargs):
+    """Get offer detail info."""
+    if kwargs.get('pk'):
+        initParam = {}
+        offer = get_object_or_404(offerModels.Offer, pk=kwargs.get('pk'))
+        initParam['offer'] = offer
+        initParam['type'] = offerModels.Offer.OFFER_TYPES[offer.type-1][1]
+        positions = []
+        for position in offer.position.all():
+            positions.append(position.name)
+        initParam['positions'] = positions
+        return render_to_response('offer/offer_detail.html', initParam, context_instance=RequestContext(request))
+    raise Http404

@@ -5,5 +5,6 @@ from offer import views
 
 
 urlpatterns = patterns('',
-    url(r'^(?P<pk>\d*)$', views.registerOffer),
+    url(r'^offer/(?P<pk>\d*)$', views.registerOffer, name='offer'),
+    url(r'^offer-detail/(?P<pk>\d+)$', views.offerDetail, name='offer_detail'),
 )

@@ -1,0 +1,77 @@
+{% extends "index.html" %}
+{% block mainContent %}
+{% load i18n %}
+{% load staticfiles %}
+<div>
+{% if offer.publisher.username == request.user.username %}
+    <a href="{% url 'offer:offer' offer.id %}">Edit Offer</a>
+{% endif %}
+<ul>
+        <li>
+            <div>
+                <div>{% trans 'Title' %}</div>
+                <div>{{ offer.title }}</div>
+            </div>
+        </li>
+        <li>
+            <div>
+                <div>{% trans 'Type' %}</div>
+                <div>{{ type }}</div>
+            </div>
+        </li>
+        <li>
+            <div>
+                <div>{% trans 'Location' %}</div>
+                <div>{{ offer.location }}</div>
+            </div>
+        </li>
+        <li>
+            <div>
+                <div>{% trans 'Position' %}</div>
+                {% for position in positions  %}
+                <div>{{ position }}</div>
+                {% endfor %}
+            </div>
+        </li>
+        <li>
+            <div>
+                <div>{% trans 'Begin Time' %}</div>
+                <div>{{ offer.begin_time|date:"Y-m-d" }}</div>
+            </div>
+        </li>
+        <li>
+            <div>
+                <div>{% trans 'End Time' %}</div>
+                <div>{{ offer.end_time|date:"Y-m-d" }}</div>
+            </div>
+        </li>
+        <li>
+            <div>
+                <div>{% trans 'Non Chinese Applicants' %}</div>
+                <div>{{ offer.non_chinese_applicants }}</div>
+            </div>
+        </li>
+        <li>
+            <div>
+                <div>{% trans 'Salary' %}</div>
+                <div>{{ offer.salary }}</div>
+            </div>
+        </li>
+        <li>
+            <div>
+                <div>{% trans 'Description' %}</div>
+                <div>{{ offer.description }}</div>
+            </div>
+        </li>
+        <li>
+            <div>
+                <div>{% trans 'Company Icon' %}</div>
+                <div style="width:50px;padding: 5px;float:left;">
+                    <img src="{{ MEDIA_URL }}{{ offer.company_icon }}" />
+                </div>
+            </div>
+        </li>
+    </ul>
+<div class="clear"></div>
+</div>
+{% endblock %}
