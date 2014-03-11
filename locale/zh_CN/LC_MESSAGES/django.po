@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-02-28 17:31+0800\n"
+"POT-Creation-Date: 2014-03-11 22:42+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -103,6 +103,23 @@ msgstr ""
 #, python-format
 msgid "%(param)s does not exist."
 msgstr ""
+
+#: .\offer\views.py:47 .\usersetting\views.py:312
+msgid "The image size must be not larger than 1M."
+msgstr "图片大小不能大于1M。"
+
+#: .\offer\views.py:62
+msgid "The offer has been created successful."
+msgstr "职位已更新。"
+
+#: .\offer\views.py:65 .\usersetting\views.py:330
+#, python-format
+msgid "The file type of %(param)s is not supported."
+msgstr "不支持%(param)s文件类型。"
+
+#: .\offer\views.py:67
+msgid "The offer has been created successfully."
+msgstr "你的密码已更新。"
 
 #: .\order\views.py:62
 msgid "The payment is paid."
@@ -425,7 +442,7 @@ msgstr ""
 #: .\query\views.py:95 .\query\views.py:179 .\query\views.py:267
 #: .\query\views.py:343 .\query\views.py:418 .\query\views.py:497
 msgid "Category"
-msgstr ""
+msgstr "类别"
 
 #: .\seller\views.py:149 .\seller\views.py:153
 msgid "App with link has existed in your draft apps."
@@ -488,52 +505,60 @@ msgstr ""
 msgid "The attachment \"%(name)s\" does not exist."
 msgstr "附件\"%(name)s\"不存在。"
 
-#: .\templates\header.html.py:7 .\templates\header.html.py:90
+#: .\templates\header.html.py:7 .\templates\header.html.py:93
 msgid "Top 1 marketplace to buy and sell apps."
 msgstr "排名第一的APP买卖市场。"
 
-#: .\templates\header.html.py:63 .\templates\header.html.py:88
+#: .\templates\header.html.py:64 .\templates\header.html.py:91
 msgid "Home"
 msgstr "主页"
 
-#: .\templates\header.html.py:64
+#: .\templates\header.html.py:65
 msgid "Buy Apps"
 msgstr "买APP"
 
-#: .\templates\header.html.py:65
+#: .\templates\header.html.py:66
 msgid "Sell Apps"
 msgstr "卖APP"
 
-#: .\templates\header.html.py:69
+#: .\templates\header.html.py:67
+msgid "Create Job"
+msgstr ""
+
+#: .\templates\header.html.py:68
+msgid "Job Listings"
+msgstr ""
+
+#: .\templates\header.html.py:72
 msgid "Welcome"
 msgstr "欢迎"
 
-#: .\templates\header.html.py:70
+#: .\templates\header.html.py:73
 #: .\templates\usersetting\account_setting.html.py:29
 msgid "Account Setting"
 msgstr "账户设置"
 
-#: .\templates\header.html.py:71
+#: .\templates\header.html.py:74
 msgid "Activity"
 msgstr ""
 
-#: .\templates\header.html.py:73
+#: .\templates\header.html.py:76
 msgid "Logout"
 msgstr "注销"
 
-#: .\templates\header.html.py:75
+#: .\templates\header.html.py:78
 msgid "Login"
 msgstr "登录"
 
-#: .\templates\header.html.py:76
+#: .\templates\header.html.py:79
 msgid "Sign Up"
 msgstr "注册"
 
-#: .\templates\header.html.py:94
+#: .\templates\header.html.py:97
 msgid "search the marketplace"
 msgstr "站内搜索"
 
-#: .\templates\header.html.py:95
+#: .\templates\header.html.py:98
 msgid "Search"
 msgstr "搜索"
 
@@ -776,6 +801,84 @@ msgstr "没有已卖/已结束的APP。"
 msgid "Outbox"
 msgstr "发信箱"
 
+#: .\templates\offer\offer_detail.html.py:9
+msgid "Edit Offer"
+msgstr "修改职位"
+
+#: .\templates\offer\offer_detail.html.py:13
+#: .\templates\offer\offer_detail.html.py:84
+msgid "Apply with AppsWalk"
+msgstr "通过AppsWalk申请职位"
+
+#: .\templates\offer\offer_detail.html.py:20
+#: .\templates\offer\register_offer.html.py:35
+msgid "Title"
+msgstr "职位标题"
+
+#: .\templates\offer\offer_detail.html.py:31
+#: .\templates\offer\register_offer.html.py:47
+msgid "Type"
+msgstr "职位类型"
+
+#: .\templates\offer\offer_detail.html.py:37
+#: .\templates\offer\register_offer.html.py:53
+msgid "Location"
+msgstr "工作地点"
+
+#: .\templates\offer\offer_detail.html.py:43
+#: .\templates\offer\register_offer.html.py:59
+msgid "Position"
+msgstr "职位"
+
+#: .\templates\offer\offer_detail.html.py:51
+#: .\templates\offer\register_offer.html.py:65
+msgid "Begin Time"
+msgstr "招聘开始时间"
+
+#: .\templates\offer\offer_detail.html.py:57
+#: .\templates\offer\register_offer.html.py:71
+msgid "End Time"
+msgstr "招聘结束时间"
+
+#: .\templates\offer\offer_detail.html.py:63
+#: .\templates\offer\register_offer.html.py:77
+msgid "Non Chinese Applicants"
+msgstr "非中国人是否可以申请"
+
+#: .\templates\offer\offer_detail.html.py:69
+#: .\templates\offer\register_offer.html.py:83
+msgid "Salary"
+msgstr "薪资"
+
+#: .\templates\offer\offer_detail.html.py:75
+#: .\templates\offer\register_offer.html.py:89
+msgid "Description"
+msgstr "职位详细描述"
+
+#: .\templates\offer\offer_list.html.py:15
+msgid "View Count"
+msgstr "浏览次数"
+
+#: .\templates\offer\offer_list.html.py:16
+msgid "Apply Count"
+msgstr "申请人数"
+
+#: .\templates\offer\offer_list.html.py:22
+msgid "Learn More"
+msgstr "查看详情"
+
+#: .\templates\offer\register_offer.html.py:41
+msgid "Job Category"
+msgstr "职位类别"
+
+#: .\templates\offer\register_offer.html.py:95
+msgid "Company Icon"
+msgstr "公司LOG"
+
+#: .\templates\offer\register_offer.html.py:108
+msgid "If offer is enable"
+msgstr "职位是否可见"
+
 #: .\templates\usersetting\account_setting.html.py:20
 msgid "Personal Setting"
 msgstr "个人设置"
@@ -979,18 +1082,9 @@ msgstr "账号激活链接不正确。"
 msgid "You account info has been updated successfully."
 msgstr "你的账号信息已更新。"
 
-#: .\usersetting\views.py:312
-msgid "The image size must be not larger than 1M."
-msgstr "图片大小不能大于1M。"
-
 #: .\usersetting\views.py:328
 msgid "The public profile has been updated successful."
 msgstr ""
-
-#: .\usersetting\views.py:330
-#, python-format
-msgid "The file type of %(param)s is not supported."
-msgstr "不支持%(param)s文件类型。"
 
 #: .\usersetting\views.py:333
 msgid "The public profile has been updated successfully."
