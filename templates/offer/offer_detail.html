@@ -3,14 +3,27 @@
 {% load i18n %}
 {% load staticfiles %}
 <div>
-{% if offer.publisher.username == request.user.username %}
-    <a href="{% url 'offer:offer' offer.id %}">Edit Offer</a>
-{% endif %}
+<div style="float: right; margin-right: 20px;">
+    {% if offer.publisher.username == request.user.username %}
+        <a href="{% url 'offer:offer_create' offer.id %}">
+            <input id="id_edit_offer" type="button" value="{% trans 'Edit Offer' %}" class="button_n" />
+        </a>
+    {% else %}
+        <a href="/dashboard/create-message/reply/1/{{ offer.publisher.username }}/{{ offer.publisher.id }}?next={{ request.path }}"  class="button_n">
+            <input id="id_apply_with_appswalk" type="button" value="{% trans 'Apply with AppsWalk' %}" class="button_n" />
+        </a>
+    {% endif %}
+</div>
 <ul>
         <li>
             <div>
                 <div>{% trans 'Title' %}</div>
                 <div>{{ offer.title }}</div>
+            </div>
+            <div style="float: right">
+                <div style="width:50px;padding: 5px;float:left;">
+                    <img src="{{ MEDIA_URL }}{{ offer.company_icon }}" />
+                </div>
             </div>
         </li>
         <li>
@@ -63,15 +76,15 @@
                 <div>{{ offer.description }}</div>
             </div>
         </li>
-        <li>
-            <div>
-                <div>{% trans 'Company Icon' %}</div>
-                <div style="width:50px;padding: 5px;float:left;">
-                    <img src="{{ MEDIA_URL }}{{ offer.company_icon }}" />
-                </div>
-            </div>
-        </li>
     </ul>
+
+    <div>
+        {% if offer.publisher.username != request.user.username %}
+            <a href="/dashboard/create-message/reply/1/{{ offer.publisher.username }}/{{ offer.publisher.id }}"  class="button_n">
+                <input id="id_apply_with_appswalk" type="button" value="{% trans 'Apply with AppsWalk' %}" class="button_n" />
+            </a>
+        {% endif %}
+    </div>
 <div class="clear"></div>
 </div>
 {% endblock %}

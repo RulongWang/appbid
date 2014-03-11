@@ -31,8 +31,8 @@ class Position(models.Model):
 class Offer(models.Model):
     """Offer table info."""
     OFFER_TYPES = (
-        (1, 'Full-time'),
-        (2, 'Part-time'),
+        (1, 'FullTime'),
+        (2, 'PartTime'),
     )
     CATEGORY = (
         (1, 'offer'),

@@ -3,7 +3,34 @@
 {% load i18n %}
 {% load staticfiles %}
 <div>
-
+    {% for offer in offers %}
+        <div>
+            <div style="width:50px;padding: 5px;float:right;">
+                <img src="{{ MEDIA_URL }}{{ offer.0.company_icon }}" />
+            </div>
+            <div style="color: red;">
+                <a href="{% url 'offer:offer_detail' offer.0.id %}">{{ offer.0.location }} - {{ offer.0.title }} - {{ offer.1 }}</a>
+            </div>
+            <div>
+                {% trans 'View Count' %}:{{ offer.2 }}
+                {% trans 'Apply Count' %}:{{ offer.3 }}
+            </div>
+            <div>
+                {{ offer.0.description|truncatechars:"100" }}
+            </div>
+            <div>
+                <a href="{% url 'offer:offer_detail' offer.0.id %}">{% trans 'Learn More' %}</a>
+            </div>
+        </div>
+        <br>
+    {% endfor %}
+    {% if offers %}
+        <div class="pagination" >
+           {% if offers.has_previous %}<a href="?page={{ offers.previous_page_number }}">previous</a>{% endif %}
+           Page {{ offers.number }} of {{ offers.paginator.num_pages }}
+           {% if offers.has_next %}<a href="?page={{ offers.next_page_number }}">next</a>{% endif %}
+        </div>
+    {% endif %}
 <div class="clear"></div>
 </div>
 {% endblock %}

@@ -7,6 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render_to_response, RequestContext, redirect, get_object_or_404, Http404
 from django.utils.translation import ugettext as _
 from django.core.urlresolvers import reverse
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from django.conf import settings
 from offer import models as offerModels
@@ -75,6 +76,8 @@ def offerDetail(request, *args, **kwargs):
     if kwargs.get('pk'):
         initParam = {}
         offer = get_object_or_404(offerModels.Offer, pk=kwargs.get('pk'))
+        if not offer.status and request.user != offer.publisher:
+            raise Http404
         initParam['offer'] = offer
         initParam['type'] = offerModels.Offer.OFFER_TYPES[offer.type-1][1]
         positions = []
@@ -88,9 +91,47 @@ def offerDetail(request, *args, **kwargs):
 @csrf_protect
 def offerList(request, *args, **kwargs):
     initParam = {}
-    offers = offerModels.Offer.objects.all()
-    initParam['offers'] = offers
+    page = request.GET.get('page', 1)
+    offers = offerModels.Offer.objects.filter(status=True)
+    initParam['offers'] = queryAppsWithPaginator(request, page=page, offers=offers)
     return render_to_response('offer/offer_list.html', initParam, context_instance=RequestContext(request))
+
+
+def queryAppsWithPaginator(request, *args, **kwargs):
+    """Offer query function"""
+    page_range = kwargs.get('page_range')
+    page = kwargs.get('page', 1)
+    offers = kwargs.get('offers')
+    if page_range is None:
+        page_range = common.getSystemParam(key='page_range', default=10)
+    if offers:
+        offer_list = []
+        for offer in offers:
+            #info list[0]:The offer info
+            info_list = [offer]
+            offer_list.append(info_list)
+
+        paginator = Paginator(offer_list, page_range)
+        try:
+            offerInfoList = paginator.page(page)
+        except PageNotAnInteger:
+            offerInfoList = paginator.page(1)
+        except EmptyPage:
+            offerInfoList = paginator.page(paginator.num_pages)
+        #Query offer record showed in the current page.
+        for info_list in offerInfoList:
+            info_list.append(offerModels.Offer.OFFER_TYPES[info_list[0].type-1][1])
+            records = offerModels.OfferRecord.objects.filter(pk=info_list[0].id)
+            if records:
+                info_list.append(records[0].view_count)
+                info_list.append(records[0].apply_count)
+            else:
+                info_list.append(0)
+                info_list.append(0)
+    else:
+        return None
+
+    return offerInfoList
 
 
 @csrf_protect

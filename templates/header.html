@@ -6,7 +6,8 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title>{{ title }} {% trans 'Top 1 marketplace to buy and sell apps.' %}</title>
     {% if twitter_url %}
-    <meta name="description" content="{{ app.description|truncatewords_html:50 }}" />
+    <meta name="description" content="Top 1 marketplace to buy and sell apps." />
+    <meta name="keywords" content="APP Market,Buy APP, Sell APP." />
     <!-- Facebook start -->
     <meta property="og:title" content="App ({{ app.app_name }}) for Sale on AppsWalk" />
     <meta property="og:type" content="website" />
@@ -63,6 +64,8 @@
             <li><a href="/" class=""><img src="{% static "images/home18x18.png" %}" title="{% trans 'Home' %}" /></a></li>
             <li><a href="/query/featured">{% trans 'Buy Apps' %}</a></li>
             <li><a href="/seller/app-store-link">{% trans 'Sell Apps' %}</a></li>
+            <li><a href="{% url 'offer:offer_create' '' %}">{% trans 'Create Job' %}</a></li>
+            <li><a href="{% url 'offer:offer_list' %}">{% trans 'Job Listings' %}</a></li>
         </ul>
         <ul class="user_bar_menu_link">
             {% if request.user.is_authenticated  %}
