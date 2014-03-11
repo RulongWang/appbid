@@ -38,8 +38,13 @@ class Offer(models.Model):
         (1, 'offer'),
         (2, 'project'),
     )
+    SALARY_TYPES = (
+        (1, 'Monthly Salary'),
+        (2, 'Annual Salary'),
+    )
     publisher = models.ForeignKey(User)
     # company = models.ForeignKey(Company, null=True, blank=True)
+    status = models.BooleanField(default=True, blank=True)
     title = models.CharField(max_length=255, blank=True)
     category = models.IntegerField(choices=CATEGORY, null=True, blank=True, default=1)
     type = models.IntegerField(choices=OFFER_TYPES, null=True, blank=True, default=1)
@@ -49,6 +54,7 @@ class Offer(models.Model):
     end_time = models.DateTimeField(null=True, blank=True)
     non_chinese_applicants = models.BooleanField(default=True)
     salary = models.CharField(max_length=255, blank=True)
+    salary_type = models.IntegerField(choices=SALARY_TYPES, null=True, blank=True, default=1)
     description = models.TextField(null=True, blank=True)
     company_icon = models.FileField(max_length=255, upload_to=content_file_name, null=True, blank=True)
     create_time = models.DateTimeField(auto_now_add=True)

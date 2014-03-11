@@ -33,7 +33,12 @@ def registerOffer(request, *args, **kwargs):
         if form.is_valid():
             offer = form.save(commit=False)
             offer.publisher = request.user
-            offer.position = form.cleaned_data['position']
+            offer.save()
+
+            offer.position.clear()
+            for position in form.cleaned_data['position']:
+                offer.position.add(position)
+
             company_icon = request.FILES.get('company_icon')
             if company_icon:
                 if company_icon.content_type.startswith('image'):
@@ -48,7 +53,6 @@ def registerOffer(request, *args, **kwargs):
                             if os.path.exists(path):
                                 os.remove(path)
                         offer.company_icon = company_icon
-                        form = offerForms.OfferForm(instance=offer)
                         offer.save()
                         if company_icon:
                             #Shrink image to (50*50) for offer company_icon.
@@ -56,15 +60,11 @@ def registerOffer(request, *args, **kwargs):
                             common.imageThumbnail(path=path, size=[50, 50])
                         initParam['msg'] = _('The offer has been created successful.')
                         return redirect(reverse('offer:offer_detail', kwargs={'pk': offer.id}))
-                        #('/'.join(['/job/offer-detail', str(offer.id)]))
                 else:
                     initParam['error'] = _('The file type of %(param)s is not supported.') % {'param': company_icon.name}
             else:
-                offer.save()
                 initParam['msg'] = _('The offer has been created successfully.')
                 return redirect(reverse('offer:offer_detail', kwargs={'pk': offer.id}))
-                #redirect(reverse('job:offer_detail', kwargs={'pk': offer.id}))
-                # '/'.join(['/job/offer-detail', str(offer.id)])
     initParam['form'] = form
     return render_to_response("offer/register_offer.html", initParam, context_instance=RequestContext(request))
 
@@ -83,3 +83,17 @@ def offerDetail(request, *args, **kwargs):
         initParam['positions'] = positions
         return render_to_response('offer/offer_detail.html', initParam, context_instance=RequestContext(request))
     raise Http404
+
+
+@csrf_protect
+def offerList(request, *args, **kwargs):
+    initParam = {}
+    offers = offerModels.Offer.objects.all()
+    initParam['offers'] = offers
+    return render_to_response('offer/offer_list.html', initParam, context_instance=RequestContext(request))
+
+
+@csrf_protect
+@login_required(login_url='/usersetting/home/')
+def myOfferList(request, *args, **kwargs):
+    print ''

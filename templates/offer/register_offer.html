@@ -81,7 +81,7 @@
         <li>
             <div>
                 <div>{% trans 'Salary' %}</div>
-                <div>{{ form.salary }}</div>
+                <div>{{ form.salary }}{{ form.salary_type }}</div>
             </div>
         </li>
         <li>
@@ -101,6 +101,12 @@
                     {% endif %}
                         <input id="id_company_icon" name="company_icon" type="file" style="width: 150px;" />(Max size < 1M)
                 </div>
+            </div>
+        </li>
+        <li>
+            <div>
+                <div>{% trans 'Status' %}</div>
+                <div>{{ form.status }}</div>
             </div>
         </li>
     </ul>
