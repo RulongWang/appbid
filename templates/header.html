@@ -46,18 +46,18 @@
 
 </head>
 <body>
-{#<div id="select-language">#}
-{#  <form action="/i18n/setlang/" method="post">#}
-{#    {% csrf_token %}#}
-{#    <input name="next" type="hidden" />#}
-{#    <select name="language">#}
-{#      {% for lang in LANGUAGES %}#}
-{#          <option value="{{ lang.0 }}"{%ifequal lang.0 request.LANGUAGE_CODE%}selected="selected"{%endifequal%}>{{ lang.1 }}</option>#}
-{#      {% endfor %}#}
-{#    </select>#}
-{#    <input type="submit" value="Go" />#}
-{#  </form>#}
-{#</div>#}
+<div id="select-language">
+  <form action="/i18n/setlang/" method="post">
+    {% csrf_token %}
+    <input name="next" type="hidden" />
+    <select name="language">
+      {% for lang in LANGUAGES %}
+          <option value="{{ lang.0 }}"{%ifequal lang.0 request.LANGUAGE_CODE%}selected="selected"{%endifequal%}>{{ lang.1 }}</option>
+      {% endfor %}
+    </select>
+    <input type="submit" value="Go" />
+  </form>
+</div>
 <div id="user_bar">
     <div id="row">
         <ul class="user_bar_menu">

@@ -3,7 +3,7 @@
 {% load i18n %}
     <div id="message_msg" style="color: red">
     </div>
-    <form action="" method="post">
+    <form action="" method="post"  enctype="multipart/form-data">
         {% csrf_token %}
         <div class="dash_title">{% trans 'Send New Message' %}</div>
         <ul class="account_detail_items">
@@ -30,6 +30,28 @@
                 </div>
             </li>
             <li>
+            <div id="attachment">
+                <div class="message_header">
+                    <label for="attachment">Add attachment</label> <span style="font-size: 12px;">(Only accepts  <b>txt/pdf/image/doc</b> type. Max size < {{ attachmentSize|floatformat|default:0 }}M.)</span>
+                </div>
+                <div>
+                    {{ attachmentError }}
+                    {% if attachmentForm %}
+                        <div style="margin-top: 20px;">
+                            {% if attachmentForm.path.errors %}
+                                <div style="margin-top: 5px;padding:3px;">
+                                {{ attachmentForm.path.errors }}
+                                </div>
+                            {% endif %}
+                            {{ attachmentForm.path.label_tag }}
+                            {{ attachmentForm.path }}
+                            <input id="add" type="button" value="Add" >
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+            </li>
+            <li>
                 <input id="id_type" name="type" type="text" hidden="hidden" value="{{ type }}" />
                 <input id="id_sender" name="sender" type="text" hidden="hidden" value="{{ sender.id }}" />
                 <input id="id_receiver" name="receiver" type="text" hidden="hidden" value="{{ receiver.id }}" />
@@ -47,5 +69,23 @@
             return false;
         }
     });
+
+    $("#add").click(function() {
+        $("#attachment").append(
+            '<div>'+
+                '{{ attachmentForm.path.label_tag }} '+
+                '{% if attachmentForm.path.errors %}'+
+                    '<div>'+
+                    '{{ attachmentForm.path.errors }}'+
+                    '</div>'+
+                '{% endif %}'+
+                '{{ attachmentForm.path }} '+
+                '<input type="button" value="Remove"  class="remove" onclick="removeNode(this)">'+
+            '</div>');
+    });
+
+    function removeNode(obj) {
+        $(obj).parent().remove();
+    }
 </script>
 {% endblock %}

@@ -370,7 +370,7 @@ def saveAdditionalInfo(request, form, model, *args, **kwargs):
                 initParam['attachmentError'] = _('The file type of %(param)s does not supported.') % {'param': path.name}
                 return None
             if path.size > string.atof(attachmentSize):
-                initParam['attachmentError'] = _('The file can not be more than 50M.')
+                initParam['attachmentError'] = _('The file can not be more than %(number)M.') % {'number': attachmentSize/000000}
                 return None
             attachment.app = model
             attachment.save()

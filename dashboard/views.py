@@ -2,6 +2,7 @@ __author__ = 'rulongwang'
 
 import datetime
 import json
+import string
 
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render_to_response, HttpResponse, RequestContext, get_object_or_404, redirect, Http404
@@ -19,6 +20,7 @@ from order import models as orderModels
 from bid import models as bidModels
 from transaction import models as txnModels
 from dashboard import models
+from message import forms as messageForms
 from utilities import common
 from message import views as messageViews
 from notification import views as notificationViews
@@ -104,10 +106,46 @@ def createMessage(request, *args, **kwargs):
     initParam['type'] = type
     initParam['next'] = request.GET.get('next', None)
     initParam['page'] = request.GET.get('page', 1)
+    initParam['attachmentForm'] = messageForms.AttachmentForm()
+    attachmentSize = string.atof(common.getSystemParam(key='attachment_size', default=50000000))
+    initParam['attachmentSize'] = attachmentSize / 1000000
 
     message = messageViews.sendMessage(request, initParam=initParam)
     if message:
         messages.info(request, _('Send message successfully.'))
+
+        pathList = request.FILES.getlist('path')
+        print pathList
+        if pathList:
+            maxNum = common.getSystemParam(key='max_num_attachment', default=50)
+            attachments = messageModels.Attachment.objects.filter(message_id=message.id)
+            if len(pathList) + len(attachments) > string.atoi(maxNum):
+                initParam['attachmentError'] = _('The attachment number can not be more than %(number)s.') % {'number': maxNum[0].value}
+                return None
+            for path in pathList:
+                attachment = messageModels.Attachment(path=path)
+                attachment.name = path.name
+                if path.name.endswith('.txt') and path.content_type == 'text/plain':
+                    attachment.type = 1
+                elif path.content_type.startswith('image'):
+                    attachment.type = 2
+                elif path.name.endswith('.pdf') and path.content_type == 'application/pdf':
+                    attachment.type = 3
+                elif path.name.endswith('.doc') and path.content_type == 'application/msword':
+                    attachment.type = 4
+                elif path.name.endswith('.xls') and path.content_type == 'application/vnd.ms-excel':
+                    attachment.type = 4
+                elif path.name.endswith('.ppt') and path.content_type == 'application/vnd.ms-powerpoint':
+                    attachment.type = 4
+                else:
+                    initParam['attachmentError'] = _('The file type of %(param)s does not supported.') % {'param': path.name}
+                    return None
+                if path.size > attachmentSize:
+                    initParam['attachmentError'] = _('The file can not be more than %(number)M.') % {'number': attachmentSize/000000}
+                    return None
+                attachment.message = message
+                attachment.save()
+
         notificationViews.sendNewMessageEmail(request, message=message)
         return redirect(reverse('dashboard:sent_messages'))
 
