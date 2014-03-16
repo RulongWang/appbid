@@ -16,6 +16,17 @@
                     {{ message.content }}
                 </p>
             </div>
+            <div class="message_header">
+               {% if attachments != None %}
+                   {% trans 'Attachment' %}:
+                    {% for attachment in attachments %}
+                        {{ attachment.name.label_tag }}
+                        <a style="color:#00b0b0; font-weight: bold;" target="_new" href="{{ attachment.path.url }}">{{ attachment.name }}</a>
+                        &nbsp;&nbsp;
+                    {% endfor %}
+                    {% trans 'Download' %}
+                {% endif %}
+           </div>
            {% endif %}
             <div class="message_header">
              {% ifequal msg_action 'reply' %}

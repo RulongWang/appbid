@@ -68,7 +68,9 @@ def messageDetail(request, *args, **kwargs):
     if msg_action == 'reply':
         message.is_read = True
         message.save()
-
+    attachments = message.attachment_set.all()
+    if attachments:
+        initParam['attachments'] = attachments
     initParam['message'] = message
     initParam['page'] = request.GET.get('page', 1)
 
