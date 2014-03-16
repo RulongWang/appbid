@@ -32,6 +32,7 @@
                <div class="inbox_received_time">
                    {{ message.0.submit_date|date:"Y-m-d H:i"|default:"N/A" }}
                </div>
+               {% if message.1 %}+{% endif %}
                 </a>
                </li>
            {% empty %}

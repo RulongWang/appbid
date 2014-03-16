@@ -34,9 +34,17 @@ def inbox(request, *args, **kwargs):
     page = request.GET.get('page', 1)
     user = get_object_or_404(User, pk=request.user.id, username=request.user.username)
     messages = messageModels.Message.objects.filter(receiver_id=user.id).order_by('-submit_date')
-    initParam['message_list'] = common.queryWithPaginator(request, page=page, obj=messages)
+    initParam['message_list'] = common.queryWithPaginator(request, page=page, obj=messages, query_method=queryAttachmentCount)
 
     return render_to_response("dashboard/activity.html", initParam, context_instance=RequestContext(request))
+
+
+def queryAttachmentCount(request, *args, **kwargs):
+    """Return message attachment count."""
+    obj = kwargs.get('obj_param')
+    if obj:
+        return kwargs.get('obj_param').attachment_set.count()
+    return 0
 
 
 @csrf_protect
@@ -47,7 +55,7 @@ def sentMessages(request, *args, **kwargs):
     page = request.GET.get('page', 1)
     user = get_object_or_404(User, pk=request.user.id, username=request.user.username)
     messages = messageModels.Message.objects.filter(sender_id=user.id).order_by('-submit_date')
-    initParam['message_list'] = common.queryWithPaginator(request, page=page, obj=messages)
+    initParam['message_list'] = common.queryWithPaginator(request, page=page, obj=messages, query_method=queryAttachmentCount)
 
     return render_to_response("dashboard/sent_messages.html", initParam, context_instance=RequestContext(request))
 
