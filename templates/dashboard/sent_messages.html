@@ -1,6 +1,7 @@
 {% extends "dashboard/activity.html" %}
 {% block dashboard_detail %}
 {% load i18n %}
+{% load staticfiles %}
         {% if messages %}
             <ul class="messages">
             {% for message in messages %}
@@ -32,7 +33,7 @@
                <div class="inbox_received_time">
                    {{ message.0.submit_date|date:"Y-m-d H:i"|default:"N/A" }}
                </div>
-               {% if message.1 %}+{% endif %}
+               {% if message.1 %}<img style="width: 20px;" src="{% static "images/msg_attachment.jpg" %}"/>{% endif %}
                 </a>
                </li>
            {% empty %}

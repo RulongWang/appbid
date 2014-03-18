@@ -10,6 +10,7 @@ urlpatterns = patterns('',
     url(r'^message-detail/(?P<msg_action>\w+)/(?P<msg_id>\d+)$', views.messageDetail, name='message_detail'),
     url(r'^create-message/(?P<msg_action>\w+)/(?P<type>\d+)/(?P<username>\S+)/(?P<user_id>\d+)/(?P<msg_id>\d*)$',
         views.createMessage, name='create_message'),
+    url(r'^download-message/(?P<msg_id>\d+)/(?P<attachment_id>\d+)$', views.downloadAttachment, name='download_message'),
 
     url(r'^my-listing$', views.myListing, name='my_listing'),
     url(r'^my-bidding$', views.myBidding, name='my_bidding'),

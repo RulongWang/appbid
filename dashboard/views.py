@@ -3,16 +3,21 @@ __author__ = 'rulongwang'
 import datetime
 import json
 import string
+import os
+import tempfile
+import zipfile
 
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render_to_response, HttpResponse, RequestContext, get_object_or_404, redirect, Http404
 from django.views.decorators.csrf import csrf_protect
 from django.utils.translation import ugettext as _
 from django.core.urlresolvers import reverse
+from django.core.servers.basehttp import FileWrapper
 from django.db.models import Q, Max
 from django.db import transaction
 from django.contrib import messages
 from django.contrib.auth.models import User
+from django.conf import settings
 
 from message import models as messageModels
 from appbid import models as appModels
@@ -83,6 +88,23 @@ def messageDetail(request, *args, **kwargs):
     initParam['page'] = request.GET.get('page', 1)
 
     return render_to_response("dashboard/message_detail.html", initParam, context_instance=RequestContext(request))
+
+
+@csrf_protect
+@transaction.commit_on_success
+@login_required(login_url='/usersetting/home/')
+def downloadAttachment(request, *args, **kwargs):
+    """Download message attachment."""
+    message = get_object_or_404(messageModels.Message, Q(pk=kwargs.get('msg_id')) & (Q(sender_id=request.user.id) | Q(receiver_id=request.user.id)))
+    attachment = get_object_or_404(messageModels.Attachment, pk=kwargs.get('attachment_id'), message=message)
+    path = '/'.join([settings.MEDIA_ROOT, str(attachment.path)])
+    # wrapper = FileWrapper(file(path))
+    # response = HttpResponse(wrapper, content_type='image/jpg')
+
+    response = HttpResponse(file(path), mimetype='application/octet-stream')
+    response['Content-Length'] = os.path.getsize(path)
+    response['Content-Disposition'] = 'attachment; filename=%s' % attachment.name
+    return response
 
 
 @csrf_protect

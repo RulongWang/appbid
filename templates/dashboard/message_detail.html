@@ -20,11 +20,8 @@
                {% if attachments != None %}
                    {% trans 'Attachment' %}:
                     {% for attachment in attachments %}
-                        {{ attachment.name.label_tag }}
-                        <a style="color:#00b0b0; font-weight: bold;" target="_new" href="{{ attachment.path.url }}">{{ attachment.name }}</a>
-                        &nbsp;&nbsp;
+                        <a style="color:#00b0b0; font-weight: bold;" href="{% url 'dashboard:download_message' message.id attachment.id %}">{{ attachment.name }}</a>
                     {% endfor %}
-                    {% trans 'Download' %}
                 {% endif %}
            </div>
            {% endif %}

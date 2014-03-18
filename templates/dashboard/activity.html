@@ -50,7 +50,7 @@
                            </div>
                            <div class="inbox_subject">{{ message.0.title }}</div>
                            <div class="inbox_received_time">{{ message.0.submit_date|date:"Y-m-d H:i"|default:"N/A" }}</div>
-                           {% if message.1 %}+{% endif %}
+                           {% if message.1 %}<img style="width: 20px;" src="{% static "images/msg_attachment.jpg" %}"/>{% endif %}
                             </a>
                            </li>
                        {% empty %}
