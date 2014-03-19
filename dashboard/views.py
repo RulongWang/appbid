@@ -3,6 +3,7 @@ __author__ = 'rulongwang'
 import datetime
 import json
 import string
+import urllib
 import os
 import tempfile
 import zipfile
@@ -98,11 +99,9 @@ def downloadAttachment(request, *args, **kwargs):
     message = get_object_or_404(messageModels.Message, Q(pk=kwargs.get('msg_id')) & (Q(sender_id=request.user.id) | Q(receiver_id=request.user.id)))
     attachment = get_object_or_404(messageModels.Attachment, pk=kwargs.get('attachment_id'), message=message)
     path = '/'.join([settings.MEDIA_ROOT, str(attachment.path)])
-    # wrapper = FileWrapper(file(path))
-    # response = HttpResponse(wrapper, content_type='image/jpg')
-
-    response = HttpResponse(file(path), mimetype='application/octet-stream')
-    response['Content-Length'] = os.path.getsize(path)
+    response = HttpResponse(FileWrapper(file(path)), mimetype='application/octet-stream')
+    # response = HttpResponse(file(path), mimetype='application/octet-stream')
+    # response['Content-Length'] = os.path.getsize(path)
     response['Content-Disposition'] = 'attachment; filename=%s' % attachment.name
     return response
 
@@ -147,13 +146,12 @@ def createMessage(request, *args, **kwargs):
         messages.info(request, _('Send message successfully.'))
 
         pathList = request.FILES.getlist('path')
-        print pathList
         if pathList:
             maxNum = common.getSystemParam(key='max_num_attachment', default=50)
             attachments = messageModels.Attachment.objects.filter(message_id=message.id)
             if len(pathList) + len(attachments) > string.atoi(maxNum):
                 initParam['attachmentError'] = _('The attachment number can not be more than %(number)s.') % {'number': maxNum[0].value}
-                return None
+                return render_to_response("dashboard/create_message.html", initParam, context_instance=RequestContext(request))
             for path in pathList:
                 attachment = messageModels.Attachment(path=path)
                 attachment.name = path.name
@@ -165,16 +163,22 @@ def createMessage(request, *args, **kwargs):
                     attachment.type = 3
                 elif path.name.endswith('.doc') and path.content_type == 'application/msword':
                     attachment.type = 4
+                elif path.name.endswith('.docx') and path.content_type == 'application/vnd.openxmlformats-officedocument.wordprocessingml.document':
+                    attachment.type = 4
                 elif path.name.endswith('.xls') and path.content_type == 'application/vnd.ms-excel':
+                    attachment.type = 4
+                elif path.name.endswith('.xlsx') and path.content_type == 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet':
                     attachment.type = 4
                 elif path.name.endswith('.ppt') and path.content_type == 'application/vnd.ms-powerpoint':
                     attachment.type = 4
+                elif path.name.endswith('.pptx') and path.content_type == 'application/vnd.openxmlformats-officedocument.presentationml.presentation':
+                    attachment.type = 4
                 else:
                     initParam['attachmentError'] = _('The file type of %(param)s does not supported.') % {'param': path.name}
-                    return None
+                    return render_to_response("dashboard/create_message.html", initParam, context_instance=RequestContext(request))
                 if path.size > attachmentSize:
                     initParam['attachmentError'] = _('The file can not be more than %(number)M.') % {'number': attachmentSize/000000}
-                    return None
+                    return render_to_response("dashboard/create_message.html", initParam, context_instance=RequestContext(request))
                 attachment.message = message
                 attachment.save()
 

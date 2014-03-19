@@ -35,11 +35,11 @@
                     <label for="attachment">Add attachment</label> <span style="font-size: 12px;">(Only accepts  <b>txt/pdf/image/doc</b> type. Max size < {{ attachmentSize|floatformat|default:0 }}M.)</span>
                 </div>
                 <div>
-                    {{ attachmentError }}
+                    <span style="color: red;">{{ attachmentError }}</span>
                     {% if attachmentForm %}
                         <div style="margin-top: 20px;">
                             {% if attachmentForm.path.errors %}
-                                <div style="margin-top: 5px;padding:3px;">
+                                <div style="margin-top: 5px;padding:3px;color: red;">
                                 {{ attachmentForm.path.errors }}
                                 </div>
                             {% endif %}

@@ -27,6 +27,8 @@ def sendMessage(request, *args, **kwargs):
     if request.method == "POST":
         messageForm = forms.MessageForm(request.POST)
         if messageForm.is_valid():
+            if initParam:
+                initParam['messageForm'] = messageForm
             message = messageForm.save(commit=False)
             message.is_read = False
             message.save()
