@@ -1,0 +1,46 @@
+header{
+    background-color: #252525;
+    -webkit-box-shadow: 2px 0px 4px rgba(0,0,0,0.5);
+    -moz-box-shadow: 2px 0px 4px rgba(0,0,0,0.5);
+    -o-box-shadow: 2px 0px 4px rgba(0,0,0,0.5);
+    box-shadow: 2px 0px 4px rgba(0,0,0,0.5);
+    padding: 14px 20px;
+    position: relative;
+    z-index: 2;
+    height:35px;
+}
+.jobs_show{
+
+}
+.bg_white{
+    background-color: #FFFFFF;
+}
+
+.promot{
+    background: url("../images/promoBackground2.jpg") top left no-repeat;
+    height:400px;
+}
+
+/****Layout ******************/
+#leftContent{
+    width:61.8%;
+    /*background-color: grey;*/
+    height: 300px;
+    float:left;
+}
+#right_sidebar{
+    width:38.2%;
+    height:300px;
+    float: right;
+
+}
+
+.jobblock{
+    padding:5px;
+
+}
+
+.jobdesc{
+    padding: 5px;
+    line-height: 1.5em;
+}

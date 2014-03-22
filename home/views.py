@@ -20,6 +20,19 @@ def home(request, *args, **kwargs):
 
     return render_to_response('home/home.html', initParam, context_instance=RequestContext(request))
 
+@csrf_protect
+def look(request, *args, **kwargs):
+    """Query the apps info in home page."""
+    initParam = {}
+    return render_to_response('home/look.html', initParam, context_instance=RequestContext(request))
+
+
+@csrf_protect
+def haha(request, *args, **kwargs):
+    """Query the apps info in home page."""
+    initParam = {}
+    return render_to_response('home/content.html', initParam, context_instance=RequestContext(request))
+
 
 @csrf_protect
 def screwHome(request, *args, **kwargs):

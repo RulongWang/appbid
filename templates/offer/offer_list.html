@@ -1,28 +1,37 @@
-{% extends "index.html" %}
+{% extends "home/look.html" %}
 {% block mainContent %}
 {% load i18n %}
 {% load staticfiles %}
-<div>
+
+<div class="container">
+    <div id="leftContent">
+    <div class="jobheader"></div>
     {% for offer in offers %}
-        <div>
-            <div style="width:50px;padding: 5px;float:right;">
-                <img src="{{ MEDIA_URL }}{{ offer.0.company_icon }}" />
-            </div>
+        <div class="jobblock" >
+
+
+
             <div style="color: red;">
-                <a href="{% url 'offer:offer_detail' offer.0.id %}">{{ offer.0.location }} - {{ offer.0.title }} - {{ offer.1 }}</a>
+                <a href="{% url 'offer:offer_detail' offer.0.id %}" class="img-rounded"><h3>{{ offer.0.title }}</h3> </a>
+                <img src="{{ MEDIA_URL }}{{ offer.0.company_icon }}" class="img-rounded"/>
             </div>
-            <div>
-                {% trans 'View Count' %}:{{ offer.2 }}
-                {% trans 'Apply Count' %}:{{ offer.3 }}
+            <div class="joblocation ">
+                <span class="label "><i class="icon-map-marker icon-white"></i> {{ offer.0.location }}</span>
+                <span class="label label-info"><i class=" icon-time icon-white"></i> {{ offer.1 }}</span>
+                <span class="label label-success"><i class=" icon-th-list icon-white"></i> {% trans 'Apply Count' %}:{{ offer.3 }}</span>
+                <span class="label label-success"><i class="icon-eye-open  icon-white"></i> {% trans 'View Count' %}:{{ offer.2 }}</span>
+
             </div>
-            <div>
-                {{ offer.0.description|truncatechars:"100" }}
+
+
+
+            <div class="jobdesc">
+                {{ offer.0.description|truncatechars:"350" }}
             </div>
-            <div>
+            <button class="btn">
                 <a href="{% url 'offer:offer_detail' offer.0.id %}">{% trans 'Learn More' %}</a>
-            </div>
+            </button>
         </div>
-        <br>
     {% endfor %}
     {% if offers %}
         <div class="pagination" >
@@ -31,6 +40,11 @@
            {% if offers.has_next %}<a href="?page={{ offers.next_page_number }}">next</a>{% endif %}
         </div>
     {% endif %}
+    </div><!--end of span8-->
+    <aside id="right_sidebar">
+        <p>sdfsdfsdfsdfdsf </p>
+    </aside>
+
 <div class="clear"></div>
 </div>
 {% endblock %}

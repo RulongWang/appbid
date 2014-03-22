@@ -1,0 +1,48 @@
+{% load staticfiles %}
+{% load i18n %}
+
+<!DOCTYPE html>
+<html lang="cn">
+<head>
+    <title>Best Professional app</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="{% static "css/normalize.css" %}" rel="stylesheet" media="screen">
+    <link href="{% static "css/outlook.css" %}" rel="stylesheet" media="screen">
+    <link href="{% static "css/bootstrap/css/bootstrap.min.css" %}" rel="stylesheet" media="screen">
+    <script src="{% static "scripts/menu/jquery.js" %}"></script>
+    <script src="{% static "css/bootstrap/js/bootstrap.min.js" %}"></script>
+    <script type="text/javascript">
+        $(document).ready(function(){
+          $("body").click(function(){
+          $(this).toggleClass("active");
+          });
+
+          $("ul.nav li").click(function(){
+              $("ul.nav li.active").removeClass("active");
+              $(this).toggleClass("active");
+          });
+        });
+    </script>
+</head>
+<body>
+<header>
+<span class="span10"></span>
+<ul class="nav nav-pills">
+  <li class="active">
+    <a href="#">Home</a>
+  </li>
+  <li><a href="/haha">Buy</a></li>
+  <li><a href="#">Sell</a></li>
+</ul>
+
+</header>
+
+{% block mainContent %}
+
+
+{% endblock %}
+
+
+
+</body>
+</html>

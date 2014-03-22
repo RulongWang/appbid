@@ -14,5 +14,7 @@ urlpatterns = patterns('',
     url(r'^privacy',helpView.privacy,name='privacy'),
     url(r'^contact',helpView.contact,name='contact'),
     url(r'^about',helpView.about,name='about'),
+    url(r'^look',views.look,name='look'),
+    url(r'^haha',views.haha,name='haha'),
 
 )

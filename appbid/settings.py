@@ -4,7 +4,7 @@
 import os
 import datetime
 
-DEBUG = False
+DEBUG = True
 TEMPLATE_DEBUG = False
 
 ADMINS = (
