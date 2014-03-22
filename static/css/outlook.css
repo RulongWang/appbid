@@ -34,7 +34,14 @@ header{
     float: right;
 
 }
-
+.job_wrapper{
+    width:86.5%;
+    float:left;
+}
+.thumbnail_wrapper{
+    width:12.5%;
+    float:right;
+}
 .jobblock{
     padding:5px;
 

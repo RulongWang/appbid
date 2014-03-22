@@ -7,13 +7,15 @@
     <div id="leftContent">
     <div class="jobheader"></div>
     {% for offer in offers %}
+        <div class="job_wrapper">
         <div class="jobblock" >
 
 
 
-            <div style="color: red;">
-                <a href="{% url 'offer:offer_detail' offer.0.id %}" class="img-rounded"><h3>{{ offer.0.title }}</h3> </a>
-                <img src="{{ MEDIA_URL }}{{ offer.0.company_icon }}" class="img-rounded"/>
+            <div style="color: #0088cc;">
+                <h3>{{ offer.0.title }}</h3>
+
+
             </div>
             <div class="joblocation ">
                 <span class="label "><i class="icon-map-marker icon-white"></i> {{ offer.0.location }}</span>
@@ -31,6 +33,10 @@
             <button class="btn">
                 <a href="{% url 'offer:offer_detail' offer.0.id %}">{% trans 'Learn More' %}</a>
             </button>
+        </div>
+        </div>
+        <div class="thumbnail_wrapper">
+         <img src="{{ MEDIA_URL }}{{ offer.0.company_icon }}" class="img-rounded"/>
         </div>
     {% endfor %}
     {% if offers %}
