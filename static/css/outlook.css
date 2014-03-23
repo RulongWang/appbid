@@ -35,7 +35,7 @@ header{
 
 }
 .job_wrapper{
-    width:86.5%;
+    width:90.5%;
     float:left;
 }
 .thumbnail_wrapper{
@@ -50,4 +50,10 @@ header{
 .jobdesc{
     padding: 5px;
     line-height: 1.5em;
+}
+
+
+/*********tool*************/
+.floatleft{
+    float: left;
 }

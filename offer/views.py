@@ -58,7 +58,7 @@ def registerOffer(request, *args, **kwargs):
                         if company_icon:
                             #Shrink image to (50*50) for offer company_icon.
                             path = '/'.join([settings.MEDIA_ROOT, str(offer.company_icon)])
-                            common.imageThumbnail(path=path, size=[50, 50])
+                            common.imageThumbnail(path=path, size=[100, 100])
                         initParam['msg'] = _('The offer has been created successful.')
                         return redirect(reverse('offer:offer_detail', kwargs={'pk': offer.id}))
                 else:

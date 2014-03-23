@@ -9,24 +9,21 @@
     {% for offer in offers %}
         <div class="job_wrapper">
         <div class="jobblock" >
-
-
-
             <div style="color: #0088cc;">
-                <h3>{{ offer.0.title }}</h3>
-
-
+                <h3>{{ offer.0.title }}</h3><div class="thumbnail_wrapper">
+         <img src="{{ MEDIA_URL }}{{ offer.0.company_icon }}" class="img-rounded"/>
+        </div>
             </div>
             <div class="joblocation ">
                 <span class="label "><i class="icon-map-marker icon-white"></i> {{ offer.0.location }}</span>
                 <span class="label label-info"><i class=" icon-time icon-white"></i> {{ offer.1 }}</span>
-                <span class="label label-success"><i class=" icon-th-list icon-white"></i> {% trans 'Apply Count' %}:{{ offer.3 }}</span>
-                <span class="label label-success"><i class="icon-eye-open  icon-white"></i> {% trans 'View Count' %}:{{ offer.2 }}</span>
-
+                <span class="label label-success">
+                    <i class=" icon-th-list icon-white"></i> {% trans 'Apply Count' %}:{{ offer.3 }}
+                </span>
+                <span class="label label-success"><i class="icon-eye-open  icon-white"></i>
+                    {% trans 'View Count' %}:{{ offer.2 }}
+                </span>
             </div>
-
-
-
             <div class="jobdesc">
                 {{ offer.0.description|truncatechars:"350" }}
             </div>
@@ -35,16 +32,37 @@
             </button>
         </div>
         </div>
-        <div class="thumbnail_wrapper">
-         <img src="{{ MEDIA_URL }}{{ offer.0.company_icon }}" class="img-rounded"/>
-        </div>
+
     {% endfor %}
     {% if offers %}
-        <div class="pagination" >
-           {% if offers.has_previous %}<a href="?page={{ offers.previous_page_number }}">previous</a>{% endif %}
-           Page {{ offers.number }} of {{ offers.paginator.num_pages }}
-           {% if offers.has_next %}<a href="?page={{ offers.next_page_number }}">next</a>{% endif %}
-        </div>
+
+
+            <ul class="pager">
+
+              {% if offers.has_previous %}
+              <li class="active">
+              <a href="?page={{ offers.previous_page_number }}">Previous</a>
+              </li>
+
+              {% else  %}
+              <li class="disabled">
+              <a href="#" class="disabled">Previous</a>
+              </li>
+              {% endif %}
+
+
+              {% if offers.has_next %}
+              <li class="active">
+               <a href="?page={{ offers.next_page_number }}">Next</a>
+              </li>
+              {% else %}
+              <li class="disabled">
+               <a href="#" class="disabled">Next</a>
+              </li>
+              {% endif %}
+
+
+            </ul>
     {% endif %}
     </div><!--end of span8-->
     <aside id="right_sidebar">
