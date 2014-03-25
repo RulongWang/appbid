@@ -1,34 +1,35 @@
+{% load i18n %}
 <div id="register_nav">
-    <div class="nav_title">Basic Info For Your Listing</div>
+    <div class="nav_title">{% trans 'Basic Info For Your Listing' %}</div>
     <ul id="register_new_nav">
         <li class="{{ app_store_link }}point_icon">
-            <a href="{% url 'seller:appStore_link' app_id %}">AppleStore Info</a>
+            <a href="{% url 'seller:appStore_link' app_id %}">{% trans 'AppleStore Info' %}</a>
         </li>
         {% if app_id %}
         <li class="{{ app_store_info }}point_icon">
-            <a href="{% url 'seller:appStore_info' app_id %}">App Attributes</a>
+            <a href="{% url 'seller:appStore_info' app_id %}">{% trans 'App Attributes' %}</a>
         </li>
         <li class="{{ marketing }}point_icon">
-            <a href="{% url 'seller:marketing' app_id %}">Revenue/Monetization</a>
+            <a href="{% url 'seller:marketing' app_id %}">{% trans 'Revenue/Monetization' %}</a>
         </li>
         <li class="{{ additional_info }}point_icon">
-            <a href="{% url 'seller:additional_info' app_id %}">Additional Info</a>
+            <a href="{% url 'seller:additional_info' app_id %}">{% trans 'Additional Info' %}</a>
         </li>
         <li class="{{ sale }}point_icon">
-            <a href="{% url 'seller:sale' app_id %}">Price Setting</a>
+            <a href="{% url 'seller:sale' app_id %}">{% trans 'Price Setting' %}</a>
         </li>
         <li class="{{ delivery }}point_icon">
-            <a href="{% url 'seller:delivery' app_id %}">Your Delivery</a>
+            <a href="{% url 'seller:delivery' app_id %}">{% trans 'Your Delivery' %}</a>
         </li>
         <li class="{{ payment }}point_icon">
-            <a href="{% url 'seller:payment' app_id serviceDetail.sn %}">Payment</a>
+            <a href="{% url 'seller:payment' app_id serviceDetail.sn %}">{% trans 'Payment' %}</a>
         </li>
         <li class="{{ verification }}point_icon">
-            <a href="{% url 'seller:verification' app_id %}">App Verification</a>
+            <a href="{% url 'seller:verification' app_id %}">{% trans 'App Verification' %}</a>
         </li>
         {% endif %}
     </ul>
     {% if app_id %}
-    <div class="preview_buttons"><a href="{% url 'query:app_detail' app_id %}" style="color:#00b0b0;">Preview your App</a></div>
+    <div class="preview_buttons"><a href="{% url 'query:app_detail' app_id %}" style="color:#00b0b0;">{% trans 'Preview your App' %}</a></div>
     {% endif %}
 </div>

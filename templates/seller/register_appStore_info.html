@@ -1,12 +1,12 @@
 <div id="register_app" xmlns="http://www.w3.org/1999/html">
-
+{% load i18n %}
     <div class="errors_block">
     </div>
  <form action="" method="post">
         {% csrf_token %}
-      <div class="dash_title">Additional Information</div>
+      <div class="dash_title">{% trans 'Additional Information' %}</div>
         <div class="register_icon">
-            {{ appInfoForm.icon.label_tag }}
+            <span style="font-weight: bold;">{% trans 'Icon' %}</span>
             {% if appInfoForm.icon.errors %}
                 <div class="return_error">
                 {{ appInfoForm.icon.errors }}
@@ -20,7 +20,7 @@
         </div>
 
         <div class="field_block">
-            {{ form.app_name.label_tag }}
+            <span style="font-weight: bold;">{% trans 'App name' %}</span>
             {% if form.app_name.errors %}
                 <div class="return_error">
                 {{ form.app_name.errors }}
@@ -30,7 +30,7 @@
         </div>
 
         <div class="field_block">
-            {{ form.apple_id.label_tag }}
+            <span style="font-weight: bold;">{% trans 'Apple id' %}</span>
             {% if form.apple_id.errors %}
                 <div class="return_error">
                 {{ form.apple_id.errors }}
@@ -40,7 +40,7 @@
         </div>
 
         <div class="field_block">
-            {{ form.platform_version.label_tag }}
+            <span style="font-weight: bold;">{% trans 'Platform version' %}</span>
             {% if form.platform_version.errors %}
                 <div class="return_error">
                 {{ form.platform_version.errors }}
@@ -50,7 +50,7 @@
         </div>
 
         <div class="field_block">
-            {{ form.rating.label_tag }}
+            <span style="font-weight: bold;">{% trans 'Rating' %}</span>
             {% if form.rating.errors %}
                 <div class="return_error">
                 {{ form.rating.errors }}
@@ -60,7 +60,7 @@
         </div>
 
         <div class="field_block_selected">
-            {{ form.category.label_tag }}
+            <span style="font-weight: bold;">{% trans 'Category' %}</span>
             {% if form.category.errors %}
                 <div class="return_error">
                 {{ form.category.errors }}
@@ -70,7 +70,7 @@
         </div>
 
         <div class="field_block_selected">
-            {{ form.device.label_tag }}
+            <span style="font-weight: bold;">{% trans 'Device' %}</span>
             {% if form.device.errors %}
                 <div class="return_error">
                 {{ form.device.errors }}
@@ -80,7 +80,7 @@
         </div>
 
         <div class="field_block">
-            {{ appInfoForm.price.label_tag }}
+            <span style="font-weight: bold;">{% trans 'Price' %}</span>
             {% if appInfoForm.price.errors %}
                 <div>
                 {{ appInfoForm.price.errors }}
@@ -93,7 +93,7 @@
     {{ appContent }}
         <div class="clear"></div>
         <div class="button_block">
-            <input id="next" class="nextbutton" type="submit" name="next" value="Next"/>
+            <input id="next" class="nextbutton" type="submit" name="next" value="{% trans 'Next' %}"/>
         </div>
    </form>
 
