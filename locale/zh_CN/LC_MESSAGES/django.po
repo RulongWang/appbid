@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-03-11 22:42+0800\n"
+"POT-Creation-Date: 2014-03-26 22:09+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -67,35 +67,49 @@ msgstr ""
 msgid "Appraisement failed. Please try again."
 msgstr ""
 
-#: .\dashboard\views.py:110
+#: .\dashboard\views.py:146
 msgid "Send message successfully."
 msgstr ""
 
-#: .\dashboard\views.py:250
+#: .\dashboard\views.py:153 .\seller\views.py:350
+#, python-format
+msgid "The attachment number can not be more than %(number)s."
+msgstr ""
+
+#: .\dashboard\views.py:177 .\seller\views.py:370
+#, python-format
+msgid "The file type of %(param)s does not supported."
+msgstr ""
+
+#: .\dashboard\views.py:180 .\seller\views.py:373
+msgid "The file can not be more than %(number)M."
+msgstr ""
+
+#: .\dashboard\views.py:324
 msgid "Watch app failed."
 msgstr ""
 
-#: .\dashboard\views.py:276
+#: .\dashboard\views.py:350
 msgid "Unwatch app failed."
 msgstr ""
 
-#: .\dashboard\views.py:326
+#: .\dashboard\views.py:400
 msgid "Watch seller failed."
 msgstr ""
 
-#: .\dashboard\views.py:352
+#: .\dashboard\views.py:426
 msgid "Unwatch seller failed."
 msgstr ""
 
-#: .\dashboard\views.py:400
+#: .\dashboard\views.py:474
 msgid "Watch category failed."
 msgstr ""
 
-#: .\dashboard\views.py:426
+#: .\dashboard\views.py:500
 msgid "Unwatch category failed."
 msgstr ""
 
-#: .\message\views.py:35 .\message\views.py:36
+#: .\message\views.py:37 .\message\views.py:38
 msgid "Save message failed."
 msgstr ""
 
@@ -431,16 +445,19 @@ msgstr ""
 
 #: .\query\views.py:69 .\query\views.py:153 .\query\views.py:241
 #: .\query\views.py:319 .\query\views.py:394 .\query\views.py:471
+#: .\templates\seller\register_marketing.html.py:59
 msgid "Monetize"
 msgstr ""
 
 #: .\query\views.py:82 .\query\views.py:166 .\query\views.py:254
 #: .\query\views.py:331 .\query\views.py:406 .\query\views.py:484
+#: .\templates\seller\register_appStore_info.html.py:73
 msgid "Device"
-msgstr ""
+msgstr "设备"
 
 #: .\query\views.py:95 .\query\views.py:179 .\query\views.py:267
 #: .\query\views.py:343 .\query\views.py:418 .\query\views.py:497
+#: .\templates\seller\register_appStore_info.html.py:63
 msgid "Category"
 msgstr "类别"
 
@@ -465,20 +482,6 @@ msgstr ""
 #: .\seller\views.py:227
 #, python-format
 msgid "The app store link %(param)s is not correct."
-msgstr ""
-
-#: .\seller\views.py:350
-#, python-format
-msgid "The attachment number can not be more than %(number)s."
-msgstr ""
-
-#: .\seller\views.py:370
-#, python-format
-msgid "The file type of %(param)s does not supported."
-msgstr ""
-
-#: .\seller\views.py:373
-msgid "The file can not be more than 50M."
 msgstr ""
 
 #: .\seller\views.py:393
@@ -623,49 +626,54 @@ msgid "From"
 msgstr "发信人"
 
 #: .\templates\dashboard\activity.html.py:40
-#: .\templates\dashboard\sent_messages.html.py:17
+#: .\templates\dashboard\sent_messages.html.py:18
 msgid "Message Subject"
 msgstr "标题"
 
 #: .\templates\dashboard\activity.html.py:41
-#: .\templates\dashboard\sent_messages.html.py:18
+#: .\templates\dashboard\sent_messages.html.py:19
 msgid "Received Time"
 msgstr "接收时间"
 
-#: .\templates\dashboard\activity.html.py:57
-#: .\templates\dashboard\sent_messages.html.py:38
+#: .\templates\dashboard\activity.html.py:54
+#: .\templates\dashboard\sent_messages.html.py:37
+msgid "The message includes the attachment."
+msgstr "该信息包含附件。"
+
+#: .\templates\dashboard\activity.html.py:59
+#: .\templates\dashboard\sent_messages.html.py:41
 msgid "No received message."
 msgstr "没有信息。"
 
-#: .\templates\dashboard\activity.html.py:64
+#: .\templates\dashboard\activity.html.py:66
 #: .\templates\dashboard\my_listing.html.py:42
 #: .\templates\dashboard\my_listing.html.py:86
 #: .\templates\dashboard\my_listing.html.py:131
-#: .\templates\dashboard\sent_messages.html.py:43
+#: .\templates\dashboard\sent_messages.html.py:46
 msgid "previous"
 msgstr "前一页"
 
-#: .\templates\dashboard\activity.html.py:65
+#: .\templates\dashboard\activity.html.py:67
 #: .\templates\dashboard\my_listing.html.py:44
 #: .\templates\dashboard\my_listing.html.py:88
 #: .\templates\dashboard\my_listing.html.py:133
-#: .\templates\dashboard\sent_messages.html.py:44
+#: .\templates\dashboard\sent_messages.html.py:47
 msgid "Page"
 msgstr " "
 
-#: .\templates\dashboard\activity.html.py:65
+#: .\templates\dashboard\activity.html.py:67
 #: .\templates\dashboard\my_listing.html.py:44
 #: .\templates\dashboard\my_listing.html.py:88
 #: .\templates\dashboard\my_listing.html.py:133
-#: .\templates\dashboard\sent_messages.html.py:44
+#: .\templates\dashboard\sent_messages.html.py:47
 msgid "of"
 msgstr "/"
 
-#: .\templates\dashboard\activity.html.py:66
+#: .\templates\dashboard\activity.html.py:68
 #: .\templates\dashboard\my_listing.html.py:46
 #: .\templates\dashboard\my_listing.html.py:90
 #: .\templates\dashboard\my_listing.html.py:135
-#: .\templates\dashboard\sent_messages.html.py:45
+#: .\templates\dashboard\sent_messages.html.py:48
 msgid "next"
 msgstr "下一页"
 
@@ -686,16 +694,16 @@ msgstr "标题"
 msgid "Leave your message"
 msgstr "内容"
 
-#: .\templates\dashboard\create_message.html.py:36
+#: .\templates\dashboard\create_message.html.py:58
 msgid "Send"
 msgstr "发送"
 
-#: .\templates\dashboard\create_message.html.py:38
+#: .\templates\dashboard\create_message.html.py:60
 msgid "Cancel"
 msgstr "取消"
 
 #: .\templates\dashboard\message_detail.html.py:11
-#: .\templates\dashboard\sent_messages.html.py:16
+#: .\templates\dashboard\sent_messages.html.py:17
 msgid "To"
 msgstr "收信人"
 
@@ -703,13 +711,17 @@ msgstr "收信人"
 msgid "Received at"
 msgstr "接收时间"
 
-#: .\templates\dashboard\message_detail.html.py:24
-#: .\templates\dashboard\message_detail.html.py:36
+#: .\templates\dashboard\message_detail.html.py:21
+msgid "Attachment"
+msgstr "附件"
+
+#: .\templates\dashboard\message_detail.html.py:33
+#: .\templates\dashboard\message_detail.html.py:45
 msgid "Back"
 msgstr "返回"
 
-#: .\templates\dashboard\message_detail.html.py:29
-#: .\templates\dashboard\message_detail.html.py:41
+#: .\templates\dashboard\message_detail.html.py:38
+#: .\templates\dashboard\message_detail.html.py:50
 msgid "Reply"
 msgstr "回复"
 
@@ -797,7 +809,7 @@ msgstr "现在交易"
 msgid "No sold/closed app."
 msgstr "没有已卖/已结束的APP。"
 
-#: .\templates\dashboard\sent_messages.html.py:13
+#: .\templates\dashboard\sent_messages.html.py:14
 msgid "Outbox"
 msgstr "发信箱"
 
@@ -855,15 +867,15 @@ msgstr "薪资"
 msgid "Description"
 msgstr "职位详细描述"
 
-#: .\templates\offer\offer_list.html.py:15
-msgid "View Count"
-msgstr "浏览次数"
-
-#: .\templates\offer\offer_list.html.py:16
+#: .\templates\offer\offer_list.html.py:21
 msgid "Apply Count"
 msgstr "申请人数"
 
-#: .\templates\offer\offer_list.html.py:22
+#: .\templates\offer\offer_list.html.py:24
+msgid "View Count"
+msgstr "浏览次数"
+
+#: .\templates\offer\offer_list.html.py:31
 msgid "Learn More"
 msgstr "查看详情"
 
@@ -878,6 +890,145 @@ msgstr "公司LOG"
 #: .\templates\offer\register_offer.html.py:108
 msgid "If offer is enable"
 msgstr "职位是否可见"
+
+#: .\templates\seller\register_additional_info.html.py:19
+#: .\templates\seller\register_nav.html.py:10
+msgid "App Attributes"
+msgstr "App相关信息"
+
+#: .\templates\seller\register_additional_info.html.py:51
+msgid "Add attachment"
+msgstr "添加附件"
+
+#: .\templates\seller\register_additional_info.html.py:51
+#, python-format
+msgid ""
+"(Only accepts  <b>txt/pdf/image</b> type. Max size < %(attachmentSize)sM.)"
+msgstr "（仅支持<b>txt/pdf/image</b>类型，文件大小不能超过%(attachmentSize)sM。）"
+
+#: .\templates\seller\register_additional_info.html.py:64
+msgid "Add"
+msgstr "添加"
+
+#: .\templates\seller\register_additional_info.html.py:69
+#: .\templates\seller\register_appStore_info.html.py:96
+#: .\templates\seller\register_appStore_link.html.py:51
+#: .\templates\seller\register_marketing.html.py:70
+msgid "Next"
+msgstr "下一页"
+
+#: .\templates\seller\register_appStore_info.html.py:7
+msgid "Additional Information"
+msgstr "详细描述"
+
+#: .\templates\seller\register_appStore_info.html.py:9
+msgid "App Icon"
+msgstr "App图标"
+
+#: .\templates\seller\register_appStore_info.html.py:23
+msgid "App name"
+msgstr "App名字"
+
+#: .\templates\seller\register_appStore_info.html.py:33
+msgid "Apple id"
+msgstr ""
+
+#: .\templates\seller\register_appStore_info.html.py:43
+msgid "Platform version"
+msgstr "平台版本"
+
+#: .\templates\seller\register_appStore_info.html.py:53
+msgid "Rating"
+msgstr ""
+
+#: .\templates\seller\register_appStore_info.html.py:83
+msgid "Price"
+msgstr "App价格"
+
+#: .\templates\seller\register_appStore_link.html.py:16
+msgid "Appstore Info"
+msgstr "应用商店信息"
+
+#: .\templates\seller\register_appStore_link.html.py:21
+msgid "App Title"
+msgstr "App标题"
+
+#: .\templates\seller\register_appStore_link.html.py:34
+msgid "App store link"
+msgstr "应用链接"
+
+#: .\templates\seller\register_appStore_link.html.py:46
+msgid "indicate the filed is mandatory."
+msgstr "表示该字段为必填项。"
+
+#: .\templates\seller\register_appStore_link.html.py:47
+msgid "Please be notice that we only support iOS/OSX apps."
+msgstr "请注意目前仅支持IOS/OSX的App应用。"
+
+#: .\templates\seller\register_appStore_link.html.py:58
+msgid "Your draft apps:"
+msgstr "没有未发布的APP："
+
+#: .\templates\seller\register_appStore_link.html.py:66
+msgid "Last modified:"
+msgstr "最后修改时间："
+
+#: .\templates\seller\register_marketing.html.py:8
+#: .\templates\seller\register_nav.html.py:13
+msgid "Revenue/Monetization"
+msgstr "收入/盈利方式"
+
+#: .\templates\seller\register_marketing.html.py:17
+msgid "Dl amount"
+msgstr "下载次数"
+
+#: .\templates\seller\register_marketing.html.py:18
+msgid "Your apps download information in iTunes."
+msgstr "你的App应用在iTunes的下载次数。"
+
+#: .\templates\seller\register_marketing.html.py:37
+msgid "Revenue"
+msgstr "收入"
+
+#: .\templates\seller\register_marketing.html.py:38
+msgid "Your apps revenue from AppleStore."
+msgstr "你的App应用在苹果应用商店上的输入。"
+
+#: .\templates\seller\register_marketing.html.py:60
+msgid "Select your monetize method."
+msgstr "选择你的盈利方式。"
+
+#: .\templates\seller\register_nav.html.py:3
+msgid "Basic Info For Your Listing"
+msgstr "基本信息"
+
+#: .\templates\seller\register_nav.html.py:6
+msgid "AppleStore Info"
+msgstr "应用商店信息"
+
+#: .\templates\seller\register_nav.html.py:16
+msgid "Additional Info"
+msgstr ""
+
+#: .\templates\seller\register_nav.html.py:19
+msgid "Price Setting"
+msgstr "竞价设置"
+
+#: .\templates\seller\register_nav.html.py:22
+msgid "Your Delivery"
+msgstr "交付设置"
+
+#: .\templates\seller\register_nav.html.py:25
+msgid "Payment"
+msgstr "支付"
+
+#: .\templates\seller\register_nav.html.py:28
+msgid "App Verification"
+msgstr "App验证"
+
+#: .\templates\seller\register_nav.html.py:33
+msgid "Preview your App"
+msgstr "预览你的App应用"
 
 #: .\templates\usersetting\account_setting.html.py:20
 msgid "Personal Setting"

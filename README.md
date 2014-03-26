@@ -75,6 +75,11 @@ Inorder to send email with AWS-SES:
 https://github.com/RulongWang/django-smtp-ssl
 Python setup.py install
 
+ Internationalization | Localization:
+manage.py makemessages -l zh_CN
+manage.py compilemessages
+
+
 
 
 

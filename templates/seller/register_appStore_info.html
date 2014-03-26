@@ -6,7 +6,7 @@
         {% csrf_token %}
       <div class="dash_title">{% trans 'Additional Information' %}</div>
         <div class="register_icon">
-            <span style="font-weight: bold;">{% trans 'Icon' %}</span>
+            <span style="font-weight: bold;">{% trans 'App Icon' %}</span>
             {% if appInfoForm.icon.errors %}
                 <div class="return_error">
                 {{ appInfoForm.icon.errors }}

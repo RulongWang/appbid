@@ -48,7 +48,7 @@
     {% if app_status != 3 %}
     <div id="attachment">
          <div>
-            <label for="attachment">{% trans 'Add attachment' %}</label> <span style="font-size: 12px;">{% trans 'Add attachment' %}(Only accepts  <b>txt/pdf/image</b> type. Max size < {{ attachmentSize }}M.)</span>
+            <label for="attachment">{% trans 'Add attachment' %}</label> <span style="font-size: 12px;">{% blocktrans %}(Only accepts  <b>txt/pdf/image</b> type. Max size < {{ attachmentSize }}M.){% endblocktrans %}</span>
         </div>
         {{ attachmentError }}
         {% if attachmentForm %}
