@@ -25,6 +25,7 @@ from appbid import models as appModels
 from order import models as orderModels
 from bid import models as bidModels
 from transaction import models as txnModels
+from offer import models as offerModels
 from dashboard import models
 from message import forms as messageForms
 from utilities import common
@@ -144,6 +145,20 @@ def createMessage(request, *args, **kwargs):
     message = messageViews.sendMessage(request, initParam=initParam)
     if message:
         messages.info(request, _('Send message successfully.'))
+        #For job, log number of apply the job.
+        if initParam['type'] == '6' and initParam['next'] is not None:
+            offerId = initParam['next'].split('/')[3]
+            offers = offerModels.Offer.objects.filter(pk=offerId, publisher_id=user_id)
+            if offers:
+                offerRecord = offers[0].offerrecord
+                if offerRecord is not None:
+                    offerRecord.apply_count += 1
+                else:
+                    offerRecord = offerModels.OfferRecord()
+                    offerRecord.offer = offers[0]
+                    offerRecord.view_count = 0
+                    offerRecord.apply_count = 1
+                offerRecord.save()
 
         pathList = request.FILES.getlist('path')
         if pathList:

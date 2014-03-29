@@ -84,6 +84,27 @@ def offerDetail(request, *args, **kwargs):
         for position in offer.position.all():
             positions.append(position.name)
         initParam['positions'] = positions
+        offerRecords = offerModels.OfferRecord.objects.filter(offer_id=offer.id).all()
+        viewCount = 0
+        applyCount = 0
+        if request.user.id is None or request.user != offer.publisher:
+            if offerRecords:
+                offerRecord = offerRecords[0]
+                offerRecord.view_count += 1
+            else:
+                offerRecord = offerModels.OfferRecord()
+                offerRecord.offer = offer
+                offerRecord.view_count = 1
+                offerRecord.apply_count = 0
+            offerRecord.save()
+            viewCount = offerRecord.view_count
+            applyCount = offerRecord.apply_count
+        else:
+            if offerRecords:
+                viewCount = offerRecords[0].view_count
+                applyCount = offerRecords[0].apply_count
+        initParam['viewCount'] = viewCount
+        initParam['applyCount'] = applyCount
         return render_to_response('offer/offer_detail.html', initParam, context_instance=RequestContext(request))
     raise Http404
 
@@ -121,7 +142,7 @@ def queryAppsWithPaginator(request, *args, **kwargs):
         #Query offer record showed in the current page.
         for info_list in offerInfoList:
             info_list.append(offerModels.Offer.OFFER_TYPES[info_list[0].type-1][1])
-            records = offerModels.OfferRecord.objects.filter(pk=info_list[0].id)
+            records = offerModels.OfferRecord.objects.filter(offer_id=info_list[0].id)
             if records:
                 info_list.append(records[0].view_count)
                 info_list.append(records[0].apply_count)

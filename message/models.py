@@ -12,6 +12,7 @@ class Message(models.Model):
         (3, 'tech'),
         (4, 'sale'),
         (5, 'advice'),
+        (6, 'apply'),
     )
     title = models.CharField(max_length=255)
     content = models.TextField(null=True, blank=True)

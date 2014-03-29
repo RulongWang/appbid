@@ -9,7 +9,7 @@
             <input id="id_edit_offer" type="button" value="{% trans 'Edit Offer' %}" class="button_n" />
         </a>
     {% else %}
-        <a href="/dashboard/create-message/reply/1/{{ offer.publisher.username }}/{{ offer.publisher.id }}?next={{ request.path }}"  class="button_n">
+        <a href="/dashboard/create-message/reply/6/{{ offer.publisher.username }}/{{ offer.publisher.id }}?next={{ request.path }}"  class="button_n">
             <input id="id_apply_with_appswalk" type="button" value="{% trans 'Apply with AppsWalk' %}" class="button_n" />
         </a>
     {% endif %}
@@ -17,12 +17,19 @@
 <ul>
         <li>
             <div>
+                <div>{% trans 'Apply Count' %}:{{ applyCount }} {% trans 'View Count' %}:{{ viewCount }}</div>
+            </div>
+        </li>
+        <li>
+            <div>
                 <div>{% trans 'Title' %}</div>
                 <div>{{ offer.title }}</div>
             </div>
             <div style="float: right">
                 <div style="width:50px;padding: 5px;float:left;">
+                    {% if offer.company_icon %}
                     <img src="{{ MEDIA_URL }}{{ offer.company_icon }}" />
+                    {% endif %}
                 </div>
             </div>
         </li>
@@ -80,7 +87,7 @@
 
     <div>
         {% if offer.publisher.username != request.user.username %}
-            <a href="/dashboard/create-message/reply/1/{{ offer.publisher.username }}/{{ offer.publisher.id }}"  class="button_n">
+            <a href="/dashboard/create-message/reply/6/{{ offer.publisher.username }}/{{ offer.publisher.id }}"  class="button_n">
                 <input id="id_apply_with_appswalk" type="button" value="{% trans 'Apply with AppsWalk' %}" class="button_n" />
             </a>
         {% endif %}

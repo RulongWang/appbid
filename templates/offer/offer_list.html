@@ -10,9 +10,12 @@
         <div class="job_wrapper">
         <div class="jobblock" >
             <div style="color: #0088cc;">
-                <h3>{{ offer.0.title }}</h3><div class="thumbnail_wrapper">
-         <img src="{{ MEDIA_URL }}{{ offer.0.company_icon }}" class="img-rounded"/>
-        </div>
+                <h3>{{ offer.0.title }}</h3>
+                <div class="thumbnail_wrapper">
+                    {% if offer.0.company_icon %}
+                    <img src="{{ MEDIA_URL }}{{ offer.0.company_icon }}" class="img-rounded"/>
+                    {% endif %}
+                </div>
             </div>
             <div class="joblocation ">
                 <span class="label "><i class="icon-map-marker icon-white"></i> {{ offer.0.location }}</span>
@@ -25,7 +28,7 @@
                 </span>
             </div>
             <div class="jobdesc">
-                {{ offer.0.description|truncatechars:"350" }}
+                {{ offer.0.description|truncatechars:"100" }}
             </div>
             <button class="btn">
                 <a href="{% url 'offer:offer_detail' offer.0.id %}">{% trans 'Learn More' %}</a>
