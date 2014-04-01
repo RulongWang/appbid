@@ -56,6 +56,7 @@ class AppForm(forms.ModelForm):
                 self.fields['delivery_detail'].widget.attrs['disabled'] = True
                 self.fields['unique_sell'].widget.attrs['disabled'] = True
                 self.fields['web_site'].widget.attrs['disabled'] = True
+                self.fields['app_type'].widget.attrs['disabled'] = True
             if instance.status == 2 or instance.status == 3:
                 self.fields['begin_price'].widget.attrs['disabled'] = True
                 self.fields['one_price'].widget.attrs['disabled'] = True

@@ -25,7 +25,14 @@ class UserPrivateSetting(models.Model):
 
 class UserDetail(models.Model):
     """UserDetail table info."""
+    DEVELOPER_STATUS = (
+        (1, "Normal User"),
+        (2, "Pending"),
+        (3, "Certified Developer"),
+        (4, "Failed"),
+    )
     user = models.OneToOneField(User, blank=True)
+    developer_status = models.IntegerField(choices=DEVELOPER_STATUS, null=True, blank=True, default=1)
     birthday = models.DateField(blank=True, null=True)
     real_name = models.CharField(blank=True, max_length=255, null=True)
     street_address = models.CharField(blank=True, max_length=300, null=True)

@@ -19,6 +19,7 @@ from django.conf import settings
 from payment import models as paymentModels
 from appbid import models as appModels
 from order import models as orderModels
+from usersetting import models as usersettingModels
 from seller import forms
 from utilities import common
 
@@ -40,6 +41,7 @@ def registerApp(request, *args, **kwargs):
         app = get_object_or_404(appModels.App, pk=kwargs.get('pk'), publisher=request.user)
         form = forms.AppForm(instance=app)
         initParam['app_id'] = app.id
+        initParam['app_type'] = app.app_type
         initParam['app_status'] = app.status
         #For Additional Info
         if flag == 3:
@@ -89,6 +91,9 @@ def registerApp(request, *args, **kwargs):
             result = saveMethod(request, form, app, initParam=initParam)
             if result:
                 return result
+    userDetails = usersettingModels.UserDetail.objects.filter(user=request.user)
+    if userDetails:
+        initParam['developer_status'] = userDetails[0].developer_status
 
     #Initial data
     initParam['form'] = form
@@ -139,7 +144,8 @@ def saveAppStoreLink(request, form, model, *args, **kwargs):
 
     title = form.cleaned_data['title'].strip()
     app_store_link = form.cleaned_data['app_store_link'].strip()
-    if title == "" or app_store_link == "":
+    app_type = form.cleaned_data['app_type']
+    if title == "" or app_store_link == "" or app_type == "":
         return None
 
     #Verify whether the draft app exist.
@@ -185,6 +191,7 @@ def saveAppStoreLink(request, form, model, *args, **kwargs):
     else:
         model.title = title
         model.app_store_link = app_store_link
+        model.app_type = app_type
     model.rating = result.get('averageUserRating', 0)
     model.platform_version = result.get('version', None)
     model.apple_id = result.get('trackId', None)
@@ -285,6 +292,8 @@ def saveAppStoreLink(request, form, model, *args, **kwargs):
         device = appModels.Device.objects.get(device='MAC')
         model.device.add(device)
 
+    if model.app_type and model.app_type == 1:
+        return redirect(reverse(initParam.get('nextPage2'), kwargs={'pk': model.id}))
     return redirect(reverse(initParam.get('nextPage'), kwargs={'pk': model.id}))
 
 
@@ -521,4 +530,34 @@ def deleteAttachment(request, *args, **kwargs):
     except appModels.Attachment.DoesNotExist:
         data['ok'] = 'false'
         data['message'] = _('The attachment "%(name)s" does not exist.') % {'name': dict.get('name')}
+    return HttpResponse(json.dumps(data), mimetype=u'application/json')
+
+@csrf_protect
+@login_required(login_url='/usersetting/home/')
+def becomeCertifiedDeveloper(request, *args, **kwargs):
+    """Become certified developer."""
+    data = {}
+    try:
+        dict = request.POST
+    except:
+        dict = request.GET
+    try:
+        user = get_object_or_404(usersettingModels.User, username=request.user.username)
+        userDetails = usersettingModels.UserDetail.objects.filter(user=user)
+        data['ok'] = 'true'
+        verifiedApps = appModels.App.objects.filter(publisher=request.user, is_verified=True).count()
+        if verifiedApps > 0:
+            userDetails[0].developer_status = 3
+            data['message'] = _('Congratulations, you have become certified developer.')
+        else:
+            userDetails[0].developer_status = 2
+            apps = appModels.App.objects.filter(publisher=request.user)
+            if apps:
+                data['message'] = _('You have send the request. After app "%(param1)s" verifies successfully, you will become certified developer.') % {'param1': apps[0].title}
+            else:
+                data['message'] = _('You have send the request. Please register your app to verify ownership.')
+            # userDetails[0].save()
+    except usersettingModels.User.DoesNotExist:
+        data['ok'] = 'false'
+        data['message'] = _('The user "%(name)s" does not exist.') % {'name': request.user.username}
     return HttpResponse(json.dumps(data), mimetype=u'application/json')

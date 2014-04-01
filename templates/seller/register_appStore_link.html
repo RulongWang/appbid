@@ -12,6 +12,23 @@
                     {{ error_msg }}
             {% endif %}
    </div>
+      <div>
+          <span style="float: right;margin-top: -30px;font-weight: bold;color: #00b0b0;">
+              {% if developer_status == None or developer_status == 1 %}
+                  <input id="id_developer" type="checkbox" />
+                  {% trans 'Become' %}<a href="#">{% trans 'Certified Developer' %}</a>
+              {% elif developer_status != None and developer_status == 2 %}
+                  <input id="id_developer" type="checkbox" checked disabled />
+                  {% trans 'Pending' %}<a href="#">{% trans 'Certified Developer' %}</a>
+              {% elif developer_status != None and developer_status == 3 %}
+                  <input id="id_developer" type="checkbox" checked />
+                  {% trans 'Is' %}<a href="#">{% trans 'Certified Developer' %}</a>
+              {% elif developer_status != None and developer_status == 4 %}
+                  <input id="id_developer" type="checkbox" />
+                  {% trans 'Apply' %}<a href="#">{% trans 'Certified Developer' %}</a>{% trans 'Failed' %}
+              {% endif %}
+          </span>
+      </div>
 
       <div class="dash_title">{% trans 'Appstore Info' %}</div>
         <form action="" method="post">
@@ -19,20 +36,15 @@
       <div class="field_block_addi">
         <div class="left" style="width:120px;margin-top:15px;">
             <div style="width:100px:height:30px;font-weight: bold;">*{% trans 'App Title' %}</div>
-
         </div>
         <div class="right" style="width:420px;">
              {{ form.title }}
         </div>
-
-
-
-
       </div>
+
       <div class="field_block_addi">
         <div class="left" style="width:120px;margin-top:15px;">
             <div style="width:100px:height:30px;font-weight: bold;">*{% trans 'App store link' %}</div>
-
         </div>
        <div id="progressor">
               <img src="{% static "images/loading.gif" %}" style="width:30px;height: 30px;"/>
@@ -40,7 +52,15 @@
         <div class="right" style="width:420px;">
              {{ form.app_store_link }}
         </div>
+      </div>
 
+      <div class="field_block_addi">
+        <div class="left" style="width:120px;margin-top:15px;">
+            <div style="width:100px:height:30px;font-weight: bold;">*{% trans 'App Type' %}</div>
+        </div>
+        <div class="right" style="width:420px;">
+             <span style="padding-left: 10px;">{{ form.app_type }}</span>
+        </div>
       </div>
     <div style="padding:20px 0 0 30px; font-size: 12px;color: #00b0b0;;">
         * {% trans 'indicate the filed is mandatory.' %} </br>
@@ -71,6 +91,25 @@
             {% endif %}
         </div>
 <script type="text/javascript" language="javascript">
+    $("#id_developer").click(function() {
+        if ($("#id_developer").is(':checked')) {
+            $.ajax({
+                type:"POST",
+                url:"{% url 'seller:become_certified_developer' %}",
+                data:{
+                    csrfmiddlewaretoken: "{{ csrf_token }}"
+                },
+                success:function(data) {
+                    if(data.ok === 'true') {
+                        alert(data.message);
+                    }
+                    else {
+                        alert(data.message);
+                    }
+                }
+            });
+        }
+    });
     $("#next").click(function() {
         if ($("#id_title").val().trim() == "") {
             $(".errors_block").html("Title is required.");
@@ -78,6 +117,10 @@
         }
         if ($("#id_app_store_link").val().trim() == "") {
             $(".errors_block").html("App store link is required.");
+            return false;
+        }
+        if ($("#id_app_type").val().trim() == "") {
+            $(".errors_block").html("App type is required.");
             return false;
         }
         $("#progressor").show("fast");

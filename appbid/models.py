@@ -65,7 +65,12 @@ class App(models.Model):
         (3, 'BlackBerry'),
         (4, 'Symbian'),
     )
+    APP_TYPES = (
+        (1, 'App for Selling'),
+        (2, 'App for Certified Developer'),
+    )
     publisher = models.ForeignKey(User)
+    app_type = models.IntegerField(choices=APP_TYPES, null=True, blank=True, default=1)
     store_type = models.IntegerField(choices=STORE_TYPES, null=True, blank=True, default=1)
     seller_name = models.CharField(max_length=255, null=True, blank=True)
     #The user id in apple store.

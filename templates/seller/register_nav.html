@@ -6,6 +6,7 @@
             <a href="{% url 'seller:appStore_link' app_id %}">{% trans 'AppleStore Info' %}</a>
         </li>
         {% if app_id %}
+        {% if app_type == None or app_type != 1 %}
         <li class="{{ app_store_info }}point_icon">
             <a href="{% url 'seller:appStore_info' app_id %}">{% trans 'App Attributes' %}</a>
         </li>
@@ -24,6 +25,7 @@
         <li class="{{ payment }}point_icon">
             <a href="{% url 'seller:payment' app_id serviceDetail.sn %}">{% trans 'Payment' %}</a>
         </li>
+        {% endif %}
         <li class="{{ verification }}point_icon">
             <a href="{% url 'seller:verification' app_id %}">{% trans 'App Verification' %}</a>
         </li>

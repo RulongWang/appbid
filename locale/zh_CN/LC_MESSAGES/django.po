@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-03-26 22:09+0800\n"
+"POT-Creation-Date: 2014-04-01 22:23+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -67,45 +67,45 @@ msgstr ""
 msgid "Appraisement failed. Please try again."
 msgstr ""
 
-#: .\dashboard\views.py:146
+#: .\dashboard\views.py:147
 msgid "Send message successfully."
 msgstr ""
 
-#: .\dashboard\views.py:153 .\seller\views.py:350
+#: .\dashboard\views.py:168 .\seller\views.py:359
 #, python-format
 msgid "The attachment number can not be more than %(number)s."
 msgstr ""
 
-#: .\dashboard\views.py:177 .\seller\views.py:370
+#: .\dashboard\views.py:192 .\seller\views.py:379
 #, python-format
 msgid "The file type of %(param)s does not supported."
 msgstr ""
 
-#: .\dashboard\views.py:180 .\seller\views.py:373
+#: .\dashboard\views.py:195 .\seller\views.py:382
 msgid "The file can not be more than %(number)M."
 msgstr ""
 
-#: .\dashboard\views.py:324
+#: .\dashboard\views.py:339
 msgid "Watch app failed."
 msgstr ""
 
-#: .\dashboard\views.py:350
+#: .\dashboard\views.py:365
 msgid "Unwatch app failed."
 msgstr ""
 
-#: .\dashboard\views.py:400
+#: .\dashboard\views.py:415
 msgid "Watch seller failed."
 msgstr ""
 
-#: .\dashboard\views.py:426
+#: .\dashboard\views.py:441
 msgid "Unwatch seller failed."
 msgstr ""
 
-#: .\dashboard\views.py:474
+#: .\dashboard\views.py:489
 msgid "Watch category failed."
 msgstr ""
 
-#: .\dashboard\views.py:500
+#: .\dashboard\views.py:515
 msgid "Unwatch category failed."
 msgstr ""
 
@@ -461,51 +461,71 @@ msgstr "设备"
 msgid "Category"
 msgstr "类别"
 
-#: .\seller\views.py:149 .\seller\views.py:153
+#: .\seller\views.py:155 .\seller\views.py:159
 msgid "App with link has existed in your draft apps."
 msgstr ""
 
-#: .\seller\views.py:165
+#: .\seller\views.py:171
 msgid "App store link is not correct."
 msgstr ""
 
-#: .\seller\views.py:166
+#: .\seller\views.py:172
 #, python-format
 msgid "App store link %(param)s is not correct."
 msgstr ""
 
-#: .\seller\views.py:226
+#: .\seller\views.py:233
 #, python-format
 msgid "Link %(param)s is not correct."
 msgstr ""
 
-#: .\seller\views.py:227
+#: .\seller\views.py:234
 #, python-format
 msgid "The app store link %(param)s is not correct."
 msgstr ""
 
-#: .\seller\views.py:393
+#: .\seller\views.py:402
 msgid "Reserve price should be greater than one price."
 msgstr ""
 
-#: .\seller\views.py:468
+#: .\seller\views.py:477
 msgid ""
 "Your app is not verified at the moment. Please goto next step and click 'App "
 "Verification' to request verification."
 msgstr ""
 
-#: .\seller\views.py:493
+#: .\seller\views.py:502
 msgid "The app has been verified successfully. No need verify again."
 msgstr ""
 
-#: .\seller\views.py:504
+#: .\seller\views.py:513
 msgid ""
 "The verification will be done later. Send the email to you after verified."
 msgstr ""
 
-#: .\seller\views.py:523
+#: .\seller\views.py:532
 #, python-format
 msgid "The attachment \"%(name)s\" does not exist."
+msgstr "附件\"%(name)s\"不存在。"
+
+#: .\seller\views.py:551
+msgid "Congratulations, you have become certified developer."
+msgstr ""
+
+#: .\seller\views.py:556
+#, python-format
+msgid ""
+"You have send the request. After app \"%(param1)s\" verifies successfully, "
+"you will become certified developer."
+msgstr ""
+
+#: .\seller\views.py:558
+msgid ""
+"You have send the request. Please register your app to verify ownership."
+msgstr ""
+
+#: .\seller\views.py:562
+msgid "The user \"%(name)s\" does not exist."
 msgstr "附件\"%(name)s\"不存在。"
 
 #: .\templates\header.html.py:7 .\templates\header.html.py:93
@@ -757,8 +777,9 @@ msgstr "现在付款"
 
 #: .\templates\dashboard\my_listing.html.py:31
 #: .\templates\dashboard\my_listing.html.py:32
+#: .\templates\seller\register_appStore_link.html.py:22
 msgid "Pending"
-msgstr "未验证"
+msgstr "等待验证"
 
 #: .\templates\dashboard\my_listing.html.py:36
 msgid "No draft app."
@@ -818,64 +839,66 @@ msgid "Edit Offer"
 msgstr "修改职位"
 
 #: .\templates\offer\offer_detail.html.py:13
-#: .\templates\offer\offer_detail.html.py:84
+#: .\templates\offer\offer_detail.html.py:91
 msgid "Apply with AppsWalk"
 msgstr "通过AppsWalk申请职位"
 
 #: .\templates\offer\offer_detail.html.py:20
+#: .\templates\offer\offer_list.html.py:24
+msgid "Apply Count"
+msgstr "申请人数"
+
+#: .\templates\offer\offer_detail.html.py:20
+#: .\templates\offer\offer_list.html.py:27
+msgid "View Count"
+msgstr "浏览次数"
+
+#: .\templates\offer\offer_detail.html.py:25
 #: .\templates\offer\register_offer.html.py:35
 msgid "Title"
 msgstr "职位标题"
 
-#: .\templates\offer\offer_detail.html.py:31
+#: .\templates\offer\offer_detail.html.py:38
 #: .\templates\offer\register_offer.html.py:47
 msgid "Type"
 msgstr "职位类型"
 
-#: .\templates\offer\offer_detail.html.py:37
+#: .\templates\offer\offer_detail.html.py:44
 #: .\templates\offer\register_offer.html.py:53
 msgid "Location"
 msgstr "工作地点"
 
-#: .\templates\offer\offer_detail.html.py:43
+#: .\templates\offer\offer_detail.html.py:50
 #: .\templates\offer\register_offer.html.py:59
 msgid "Position"
 msgstr "职位"
 
-#: .\templates\offer\offer_detail.html.py:51
+#: .\templates\offer\offer_detail.html.py:58
 #: .\templates\offer\register_offer.html.py:65
 msgid "Begin Time"
 msgstr "招聘开始时间"
 
-#: .\templates\offer\offer_detail.html.py:57
+#: .\templates\offer\offer_detail.html.py:64
 #: .\templates\offer\register_offer.html.py:71
 msgid "End Time"
 msgstr "招聘结束时间"
 
-#: .\templates\offer\offer_detail.html.py:63
+#: .\templates\offer\offer_detail.html.py:70
 #: .\templates\offer\register_offer.html.py:77
 msgid "Non Chinese Applicants"
 msgstr "非中国人是否可以申请"
 
-#: .\templates\offer\offer_detail.html.py:69
+#: .\templates\offer\offer_detail.html.py:76
 #: .\templates\offer\register_offer.html.py:83
 msgid "Salary"
 msgstr "薪资"
 
-#: .\templates\offer\offer_detail.html.py:75
+#: .\templates\offer\offer_detail.html.py:82
 #: .\templates\offer\register_offer.html.py:89
 msgid "Description"
 msgstr "职位详细描述"
 
-#: .\templates\offer\offer_list.html.py:21
-msgid "Apply Count"
-msgstr "申请人数"
-
-#: .\templates\offer\offer_list.html.py:24
-msgid "View Count"
-msgstr "浏览次数"
-
-#: .\templates\offer\offer_list.html.py:31
+#: .\templates\offer\offer_list.html.py:34
 msgid "Learn More"
 msgstr "查看详情"
 
@@ -892,7 +915,7 @@ msgid "If offer is enable"
 msgstr "职位是否可见"
 
 #: .\templates\seller\register_additional_info.html.py:19
-#: .\templates\seller\register_nav.html.py:10
+#: .\templates\seller\register_nav.html.py:11
 msgid "App Attributes"
 msgstr "App相关信息"
 
@@ -904,7 +927,8 @@ msgstr "添加附件"
 #, python-format
 msgid ""
 "(Only accepts  <b>txt/pdf/image</b> type. Max size < %(attachmentSize)sM.)"
-msgstr "（仅支持<b>txt/pdf/image</b>类型，文件大小不能超过%(attachmentSize)sM。）"
+msgstr ""
+"（仅支持<b>txt/pdf/image</b>类型，文件大小不能超过%(attachmentSize)sM。）"
 
 #: .\templates\seller\register_additional_info.html.py:64
 msgid "Add"
@@ -912,7 +936,7 @@ msgstr "添加"
 
 #: .\templates\seller\register_additional_info.html.py:69
 #: .\templates\seller\register_appStore_info.html.py:96
-#: .\templates\seller\register_appStore_link.html.py:51
+#: .\templates\seller\register_appStore_link.html.py:71
 #: .\templates\seller\register_marketing.html.py:70
 msgid "Next"
 msgstr "下一页"
@@ -945,36 +969,63 @@ msgstr ""
 msgid "Price"
 msgstr "App价格"
 
-#: .\templates\seller\register_appStore_link.html.py:16
+#: .\templates\seller\register_appStore_link.html.py:19
+msgid "Become"
+msgstr "成为"
+
+#: .\templates\seller\register_appStore_link.html.py:19
+#: .\templates\seller\register_appStore_link.html.py:22
+#: .\templates\seller\register_appStore_link.html.py:25
+#: .\templates\seller\register_appStore_link.html.py:28
+msgid "Certified Developer"
+msgstr "认证开发者"
+
+#: .\templates\seller\register_appStore_link.html.py:25
+msgid "Is"
+msgstr "已成为"
+
+#: .\templates\seller\register_appStore_link.html.py:28
+msgid "Apply"
+msgstr "申请"
+
+#: .\templates\seller\register_appStore_link.html.py:28
+msgid "Failed"
+msgstr "失败"
+
+#: .\templates\seller\register_appStore_link.html.py:33
 msgid "Appstore Info"
 msgstr "应用商店信息"
 
-#: .\templates\seller\register_appStore_link.html.py:21
+#: .\templates\seller\register_appStore_link.html.py:38
 msgid "App Title"
 msgstr "App标题"
 
-#: .\templates\seller\register_appStore_link.html.py:34
+#: .\templates\seller\register_appStore_link.html.py:47
 msgid "App store link"
 msgstr "应用链接"
 
-#: .\templates\seller\register_appStore_link.html.py:46
+#: .\templates\seller\register_appStore_link.html.py:59
+msgid "App Type"
+msgstr "App类型"
+
+#: .\templates\seller\register_appStore_link.html.py:66
 msgid "indicate the filed is mandatory."
 msgstr "表示该字段为必填项。"
 
-#: .\templates\seller\register_appStore_link.html.py:47
+#: .\templates\seller\register_appStore_link.html.py:67
 msgid "Please be notice that we only support iOS/OSX apps."
 msgstr "请注意目前仅支持IOS/OSX的App应用。"
 
-#: .\templates\seller\register_appStore_link.html.py:58
+#: .\templates\seller\register_appStore_link.html.py:78
 msgid "Your draft apps:"
 msgstr "没有未发布的APP："
 
-#: .\templates\seller\register_appStore_link.html.py:66
+#: .\templates\seller\register_appStore_link.html.py:86
 msgid "Last modified:"
 msgstr "最后修改时间："
 
 #: .\templates\seller\register_marketing.html.py:8
-#: .\templates\seller\register_nav.html.py:13
+#: .\templates\seller\register_nav.html.py:14
 msgid "Revenue/Monetization"
 msgstr "收入/盈利方式"
 
@@ -1006,27 +1057,27 @@ msgstr "基本信息"
 msgid "AppleStore Info"
 msgstr "应用商店信息"
 
-#: .\templates\seller\register_nav.html.py:16
+#: .\templates\seller\register_nav.html.py:17
 msgid "Additional Info"
 msgstr ""
 
-#: .\templates\seller\register_nav.html.py:19
+#: .\templates\seller\register_nav.html.py:20
 msgid "Price Setting"
 msgstr "竞价设置"
 
-#: .\templates\seller\register_nav.html.py:22
+#: .\templates\seller\register_nav.html.py:23
 msgid "Your Delivery"
 msgstr "交付设置"
 
-#: .\templates\seller\register_nav.html.py:25
+#: .\templates\seller\register_nav.html.py:26
 msgid "Payment"
 msgstr "支付"
 
-#: .\templates\seller\register_nav.html.py:28
+#: .\templates\seller\register_nav.html.py:30
 msgid "App Verification"
 msgstr "App验证"
 
-#: .\templates\seller\register_nav.html.py:33
+#: .\templates\seller\register_nav.html.py:35
 msgid "Preview your App"
 msgstr "预览你的App应用"
 
